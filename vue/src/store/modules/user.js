@@ -12,6 +12,7 @@ const user = {
         role: "管理员",
         menus: ["role", "user", "article"],
         permissions: ["article:list", "user:list", "user:add", "role:update", "article:add", "role:list", "article:update", "user:update", "role:delete", "role:add"],
+        token: ""
     },
     mutations: {
         SET_USER: (state, userInfo) => {
@@ -34,7 +35,7 @@ const user = {
         Login({ commit, state }, loginForm) {
             return new Promise((resolve, reject) => {
                 api({
-                    url: "login/auth",
+                    url: "SysStaff/auth",
                     method: "post",
                     data: loginForm
                 }).then(data => {
@@ -54,7 +55,7 @@ const user = {
             return new Promise((resolve, reject) => {
                 console.log("getInfo")
                 api({
-                    url: '/login/getInfo',
+                    url: '/SysStaff/getInfo',
                     method: 'post'
                 }).then(data => {
                     console.log(data)

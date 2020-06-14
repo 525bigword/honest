@@ -50,7 +50,7 @@ export const asyncRouterMap = [{
         children: [{
                 path: '',
                 name: '用户列表',
-                component: _import('user/user'),
+                component: _import('system/user/user'),
                 meta: { title: '用户列表', icon: 'user' },
                 menu: 'user'
             },
