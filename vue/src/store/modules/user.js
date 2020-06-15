@@ -42,6 +42,10 @@ const user = {
                     console.log(data)
                     if (data.result === "success") {
                         //cookie中保存前端登录状态
+                        console.log(data.data.roleName)
+                        localStorage.setItem("roleName",data.data.roleName)
+                        localStorage.setItem("roleId",data.data.roleId)
+                        localStorage.setItem("userId",data.data.userId)
                         setToken();
                     }
                     resolve(data);

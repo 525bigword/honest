@@ -15,12 +15,9 @@
           <span v-text="getIndex(scope.$index)"> </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="content" label="用户" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" label="创建时间" width="170">
-        <template slot-scope="scope">
-          <span>{{scope.row.createTime}}</span>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" prop="name" label="员工名" width="80"></el-table-column>
+      <el-table-column align="center" prop="sex" label="性别" width="50"></el-table-column>
+      <el-table-column align="center" prop="age" label="年龄" width="50"></el-table-column>
       <el-table-column align="center" label="管理" width="200" v-if="hasPerm('article:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
@@ -60,7 +57,7 @@
         users: [],//表格的数据
         listLoading: false,//数据加载等待动画
         pageNum: 1,//页码
-        pageRow: 50,//每页条数
+        pageRow: 10,//每页条数
         name: '',
         dialogStatus: 'create',
         dialogFormVisible: false,
@@ -84,20 +81,27 @@
           return
         }
         this.listLoading = true;
+        
         this.api({
           url: "SysStaff/get/"+this.pageNum+"/"+this.pageRow,
           method: "get",
         }).then(data => {
+          console.log(data.records);
+          data.records.filter(item=>{
+            this.users.push(item)
+          })
+          //this.users.concat(data.records);
+          console.log(this.users);
+          // this.list = data.records;
+          this.totalCount = data.total+1;
+          this.pageNum=data.current
           this.listLoading = false;
-          console.log(data);
-          this.list = data.list;
-          this.totalCount = data.totalCount;
         })
       },
       handleSizeChange(val) {
         //改变每页数量
         this.pageRow = val
-        this.handleFilter();
+        this.getList();
       },
       handleCurrentChange(val) {
         //改变页码

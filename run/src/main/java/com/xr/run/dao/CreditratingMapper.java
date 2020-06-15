@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.Creditrating;
 import org.springframework.stereotype.Repository;
 
-@Repository
+
 public interface CreditratingMapper extends BaseMapper<Creditrating> {
 
 }

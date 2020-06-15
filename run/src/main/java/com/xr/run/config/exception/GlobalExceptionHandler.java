@@ -3,6 +3,7 @@ package com.xr.run.config.exception;
 import com.alibaba.fastjson.JSONObject;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.ErrorEnum;
+import com.xr.run.util.model.Result;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
@@ -68,8 +69,8 @@ public class GlobalExceptionHandler {
 	 * 权限不足报错拦截
 	 */
 	@ExceptionHandler(UnauthorizedException.class)
-	public JSONObject unauthorizedExceptionHandler() {
-		return CommonUtil.errorJson(ErrorEnum.E_502);
+	public Result unauthorizedExceptionHandler() {
+		return new Result().loign();
 	}
 
 	/**

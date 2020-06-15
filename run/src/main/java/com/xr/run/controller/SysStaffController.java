@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
+import com.xr.run.util.constants.Constants;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +24,13 @@ public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
     @GetMapping("/get/{pageNum}/{pageRow}")
-    public IPage<SysStaff> findstatffs(@PathVariable Integer pageNum,@PathVariable Integer pageRow){
+    public JSONObject findstatffs(@PathVariable Integer pageNum,@PathVariable Integer pageRow){
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<SysStaff> page=new Page(pageNum,pageRow);
         IPage<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll(page);
-        return sysStaffAll;
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
     }
     /**
      * 登录
@@ -35,7 +38,11 @@ public class SysStaffController {
     @PostMapping("/auth")
     public JSONObject authLogin(@RequestBody JSONObject requestJson) {
         CommonUtil.hasAllRequired(requestJson, "username,password");
-        return sysStaffService.authLogin(requestJson);
+        JSONObject jsonObject = sysStaffService.authLogin(requestJson);
+
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+
+        return jsonObject;
     }
     /**
      * 登出

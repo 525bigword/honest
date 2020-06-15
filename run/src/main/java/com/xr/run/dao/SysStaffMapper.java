@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.SysStaff;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,5 +20,8 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
             "create_time,create_id,staus from sys_staff")
+    @Results({
+            @Result(property = "mechanismname",column = "mid", one=@One(select = "com.xr.run.dao.SysMechanismMapper.findMechanismNameByMid",fetchType = FetchType.DEFAULT))
+    })
     IPage<SysStaff> findSysStaffAll(Page page);
 }

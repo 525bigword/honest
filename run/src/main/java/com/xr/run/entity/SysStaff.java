@@ -30,6 +30,7 @@ public class SysStaff {
   private Date createTime;
   private int createId;
   private String staus;
-
+  //TODO 业务属性
+  private String mechanismname;
 
 }
