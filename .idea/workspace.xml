@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="82ca3d37-e4fc-4a4b-b141-6db6ab78c235" name="Default Changelist" comment="">
+    <list default="true" id="82ca3d37-e4fc-4a4b-b141-6db6ab78c235" name="Default Changelist" comment="修复刷新后丢失路由的问题">
+      <change afterPath="$PROJECT_DIR$/vue/src/views/system/user/add.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-15.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-15.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysPostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysPostMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/SysStaff.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/SysStaff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SysStaffService.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SysStaffService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SysStaffServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SysStaffServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/api.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/system/user/user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/system/user/user.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -231,7 +233,7 @@
       <workItem from="1592137525106" duration="816000" />
       <workItem from="1592138374410" duration="1104000" />
       <workItem from="1592183021327" duration="1905000" />
-      <workItem from="1592185160161" duration="19496000" />
+      <workItem from="1592185160161" duration="24362000" />
     </task>
     <task id="LOCAL-00001" summary="修改为线上数据库">
       <created>1591953994137</created>
@@ -247,11 +249,29 @@
       <option name="project" value="LOCAL" />
       <updated>1592202369841</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="修复刷新后丢失路由的问题">
+      <created>1592208623074</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1592208623074</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -264,50 +284,54 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="368" y="72" key="#ConfigApplicationTests.contextLoads/0.0.1536.824@0.0.1536.824" timestamp="1592183062912" />
+    <state x="548" y="269" width="429" height="271" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1592210790430">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="548" y="269" width="429" height="271" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1592210790430" />
     <state x="519" y="110" key="#xdebugger.evaluate" timestamp="1592192146840">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="519" y="110" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1592192146840" />
-    <state x="380" y="0" key="CommitChangelistDialog2" timestamp="1592202368665">
+    <state x="380" y="0" key="CommitChangelistDialog2" timestamp="1592214101440">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="380" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1592202368665" />
+    <state x="380" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1592214101440" />
     <state x="532" y="163" key="FileChooserDialogImpl" timestamp="1592138719578">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="532" y="163" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1592138719578" />
-    <state width="1342" height="282" key="GridCell.Tab.0.bottom" timestamp="1592208283326">
+    <state width="1342" height="234" key="GridCell.Tab.0.bottom" timestamp="1592214082951">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592208283326" />
-    <state width="1342" height="282" key="GridCell.Tab.0.center" timestamp="1592208283326">
+    <state width="1342" height="234" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592214082951" />
+    <state width="1342" height="234" key="GridCell.Tab.0.center" timestamp="1592214082951">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592208283326" />
-    <state width="1342" height="282" key="GridCell.Tab.0.left" timestamp="1592208283326">
+    <state width="1342" height="234" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592214082951" />
+    <state width="1342" height="234" key="GridCell.Tab.0.left" timestamp="1592214082951">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592208283326" />
-    <state width="1342" height="282" key="GridCell.Tab.0.right" timestamp="1592208283326">
+    <state width="1342" height="234" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592214082951" />
+    <state width="1342" height="234" key="GridCell.Tab.0.right" timestamp="1592214082951">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592208283326" />
-    <state width="1342" height="282" key="GridCell.Tab.1.bottom" timestamp="1592208283213">
+    <state width="1342" height="234" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592214082951" />
+    <state width="1342" height="282" key="GridCell.Tab.1.bottom" timestamp="1592209114456">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592208283213" />
-    <state width="1342" height="282" key="GridCell.Tab.1.center" timestamp="1592208283213">
+    <state width="1342" height="282" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592209114456" />
+    <state width="1342" height="282" key="GridCell.Tab.1.center" timestamp="1592209114456">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1592208283213" />
-    <state width="1342" height="282" key="GridCell.Tab.1.left" timestamp="1592208283213">
+    <state width="1342" height="282" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1592209114456" />
+    <state width="1342" height="282" key="GridCell.Tab.1.left" timestamp="1592209114456">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1592208283213" />
-    <state width="1342" height="282" key="GridCell.Tab.1.right" timestamp="1592208283213">
+    <state width="1342" height="282" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1592209114456" />
+    <state width="1342" height="282" key="GridCell.Tab.1.right" timestamp="1592209114456">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1342" height="282" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1592208283213" />
+    <state width="1342" height="282" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1592209114456" />
     <state x="281" y="62" key="Maven.ArtifactSearchDialog" timestamp="1592138467352">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -316,10 +340,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="255" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1592185519508" />
-    <state x="356" y="138" key="Vcs.Push.Dialog.v2" timestamp="1592208613626">
+    <state x="356" y="138" key="Vcs.Push.Dialog.v2" timestamp="1592213891628">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="356" y="138" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1592208613626" />
+    <state x="356" y="138" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1592213891628" />
     <state x="450" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1592185163744">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -336,11 +360,6 @@
           <url>file://$PROJECT_DIR$/config/src/test/java/com/xr/config/ConfigApplicationTests.java</url>
           <line>14</line>
           <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

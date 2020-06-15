@@ -15,6 +15,7 @@
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="onSubmit">查询</el-button>
+    <el-button type="primary" @click="onAdd">添加</el-button>
   </el-form-item>
 </el-form>
     </div>
@@ -33,7 +34,6 @@
       <el-table-column align="center" prop="phone" label="手机" width="50"></el-table-column>
       <el-table-column align="center" prop="mechanismname" label="部门" width="50"></el-table-column>
       <el-table-column align="center" prop="postname" label="岗位" width="50"></el-table-column>
-      <el-table-column align="center" prop="staus(staus)" label="部门" width="50"></el-table-column>
       <el-table-column align="center" label="管理" width="200" v-if="hasPerm('article:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
@@ -62,16 +62,18 @@
         <el-button v-if="dialogStatus=='create'" type="success" @click="createArticle">创 建</el-button>
         <el-button type="primary" v-else @click="updateArticle">修 改</el-button>
       </div>
+      <add ></add>
     </el-dialog>
   </div>
 </template>
 <script>
+import add from './add'
   export default {
     data() {
       return {
         formInline: {
-          name: '',
-          staus: ''
+          name: "",
+          staus: '1'
         },
         totalCount: 0, //分页组件--数据总条数
         users: [],//表格的数据
@@ -92,6 +94,9 @@
         }
       }
     },
+    components:{
+      add
+    },
     created() {
        this.getList();
     },
@@ -109,7 +114,11 @@
       }
     },
     methods: {
+      addOrUpdateHandle(id){
+
+      },
        onSubmit() {
+         this.getList()
         console.log('submit!');
       },
       getList() {
@@ -118,16 +127,21 @@
           return
         }
         this.listLoading = true;
-        
+        let url="";
+        // if(this.formInline.name){
+        //   url="SysStaff/get/"+this.pageNum+"/"+this.pageRow+"/"+this.formInline.staus+"/"+this.formInline.name
+        // }else{
+        //   url="SysStaff/get/"+this.pageNum+"/"+this.pageRow+"/"+this.formInline.staus
+        // }
         this.api({
-          url: "SysStaff/get/"+this.pageNum+"/"+this.pageRow,
+          url: "SysStaff/get/"+this.pageNum+"/"+this.pageRow+"/"+this.formInline.staus,
           method: "get",
-          data:{
-            name:this.formInline.name,
-            staus:this.formInline.staus
+          params:{
+            name:this.formInline.name
           }
         }).then(data => {
           console.log(data.records);
+          this.users=[]
           data.records.filter(item=>{
             this.users.push(item)
           })

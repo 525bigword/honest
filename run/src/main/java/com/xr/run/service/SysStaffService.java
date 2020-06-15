@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SysStaff;
 import lombok.Data;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public interface SysStaffService extends IService<SysStaff> {
 
-    IPage<SysStaff> findSysStaffAll(Page<SysStaff> page);
+    IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus);
 
     /**
      * 登录

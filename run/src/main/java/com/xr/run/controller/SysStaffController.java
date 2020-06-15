@@ -23,14 +23,13 @@ import java.util.List;
 public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
-    @GetMapping("/get/{pageNum}/{pageRow}")
-    public JSONObject findstatffs(@PathVariable Integer pageNum,@PathVariable Integer pageRow,@RequestParam String name,@RequestParam Integer staus){
-        System.out.println(name);
-        System.out.println(staus);
+    @GetMapping("/get/{pageNum}/{pageRow}/{staus}")
+    public JSONObject findstatffs(@PathVariable Integer pageNum,@PathVariable Integer pageRow,String name,@PathVariable Integer staus){
+        System.out.println(name+staus);
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<SysStaff> page=new Page(pageNum,pageRow);
-        IPage<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll(page);
+        IPage<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll(page,name,staus);
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }

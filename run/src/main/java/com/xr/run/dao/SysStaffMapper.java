@@ -19,10 +19,10 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             " sys_staff u WHERE u.username = #{username} AND u.password = #{password} AND u.staus = '1'")
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
-            "create_time,create_id,staus from sys_staff")
+            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus}")
     @Results({
             @Result(property = "mechanismname",column = "mid", one=@One(select = "com.xr.run.dao.SysMechanismMapper.findMechanismNameByMid",fetchType = FetchType.DEFAULT)),
             @Result(property = "postname",column = "pid", one=@One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid",fetchType = FetchType.DEFAULT)),
     })
-    IPage<SysStaff> findSysStaffAll(Page page);
+    IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus);
 }

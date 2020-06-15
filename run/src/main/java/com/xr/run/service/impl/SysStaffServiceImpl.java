@@ -27,9 +27,9 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     private SysPermissionService sysPermissionService;
 
     @Override
-    public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page) {
+    public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus) {
 
-        IPage<SysStaff> sysStaffAll = baseMapper.findSysStaffAll(page);
+        IPage<SysStaff> sysStaffAll = baseMapper.findSysStaffAll(page,name,staus);
         return sysStaffAll;
     }
 
