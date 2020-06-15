@@ -32,5 +32,5 @@ public class SysStaff {
   private String staus;
   //TODO 业务属性
   private String mechanismname;
-
+  private String postname;
 }

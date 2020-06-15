@@ -1,12 +1,22 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-form>
-        <el-form-item>
-          <el-button type="primary" icon="plus" @click="showCreate" v-if="hasPerm('article:add')">添加
-          </el-button>
-        </el-form-item>
-      </el-form>
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+  <el-form-item label="姓名">
+    <el-input v-model="formInline.name" placeholder="姓名"></el-input>
+  </el-form-item>
+  <el-form-item label="员工状态">
+    <el-select v-model="formInline.staus" placeholder="活动区域">
+      <el-option label="正常" value="1"></el-option>
+      <el-option label="删除" value="2"></el-option>
+       <el-option label="离退" value="3"></el-option>
+      <el-option label="借调" value="4"></el-option>
+    </el-select>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary" @click="onSubmit">查询</el-button>
+  </el-form-item>
+</el-form>
     </div>
     <el-table :data="users" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
               highlight-current-row>
@@ -18,6 +28,12 @@
       <el-table-column align="center" prop="name" label="员工名" width="80"></el-table-column>
       <el-table-column align="center" prop="sex" label="性别" width="50"></el-table-column>
       <el-table-column align="center" prop="age" label="年龄" width="50"></el-table-column>
+      <el-table-column align="center" prop="educationalBackground" label="学历" width="50"></el-table-column>
+      <el-table-column align="center" prop="politicalAppearance" label="政治面貌" width="50"></el-table-column>
+      <el-table-column align="center" prop="phone" label="手机" width="50"></el-table-column>
+      <el-table-column align="center" prop="mechanismname" label="部门" width="50"></el-table-column>
+      <el-table-column align="center" prop="postname" label="岗位" width="50"></el-table-column>
+      <el-table-column align="center" prop="staus(staus)" label="部门" width="50"></el-table-column>
       <el-table-column align="center" label="管理" width="200" v-if="hasPerm('article:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
@@ -53,12 +69,17 @@
   export default {
     data() {
       return {
+        formInline: {
+          name: '',
+          staus: ''
+        },
         totalCount: 0, //分页组件--数据总条数
         users: [],//表格的数据
         listLoading: false,//数据加载等待动画
         pageNum: 1,//页码
         pageRow: 10,//每页条数
         name: '',
+        region:'',
         dialogStatus: 'create',
         dialogFormVisible: false,
         textMap: {
@@ -74,7 +95,23 @@
     created() {
        this.getList();
     },
+    computed:{
+      staus(val){
+        if(val===1){
+          return "正常"
+        }if(val===2){
+          return "删除"
+        }if(val===3){
+          return "离退"
+        }if(val===4){
+          return "借调"
+        }
+      }
+    },
     methods: {
+       onSubmit() {
+        console.log('submit!');
+      },
       getList() {
         //查询列表
         if (!this.hasPerm('staff:list')) {
@@ -85,6 +122,10 @@
         this.api({
           url: "SysStaff/get/"+this.pageNum+"/"+this.pageRow,
           method: "get",
+          data:{
+            name:this.formInline.name,
+            staus:this.formInline.staus
+          }
         }).then(data => {
           console.log(data.records);
           data.records.filter(item=>{

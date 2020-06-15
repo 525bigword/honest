@@ -21,7 +21,8 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
             "create_time,create_id,staus from sys_staff")
     @Results({
-            @Result(property = "mechanismname",column = "mid", one=@One(select = "com.xr.run.dao.SysMechanismMapper.findMechanismNameByMid",fetchType = FetchType.DEFAULT))
+            @Result(property = "mechanismname",column = "mid", one=@One(select = "com.xr.run.dao.SysMechanismMapper.findMechanismNameByMid",fetchType = FetchType.DEFAULT)),
+            @Result(property = "postname",column = "pid", one=@One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid",fetchType = FetchType.DEFAULT)),
     })
     IPage<SysStaff> findSysStaffAll(Page page);
 }
