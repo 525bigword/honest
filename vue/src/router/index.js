@@ -52,12 +52,12 @@ export const asyncRouterMap = [{
                 name: '用户列表',
                 component: _import('system/user/user'),
                 meta: { title: '用户列表', icon: 'user' },
-                menu: 'staff'
+                menu: 'user'
             },
             {
                 path: 'role',
                 name: '权限管理',
-                component: _import('system/permission/permission'),
+                component: _import('user/role'),
                 meta: { title: '权限管理', icon: 'password' },
                 menu: 'role'
             },
@@ -182,9 +182,15 @@ export const asyncRouterMap = [{
         meta: { title: '廉政文化', icon: 'table' },
         children: [{
             path: '',
-            name: '廉政文化',
+            name: '资料锦集',
+            component: _import('cultrue/datakamset'),
+            meta: { title: '资料锦集', icon: 'user' },
+            menu: ''
+        }, {
+            path: '',
+            name: '清风文苑',
             component: _import('user/user'),
-            meta: { title: '廉政文化', icon: 'user' },
+            meta: { title: '清风文苑', icon: 'user' },
             menu: 'user'
         }]
     },

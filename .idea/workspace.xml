@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="82ca3d37-e4fc-4a4b-b141-6db6ab78c235" name="Default Changelist" comment="修复刷新后丢失路由的问题">
-      <change afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/DatacollectionController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/DatacollectionServiceImpl.java" afterDir="false" />
+    <list default="true" id="82ca3d37-e4fc-4a4b-b141-6db6ab78c235" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/vue/src/assets/mpy/moment-with-locales.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-15.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-15.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/DatacollectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/DatacollectionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/permission.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/store/modules/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/store/modules/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/system/user/add.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/system/user/add.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/system/user/user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/system/user/user.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/run/target/" />
@@ -147,6 +147,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -158,83 +159,40 @@
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="vue" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="entity" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="article" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -253,7 +211,8 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service" />
+    <property name="editor.config.ad.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/vue/src/assets/mpy" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -278,11 +237,11 @@
       <recent name="com.xr.run.annotation" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\honest\vue\src\assets\mpy" />
       <recent name="H:\honest\run\src\main\java\com\xr\run\service" />
       <recent name="H:\honest\run\src\main\java\com\xr\run\service\impl" />
       <recent name="H:\honest\run\src\main\java\com\xr\run\entity" />
       <recent name="H:\honest\run\src\main\java\com\xr\run\dao" />
-      <recent name="H:\honest\run\src\main\java\com\xr\run\controller" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -402,6 +361,7 @@
       <workItem from="1592185160161" duration="24362000" />
       <workItem from="1592216656316" duration="2596000" />
       <workItem from="1592219770047" duration="2206000" />
+      <workItem from="1592281371754" duration="2577000" />
     </task>
     <task id="LOCAL-00001" summary="修改为线上数据库">
       <created>1591953994137</created>
@@ -424,17 +384,23 @@
       <option name="project" value="LOCAL" />
       <updated>1592208623074</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="6.16 mpy">
+      <created>1592281501730</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1592281501730</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4802000" />
+    <option name="totallyTimeSpent" value="7379000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25340393" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25718608" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="JRebel" order="3" side_tool="true" />
@@ -444,7 +410,7 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.30491802" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.30327868" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -509,7 +475,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="修改为线上数据库" />
     <MESSAGE value="修复刷新后丢失路由的问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复刷新后丢失路由的问题" />
+    <MESSAGE value="6.16 mpy" />
+    <option name="LAST_COMMIT_MESSAGE" value="6.16 mpy" />
   </component>
   <component name="WindowStateProjectService">
     <state x="368" y="72" key="#ConfigApplicationTests.contextLoads" timestamp="1592183062912">
@@ -645,6 +612,14 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/DatacollectionServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vue/src/views/article/article.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-936" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vue/src/assets/mpy/moment-with-locales.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java">
