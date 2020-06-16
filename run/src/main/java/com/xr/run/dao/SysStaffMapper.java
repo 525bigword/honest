@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SysStaffMapper extends BaseMapper<SysStaff> {
     /**
@@ -25,7 +27,21 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(property = "postname",column = "pid", one=@One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid",fetchType = FetchType.DEFAULT)),
     })
     IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus);
+    /**
+     * 按名字模糊查询员工id
+     */
+    @Select("select sid from sys_staff where name like CONCAT('%',#{name},'%')")
+    List<Integer> findSysStaffByNameToId(@Param("name") String name);
+    /**
+     * 按id查询员工名字
+     */
+    @Select("select name from sys_staff where sid=#{sid}")
+    String findSysStaffByIdToName(@Param("sid")Integer sid);
 
-    @Select("select sid,username from sys_staff where sid=#{sid}")
-    SysStaff findSysStaffById(int sid);
+    /**
+     * 查询所有员工
+     * @return
+     */
+    @Select("select sid,name from sys_staff")
+    List<SysStaff> findSysStaffAll();
 }

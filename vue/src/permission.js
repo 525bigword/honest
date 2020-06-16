@@ -4,9 +4,16 @@ import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css' // Progress 进度条样式
 import { getToken } from '@/utils/auth' // 验权
 const whiteList = ['/login', '/404', ''] //白名单,不需要登录的路由
+//const i=0;
 router.beforeEach((to, from, next) => {
     NProgress.start()
     if (getToken()) {
+        // if(i===0){
+        //     store.dispatch('GetInfo').then(() => {
+        //         next({...to })
+        //     })
+        // }
+        //i++;
         //如果已经登录
         console.log("getToken()：" + getToken())
         console.log("to.path === '/login'：" + to.path === '/login');
@@ -14,11 +21,19 @@ router.beforeEach((to, from, next) => {
         if (to.path === '/login') {
             next({ path: '/' })
             NProgress.done() // 结束Progress
-        } else if (!store.getters.role) {
+            //&&localStorage.getItem('roleName')
+        } else if (store.getters.role) {
+            console.log("getinfo")
             store.dispatch('GetInfo').then(() => {
                 next({...to })
             })
+            next()
+            
         } else {
+            console.log("GetInfo()")
+            store.dispatch('GetInfo').then(() => {
+                next({...to })
+            })
             next()
         }
     } else if (whiteList.indexOf(to.path) !== -1) {

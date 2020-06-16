@@ -23,6 +23,14 @@ import java.util.List;
 public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
+
+    @GetMapping("/get")
+    public JSONObject findstatffs(){
+        List<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll();
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
+    }
+
     @GetMapping("/get/{pageNum}/{pageRow}/{staus}")
     public JSONObject findstatffs(@PathVariable Integer pageNum,@PathVariable Integer pageRow,String name,@PathVariable Integer staus){
         System.out.println(name+staus);

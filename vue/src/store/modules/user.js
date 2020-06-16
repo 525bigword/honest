@@ -22,6 +22,10 @@ const user = {
             state.menus = userInfo.menuList;
             state.permissions = userInfo.permissionList;
         },
+        SET_USER_ID: (state, userInfo) => {
+            state.nickname = userInfo;
+            
+        },
         RESET_USER: (state) => {
             state.nickname = "";
             state.userId = "";
@@ -42,6 +46,11 @@ const user = {
                     console.log(data)
                     if (data.result === "success") {
                         //cookie中保存前端登录状态
+                        console.log(data.data.roleName)
+                        localStorage.setItem("roleName",data.data.roleName)
+                        localStorage.setItem("roleId",data.data.roleId)
+                        localStorage.setItem("userId",data.data.userId)
+                        commit('SET_USER2', data.userId);
                         setToken();
                     }
                     resolve(data);

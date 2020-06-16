@@ -47,19 +47,34 @@ export const asyncRouterMap = [{
         redirect: '/user/',
         name: '',
         meta: { title: '系统管理', icon: 'table' },
-        children: [{
-                path: '',
+        children: [
+            {
+                path: 'mechanism',
+                name: '部门管理',
+                component: _import('system/mechanism/mechanism'),
+                meta: { title: '部门管理', icon: 'user' },
+                menu: 'mechanism'
+            },
+            {
+                path: 'post',
+                name: '岗位管理',
+                component: _import('system/post/post'),
+                meta: { title: '岗位管理', icon: 'user' },
+                menu: 'post'
+            },
+            {
+                path: 'staff',
                 name: '用户列表',
                 component: _import('system/user/user'),
                 meta: { title: '用户列表', icon: 'user' },
-                menu: 'user'
+                menu: 'staff'
             },
             {
                 path: 'role',
                 name: '权限管理',
-                component: _import('user/role'),
+                component: _import('system/permission/permission'),
                 meta: { title: '权限管理', icon: 'password' },
-                menu: 'role'
+                menu: 'permission'
             },
         ]
     },
@@ -182,15 +197,9 @@ export const asyncRouterMap = [{
         meta: { title: '廉政文化', icon: 'table' },
         children: [{
             path: '',
-            name: '资料锦集',
-            component: _import('cultrue/datakamset'),
-            meta: { title: '资料锦集', icon: 'user' },
-            menu: ''
-        }, {
-            path: '',
-            name: '清风文苑',
+            name: '廉政文化',
             component: _import('user/user'),
-            meta: { title: '清风文苑', icon: 'user' },
+            meta: { title: '廉政文化', icon: 'user' },
             menu: 'user'
         }]
     },

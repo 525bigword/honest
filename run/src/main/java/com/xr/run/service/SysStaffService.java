@@ -16,7 +16,7 @@ import java.util.List;
 public interface SysStaffService extends IService<SysStaff> {
 
     IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus);
-
+    List<SysStaff> findSysStaffAll();
     /**
      * 登录
      */

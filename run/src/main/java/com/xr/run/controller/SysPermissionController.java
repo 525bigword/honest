@@ -7,8 +7,10 @@ import com.xr.run.entity.SysPermission;
 import com.xr.run.service.SysPermissionService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.ErrorEnum;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
 
 @RestController
 @RequestMapping("syspermission")
@@ -16,16 +18,31 @@ public class SysPermissionController {
     @Autowired
     private SysPermissionService sysPermissionService;
 
+    @DeleteMapping("del")
+    @RequiresPermissions("permission:delete")
+    public JSONObject delSysPermission(@RequestBody SysPermission sysPermission){
+        System.out.println(sysPermission);
+        Integer count = sysPermissionService.delSysPermissionPage(sysPermission);
+        if(count==0){
+            return CommonUtil.successJson(0);
+        }
+        return CommonUtil.successJson(1);
+    }
     @PostMapping("add")
-    public String addSysPermission(SysPermission sysPermission){
+    public JSONObject addSysPermission(@RequestBody SysPermission sysPermission){
         try {
-            sysPermissionService.addSysPermission(sysPermission);
-            return "success";
+            System.out.println(sysPermission);
+            Integer i = sysPermissionService.addSysPermission(sysPermission);
+            if(i>0){
+                return CommonUtil.successJson(1);
+            }else{
+                CommonUtil.successJson(2);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return "filid";
+            return CommonUtil.errorJson(ErrorEnum.E_500);
         }
-
+        return null;
     }
     @GetMapping("get/{pageNum}/{pageRow}")
     public JSONObject addSysPermission(@PathVariable Integer pageNum, @PathVariable Integer pageRow, String name, String re){

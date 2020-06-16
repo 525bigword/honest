@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class SysMechanism {
@@ -19,6 +20,12 @@ public class SysMechanism {
   private Date createTime;
   private int createId;
   private String staus;
-
-
+  //TODO 业务属性
+  private String sname;
+  private String parentName;
+  private String branchName;
+  private String createName;
+  private List<SysMechanism> chilrenMechanism;
+  private String lable;
+  private Integer value;
 }

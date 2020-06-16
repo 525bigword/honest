@@ -28,8 +28,15 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
     }
 
     @Override
-    public void addSysPermission(SysPermission sysPermission) throws Exception {
-        baseMapper.addSysPermission(sysPermission);
+    public Integer addSysPermission(SysPermission sysPermission) throws Exception {
+        Integer count = baseMapper.findSysPermissionByMenuCodeAndPermisiionCode(sysPermission);
+        if(count<=0){
+            baseMapper.addSysPermission(sysPermission);
+            return 1;
+        }else{
+            return 0;
+        }
+
     }
 
     @Override
@@ -42,6 +49,21 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
             sysPermissionPage = baseMapper.findSysPermissionPageRequired(page, name, required);
         }
         return sysPermissionPage;
+    }
+
+    @Override
+    public Integer delSysPermissionPage(SysPermission sysPermission) {
+        if(sysPermission.getRequiredPermission()==1){
+            Integer sysPermissionCount = baseMapper.findSysPermissionByMenuNametoCount(sysPermission.getMenuName());
+            if(sysPermissionCount>1){
+                return 0;
+            }else{
+                baseMapper.delSysPermission(sysPermission.getId());
+                return 1;
+            }
+        }
+        baseMapper.delSysPermission(sysPermission.getId());
+        return 1;
     }
 
     /**
@@ -59,7 +81,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
             Set<String> permissionList = baseMapper.getAllPermission();
             userPermission.put("menuList", menuList);
             userPermission.put("permissionList", permissionList);
+        }else{
+            //TODO 非超级用户读取相关信息
         }
+
         return userPermission;
     }
 }

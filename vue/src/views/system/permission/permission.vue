@@ -62,24 +62,24 @@
         icon="el-icon-download"
         @click="handleDownload"
       >导出</el-button>
-      <el-checkbox
+      <!-- <el-checkbox
         v-model="showReviewer"
         class="filter-item"
         style="margin-left:15px;"
         @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox>
+      >reviewer</el-checkbox> -->
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
       <el-table-column label="序号" prop="index" align="center" :class-name="getSortClass('id')">
-        <template slot-scope="{row}">
+        <!-- <template slot-scope="{row}">
           <span>{{ row.id }}</span>
-        </template>
+        </template>-->
       </el-table-column>
       <el-table-column align="center" prop="menuCode" label="栏目码"></el-table-column>
       <!-- <el-table-column prop="menuCode" label="栏目码" width="150px" align="center">
         
-        <!-- <template slot-scope="{row}">
+         <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>-->
@@ -102,7 +102,7 @@
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="requiredPermission" label="是否必选"></el-table-column>
+      <el-table-column align="center" prop="requiredPermissionis" label="是否必选"></el-table-column>
       <!-- <el-table-column prop="requiredPermission" label="是否必选" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
@@ -139,24 +139,13 @@
         </template>
       </el-table-column>-->
       <el-table-column
+        v-if="hasPerm('permission:delete')"
         label="Actions"
         align="center"
         width="230"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">Edit</el-button>
-          <el-button
-            v-if="row.status!='published'"
-            size="mini"
-            type="success"
-            @click="handleModifyStatus(row,'published')"
-          >Publish</el-button>
-          <el-button
-            v-if="row.status!='draft'"
-            size="mini"
-            @click="handleModifyStatus(row,'draft')"
-          >Draft</el-button>
           <el-button
             v-if="row.status!='deleted'"
             size="mini"
@@ -281,6 +270,7 @@ export default {
         update: "修改",
         create: "新增"
       },
+      Excel:'',
       dialogPvVisible: false,
       pvData: [],
       rules: {
@@ -330,19 +320,19 @@ export default {
         }
       }).then(response => {
         console.log(response);
-        this.listQuery.page = response.pages;
         this.listQuery.limit = response.size;
         this.total = response.total;
         this.list = [];
         response.records.filter((item, index) => {
           let i = {};
-          i.id = index + 1;
+          i.index = index + 1;
+          i.id = item.id;
           i.menuCode = item.menuCode;
           i.menuName = item.menuName;
           i.permissionCode = item.permissionCode;
           i.permissionName = item.permissionName;
           i.requiredPermission = item.requiredPermission;
-          i.requiredPermission = item.requiredPermission === 1 ? "是" : "否";
+          i.requiredPermissionis = item.requiredPermission === 1 ? "是" : "否";
 
           this.list.push(i);
         });
@@ -404,28 +394,48 @@ export default {
       });
     },
     createData() {
-      if (!this.temp.menuName||!this.temp.menuCode||!this.radio) {
+      if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
         this.$message({
           type: "error",
-          message: "a"
+          message: "请将信息填写完整"
+        });
+      } else {
+        let name = "";
+        if (this.radio == "add") {
+          name = "新增";
+        } else if (this.radio == "delete") {
+          name = "删除";
+        } else if (this.radio == "update") {
+          name = "修改";
+        } else {
+          name = "列表";
+        }
+        let permissionCode = this.temp.menuCode + ":" + this.radio;
+        this.api({
+          url: "syspermission/add",
+          method: "post",
+          data: {
+            menuCode: this.temp.menuCode,
+            menuName: this.temp.menuName,
+            permissionCode: permissionCode,
+            permissionName: name,
+            requiredPermissionis: this.radio == "list" ? 1 : 2
+          }
+        }).then(respone => {
+          console.log(respone);
+          if (respone === 2) {
+            this.$message({
+              type: "error",
+              message: "已存在该权限"
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "添加成功"
+            });
+          }
         });
       }
-      // this.$refs["dataForm"].validate(valid => {
-      //   if (valid) {
-      //     this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-      //     this.temp.author = "vue-element-admin";
-      //     //   createArticle(this.temp).then(() => {
-      //     //     this.list.unshift(this.temp);
-      //     //     this.dialogFormVisible = false;
-      //     //     this.$notify({
-      //     //       title: "Success",
-      //     //       message: "Created Successfully",
-      //     //       type: "success",
-      //     //       duration: 2000
-      //     //     });
-      //     //   });
-      //   }
-      // });
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
@@ -456,13 +466,37 @@ export default {
       });
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: "Success",
-        message: "Delete Successfully",
-        type: "success",
-        duration: 2000
+      console.log(row, index);
+      this.api({
+        url: "syspermission/del",
+        method: "delete",
+        data: row
+      }).then(res => {
+        // console.log(res);
+        if (res === 1) {
+          this.$notify({
+            title: "Success",
+            message: "Delete Successfully",
+            type: "success",
+            duration: 2000
+          });
+          this.list.splice(index, 1);
+        }else{
+          this.$notify({
+            title: "error",
+            message: "请最后删除列表(list)项",
+            type: "error",
+            duration: 2000
+          });
+        }
       });
-      this.list.splice(index, 1);
+      // this.$notify({
+      //   title: "Success",
+      //   message: "Delete Successfully",
+      //   type: "success",
+      //   duration: 2000
+      // });
+      // this.list.splice(index, 1);
     },
     handleFetchPv(pv) {
       //   fetchPv(pv).then(response => {
@@ -471,6 +505,17 @@ export default {
       //   });
     },
     handleDownload() {
+      // var a = document.createElement('a');
+      // a.download = file.name;
+      // a.href = file.url;
+      // a.dispatchEvent(event);
+      this.api({
+        url:"/ExcelDownload",
+        method:'post'
+      }).then(res=>{
+        console.log(res)
+      })
+      
       //   this.downloadLoading = true
       //   import('@/vendor/Export2Excel').then(excel => {
       //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']

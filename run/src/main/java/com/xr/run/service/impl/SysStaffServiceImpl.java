@@ -34,6 +34,11 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     }
 
     @Override
+    public List<SysStaff> findSysStaffAll() {
+        return baseMapper.findSysStaffAll();
+    }
+
+    @Override
     public JSONObject authLogin(JSONObject jsonObject) {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");

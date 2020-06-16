@@ -11,12 +11,12 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="config" target="1.8" />
+      <module name="honest" target="1.8" />
+      <module name="run" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="config" options="-parameters" />
       <module name="honest" options="-parameters" />
       <module name="run" options="-parameters" />
     </option>

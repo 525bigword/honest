@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface SysPermissionService extends IService<SysPermission> {
     JSONObject getUserPermission(String username);
-    void addSysPermission(SysPermission sysPermission) throws Exception;
+    Integer addSysPermission(SysPermission sysPermission) throws Exception;
     IPage<SysPermission> findSysPermissionPage(Page page,String name, Integer required) throws Exception;
+    Integer delSysPermissionPage(SysPermission sysPermission);
 }

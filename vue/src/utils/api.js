@@ -4,8 +4,8 @@ import { getToken } from '@/utils/auth'
 import store from '../store'
 // 创建axios实例
 const service = axios.create({
-        baseURL: process.env.BASE_URL, // api的base_url
-        timeout: 15000 // 请求超时时间2
+        baseURL: process.env.BASE_URL,//process.env.BASE_URL, // api的base_url
+        timeout: 15000000 // 请求超时时间2
     })
     // request拦截器
 service.interceptors.request.use(config => {
@@ -38,14 +38,14 @@ service.interceptors.response.use(
                 }
             });
             return Promise.reject("未登录")
-        } else {
-            Message({
-                message: res.msg,
-                type: 'error',
-                duration: 3 * 1000
-            })
-            return Promise.reject(res)
-        }
+         } //else {
+        //     Message({
+        //         message: res.msg,
+        //         type: 'error',
+        //         duration: 3 * 1000
+        //     })
+        //     return Promise.reject(res)
+        // }
     },
     error => {
         console.error('err' + error) // for debug
