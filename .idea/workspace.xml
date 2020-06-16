@@ -2,16 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82ca3d37-e4fc-4a4b-b141-6db6ab78c235" name="Default Changelist" comment="修复刷新后丢失路由的问题">
-      <change afterPath="$PROJECT_DIR$/vue/src/views/system/user/add.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/DatacollectionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/DatacollectionServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-15.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-15.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SysStaffService.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SysStaffService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SysStaffServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SysStaffServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/system/user/user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/system/user/user.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/DatacollectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/DatacollectionService.java" afterDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/run/target/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,6 +43,47 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/DatacollectionController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="22" column="92" selection-start-line="22" selection-start-column="92" selection-end-line="22" selection-end-column="92" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="520">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="26">
+              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/DatacollectionServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+    </leaf>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -55,15 +99,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/DatacollectionController.java" />
+      </list>
+    </option>
+  </component>
   <component name="JRebelWorkspace">
     <option name="jrebelEnabledAutocompile" value="true" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="localRepository" value="D:\IDE\maven\Repository" />
-        <option name="mavenHome" value="D:/IDE/maven/apache-maven-3.6.3" />
-        <option name="userSettingsFile" value="D:\IDE\maven\apache-maven-3.6.3\conf\settings.xml" />
+        <option name="localRepository" value="G:\Tomcat\localrepository" />
+        <option name="mavenHome" value="G:/Tomcat/apache-maven-3.6.1" />
+        <option name="userSettingsFile" value="G:\Maven\apache-maven-3.6.1\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
     <option name="importingSettings">
@@ -79,9 +132,110 @@
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
   </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="675" />
+    <option name="y" value="-8" />
+    <option name="width" value="699" />
+    <option name="height" value="744" />
+  </component>
   <component name="ProjectId" id="1dJJtxP0xQtWTkWoNlD22O0oL6N" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -99,7 +253,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -124,12 +278,24 @@
       <recent name="com.xr.run.annotation" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\ideaworkspace\zf\honest\run\src\main\java\com\xr\run\service\impl" />
-      <recent name="F:\ideaworkspace\zf\honest\run\src\main\java\com\xr\run\dao" />
-      <recent name="F:\ideaworkspace\zf\honest\run\src\main\java\com\xr\run\service" />
-      <recent name="F:\ideaworkspace\zf\honest\run\src\main\java\com\xr\run\entity" />
-      <recent name="F:\ideaworkspace\zf\honest\run\src\main\resources" />
+      <recent name="H:\honest\run\src\main\java\com\xr\run\service" />
+      <recent name="H:\honest\run\src\main\java\com\xr\run\service\impl" />
+      <recent name="H:\honest\run\src\main\java\com\xr\run\entity" />
+      <recent name="H:\honest\run\src\main\java\com\xr\run\dao" />
+      <recent name="H:\honest\run\src\main\java\com\xr\run\controller" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Application.RunApplication">
     <configuration name="RunApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -234,6 +400,8 @@
       <workItem from="1592138374410" duration="1104000" />
       <workItem from="1592183021327" duration="1905000" />
       <workItem from="1592185160161" duration="24362000" />
+      <workItem from="1592216656316" duration="2596000" />
+      <workItem from="1592219770047" duration="2206000" />
     </task>
     <task id="LOCAL-00001" summary="修改为线上数据库">
       <created>1591953994137</created>
@@ -259,6 +427,49 @@
     <option name="localTasksCounter" value="4" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="4802000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25340393" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="JRebel" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="UI Designer" order="6" />
+      <window_info id="Favorites" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" visible="true" weight="0.30491802" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50075644" side_tool="true" weight="0.25081968" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.3295082" />
+      <window_info anchor="bottom" id="Problems" order="12" />
+      <window_info anchor="bottom" id="Database Changes" order="13" />
+      <window_info anchor="bottom" id="Version Control" order="14" />
+      <window_info anchor="bottom" id="JRebel Executor" order="15" />
+      <window_info anchor="bottom" id="JRebel Console" order="16" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+    </layout>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
@@ -267,7 +478,28 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
           </value>
         </entry>
       </map>
@@ -359,6 +591,7 @@
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/config/src/test/java/com/xr/config/ConfigApplicationTests.java</url>
           <line>14</line>
+          <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
@@ -371,5 +604,55 @@
         <watch expression="userPermission.entrySet().toArray()[4]" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-396">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="26" column="133" selection-start-line="26" selection-start-column="93" selection-end-line="26" selection-end-column="133" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/DatacollectionService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/DatacollectionController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="22" column="92" selection-start-line="22" selection-start-column="92" selection-end-line="22" selection-end-column="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysStaffMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/DatacollectionServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/Datacollection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

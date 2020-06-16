@@ -25,4 +25,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(property = "postname",column = "pid", one=@One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid",fetchType = FetchType.DEFAULT)),
     })
     IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus);
+
+    @Select("select sid,username from sys_staff where sid=#{sid}")
+    SysStaff findSysStaffById(int sid);
 }
