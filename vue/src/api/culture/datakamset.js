@@ -9,11 +9,21 @@ export function add(data) {
 }
 
 // 根据id删除用户
-export function deleteUser(uid) {
+export function deleteDatakamset(did) {
     return request({
         url: '/datakamset/delete',
         method: 'get',
-        params: { uid }
+        params: { did }
+    })
+}
+export function imp(data) {
+    return request({
+        url: '/imp/import',
+        method: 'post',
+        data,
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     })
 }
 
