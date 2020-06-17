@@ -77,7 +77,7 @@
       >reviewer</el-checkbox>-->
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
+    <el-table  :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
       <el-table-column
         label="序号"
         type="index"
@@ -215,7 +215,7 @@
         </el-form-item>
         <el-form-item label="父级部门">
           <!-- //temp.parent -->
-          <el-cascader
+          <el-cascader 
             :placeholder="placeholder"
             v-model="defaultvalue"
             :props="props"
@@ -249,6 +249,7 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
+      bmloding:true,
       defaultvalue: ["1"],
       props: {
         value: "mid",
@@ -289,6 +290,7 @@ export default {
         ld: "",
         status: "published"
       },
+      listLoading:false,
       dialogFormVisible: false,
       dialogStatus: "",
       textMap: {
@@ -298,7 +300,7 @@ export default {
       staff: [],
       parentasd: [],
       Excel: "",
-      dialogPvVisible: false,
+      dialogPvVisible: true,
       pvData: [],
       rules: {
         type: [
@@ -355,7 +357,7 @@ export default {
       // if (!this.hasPerm('staff:list')) {
       //   return
       // }
-      this.listLoading = false;
+      this.listLoading = true;
       this.api({
         url:
           "sysmechanism/get/" +
@@ -376,6 +378,7 @@ export default {
           this.list.push(item);
         });
         console.log(this.list);
+        this.listLoading = false;
       });
       //   fetchList(this.listQuery).then(response => {
       //     this.list = response.data.items;

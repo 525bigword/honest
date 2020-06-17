@@ -252,6 +252,7 @@ export default {
         update: "修改",
         create: "新增"
       },
+      listLoading:true,
       Excel: "",
       dialogPvVisible: false,
       pvData: [],
@@ -292,7 +293,7 @@ export default {
       // if (!this.hasPerm('staff:list')) {
       //   return
       // }
-      this.listLoading = false;
+      this.listLoading = true;
       this.api({
         url:
           "syspermission/get/" +
@@ -322,6 +323,7 @@ export default {
 
           this.list.push(i);
         });
+        this.listLoading = false;
         console.log(this.list);
       });
       //   fetchList(this.listQuery).then(response => {

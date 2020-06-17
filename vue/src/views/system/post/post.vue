@@ -3,21 +3,32 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.title"
-        placeholder="部门名"
+        placeholder="岗位名称"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
+      <!-- <el-form-item label="部门"> -->
+          <!-- //temp.parent -->
+          <el-cascader
+            placeholder="部门"
+            
+            :props="props"
+            @change="Change"
+            :show-all-levels="false"
+            :options="bm"
+          ></el-cascader>
+        <!-- </el-form-item> -->
       <el-input
         v-model="listQuery.fzr"
-        placeholder="负责人"
+        placeholder="部门"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-select
         v-model="listQuery.importance"
-        placeholder="部门状态"
+        placeholder="岗位描述"
         clearable
         style="width: 150px"
         class="filter-item"
@@ -74,30 +85,31 @@
         class="filter-item"
         style="margin-left:15px;"
         @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox> -->
+      >reviewer</el-checkbox>-->
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="序号" prop="index" align="center" :class-name="getSortClass('id')">
         <!-- <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>-->
       </el-table-column>
-      <el-table-column align="center" prop="mechanismName" label="部门名"></el-table-column>
+      <el-table-column align="center" prop="mechanismName" label="岗位名称"></el-table-column>
       <!-- <el-table-column prop="menuCode" label="栏目码" width="150px" align="center">
         
-        <!-- <template slot-scope="{row}">
+         <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="sname" label="负责人"></el-table-column>
+      <el-table-column align="center" prop="sname" label="部门名称"></el-table-column>
       <!-- <el-table-column prop="menuName" label="栏目名" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="parentName" label="父级部门"></el-table-column>
+      <el-table-column align="center" prop="parentName" label="岗位描述"></el-table-column>
       <!-- <el-table-column prop="permissionCode" label="权限码" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
@@ -211,6 +223,18 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
+      props: {
+        value: "mid",
+        label: "mechanismName",
+        children: "chilrenMechanism",
+        emitPath: false,
+        expandTrigger: "click",
+        checkStrictly: true,
+        multiple:true,
+        collapseTags: true,
+        clearable:true
+      },
+      bm:[],
       radio: "",
       tableKey: 0,
       list: [],
@@ -220,11 +244,11 @@ export default {
         limit: 10,
         importance: "正常",
         title: "",
-        fzr:"",
+        fzr: "",
         type: undefined,
         sort: "+index"
       },
-      importanceOptions: [ "正常", "删除"],
+      importanceOptions: ["正常", "删除"],
       calendarTypeOptions,
       sortOptions: [
         { label: "ID Ascending", key: "+index" },
@@ -245,7 +269,7 @@ export default {
         update: "修改",
         create: "新增"
       },
-      Excel:'',
+      Excel: "",
       dialogPvVisible: false,
       pvData: [],
       rules: {
@@ -269,15 +293,29 @@ export default {
   },
   created() {
     this.getList();
+    this.getSysmechanismAll()
   },
   methods: {
+    getSysmechanismAll() {
+      this.api({
+        url: "sysmechanism/get",
+        method: "get"
+      }).then(res => {
+        console.log("sysmechanism", res);
+        // this.bm.concat(res)
+        this.bm = [];
+        res.filter(item => {
+          this.bm.push(item);
+        });
+        console.log(this.bm);
+      });
+    },
     handleCurrentChange(val) {
       //改变页码
       this.listQuery.page = val;
       this.getList();
     },
     getList() {
-        
       //查询列表
       // if (!this.hasPerm('staff:list')) {
       //   return
@@ -293,18 +331,17 @@ export default {
         params: {
           mechanism: this.listQuery.title,
           principal: this.listQuery.fzr,
-          staus:this.listQuery.importance
+          staus: this.listQuery.importance
         }
       }).then(response => {
         console.log(response);
         this.total = response.count;
         this.list = [];
         response.data.filter((item, index) => {
-          
           this.list.push(item);
         });
         console.log(this.list);
-       });
+      });
       //   fetchList(this.listQuery).then(response => {
       //     this.list = response.data.items;
       //     this.total = response.data.total;
@@ -325,6 +362,9 @@ export default {
         type: "success"
       });
       row.status = status;
+    },
+    Change(val){
+      console.log(val)
     },
     sortChange(data) {
       console.log(data);
@@ -464,7 +504,7 @@ export default {
             duration: 2000
           });
           this.list.splice(index, 1);
-        }else{
+        } else {
           this.$notify({
             title: "error",
             message: "请最后删除列表(list)项",
@@ -493,12 +533,12 @@ export default {
       // a.href = file.url;
       // a.dispatchEvent(event);
       this.api({
-        url:"/ExcelDownload",
-        method:'post'
-      }).then(res=>{
-        console.log(res)
-      })
-      
+        url: "/ExcelDownload",
+        method: "post"
+      }).then(res => {
+        console.log(res);
+      });
+
       //   this.downloadLoading = true
       //   import('@/vendor/Export2Excel').then(excel => {
       //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']

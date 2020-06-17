@@ -46,7 +46,7 @@ export const asyncRouterMap = [
         path: '/system',
         component: Layout,
         redirect: '/system/mechanism',
-        name: '',
+        name: '系统管理',
         meta: { title: '系统管理', icon: 'table' },
         children: [
             {
