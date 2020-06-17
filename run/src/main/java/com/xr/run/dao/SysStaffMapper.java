@@ -49,4 +49,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
      */
     @Select("select count(sid) from sys_staff where staus='1' and mid=#{mid}")
     Integer findSysStaffByMidToCount(@Param("mid")Integer mid);
+
+    @Select("select sid,`name` from sys_staff where sid=#{sid}")
+    SysStaff findSysStaffById(int sid);
 }

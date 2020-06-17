@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -40,7 +42,8 @@ public class Upload {
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
         file.transferTo(new File(folder,newName));
         String url = req.getScheme() + "://" + req.getServerName() + ":" + "8080" + saveToPath + newName;
-        System.out.println(url);
-        return CommonUtil.successJson("上传成功!");
+        Map<String,String> map=new HashMap<>();
+        map.put("dFile",saveToPath + newName);
+        return CommonUtil.successJson(map);
     }
 }

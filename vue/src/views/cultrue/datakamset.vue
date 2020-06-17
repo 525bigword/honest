@@ -14,12 +14,13 @@
           </el-button>&nbsp;
           <el-button
             type="primary"
-            class="el-icon-refresh" >重置
+            class="el-icon-refresh" 
+            @click="resetSou">重置
           </el-button>
        <!--  </el-form-item> -->
     </div>
     <div>
-      <el-button type="primary" class="el-icon-plus" >新增</el-button>
+      <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
       <el-button type="primary" class="el-icon-delete" >删除</el-button></div>
     <!--  数据表格  :data="list.slice((listQuery.pageNum-1)*listQuery.pageRow,listQuery.pageNum*listQuery.pageRow)"-->
     <el-table
@@ -51,7 +52,7 @@
       </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"  align="center" width="210px">
         <template slot-scope="scope">
-          <span>{{ scope.row.sysStaff.username }}</span>
+          <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" prop="dcreateTime"  align="center">
@@ -97,36 +98,39 @@
         <!--        数据校验要求prop值和temp.属性名一致-->
         
         <el-form-item label="标题" prop="dTitle" >
-          <el-input placeholder="请输入资料锦集标题" v-model="temp.dTitle" style="width:80%" />
+          <el-input placeholder="请输入资料锦集标题" v-model="temp.dtitle" style="width:80%" />
         </el-form-item>
-        <el-form-item label="文件名" prop="dFileName">
+        <el-form-item label="文件名" prop="dFileName" ref="fileName">
           <el-upload
   class="upload-demo"
   ref="upload"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :on-preview="handlePreview"
-  :on-remove="handleRemove"
+  action="https://localhost:8080/imp/import"
+  :on-change="handleImgChange1"
+  accept=".doc,.docx,.pdf,.txt,.xlsx"
   :file-list="fileList"
+  :limit="1"
   :auto-upload="false">
   <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-  <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-</el-upload>
-<input type="file" ref="myfile">
-<el-button @click="importData" type="success" size="mini" icon="el-icon-upload2">导入数据</el-button>
+  <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500M</div>
+  </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime">
-          <el-input v-model="temp.dcreateTime" type="text" disabled="disabled"></el-input>
+          <el-date-picker disabled="disabled"
+    style="width: 80%"
+    type="date"
+    v-model="temp.dCreateTime"
+    :format="'yyyy-MM-dd HH:mm:ss'">
+</el-date-picker>
         </el-form-item>
         <el-form-item label="创建人" prop="sysStaff" >
-          <el-input v-model="temp.sysStaff.username" disabled="disabled"/>
+          <el-input v-model="temp.sysStaff.name" disabled="disabled"/>
         </el-form-item>
         <el-form-item label="审核状态" prop="status">
           <el-input v-model="temp.status" disabled="disabled"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button @click="dialogFormVisible = false&&resetTemp()">
           取消
         </el-button>
         <!--
@@ -143,9 +147,15 @@
 
 <script>
 import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamset'
-  import qs from 'qs'
+import qs from 'qs'
+import { mapGetters } from 'vuex'
   export default {
     name: 'userTable',
+    computed:{...mapGetters([
+      'nickname',
+      'userId'
+    ])
+    },
     components: {  },
     data() {
       return {
@@ -157,25 +167,28 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
           pageRow:5, // 分页需要的每页显示多少
           dTitle: '',
           dstatus: 1,
-        deptList: [], // 后台查询出来，分好组的部门信息
         temp: { // 添加、修改时绑定的表单数据
           uid: undefined,
           dTitle: '',
           dFileName: '',
           dFile: '',
           sysStaff: {
-            username: '',
+            name: '',
             sid: 0
           },
-          status: ''
+          dCreateTime:new Date(),
+          status: '',
+          dstatus:0
         },
-        fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+        fileList: [],
+        file:{},
         title: '添加', // 对话框显示的提示 根据dialogStatus create
         dialogFormVisible: false, // 是否显示对话框
         dialogStatus: '', // 表示表单是添加还是修改的
         rules: {
           // 校验规则
-          account: [{ required: true, message: '用户名必填', trigger: 'blur' }]
+          //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
+          //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
         }
       }
     },
@@ -203,29 +216,52 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
         /* let data=qs.stringify({
           account: this.listQuery.account
         }) */
-        list(this.pageNum,this.pageRow).then(response => {
+        list(this.pageNum,this.pageRow,this.dTitle).then(response => {
           this.list=response.records;
           this.total=(response.total)
+          
           console.debug(this.list)
           // 转圈圈结束
           this.listLoading = false
         })
       },
+      resetSou(){
+        this.dTitle=''
+      },
       // 重置表单数据
       resetTemp() {
         this.temp = {
           uid: undefined,
-          account: '',
-          password: '',
-          email: '',
-          mobile: '',
-          introduction: '',
+          dTitle: '',
+          dFileName: '',
+          dFile: '',
+          sysStaff: {
+            name: '',
+            sid: 0
+          },
+          dCreateTime:new Date(),
+          status: '',
+          dstatus:1
         }
+        this.fileList=[]
+
       },
       // 显示添加的对话框
       handleCreate () {
+        
         // 重置表单数据
         this.resetTemp()
+        if(this.temp.dstatus==1){
+          this.temp.status='创建'
+        }
+        else if(this.temp.dstatus==2){
+          this.temp.status='待审'
+        }
+        else{
+          this.temp.status='已审核'
+        }
+        this.temp.sysStaff.name=this.nickname
+        this.temp.sysStaff.sid=this.userId
         // 点击确定时，是执行添加操作
         this.dialogStatus = 'create'
         this.title="添加用户"
@@ -238,6 +274,13 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
       },
       // 添加对话框里，点击确定，执行添加操作
       createData() {
+        let formData = new FormData();
+        formData.append("file", this.file);
+        this.temp.dstatus=3
+        this.temp.dFileName=this.file.name
+        imp(formData).then((response)=>{
+          this.temp.dFile=response.dFile
+        })
           console.debug(this.temp)
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
@@ -273,7 +316,9 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
         else{
           this.temp.status='已审核'
         }
-        console.debug(row)
+        this.fileList=[{name:row.dfileName,url:row.dfile}];
+        this.temp.dCreateTime=row.dcreateTime
+        console.debug(this.temp)
         // 将row里面与temp里属性相同的值，进行copy
         this.temp = Object.assign({}, row) // copy obj
         // 将对话框里的确定点击时，改为执行修改操作
@@ -289,14 +334,19 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
       },
       // 执行修改操作
       updateData() {
-        console.debug(this.temp)
+        let formData = new FormData();
+        formData.append("file", this.file);
+        this.temp.dstatus=3
+        this.temp.dFileName=this.file.name
+        imp(formData).then((response)=>{
+          this.temp.dFile=response.dFile
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             // 将temp拷贝到tempData
             const tempData = Object.assign({}, this.temp)
             // 进行ajax提交
-            update(tempData).then((response) => {
+            update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -311,6 +361,9 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
             })
           }
         })
+        })
+        
+        
       },
       handleDelete(row) {
         // 先弹确认取消框
@@ -340,24 +393,10 @@ import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamse
         });
 
       },
-     importData() {
-  let myfile = this.$refs.myfile;
-  let files = myfile.files;
-  let file = files[0];
-  var formData = new FormData();
-  formData.append("file", file);
-  imp(formData).then(resp=>{
-    if (resp) {
-      console.log(resp);
-    }
-  })
-},
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);//获取文件对象
-      }/* handleSizeChange(size) {
+      handleImgChange1(file, fileList, name) {
+      this.file=file.raw
+      console.debug(this.file)
+    }/* handleSizeChange(size) {
       this.listQuery.pageRow = size;
       console.log(this.listQuery.pageRow)
     },
