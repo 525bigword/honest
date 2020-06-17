@@ -155,18 +155,27 @@
       </el-table-column>-->
       <el-table-column
         v-if="hasPerm('permission:delete')"
-        label="Actions"
+        label="操作"
         align="center"
         width="230"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row,$index}">
           <el-button
-            v-if="row.status!='deleted'"
+            v-if="hasPerm('mechanism:delete')"
             size="mini"
-            type="danger"
+            :type="row.staus=='正常'?'success':'恢复'"
             @click="handleDelete(row,$index)"
-          >Delete</el-button>
+          >
+            <span>{{row.staus=='正常'?'删除':'恢复'}}</span>
+          </el-button>
+
+          <el-button
+            type="primary"
+            v-if="hasPerm('mechanism:update')"
+            size="mini"
+            @click="handleUpdate(row)"
+          >修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -177,7 +186,12 @@
       :total="total"
     ></el-pagination>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog
+      @close="closefase"
+      style="width:75%"
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -190,7 +204,7 @@
           <el-input v-model="temp.menuName" placeholder="栏目名" />
         </el-form-item>
         <el-form-item label="负责人">
-          <el-select v-model="temp.region" placeholder="负责人">
+          <el-select v-model="temp.region"  placeholder="负责人">
             <el-option
               v-for="(item,index) in staff"
               :label="item.name"
@@ -200,60 +214,25 @@
           </el-select>
         </el-form-item>
         <el-form-item label="父级部门">
-          <el-cascader :props="props" @change="Change" :show-all-levels="false" :options="bm"></el-cascader>
+          <!-- //temp.parent -->
+          <el-cascader
+            :placeholder="placeholder"
+            v-model="defaultvalue"
+            :props="props"
+            @change="Change"
+            :show-all-levels="false"
+            :options="bm"
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="分管领导">
-          <el-select v-model="temp.region" @change="ldchange" placeholder="分管领导">
-            <el-option
-              v-for="(item,index) in staff"
-              :label="item.name"
-              :value="item.sid"
-              :key="index"
-            ></el-option>
+          <el-select v-model="temp.ld" @change="ldchange" placeholder="分管领导">
+            <el-option v-for="(item,index) in ld" :label="item.name" :value="item.sid" :key="index"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="栏目码" prop="menuCode">
-          <el-input v-model="mid" placeholder="栏目码" />
-        </el-form-item>-->
-        <!-- <el-form-item label="权限码" prop="menuCode">
-          <el-input v-model="temp.title" placeholder="栏目码" />
-        </el-form-item>
-
-        <el-form-item label="Date" prop="timestamp">
-          <el-date-picker
-            v-model="temp.timestamp"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
-        </el-form-item>
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate
-            v-model="temp.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            :max="3"
-            style="margin-top:8px;"
-          />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input
-            v-model="temp.remark"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Please input"
-          />
-        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
-        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button @click="clicen">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -270,6 +249,7 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
+      defaultvalue: ["1"],
       props: {
         value: "mid",
         label: "mechanismName",
@@ -278,6 +258,7 @@ export default {
         expandTrigger: "click",
         checkStrictly: true
       },
+      placeholder: "",
       tableKey: 0,
       list: [],
       total: 0,
@@ -290,6 +271,7 @@ export default {
         type: undefined,
         sort: "+index"
       },
+      ld: [],
       importanceOptions: ["正常", "删除"],
       calendarTypeOptions,
       sortOptions: [
@@ -303,7 +285,8 @@ export default {
         menuName: "",
         menuCode: "",
         region: "",
-        parent: "",
+        parent: [],
+        ld: "",
         status: "published"
       },
       dialogFormVisible: false,
@@ -339,10 +322,23 @@ export default {
   },
   created() {
     this.getList();
+    this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
     this.getAllStaff();
-    this.getSysmechanismAll();
+    this.getSysmechanismAll();  
+    });
+    
   },
   methods: {
+    closefase() {
+      console.log("123");
+      this.placeholder = "";
+      this.defaultvalue = [];
+    },
+    clicen() {
+      this.dialogFormVisible = false;
+      this.getSysmechanismAll();
+      this.getList();
+    },
     ldchange(val) {
       console.log(val);
     },
@@ -439,6 +435,7 @@ export default {
         console.log(res);
         res.filter(item => {
           this.staff.push(item);
+          this.ld.push(item);
         });
       });
     },
@@ -450,8 +447,9 @@ export default {
         url: "sysmechanism/get",
         method: "get"
       }).then(res => {
-        console.log(res);
+        console.log("sysmechanism", res);
         // this.bm.concat(res)
+        this.bm = [];
         res.filter(item => {
           this.bm.push(item);
         });
@@ -468,33 +466,54 @@ export default {
     },
     createData() {
       console.log(store.getters.userId);
-      // if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
-      //   this.$message({
-      //     type: "error",
-      //     message: "请将信息填写完整"
-      //   });
-      // } else {
-
-      // }
-      // this.$refs["dataForm"].validate(valid => {
-      //   if (valid) {
-      //     this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-      //     this.temp.author = "vue-element-admin";
-      //     //   createArticle(this.temp).then(() => {
-      //     //     this.list.unshift(this.temp);
-      //     //     this.dialogFormVisible = false;
-      //     //     this.$notify({
-      //     //       title: "Success",
-      //     //       message: "Created Successfully",
-      //     //       type: "success",
-      //     //       duration: 2000
-      //     //     });
-      //     //   });
-      //   }
-      // });
+      console.log(this.temp);
+      if (
+        !store.getters.userId == null ||
+        !this.temp.menuName == null ||
+        !this.temp.region == null ||
+        !this.temp.ld == null
+      ) {
+        this.$notify({
+          title: "error",
+          message: "请将信息填写完整",
+          type: "error",
+          duration: 2000
+        });
+      } else {
+        this.api({
+          url: "sysmechanism/add",
+          method: "post",
+          params: {
+            mechanismName: this.temp.menuName,
+            sid: this.temp.region,
+            parent: this.defaultvalue,
+            branch: this.temp.ld,
+            createId: store.getters.userId
+          }
+        }).then(res => {
+          this.getSysmechanismAll()
+          this.getList()
+          this.temp.parent = this.defaultvalue;
+          console.log(res);
+          this.$message({
+            type: "success",
+            title: "成功"
+          });
+          this.dialogFormVisible = false;
+        });
+      }
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
+      console.log("row", row);
+      this.temp.id = row.mid;
+      this.temp.menuName = row.mechanismName; // = Object.assign({}, row); // copy obj
+      this.temp.region = row.sid;
+      this.defaultvalue = [];
+      this.defaultvalue.push(row.parent);
+      console.log("this.defaultvalue", this.defaultvalue);
+      this.placeholder = row.parentName;
+      this.temp.ld = row.branch;
+      console.log(this.temp);
       this.temp.timestamp = new Date(this.temp.timestamp);
       this.dialogStatus = "update";
       this.dialogFormVisible = true;
@@ -503,56 +522,66 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          //   updateArticle(tempData).then(() => {
-          //     const index = this.list.findIndex(v => v.id === this.temp.id);
-          //     this.list.splice(index, 1, this.temp);
-          //     this.dialogFormVisible = false;
-          //     this.$notify({
-          //       title: "Success",
-          //       message: "Update Successfully",
-          //       type: "success",
-          //       duration: 2000
-          //     });
-          //   });
+      console.log(this.temp, this.defaultvalue);
+      this.api({
+        url:'sysmechanism/update',
+        method:'put',
+        params:{
+          mid:this.temp.id,
+          mechanismName:this.temp.menuName,
+          sid:this.temp.region,
+          parent:this.defaultvalue[0],
         }
-      });
+      }).then(res=>{
+        this.getList();
+        this.dialogFormVisible = false;
+      })
     },
     handleDelete(row, index) {
-      console.log(row, index);
-      this.api({
-        url: "syspermission/del",
-        method: "delete",
-        data: row
-      }).then(res => {
-        // console.log(res);
-        if (res === 1) {
-          this.$notify({
-            title: "Success",
-            message: "Delete Successfully",
-            type: "success",
-            duration: 2000
-          });
-          this.list.splice(index, 1);
-        } else {
-          this.$notify({
-            title: "error",
-            message: "请最后删除列表(list)项",
-            type: "error",
-            duration: 2000
-          });
-        }
-      });
-      // this.$notify({
-      //   title: "Success",
-      //   message: "Delete Successfully",
-      //   type: "success",
-      //   duration: 2000
-      // });
-      // this.list.splice(index, 1);
+      console.log("delete", row, index);
+      if (row.staus == "正常") {
+        this.api({
+          url: "sysmechanism/del/" + row.mid,
+          method: "delete"
+        }).then(res => {
+          console.log(res);
+          if (res === 1) {
+            this.total--;
+            this.list.splice(index, 1);
+            this.$notify({
+              title: "成功",
+              message: "",
+              type: "success",
+              duration: 2000
+            });
+          } else {
+            this.$notify({
+              title: "失败",
+              message: "请先将与该部门相关联的数据删除",
+              type: "error",
+              duration: 2000
+            });
+          }
+        });
+      }else{
+        this.api({
+          url: "sysmechanism/update/" + row.mid,
+          method: "put"
+        }).then(res => {
+          console.log(res);
+          if (res === 1) {
+            this.total++;
+            this.list.splice(index, 1);
+            this.$notify({
+              title: "成功",
+              message: "",
+              type: "success",
+              duration: 2000
+            });
+          } 
+        });
+      }
+      this.getSysmechanismAll()
     },
     handleFetchPv(pv) {
       //   fetchPv(pv).then(response => {

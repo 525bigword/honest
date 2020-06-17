@@ -67,7 +67,7 @@
         class="filter-item"
         style="margin-left:15px;"
         @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox> -->
+      >reviewer</el-checkbox>-->
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
@@ -140,18 +140,24 @@
       </el-table-column>-->
       <el-table-column
         v-if="hasPerm('permission:delete')"
-        label="Actions"
+        label="操作"
         align="center"
         width="230"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row,$index}">
           <el-button
-            v-if="row.status!='deleted'"
+            v-if="hasPerm('permission:delete')"
             size="mini"
             type="danger"
             @click="handleDelete(row,$index)"
-          >Delete</el-button>
+          >删除</el-button>
+          <el-button
+            v-if="hasPerm('permission:update')"
+            size="mini"
+            type="primary"
+            @click="handleUpdate(row,$index)"
+          >修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -183,41 +189,16 @@
           <el-radio v-model="radio" label="delete">删除</el-radio>
           <el-radio v-model="radio" label="list">查询</el-radio>
         </el-form-item>
-        <!-- <el-form-item label="权限码" prop="menuCode">
-          <el-input v-model="temp.title" placeholder="栏目码" />
+        <el-form-item v-if="textMap[dialogStatus]=='修改'" label="是否必须" prop="code">
+          <el-switch
+            @change="swchange"
+            v-model="yesOrno"
+            active-text="是"
+            inactive-text="否"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
         </el-form-item>
-
-        <el-form-item label="Date" prop="timestamp">
-          <el-date-picker
-            v-model="temp.timestamp"
-            type="datetime"
-            placeholder="Please pick a date"
-          />
-        </el-form-item>
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="temp.title" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate
-            v-model="temp.importance"
-            :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
-            :max="3"
-            style="margin-top:8px;"
-          />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input
-            v-model="temp.remark"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Please input"
-          />
-        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
@@ -237,6 +218,7 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
+      yesOrno: false,
       radio: "",
       tableKey: 0,
       list: [],
@@ -270,7 +252,7 @@ export default {
         update: "修改",
         create: "新增"
       },
-      Excel:'',
+      Excel: "",
       dialogPvVisible: false,
       pvData: [],
       rules: {
@@ -296,6 +278,10 @@ export default {
     this.getList();
   },
   methods: {
+    swchange(val) {
+      console.log(val);
+      this.temp.requiredPermission = val ? 1 : 2;
+    },
     handleCurrentChange(val) {
       //改变页码
       this.listQuery.page = val;
@@ -438,8 +424,18 @@ export default {
       }
     },
     handleUpdate(row) {
+      // console.log("row",row)
+      // let str=row.permissionCode
+      // //row.permissionCode.indexOf
+      // console.log()
       this.temp = Object.assign({}, row); // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp);
+      this.radio = row.permissionCode.substring(
+        row.permissionCode.indexOf(":") + 1,
+        row.permissionCode.length
+      );
+      // this.temp.requiredPermission=this.yesOrno?"1":"2"
+      this.yesOrno = this.temp.requiredPermission == 1 ? true : false;
       this.dialogStatus = "update";
       this.dialogFormVisible = true;
       this.$nextTick(() => {
@@ -447,27 +443,41 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          //   updateArticle(tempData).then(() => {
-          //     const index = this.list.findIndex(v => v.id === this.temp.id);
-          //     this.list.splice(index, 1, this.temp);
-          //     this.dialogFormVisible = false;
-          //     this.$notify({
-          //       title: "Success",
-          //       message: "Update Successfully",
-          //       type: "success",
-          //       duration: 2000
-          //     });
-          //   });
+      this.$alert("是否确定修改", "提示", {
+        showCancelButton: true,
+        showConfirmButton: true,
+        closeOnPressEscape: false,
+        callback: action => {
+          console.log(this.temp);
+          if (action === "confirm") {
+            this.api({
+              url: "syspermission/update",
+              method: "put",
+              params: {
+                id: this.temp.id,
+                menuCode: this.temp.menuCode,
+                menuName: this.temp.menuName,
+                permissionCode: this.temp.permissionCode,
+                permissionName: this.temp.permissionName,
+                requiredPermission: this.temp.requiredPermission
+              }
+            }).then(res => {
+              this.getList();
+              this.dialogFormVisible = false;
+            });
+          }
         }
       });
     },
     handleDelete(row, index) {
       console.log(row, index);
-      this.api({
+      this.$alert("将会会同时删除相关岗位下的此权限", "是否确定删除？", {
+        showCancelButton: true,
+        showConfirmButton: true,
+        closeOnPressEscape: false,
+        callback: action => {
+          if (action === "confirm") {
+            this.api({
         url: "syspermission/del",
         method: "delete",
         data: row
@@ -480,8 +490,9 @@ export default {
             type: "success",
             duration: 2000
           });
+          this.total = this.total - 1;
           this.list.splice(index, 1);
-        }else{
+        } else {
           this.$notify({
             title: "error",
             message: "请最后删除列表(list)项",
@@ -490,6 +501,10 @@ export default {
           });
         }
       });
+          }
+        }
+      });
+      
       // this.$notify({
       //   title: "Success",
       //   message: "Delete Successfully",
@@ -510,12 +525,12 @@ export default {
       // a.href = file.url;
       // a.dispatchEvent(event);
       this.api({
-        url:"/ExcelDownload",
-        method:'post'
-      }).then(res=>{
-        console.log(res)
-      })
-      
+        url: "/ExcelDownload",
+        method: "post"
+      }).then(res => {
+        console.log(res);
+      });
+
       //   this.downloadLoading = true
       //   import('@/vendor/Export2Excel').then(excel => {
       //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']

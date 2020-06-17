@@ -18,4 +18,8 @@ import java.util.Map;
 public interface SysMechanismService extends IService<SysMechanism> {
     Map<String,Object> findSysMechanismPage(Integer pageNum, Integer pageRow, String mechanism, String principal, String staus);
     List<SysMechanism> findSysMechanismAll();
+    void addSysMechanism(SysMechanism sysMechanism);
+    Integer delSysMechanism(Integer mid);
+    void unDelSysMechanism(Integer mid);
+    void upSysmechanism(SysMechanism sysMechanism);
 }

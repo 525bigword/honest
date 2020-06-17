@@ -50,7 +50,7 @@ const user = {
                         localStorage.setItem("roleName",data.data.roleName)
                         localStorage.setItem("roleId",data.data.roleId)
                         localStorage.setItem("userId",data.data.userId)
-                        commit('SET_USER2', data.userId);
+                        commit('SET_USER_ID', data.userId);
                         setToken();
                     }
                     resolve(data);

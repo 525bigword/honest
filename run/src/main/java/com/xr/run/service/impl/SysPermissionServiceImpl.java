@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xr.run.dao.PermissionDao;
 import com.xr.run.dao.SysPermissionMapper;
+import com.xr.run.dao.SysPostPermissionMapper;
 import com.xr.run.entity.SysPermission;
 import com.xr.run.service.SysPermissionService;
 import org.apache.ibatis.session.SqlSessionException;
@@ -17,7 +18,8 @@ import java.util.Set;
 
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,SysPermission> implements SysPermissionService {
-
+    @Autowired
+    private SysPostPermissionMapper sysPostPermissionMapper;
     /**
      * 查询某用户的 角色  菜单列表   权限列表
      */
@@ -58,12 +60,19 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
             if(sysPermissionCount>1){
                 return 0;
             }else{
+                sysPostPermissionMapper.delSysPostPermissionByPid(sysPermission.getId());
                 baseMapper.delSysPermission(sysPermission.getId());
                 return 1;
             }
         }
+        sysPostPermissionMapper.delSysPostPermissionByPid(sysPermission.getId());
         baseMapper.delSysPermission(sysPermission.getId());
         return 1;
+    }
+
+    @Override
+    public void updateSysPermission(SysPermission sysPermission) {
+        baseMapper.upSysPermission(sysPermission);
     }
 
     /**

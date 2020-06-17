@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.SysPermission;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
@@ -49,7 +46,7 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     @Select("select id,menu_code,menu_name,permission_code,permission_name,required_permission from sys_permission where menu_name like CONCAT('%',#{name},'%')")
     IPage<SysPermission> findSysPermissionPage(Page page, @Param("name")String name);
-    @Insert("insert into sys_permission values(null,#{p.menuCode},#{p.menuName},#{p.permissionCode},#{p.permissionName},#{p.requiredPermission})")
+    @Insert("insert into sys_permission values(null,#{p.menuCode},#{p.menuName},#{p.permissionCode},#{p.permissionName},'1')")
     void addSysPermission(@Param("p") SysPermission sysPermission);
     /**
      * 查询是否存在该权限码
@@ -66,4 +63,9 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     @Delete("delete from sys_permission where id=#{id}")
     void delSysPermission(@Param("id") Integer id);
+    /**
+     * 修改
+     */
+    @Update("update sys_permission set menu_code=#{menuCode},menu_name=#{menuName},permission_code=#{permissionCode},permission_name=#{permissionName},required_permission=#{requiredPermission} where id=#{id} ")
+    void upSysPermission(SysPermission sysPermission);
 }

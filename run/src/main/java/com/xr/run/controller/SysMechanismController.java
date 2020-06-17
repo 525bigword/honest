@@ -8,10 +8,7 @@ import com.xr.run.service.SysMechanismService;
 import com.xr.run.util.CommonUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,4 +36,31 @@ public class SysMechanismController {
         List<SysMechanism> sysMechanismAll = sysMechanismService.findSysMechanismAll();
         return CommonUtil.successJson(sysMechanismAll);
     }
+
+    @PostMapping("add")
+    public JSONObject addSysmechanism(SysMechanism sysMechanism){
+        sysMechanismService.addSysMechanism(sysMechanism);
+        return CommonUtil.successJson();
+    }
+    @DeleteMapping("del/{mid}")
+    public JSONObject delSysmechanism(@PathVariable Integer mid){
+        System.out.println(mid);
+        Integer i = sysMechanismService.delSysMechanism(mid);
+        if(i==0){
+            return CommonUtil.successJson(1);
+        }
+        return CommonUtil.successJson(0);
+    }
+    @PutMapping("update/{mid}")
+    public JSONObject upSysmechanismStaus(@PathVariable Integer mid){
+        sysMechanismService.unDelSysMechanism(mid);
+        return CommonUtil.successJson(1);
+    }
+    @PutMapping("update")
+    public JSONObject upSysmechanism(SysMechanism sysMechanism){
+        System.out.println(sysMechanism);
+        sysMechanismService.upSysmechanism(sysMechanism);
+        return CommonUtil.successJson(1);
+    }
+
 }

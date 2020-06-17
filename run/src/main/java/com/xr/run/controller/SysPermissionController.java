@@ -66,5 +66,10 @@ public class SysPermissionController {
         }
 
     }
+    @PutMapping("update")
+    public void updateSysPermission(SysPermission sysPermission){
+        System.out.println(sysPermission);
+        sysPermissionService.updateSysPermission(sysPermission);
+    }
 
 }

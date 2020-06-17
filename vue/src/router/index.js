@@ -27,24 +27,25 @@ export default new Router({
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRouterMap
 })
-export const asyncRouterMap = [{
+export const asyncRouterMap = [
+    // {
+    //     path: '/system',
+    //     component: Layout,
+    //     redirect: '/system/article',
+    //     name: '功能模块',
+    //     meta: { title: '功能模块', icon: 'tree' },
+    //     children: [{
+    //         path: 'article',
+    //         name: '文章',
+    //         component: _import('article/article'),
+    //         meta: { title: '文章', icon: 'example' },
+    //         menu: 'article'
+    //     }, ]
+    // },
+    {
         path: '/system',
         component: Layout,
-        redirect: '/system/article',
-        name: '功能模块',
-        meta: { title: '功能模块', icon: 'tree' },
-        children: [{
-            path: 'article',
-            name: '文章',
-            component: _import('article/article'),
-            meta: { title: '文章', icon: 'example' },
-            menu: 'article'
-        }, ]
-    },
-    {
-        path: '/user',
-        component: Layout,
-        redirect: '/user/',
+        redirect: '/system/mechanism',
         name: '',
         meta: { title: '系统管理', icon: 'table' },
         children: [

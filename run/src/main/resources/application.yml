@@ -23,7 +23,6 @@ spring:
     url: jdbc:mysql://139.129.118.147:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    #以下属性在datasource是没有的，所以变颜色
     initialSize: 5
     minIdle: 5
     maxActive: 20
@@ -35,7 +34,6 @@ spring:
     testOnBorrow: false
     testOnReturn: false
     poolPreparedStatements: true
-    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
     filters: stat,wall,logback
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
@@ -43,11 +41,7 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-# 上传的服务器上的映射文件夹
 file:
   accessPath: /uploadimg
-  #静态资源对外暴露的访问路径
   staticAccessPath: /uploadimg/**
-  #文件上传目录（注意Linux和Windows上的目录结构不同）
-  #file.uploadFolder=/root/uploadFiles/
   uploadFolder: C://File_rec/tmp/
