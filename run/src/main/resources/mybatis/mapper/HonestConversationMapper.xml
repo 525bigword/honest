@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.duty.HonestConversationMapper">
+<!--初始化廉政谈话页面-->
+    <select id="list" resultType="com.xr.run.entity.duty.HonestConversation">
+        select id,`type`,`time`,site,staus from rd_honest_conversation
+    </select>
+    <select id="listBytitle" resultType="com.xr.run.entity.duty.HonestConversation" parameterType="com.xr.run.entity.duty.HonestConversation">
+        select rhc.id,rhc.`type`,rhc.`time`,rhc.site,rhc.staus from rd_honest_conversation rhc where rhc.`type` like CONCAT('%',#{type},'%')
+    </select>
+    <delete id="delHonestConversationt" parameterType="Integer" >
+        delete from rd_honest_conversation  where id=#{id}
+    </delete>
+</mapper>

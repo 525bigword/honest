@@ -93,33 +93,33 @@ export const asyncRouterMap = [
         }]
     },
     {
-        path: '/responsibility',
+        path: '/duty',
         component: Layout,
-        redirect: '/responsibility/',
+        redirect: '/user/',
         name: '责任纪实',
         meta: { title: '责任纪实', icon: 'table' },
         children: [{
-                path: '',
+                path: 'plan',
                 name: '工作计划',
-                component: _import('user/user'),
+                component: _import('duty/plan'),
                 meta: { title: '工作计划', icon: 'user' },
                 menu: 'user'
             }, {
-                path: '',
+                path: 'deploy',
                 name: '工作部署',
-                component: _import('user/user'),
+                component: _import('duty/deploy'),
                 meta: { title: '工作部署', icon: 'user' },
                 menu: 'user'
             }, {
-                path: '',
+                path: 'talk',
                 name: '廉政谈话',
-                component: _import('user/user'),
+                component: _import('duty/talk'),
                 meta: { title: '廉政谈话', icon: 'user' },
                 menu: 'user'
             }, {
-                path: '',
+                path: 'main',
                 name: '主体责任',
-                component: _import('user/user'),
+                component: _import('duty/main'),
                 meta: { title: '主体责任', icon: 'user' },
                 menu: 'user'
             }

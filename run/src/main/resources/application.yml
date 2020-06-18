@@ -38,7 +38,8 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-mybatis:
+mybatis-plus:
+  mapper-locations: mybatis/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
 file:

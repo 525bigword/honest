@@ -9,8 +9,8 @@ const service = axios.create({
     })
     // request拦截器
 service.interceptors.request.use(config => {
-        config.headers.post['Content-Type']='application/json;charset=UTF-8'
-        return config
+  config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+  return config
     }, error => {
         // Do something with request error
         console.error(error) // for debug

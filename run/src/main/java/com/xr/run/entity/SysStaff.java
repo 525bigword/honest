@@ -8,8 +8,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 @Data
 @TableName("sys_staff")
 public class SysStaff {
@@ -33,4 +34,5 @@ public class SysStaff {
   //TODO 业务属性
   private String mechanismname;
   private String postname;
+  private List<SysMechanism> mechanisms=new ArrayList<>();
 }
