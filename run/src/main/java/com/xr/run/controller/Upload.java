@@ -20,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/imp")
 public class Upload {
-    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
+    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/HH/mm/ss");
     @Value("${file.uploadFolder}")
     private String realBasePath;
     @Value("${file.accessPath}")
@@ -41,9 +41,9 @@ public class Upload {
         String oldName = file.getOriginalFilename();
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
         file.transferTo(new File(folder,newName));
-        String url = req.getScheme() + "://" + req.getServerName() + ":" + "8080" + saveToPath + newName;
+        String url = req.getScheme() + "://" + req.getServerName() + ":" + "8080" + saveToPath + newName;//127.0.0.1:8080/uploadimg/...
         Map<String,String> map=new HashMap<>();
-        map.put("dFile",saveToPath + newName);
+        map.put("dFile",format + newName);
         return CommonUtil.successJson(map);
     }
 }

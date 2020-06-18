@@ -37,4 +37,11 @@ public interface DatacollectionService extends IService<Datacollection> {
      * @param did
      */
     void deleteDataConllectionByDid(int did);
+
+    /**
+     * 查找资料锦集的原路径
+     * @param did
+     * @return
+     */
+    public String findDatacollectionByFile(int did);
 }

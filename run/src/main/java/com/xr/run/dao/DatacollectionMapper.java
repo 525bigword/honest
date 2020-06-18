@@ -29,4 +29,7 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Delete("delete from  datacollection where did=#{did}")
     void deleteDataConllectionByDid(int did);
 
+    @Select("select dFile from datacollection where did=#{did}")
+    public String findDatacollectionByFile(int did);
+
 }

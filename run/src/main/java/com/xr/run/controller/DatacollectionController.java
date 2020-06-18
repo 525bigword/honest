@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,8 +25,6 @@ public class DatacollectionController {
     SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
     @Value("${file.uploadFolder}")
     private String realBasePath;
-    @Value("${file.accessPath}")
-    private String accessPath;
     @Autowired
     private DatacollectionService datacollectionService;
     @GetMapping("/get/{pageNum}/{pageRow}")
@@ -42,11 +41,19 @@ public class DatacollectionController {
      }
     @RequestMapping("update")
     public JSONObject updateDatacollection(Datacollection datacollection)  {
+        String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
+        try{
+            File file=new File(realBasePath+filePath);
+            if(file.exists()){
+                file.delete();
+            }}catch (Exception e){
+            e.printStackTrace();
+        }
         datacollectionService.updateDataConllectionByDid(datacollection);
-        return CommonUtil.successJson("上传成功!");
+        return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
-    public JSONObject deleteDatacollectionByDid(int[] did)  {
+    public JSONObject deleteDatacollectionByDid(@RequestBody int[] did)  {
         if (did.length==1){
             datacollectionService.deleteDataConllectionByDid(did[0]);
         }else{

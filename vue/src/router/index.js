@@ -48,8 +48,7 @@ export const asyncRouterMap = [
         redirect: '/system/mechanism',
         name: '系统管理',
         meta: { title: '系统管理', icon: 'table' },
-        children: [
-            {
+        children: [{
                 path: 'mechanism',
                 name: '部门管理',
                 component: _import('system/mechanism/mechanism'),
@@ -198,9 +197,15 @@ export const asyncRouterMap = [
         meta: { title: '廉政文化', icon: 'table' },
         children: [{
             path: '',
-            name: '廉政文化',
-            component: _import('user/user'),
-            meta: { title: '廉政文化', icon: 'user' },
+            name: '资料锦集',
+            component: _import('cultrue/datakamset'),
+            meta: { title: '资料锦集', icon: 'user' },
+            menu: 'user'
+        }, {
+            path: '',
+            name: '清风文苑',
+            component: _import('cultrue/datakamset'),
+            meta: { title: '清风文苑', icon: 'user' },
             menu: 'user'
         }]
     },

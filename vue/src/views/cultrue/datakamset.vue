@@ -21,11 +21,14 @@
     </div>
     <div>
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
-      <el-button type="primary" class="el-icon-delete" >删除</el-button></div>
+      <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
+      <el-button type="primary" class="el-icon-download" @click="handleOutFile">导出文件</el-button></div>
     <!--  数据表格  :data="list.slice((listQuery.pageNum-1)*listQuery.pageRow,listQuery.pageNum*listQuery.pageRow)"-->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
+      @selection-change="handleSelectChangeLeft"
+      :default-sort = "{prop: 'dcreateTime', order: 'descending'}"
       :data="list"
       border
       fit
@@ -34,10 +37,10 @@
       ref="multipleTable"
     >
     <el-table-column type="selection" width="60px" align="center"></el-table-column>
-      <el-table-column label="序号" prop="did" sortable="custom" align="center" width="90px">
-        <template slot-scope="scope">
+      <el-table-column label="序号" prop="index"  align="center" width="90px" type="index" :index="indexMethod">
+        <!-- <template slot-scope="scope">
           <span>{{ scope.row.did }}</span>
-        </template>
+        </template> -->
       </el-table-column>
         <el-table-column label="标题" prop="dtitle"  align="center" width="210px">
         <template slot-scope="scope">
@@ -45,17 +48,17 @@
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="文件名" prop="dfileName"  align="center" width="210px">
+        <el-table-column label="文件名"  prop="dfileName"  align="center" width="210px">
         <template slot-scope="scope">
           <span>{{ scope.row.dfileName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建人" prop="sysStaff"  align="center" width="210px">
+      <el-table-column label="创建人" prop="sysStaff"   align="center" width="210px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="dcreateTime"  align="center">
+      <el-table-column label="创建时间" sortable prop="dcreateTime"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.dcreateTime | dateFilter }}</span>
         </template>
@@ -77,7 +80,8 @@
      <div class="block" align="center" style="margin-top: 20px">
         <el-pagination
         v-show="total>0"
-          
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
           :current-page="pageNum"
           :page-sizes="[5,10, 20, 30, 40,50]"
           :page-size="pageRow"
@@ -107,15 +111,16 @@
   action="https://localhost:8080/imp/import"
   :on-change="handleImgChange1"
   accept=".doc,.docx,.pdf,.txt,.xlsx"
+  :before-upload="beforeAvatarUpload"
   :file-list="fileList"
-  :limit="1"
+  :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500M</div>
+  <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过50M</div>
   </el-upload>
         </el-form-item>
-        <el-form-item label="创建时间" prop="dcreateTime">
-          <el-date-picker disabled="disabled"
+        <el-form-item label="创建时间" prop="dcreateTime" >
+          <el-date-picker disabled="disabled" 
     style="width: 80%"
     type="date"
     v-model="temp.dCreateTime"
@@ -123,22 +128,29 @@
 </el-date-picker>
         </el-form-item>
         <el-form-item label="创建人" prop="sysStaff" >
-          <el-input v-model="temp.sysStaff.name" disabled="disabled"/>
+          <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:80%"/>
         </el-form-item>
         <el-form-item label="审核状态" prop="status">
-          <el-input v-model="temp.status" disabled="disabled"></el-input>
+          <el-input v-model="temp.status" disabled="disabled" style="width:80%"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false&&resetTemp()">
-          取消
-        </el-button>
+       
         <!--
           dialogStatus==='create'?createData():updateData()
           dialogStatus需要我们根据情况去改变
         -->
-        <el-button type="primary" @click="dialogStatus==='update'?updateData():createData()">
-          确认
+        <el-button type="primary" v-if="temp.dstatus===0||temp.dstatus===1"  @click="updateData(2)">
+          提交审核
+        </el-button>
+        <el-button type="primary" v-if="temp.dstatus===2" @click="updateData(3)">
+          通过审核
+        </el-button>
+        <el-button type="primary"  @click="dialogStatus==='update'?updateData(0):createData()">
+          保存
+        </el-button>
+         <el-button @click="dialogFormVisible = false&&resetTemp()">
+          取消
         </el-button>
       </div>
     </el-dialog>
@@ -178,7 +190,8 @@ import { mapGetters } from 'vuex'
           },
           dCreateTime:new Date(),
           status: '',
-          dstatus:0
+          dstatus:1,
+          fileList: []
         },
         fileList: [],
         file:{},
@@ -189,7 +202,9 @@ import { mapGetters } from 'vuex'
           // 校验规则
           //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
           //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
-        }
+        },
+        multipleSelection:[],
+        deleteid:[]
       }
     },
     // 创建实例时的钩子函数
@@ -207,9 +222,9 @@ import { mapGetters } from 'vuex'
       }, */
       // 去后台取数据的
       getList() {
-          /* if (!this.hasPerm('datakamset:list')) {
+          if (!this.hasPerm('datacollection:list')) {
           return
-        } */
+        }
         // 开始转圈圈
         this.listLoading = true
         // debugger // 调试
@@ -251,13 +266,11 @@ import { mapGetters } from 'vuex'
         
         // 重置表单数据
         this.resetTemp()
-        if(this.temp.dstatus==1){
+        if(this.temp.dstatus===1){
           this.temp.status='创建'
-        }
-        else if(this.temp.dstatus==2){
+        }else if(this.temp.dstatus===2){
           this.temp.status='待审'
-        }
-        else{
+        }else{
           this.temp.status='已审核'
         }
         this.temp.sysStaff.name=this.nickname
@@ -276,7 +289,6 @@ import { mapGetters } from 'vuex'
       createData() {
         let formData = new FormData();
         formData.append("file", this.file);
-        this.temp.dstatus=3
         this.temp.dFileName=this.file.name
         imp(formData).then((response)=>{
           this.temp.dFile=response.dFile
@@ -307,13 +319,11 @@ import { mapGetters } from 'vuex'
       // 显示修改对话框
       handleUpdate(row) {
         this.temp = row;
-        if(row.staus==1){
+        if(this.temp.dstatus===1){
           this.temp.status='创建'
-        }
-        else if(row.staus==2){
+        }else if(this.temp.dstatus===2){
           this.temp.status='待审'
-        }
-        else{
+        }else{
           this.temp.status='已审核'
         }
         this.fileList=[{name:row.dfileName,url:row.dfile}];
@@ -333,18 +343,18 @@ import { mapGetters } from 'vuex'
         })
       },
       // 执行修改操作
-      updateData() {
+      updateData(val) {
         let formData = new FormData();
         formData.append("file", this.file);
-        this.temp.dstatus=3
         this.temp.dFileName=this.file.name
         imp(formData).then((response)=>{
           this.temp.dFile=response.dFile
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
-            // 将temp拷贝到tempData
-            const tempData = Object.assign({}, this.temp)
+            if(val!==0){//判断状态
+            this.temp.dstatus=val;
+            }
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -365,16 +375,36 @@ import { mapGetters } from 'vuex'
         
         
       },
-      handleDelete(row) {
+      handleOutFile(){
+        
+      },
+      handleDelete() {
         // 先弹确认取消框
-        this.$confirm('确认删除【'+row.dTitle+'】的信息吗?', '提示', {
+        let title='';
+        if(this.multipleSelection.length<1){
+          this.$message({
+          showClose: true,
+          message: '请选择删除信息',
+          type: 'warning'
+        });
+        }else{
+           if(this.multipleSelection.length==1){
+              title=this.multipleSelection[0].dtitle;
+              this.deleteid.push(this.multipleSelection[0].did)
+           }else{
+             title='选中'
+             this.multipleSelection.filter(row=>{
+                this.deleteid.push(row.did)
+             })
+           }
+           this.$confirm('确认删除【'+title+'】的信息吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          console.debug(row.uid)
-          deleteUser(row.did).then((response) => {
+          console.debug(this.deleteid)
+          deleteDatakamset(this.deleteid).then((response) => {
             // 刷新数据表格
             this.getList()
             // ajax去后台删除
@@ -386,24 +416,48 @@ import { mapGetters } from 'vuex'
             })
           })
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });
+          this.deleteid=[];
         });
-
+        }
       },
       handleImgChange1(file, fileList, name) {
+        console.debug(file)
       this.file=file.raw
-      console.debug(this.file)
-    }/* handleSizeChange(size) {
-      this.listQuery.pageRow = size;
-      console.log(this.listQuery.pageRow)
+        if(fileList){
+    this.fileList=fileList.slice(-1)
+  }
+    },
+    beforeAvatarUpload(file){
+      const isLt2M = file.size / 1024 / 1024 < 50;
+      if(!isLt2M){
+        this.$message({
+          showClose:true,
+          message:'文件不能超过50M',
+          type: 'warning'
+        })
+        return false;
+      }
+ 74   
+    },
+    handleSizeChange(size) {
+       this.deleteid=[];
+      this.multipleSelection=[];
+      this.pageRow = size;
+      this.getList();
     },
     handleCurrentChange(currentPage) {
-      this.listQuery.pageNum = currentPage;
-      console.log(this.listQuery.pageNum)  //点击第几页
-    } */
+      this.deleteid=[];
+      this.multipleSelection=[];
+      this.pageNum = currentPage;
+      this.getList();
+    },
+    handleSelectChangeLeft(rows){
+      let self=this;
+      self.multipleSelection= rows;
+    },
+    indexMethod(val){
+      return ++val
+    }
     },
     filters:{
       dateFilter(date,format="YYYY-MM-DD"){

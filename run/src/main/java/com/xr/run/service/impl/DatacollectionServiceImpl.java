@@ -32,4 +32,9 @@ public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper,
         baseMapper.deleteDataConllectionByDid(did);
     }
 
+    @Override
+    public String findDatacollectionByFile(int did) {
+        return baseMapper.findDatacollectionByFile(did);
+    }
+
 }

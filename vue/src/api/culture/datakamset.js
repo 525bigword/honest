@@ -15,11 +15,11 @@ export function add(data) {
 }
 
 // 根据id删除用户
-export function deleteDatakamset(did) {
+export function deleteDatakamset(data) {
     return request({
-        url: '/datakamset/delete',
-        method: 'get',
-        params: { did }
+        url: '/datacollection/delete',
+        method: 'post',
+        data
     })
 }
 export function imp(data) {
