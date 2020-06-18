@@ -23,6 +23,9 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus} where did=#{did}")
     void updateDataConllectionByDid(Datacollection datacollection);
 
+    @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dStatus=#{dStatus} where did=#{did}")
+    void updateDataConllectionByFile(Datacollection datacollection);
+
     @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus})")
     void insertDataConllection(Datacollection datacollection);
 

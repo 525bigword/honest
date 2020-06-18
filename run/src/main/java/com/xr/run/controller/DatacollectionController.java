@@ -41,15 +41,20 @@ public class DatacollectionController {
      }
     @RequestMapping("update")
     public JSONObject updateDatacollection(Datacollection datacollection)  {
-        String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
-        try{
-            File file=new File(realBasePath+filePath);
-            if(file.exists()){
-                file.delete();
-            }}catch (Exception e){
-            e.printStackTrace();
+        if(datacollection.getDFile()==""||datacollection.equals("")||datacollection==null){
+            datacollectionService.updateDataConllectionByFile(datacollection);
+        }else {
+            String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
+            try {
+                File file = new File(realBasePath + filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            datacollectionService.updateDataConllectionByDid(datacollection);
         }
-        datacollectionService.updateDataConllectionByDid(datacollection);
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")

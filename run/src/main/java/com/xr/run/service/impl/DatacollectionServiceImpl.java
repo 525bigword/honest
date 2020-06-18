@@ -37,4 +37,9 @@ public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper,
         return baseMapper.findDatacollectionByFile(did);
     }
 
+    @Override
+    public void updateDataConllectionByFile(Datacollection datacollection) {
+        baseMapper.updateDataConllectionByFile(datacollection);
+    }
+
 }
