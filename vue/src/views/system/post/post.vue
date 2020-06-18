@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.title"
+        v-model="listQuery.name"
         placeholder="岗位名称"
         style="width: 200px;"
         class="filter-item"
@@ -20,13 +20,13 @@
           ></el-cascader>
         <!-- </el-form-item> -->
       <el-input
-        v-model="listQuery.fzr"
-        placeholder="部门"
+        v-model="listQuery.message"
+        placeholder="部门描述"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select
+      <!-- <el-select
         v-model="listQuery.importance"
         placeholder="岗位描述"
         clearable
@@ -34,10 +34,10 @@
         class="filter-item"
       >
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-        <!-- <el-option label="全部" value="3"></el-option>
+         <el-option label="全部" value="3"></el-option>
         <el-option label="必选" value="1"></el-option>
-        <el-option label="非必选" value="2"></el-option>-->
-      </el-select>
+        <el-option label="非必选" value="2"></el-option>
+      </el-select> -->
       <!-- <el-select
         v-model="listQuery.type"
         placeholder="Type"
@@ -89,78 +89,43 @@
     </div>
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="序号" prop="index" align="center" :class-name="getSortClass('id')">
+      <el-table-column prop="pid" type="selection" width="55"></el-table-column>
+      <el-table-column label="序号" type="index" :index="indexMethod" prop="index" align="center" :class-name="getSortClass('id')">
         <!-- <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>-->
       </el-table-column>
-      <el-table-column align="center" prop="mechanismName" label="岗位名称"></el-table-column>
+      <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
       <!-- <el-table-column prop="menuCode" label="栏目码" width="150px" align="center">
         
          <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="sname" label="部门名称"></el-table-column>
+      <el-table-column align="center" prop="mname" label="部门名称"></el-table-column>
       <!-- <el-table-column prop="menuName" label="栏目名" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="parentName" label="岗位描述"></el-table-column>
+      <el-table-column align="center" prop="message" label="岗位描述"></el-table-column>
       <!-- <el-table-column prop="permissionCode" label="权限码" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="branchName" label="分管领导"></el-table-column>
+      <el-table-column align="center" prop="createname" label="创建人"></el-table-column>
       <!-- <el-table-column prop="permissionName" label="权限名" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>-->
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column align="center" prop="createName" label="创建人"></el-table-column>
+
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
-      <!-- <el-table-column prop="requiredPermission" label="是否必选" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="权限名" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in + row.importance"
-            :key="n"
-            icon-class="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="是否必须" align="center" width="95">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleFetchPv(row.pageviews)"
-          >{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
-        </template>
-      </el-table-column>-->
       <el-table-column
-        v-if="hasPerm('permission:delete')"
+        v-if="hasPerm('post:delete')"
         label="Actions"
         align="center"
         width="230"
@@ -168,11 +133,19 @@
       >
         <template slot-scope="{row,$index}">
           <el-button
-            v-if="row.status!='deleted'"
+            v-if="hasPerm('post:delete')"
             size="mini"
             type="danger"
             @click="handleDelete(row,$index)"
-          >Delete</el-button>
+          >删除</el-button>
+        </template>
+        <template slot-scope="{row,$index}">
+          <el-button
+            v-if="hasPerm('post:update')"
+            size="mini"
+            type="primary"
+            @click="handleUpdate(row,$index)"
+          >修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -243,8 +216,9 @@ export default {
         page: 1,
         limit: 10,
         importance: "正常",
-        title: "",
-        fzr: "",
+        bm:[],
+        name: "",
+        message: "",
         type: undefined,
         sort: "+index"
       },
@@ -269,6 +243,7 @@ export default {
         update: "修改",
         create: "新增"
       },
+      listLoading:true,
       Excel: "",
       dialogPvVisible: false,
       pvData: [],
@@ -320,27 +295,37 @@ export default {
       // if (!this.hasPerm('staff:list')) {
       //   return
       // }
-      this.listLoading = false;
+      
+       let mids=this.listQuery.bm.join(',')
+       console.log(mids)
+      this.listLoading = true;
       this.api({
         url:
-          "sysmechanism/get/" +
+          "syspost/get/" +
           this.listQuery.page +
           "/" +
           this.listQuery.limit,
-        method: "get",
-        params: {
-          mechanism: this.listQuery.title,
-          principal: this.listQuery.fzr,
-          staus: this.listQuery.importance
+        method: "post",
+        data: {
+          pname: this.listQuery.name,
+          message: this.listQuery.message,
+          mids: mids
         }
       }).then(response => {
-        console.log(response);
-        this.total = response.count;
-        this.list = [];
-        response.data.filter((item, index) => {
-          this.list.push(item);
-        });
-        console.log(this.list);
+        console.log("getlist",response);
+        this.total=response.count
+        response.data.filter(item=>{
+          let i={}
+          i.pid=item.pid
+          i.pname=item.pname
+          i.mname=item.mname
+          i.message=item.message
+          i.createname=item.createname
+          i.createTime=item.createTime
+          i.staus=item.staus==1?'正常':'删除'
+          this.list.push(i)
+        })
+        this.listLoading = false;
       });
       //   fetchList(this.listQuery).then(response => {
       //     this.list = response.data.items;
@@ -365,6 +350,7 @@ export default {
     },
     Change(val){
       console.log(val)
+      this.listQuery.bm=val
     },
     sortChange(data) {
       console.log(data);
@@ -566,6 +552,9 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
+    },
+    indexMethod(val){
+      return ++val
     }
   }
 };

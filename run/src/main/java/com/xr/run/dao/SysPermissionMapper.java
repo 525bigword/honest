@@ -46,7 +46,7 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     @Select("select id,menu_code,menu_name,permission_code,permission_name,required_permission from sys_permission where menu_name like CONCAT('%',#{name},'%')")
     IPage<SysPermission> findSysPermissionPage(Page page, @Param("name")String name);
-    @Insert("insert into sys_permission values(null,#{p.menuCode},#{p.menuName},#{p.permissionCode},#{p.permissionName},'1')")
+    @Insert("insert into sys_permission values(null,#{p.menuCode},#{p.menuName},#{p.permissionCode},#{p.permissionName},#{p.requiredPermission})")
     void addSysPermission(@Param("p") SysPermission sysPermission);
     /**
      * 查询是否存在该权限码

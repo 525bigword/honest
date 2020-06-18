@@ -445,7 +445,7 @@ export default {
     Change(val) {
       console.log(val);
     },
-    getSysmechanismAll() {
+    getSysmechanismAll(val=0) {
       this.api({
         url: "sysmechanism/get",
         method: "get"

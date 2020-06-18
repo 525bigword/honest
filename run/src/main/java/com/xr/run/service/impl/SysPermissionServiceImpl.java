@@ -31,6 +31,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
 
     @Override
     public Integer addSysPermission(SysPermission sysPermission) throws Exception {
+        if(sysPermission.getPermissionName().equals("列表")){
+            sysPermission.setRequiredPermission(1);
+        }else{
+            sysPermission.setRequiredPermission(2);
+        }
         Integer count = baseMapper.findSysPermissionByMenuCodeAndPermisiionCode(sysPermission);
         if(count<=0){
             baseMapper.addSysPermission(sysPermission);
