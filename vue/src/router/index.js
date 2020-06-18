@@ -204,7 +204,7 @@ export const asyncRouterMap = [
         }, {
             path: '',
             name: '清风文苑',
-            component: _import('cultrue/datakamset'),
+            component: _import('cultrue/windculture'),
             meta: { title: '清风文苑', icon: 'user' },
             menu: 'user'
         }]

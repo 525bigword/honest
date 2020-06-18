@@ -44,4 +44,10 @@ public interface DatacollectionService extends IService<Datacollection> {
      * @return
      */
     public String findDatacollectionByFile(int did);
+
+    /**
+     * 是否要删除文件
+     * @param datacollection
+     */
+    void updateDataConllectionByFile(Datacollection datacollection);
 }
