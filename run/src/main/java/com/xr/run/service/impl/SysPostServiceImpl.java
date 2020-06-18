@@ -9,9 +9,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xr.run.dao.SysPostMapper;
 import com.xr.run.entity.SysPost;
 import com.xr.run.service.SysPostService;
+import com.xr.run.util.DateUtil;
 import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,5 +45,26 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper,SysPost> imple
         Integer count = baseMapper.findSYsPostPagecount(jsonObject.getString("message"), jsonObject.getString("pname"), str);
         System.out.println(count);
         return count;
+    }
+
+    @Override
+    public void addSysPost(SysPost sysPost) throws Exception {
+        Date date = DateUtil.getDate();
+        sysPost.setCreateTime(date);
+        System.out.println(sysPost);
+        baseMapper.addSysPost(sysPost);
+    }
+
+    @Override
+    public void upSysPost(SysPost sysPost) {
+        baseMapper.upSysPost(sysPost);
+    }
+
+    @Override
+    public void delSysPost(String[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+            baseMapper.delSysPost(Integer.parseInt(arr[i]));
+        }
     }
 }

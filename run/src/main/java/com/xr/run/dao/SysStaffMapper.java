@@ -52,4 +52,10 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
 
     @Select("select sid,`name` from sys_staff where sid=#{sid}")
     SysStaff findSysStaffById(int sid);
+
+    /**
+     * 根据岗位查询员工数量
+     */
+    @Select("select count(sid) from sys_staff where pid=#{pid}")
+    Integer findSysStaffByPidToCount(@Param("pid") Integer pid);
 }

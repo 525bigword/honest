@@ -25,7 +25,6 @@ import java.util.List;
 public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> implements SysStaffService {
     @Autowired
     private SysPermissionService sysPermissionService;
-
     @Override
     public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus) {
 
@@ -97,5 +96,16 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
 
         }
         return CommonUtil.successJson();
+    }
+
+    @Override
+    public Integer findSysStaffToCount(String[] pids) {
+        for (int i = 0; i < pids.length; i++) {
+            Integer count = baseMapper.findSysStaffByPidToCount(Integer.parseInt(pids[i]));
+            if(count>0){
+                return count;
+            }
+        }
+        return 0;
     }
 }

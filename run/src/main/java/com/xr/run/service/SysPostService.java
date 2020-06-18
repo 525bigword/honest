@@ -18,4 +18,8 @@ import java.util.List;
 public interface SysPostService extends IService<SysPost> {
     List<SysPost> findSysPostPage(Integer pageNum, Integer pageRow, JSONObject jsonObject);
     Integer findSysPostPage(JSONObject jsonObject);
+    void addSysPost(SysPost sysPost) throws Exception;
+    void upSysPost(SysPost sysPost);
+    //TODO 批量删除岗位
+    void delSysPost(String[] arr);
 }

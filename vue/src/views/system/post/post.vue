@@ -9,16 +9,15 @@
         @keyup.enter.native="handleFilter"
       />
       <!-- <el-form-item label="部门"> -->
-          <!-- //temp.parent -->
-          <el-cascader
-            placeholder="部门"
-            
-            :props="props"
-            @change="Change"
-            :show-all-levels="false"
-            :options="bm"
-          ></el-cascader>
-        <!-- </el-form-item> -->
+      <!-- //temp.parent -->
+      <el-cascader
+        placeholder="部门"
+        :props="props"
+        @change="Change"
+        :show-all-levels="false"
+        :options="bm"
+      ></el-cascader>
+      <!-- </el-form-item> -->
       <el-input
         v-model="listQuery.message"
         placeholder="部门描述"
@@ -26,45 +25,6 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <!-- <el-select
-        v-model="listQuery.importance"
-        placeholder="岗位描述"
-        clearable
-        style="width: 150px"
-        class="filter-item"
-      >
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-         <el-option label="全部" value="3"></el-option>
-        <el-option label="必选" value="1"></el-option>
-        <el-option label="非必选" value="2"></el-option>
-      </el-select> -->
-      <!-- <el-select
-        v-model="listQuery.type"
-        placeholder="Type"
-        clearable
-        class="filter-item"
-        style="width: 130px"
-      >
-        <el-option
-          v-for="item in calendarTypeOptions"
-          :key="item.key"
-          :label="item.display_name+'('+item.key+')'"
-          :value="item.key"
-        />
-      </el-select>
-      <el-select
-        v-model="listQuery.sort"
-        style="width: 140px"
-        class="filter-item"
-        @change="handleFilter"
-      >
-        <el-option
-          v-for="item in sortOptions"
-          :key="item.key"
-          :label="item.label"
-          :value="item.key"
-        />
-      </el-select>-->
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button
         class="filter-item"
@@ -73,6 +33,13 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >添加</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="danger"
+        icon="el-icon-edit"
+        @click="handleDelete"
+      >删除</el-button>
       <el-button
         :loading="downloadLoading"
         class="filter-item"
@@ -88,9 +55,22 @@
       >reviewer</el-checkbox>-->
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
+    <el-table
+      @selection-change="toggleRowExpansion"
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      style="width: 100%;"
+    >
       <el-table-column prop="pid" type="selection" width="55"></el-table-column>
-      <el-table-column label="序号" type="index" :index="indexMethod" prop="index" align="center" :class-name="getSortClass('id')">
+      <el-table-column
+        label="序号"
+        type="index"
+        :index="indexMethod"
+        prop="index"
+        align="center"
+        :class-name="getSortClass('id')"
+      >
         <!-- <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>-->
@@ -156,7 +136,11 @@
       :total="total"
     ></el-pagination>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog
+      @close="dialogClose"
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -165,17 +149,22 @@
         label-width="70px"
         style="width: 400px; margin-left:50px;"
       >
-        <el-form-item label="岗位名称" prop="pname">
-          <el-input v-model="temp.menuName" placeholder="栏目名" />
+        <el-form-item label="岗位名称" class="link-type" prop="pname">
+          <el-input v-model="temp.pname" placeholder="岗位名称" />
         </el-form-item>
-        <el-form-item label="栏目码" prop="menuCode">
-          <el-input v-model="temp.menuCode" placeholder="栏目码" />
+        <el-form-item label="所属部门">
+          <!-- //temp.parent -->
+          <el-cascader
+            :placeholder="placeholder"
+            v-model="temp.defaultvalue"
+            :props="props"
+            @change="Change"
+            :show-all-levels="false"
+            :options="bm"
+          ></el-cascader>
         </el-form-item>
-        <el-form-item label="权限类型" prop="code">
-          <el-radio v-model="radio" label="add">新增</el-radio>
-          <el-radio v-model="radio" label="update">修改</el-radio>
-          <el-radio v-model="radio" label="delete">删除</el-radio>
-          <el-radio v-model="radio" label="list">查询</el-radio>
+        <el-form-item label="岗位描述" prop="message">
+          <el-input v-model="temp.message" placeholder="栏目码" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -187,6 +176,7 @@
 </template>
 
 <script>
+import store from "../../../store";
 const calendarTypeOptions = [
   { key: "CN", display_name: "China" },
   { key: "US", display_name: "USA" },
@@ -203,11 +193,12 @@ export default {
         emitPath: false,
         expandTrigger: "click",
         checkStrictly: true,
-        multiple:true,
         collapseTags: true,
-        clearable:true
+        clearable: true
       },
-      bm:[],
+      deletelist: [],
+      placeholder: "",
+      bm: [],
       radio: "",
       tableKey: 0,
       list: [],
@@ -216,7 +207,7 @@ export default {
         page: 1,
         limit: 10,
         importance: "正常",
-        bm:[],
+        bm: [],
         name: "",
         message: "",
         type: undefined,
@@ -232,10 +223,9 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        menuName: "",
-        menuCode: "",
-        code: "",
-        status: "published"
+        message: "",
+        pname: "",
+        defaultvalue: []
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -243,7 +233,7 @@ export default {
         update: "修改",
         create: "新增"
       },
-      listLoading:true,
+      listLoading: true,
       Excel: "",
       dialogPvVisible: false,
       pvData: [],
@@ -268,9 +258,20 @@ export default {
   },
   created() {
     this.getList();
-    this.getSysmechanismAll()
+    this.getSysmechanismAll();
   },
   methods: {
+    toggleRowExpansion(val) {
+      console.log("val", val);
+      this.deletelist = [];
+      val.filter(item => {
+        this.deletelist.push(item.pid);
+      });
+      console.log(this.deletelist);
+    },
+    dialogClose() {
+      console.log("a");
+    },
     getSysmechanismAll() {
       this.api({
         url: "sysmechanism/get",
@@ -295,16 +296,12 @@ export default {
       // if (!this.hasPerm('staff:list')) {
       //   return
       // }
-      
-       let mids=this.listQuery.bm.join(',')
-       console.log(mids)
+
+      let mids = this.listQuery.bm.join(",");
+      console.log(mids);
       this.listLoading = true;
       this.api({
-        url:
-          "syspost/get/" +
-          this.listQuery.page +
-          "/" +
-          this.listQuery.limit,
+        url: "syspost/get/" + this.listQuery.page + "/" + this.listQuery.limit,
         method: "post",
         data: {
           pname: this.listQuery.name,
@@ -312,19 +309,21 @@ export default {
           mids: mids
         }
       }).then(response => {
-        console.log("getlist",response);
-        this.total=response.count
-        response.data.filter(item=>{
-          let i={}
-          i.pid=item.pid
-          i.pname=item.pname
-          i.mname=item.mname
-          i.message=item.message
-          i.createname=item.createname
-          i.createTime=item.createTime
-          i.staus=item.staus==1?'正常':'删除'
-          this.list.push(i)
-        })
+        console.log("getlist", response);
+        this.list = [];
+        this.total = response.count;
+        response.data.filter(item => {
+          let i = {};
+          i.pid = item.pid;
+          i.pname = item.pname;
+          i.mid = item.mid;
+          i.mname = item.mname;
+          i.message = item.message;
+          i.createname = item.createname;
+          i.createTime = item.createTime;
+          i.staus = item.staus == 1 ? "正常" : "删除";
+          this.list.push(i);
+        });
         this.listLoading = false;
       });
       //   fetchList(this.listQuery).then(response => {
@@ -348,9 +347,9 @@ export default {
       });
       row.status = status;
     },
-    Change(val){
-      console.log(val)
-      this.listQuery.bm=val
+    Change(val) {
+      console.log(val);
+      this.temp.defaultvalue = val;
     },
     sortChange(data) {
       console.log(data);
@@ -387,66 +386,47 @@ export default {
       });
     },
     createData() {
-      if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
+      this.temp.id = store.getters.userId;
+      console.log(this.temp);
+      if (!this.temp.pname || !this.temp.defaultvalue) {
         this.$message({
           type: "error",
           message: "请将信息填写完整"
         });
       } else {
-        let name = "";
-        if (this.radio == "add") {
-          name = "新增";
-        } else if (this.radio == "delete") {
-          name = "删除";
-        } else if (this.radio == "update") {
-          name = "修改";
-        } else {
-          name = "列表";
-        }
-        let permissionCode = this.temp.menuCode + ":" + this.radio;
         this.api({
-          url: "syspermission/add",
+          url: "syspost/add",
           method: "post",
           data: {
-            menuCode: this.temp.menuCode,
-            menuName: this.temp.menuName,
-            permissionCode: permissionCode,
-            permissionName: name,
-            requiredPermissionis: this.radio == "list" ? 1 : 2
+            pname: this.temp.pname,
+            mid: this.temp.defaultvalue,
+            message: this.temp.message,
+            createId: this.temp.id
           }
         }).then(respone => {
           console.log(respone);
-          if (respone === 2) {
+          if (respone === 0) {
             this.$message({
               type: "error",
-              message: "已存在该权限"
+              message: "添加失败"
             });
           } else {
             this.$message({
               type: "success",
               message: "添加成功"
             });
+            this.getList();
+            this.dialogFormVisible = false;
           }
         });
       }
-      // this.$refs["dataForm"].validate(valid => {
-      //   if (valid) {
-      //     this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-      //     this.temp.author = "vue-element-admin";
-      //     //   createArticle(this.temp).then(() => {
-      //     //     this.list.unshift(this.temp);
-      //     //     this.dialogFormVisible = false;
-      //     //     this.$notify({
-      //     //       title: "Success",
-      //     //       message: "Created Successfully",
-      //     //       type: "success",
-      //     //       duration: 2000
-      //     //     });
-      //     //   });
-      //   }
-      // });
     },
     handleUpdate(row) {
+      this.placeholder = row.mname;
+      console.log(row);
+      this.temp.defaultvalue = [];
+      this.temp.defaultvalue.push(row.mid);
+      console.log("defaultvalue", this.temp.defaultvalue);
       this.temp = Object.assign({}, row); // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp);
       this.dialogStatus = "update";
@@ -456,49 +436,81 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          //   updateArticle(tempData).then(() => {
-          //     const index = this.list.findIndex(v => v.id === this.temp.id);
-          //     this.list.splice(index, 1, this.temp);
-          //     this.dialogFormVisible = false;
-          //     this.$notify({
-          //       title: "Success",
-          //       message: "Update Successfully",
-          //       type: "success",
-          //       duration: 2000
-          //     });
-          //   });
+      console.log("temp", this.temp);
+      this.$alert("是否确定修改", "提示", {
+        showCancelButton: true,
+        showConfirmButton: true,
+        closeOnPressEscape: false,
+        callback: action => {
+          console.log(this.temp);
+          if (action === "confirm") {
+            if (!this.temp.pname || !this.temp.pid || !this.temp.mid) {
+              this.$message({
+                type: "error",
+                message: "请将信息填写完整"
+              });
+            } else {
+              this.api({
+                url: "syspost/update",
+                method: "post",
+                data: {
+                  pid: this.temp.pid,
+                  mid: this.temp.mid,
+                  pname: this.temp.pname,
+                  message: this.temp.message
+                }
+              }).then(res => {
+                this.getList();
+                this.dialogFormVisible = false;
+              });
+            }
+          }
         }
       });
     },
     handleDelete(row, index) {
-      console.log(row, index);
-      this.api({
-        url: "syspermission/del",
-        method: "delete",
-        data: row
-      }).then(res => {
-        // console.log(res);
-        if (res === 1) {
-          this.$notify({
-            title: "Success",
-            message: "Delete Successfully",
-            type: "success",
-            duration: 2000
-          });
-          this.list.splice(index, 1);
-        } else {
-          this.$notify({
-            title: "error",
-            message: "请最后删除列表(list)项",
-            type: "error",
-            duration: 2000
-          });
-        }
-      });
+      if (this.deletelist.length < 1) {
+        this.$message({
+          type: "error",
+          message: "请勾选选择需要删除的行"
+        });
+      } else {
+        console.log(this.deletelist);
+        let arr = this.deletelist.join(",");
+        this.api({
+          url:'syspost/del',
+          method:'post',
+          params:{
+            arr:arr
+          }
+        }).then(res=>{
+          console.log(res)
+        })
+      }
+
+      // this.api({
+      //   url: "syspermission/del",
+      //   method: "delete",
+      //   data: row
+      // }).then(res => {
+      //   // console.log(res);
+      //   if (res === 1) {
+      //     this.$notify({
+      //       title: "Success",
+      //       message: "Delete Successfully",
+      //       type: "success",
+      //       duration: 2000
+      //     });
+      //     this.list.splice(index, 1);
+      //   } else {
+      //     this.$notify({
+      //       title: "error",
+      //       message: "请最后删除列表(list)项",
+      //       type: "error",
+      //       duration: 2000
+      //     });
+      //   }
+      // });
       // this.$notify({
       //   title: "Success",
       //   message: "Delete Successfully",
@@ -553,8 +565,8 @@ export default {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
     },
-    indexMethod(val){
-      return ++val
+    indexMethod(val) {
+      return ++val;
     }
   }
 };
