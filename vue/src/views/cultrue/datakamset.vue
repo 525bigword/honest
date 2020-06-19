@@ -19,7 +19,7 @@
           </el-button>
        <!--  </el-form-item> -->
     </div>
-    <div>
+    <div style="margin-top:15px">
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
       <el-button type="primary" class="el-icon-download"  @click="handleOutFile">导出文件</el-button></div>
@@ -33,7 +33,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;margin-top: 30px"
+      style="width: 100%;margin-top: 20px"
       ref="multipleTable"
     >
     <el-table-column type="selection" width="60px" align="center"></el-table-column>
@@ -111,11 +111,10 @@
   action="https://localhost:8080/imp/import"
   :on-change="handleImgChange1"
   accept=".doc,.docx,.pdf,.txt,.xlsx"
-  :before-upload="beforeAvatarUpload"
   :file-list="fileList"
   :limit="2"
   :auto-upload="false">
-  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+  <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
   <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过50M</div>
   </el-upload>
         </el-form-item>
@@ -288,6 +287,11 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData(val) {
+        
+        if (!this.hasPerm('datacollection:add')) {
+          return
+        }
+      console.debug(this.i)
         if(val!==0){
             this.temp.dstatus=val;
         }
@@ -311,7 +315,7 @@ import { mapGetters } from 'vuex'
               // 显示一个通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '新增成功',
                 type: 'success',
                 duration: 2000
               })
@@ -319,7 +323,7 @@ import { mapGetters } from 'vuex'
           }
         })
         })
-        
+        this.i=0;
       },
       // 显示修改对话框
       handleUpdate(row) {
@@ -349,7 +353,14 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
-        
+        if (!this.hasPerm('datacollection:update')) {
+          return
+        }
+        console.debug(this.fileList)
+      if(this.temp.dfileName!==this.fileList[0].name){
+          this.i=1;
+      }
+      console.debug(this.i)
         if(this.i===1){
           let formData = new FormData();
         formData.append("file", this.file);
@@ -371,7 +382,7 @@ import { mapGetters } from 'vuex'
               // 显示通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               })
@@ -396,19 +407,23 @@ import { mapGetters } from 'vuex'
               // 显示通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               })
             })
           }
+          this.temp.dfile=''
         })
         }
-        
+        this.i=0;
         
         
       },
       handleOutFile(){
+        if (!this.hasPerm('datacollection:out')) {
+          return
+        }
         this.multipleSelection.forEach(row=>{
            let path=this.virtualIp+row.dfile
            var aDom = document.createElement('a')
@@ -421,6 +436,9 @@ import { mapGetters } from 'vuex'
           })
       },
       handleDelete() {
+        if (!this.hasPerm('datacollection:delete')) {
+          return
+        }
         // 先弹确认取消框
         let title='';
         if(this.multipleSelection.length<1){
@@ -452,7 +470,7 @@ import { mapGetters } from 'vuex'
             // ajax去后台删除
             this.$notify({
               title: '成功',
-              message: response.data.message,
+              message:'删除成功',
               type: 'success',
               duration: 2000
             })
@@ -463,7 +481,7 @@ import { mapGetters } from 'vuex'
         }
       },
       handleImgChange1(file, fileList, name) {
-       
+        
         const isLt2M = file.size / 1024  < 500;
       if(!isLt2M){
         this.$message({
@@ -471,30 +489,18 @@ import { mapGetters } from 'vuex'
           message:'文件不能超过500k',
           type: 'warning'
         })
-        if(fileList){
-    this.fileList=fileList.slice(0,1)
-     this.i=0;
-  }
+        if(fileList.length==2){
+        this.fileList=fileList.slice(0,1)
+        }else{
+          this.fileList=fileList.slice(1)
+        }
       }else{
          this.file=file.raw
         if(fileList){
-    this.fileList=fileList.slice(-1)
-     this.i=1;
-  }
+        this.fileList=fileList.slice(-1)
       }
-        console.debug(this.file)
-        
-    },
-    beforeAvatarUpload(file){
-      const isLt2M = file.size / 1024  < 500;
-      if(!isLt2M){
-        this.$message({
-          showClose:true,
-          message:'文件不能超过500k',
-          type: 'warning'
-        })
-        return false;
       }
+      
     },
     handleSizeChange(size) {
        this.deleteid=[];

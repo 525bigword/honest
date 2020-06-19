@@ -50,8 +50,19 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     @Select("select count(sid) from sys_staff where staus='1' and mid=#{mid}")
     Integer findSysStaffByMidToCount(@Param("mid")Integer mid);
 
+    /**
+     * 查询单个用户
+     * @param sid
+     * @return
+     */
     @Select("select sid,`name` from sys_staff where sid=#{sid}")
     SysStaff findSysStaffById(int sid);
+    /**
+     * 查询全部
+     * @return
+     */
+    @Select("select sid,`name` from sys_staff")
+    List<SysStaff>  findSysStaff();
 
     /**
      * 根据岗位查询员工数量

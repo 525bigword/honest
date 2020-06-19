@@ -15,16 +15,9 @@ export function add(data) {
 }
 
 // 根据id删除用户
-export function deleteDatakamset(data) {
+export function deleteWind(data) {
     return request({
         url: '/datacollection/delete',
-        method: 'post',
-        data
-    })
-}
-export function imp(data) {
-    return request({
-        url: '/imp/import',
         method: 'post',
         data
     })
@@ -32,7 +25,6 @@ export function imp(data) {
 
 // 修改用户
 export function update(data) {
-    console.debug(data.dfile)
     return request({
         url: '/datacollection/update',
         method: 'post',

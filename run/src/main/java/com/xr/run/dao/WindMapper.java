@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface WindMapper extends BaseMapper<Wind> {
     @Select("select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',#{wTitle},'%') order by wid desc")
     @Results({
+            @Result(column = "wContributor",property = "wnew",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
             @Result(column = "wCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })

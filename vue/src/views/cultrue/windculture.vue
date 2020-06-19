@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
+    <div :style="{'display':dis}">
     <div class="filter-container"  align="center" style="margin-top: 20px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
-      <el-input v-model="dTitle" placeholder="请输入资料锦集标题" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="wTitle" placeholder="请输入清风文苑标题" style="width: 200px;" class="filter-item"/>
      <!--  <el-form-item> -->
 
        &nbsp;&nbsp;
@@ -19,11 +20,10 @@
           </el-button>
        <!--  </el-form-item> -->
     </div>
-    <div>
+    <div style="margin-top:15px">
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
-      <el-button type="primary" class="el-icon-download"  @click="handleOutFile">导出文件</el-button></div>
-    <!--  数据表格  :data="list.slice((listQuery.pageNum-1)*listQuery.pageRow,listQuery.pageNum*listQuery.pageRow)"-->
+    </div>
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -33,7 +33,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;margin-top: 30px"
+      style="width: 100%;margin-top: 20px"
       ref="multipleTable"
     >
     <el-table-column type="selection" width="60px" align="center"></el-table-column>
@@ -42,15 +42,16 @@
           <span>{{ scope.row.did }}</span>
         </template> -->
       </el-table-column>
-        <el-table-column label="标题" prop="dtitle"  align="center" width="210px">
+      
+        <el-table-column label="标题" prop="wtitle"  align="center" width="210px">
         <template slot-scope="scope">
 
-          <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
+          <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="文件名"  prop="dfileName"  align="center" width="210px">
+        <el-table-column label="投稿人" prop="wnew"   align="center" width="210px">
         <template slot-scope="scope">
-          <span>{{ scope.row.dfileName }}</span>
+          <span>{{ scope.row.wnew.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="210px">
@@ -58,22 +59,11 @@
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="dcreateTime"  align="center">
+      <el-table-column label="创建时间" sortable prop="wcreateTime" width="365px"  align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.dcreateTime | dateFilter }}</span>
+          <span>{{ scope.row.wcreateTime | dateFilter }}</span>
         </template>
       </el-table-column>
-      <!--     自定义列-->
-      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            修改
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
-            删除
-          </el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
     <!-- 分页工具条  page当前页 total总记录数 limit每页显示多少条 pagination触发自定义事件，查询数据 @size-change="handleSizeChange"
           @current-change="handleCurrentChange"-->
@@ -89,76 +79,73 @@
           :total="total">
         </el-pagination>
       </div>
-
-    <!--  绑定了title，是一个数组里取的，表示是修改的标题还是添加的标题
-      visible.sync 对话框是否显示
-    -->
-    <el-dialog :title="title" :visible.sync="dialogFormVisible" style="width: 100%">
-      <!--
-          rules:校验规则
-          model:数据绑定
-      -->
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 80%; margin-left:40px;">
+    </div>
+    <!-- @blur="onEditorBlur($event)" 
+      @focus="onEditorFocus($event)"
+      @change="onEditorChange($event)" -->
+    <div :style="{'display':dis2}">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
+        <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
+          <el-button type="success" class="el-icon-top" v-if="temp.wstatus===0||temp.wstatus===1"  @click="dialogStatus==='update'?updateData(2):createData(2)">
+          提交审核
+        </el-button>
+        <el-button type="success" class="el-icon-top" v-if="temp.wstatus===2" @click="updateData(3)">
+          通过审核
+        </el-button>
+        <el-button type="success" class="el-icon-top"  @click="dialogStatus==='update'?updateData(0):createData(0)">
+          保存
+        </el-button>
+         <el-button class="el-icon-back" plain @click="out()">
+          返回
+        </el-button>
+        </el-form-item>
+        <el-form-item style="font-weight: bold;" label="清风文苑标题" prop="wTitle" >
+          <el-input v-model="temp.wtitle" placeholder="请输入清风文苑标题" style="width:50%" />
+        </el-form-item>
+        <!-- <el-form-item style="font-weight: bold;" label="所属部门" prop="dTitle" >
+          <el-input placeholder="请输入清风文苑标题" style="width:30%" />
+        </el-form-item> -->
+        <el-form-item style="font-weight: bold;" label="投稿人" prop="wnew" >
+          <el-select v-model="temp.wnew.sid" placeholder="请选择" style="width:30%">
+              <el-option
+             v-for="item in wew"
+            :key="item.sid"
+            :label="item.name"
+           :value="item.sid">
+            </el-option>
+           </el-select>
+        </el-form-item>
         
-        <el-form-item label="标题" prop="dTitle" >
-          <el-input placeholder="请输入资料锦集标题" v-model="temp.dtitle" style="width:80%" />
+        <el-form-item style="font-weight: bold;" label="文章内容" prop="wContent" >
+          <quill-editor class="editor"  style="height:400px;width:85%;"
+        ref="myQuillEditor"
+        v-model="temp.wcontent"
+       >
+        </quill-editor>
         </el-form-item>
-        <el-form-item label="文件名" prop="dFileName" ref="fileName">
-          <el-upload
-  class="upload-demo"
-  ref="upload"
-  action="https://localhost:8080/imp/import"
-  :on-change="handleImgChange1"
-  accept=".doc,.docx,.pdf,.txt,.xlsx"
-  :before-upload="beforeAvatarUpload"
-  :file-list="fileList"
-  :limit="2"
-  :auto-upload="false">
-  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过50M</div>
-  </el-upload>
-        </el-form-item>
-        <el-form-item label="创建时间" prop="dcreateTime" >
+        <el-form-item style="font-weight: bold;margin-top:120px;" label="创建时间" prop="wCreateTime" >
           <el-date-picker disabled="disabled" 
-    style="width: 80%"
+    style="width: 50%"
     type="date"
-    v-model="temp.dCreateTime"
+    v-model="temp.wcreateTime"
     :format="'yyyy-MM-dd HH:mm:ss'">
 </el-date-picker>
         </el-form-item>
-        <el-form-item label="创建人" prop="sysStaff" >
-          <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:80%"/>
+        <el-form-item style="font-weight: bold;" label="创建人" prop="sysStaff" >
+          <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
         </el-form-item>
-        <el-form-item label="审核状态" prop="status">
-          <el-input v-model="temp.status" disabled="disabled" style="width:80%"></el-input>
+        <el-form-item style="font-weight: bold;" label="审核状态" prop="status">
+          <el-input v-model="temp.status" disabled="disabled" style="width:50%"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-       
-        <!--
-          dialogStatus==='create'?createData():updateData()
-          dialogStatus需要我们根据情况去改变
-        -->
-        <el-button type="primary" v-if="temp.dstatus===0||temp.dstatus===1"  @click="dialogStatus==='update'?updateData(2):createData(2)">
-          提交审核
-        </el-button>
-        <el-button type="primary" v-if="temp.dstatus===2" @click="updateData(3)">
-          通过审核
-        </el-button>
-        <el-button type="primary"  @click="dialogStatus==='update'?updateData(0):createData(0)">
-          保存
-        </el-button>
-         <el-button @click="dialogFormVisible = false&&resetTemp()">
-          取消
-        </el-button>
-      </div>
-    </el-dialog>
+       
+    </div>
   </div>
 </template>
 
 <script>
-import { add, update, list, deleteDatakamset,imp } from '@/api/culture/datakamset'
+import { add, update, list, deleteWind } from '@/api/culture/windculture'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
   export default {
@@ -171,31 +158,33 @@ import { mapGetters } from 'vuex'
     components: {  },
     data() {
       return {
+        dis:'inline-block',
+        dis2:'none',
         tableKey: 0,
         list: [], // 后台返回，给数据表格展示的数据
         total: 0, // 总记录数
         listLoading: true, // 是否使用动画
           pageNum: 1, // 分页需要的当前页
           pageRow:5, // 分页需要的每页显示多少
-          dTitle: '',
-          dstatus: 1,
+          wTitle: '',
+          wstatus: 1,
         temp: { // 添加、修改时绑定的表单数据
-          uid: undefined,
-          dTitle: '',
-          dFileName: '',
-          dFile: '',
+          wid: undefined,
+          wTitle: '',
+          wContent: '',
+          wnew: {
+            name: '',
+            sid: 0
+          },
           sysStaff: {
             name: '',
             sid: 0
           },
           dCreateTime:new Date(),
           status: '',
-          dstatus:1,
-          fileList: []
+          wstatus:1
         },
         i:0,
-        fileList: [],
-        file:{},
         title: '添加', // 对话框显示的提示 根据dialogStatus create
         dialogFormVisible: false, // 是否显示对话框
         dialogStatus: '', // 表示表单是添加还是修改的
@@ -204,6 +193,7 @@ import { mapGetters } from 'vuex'
           //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
           //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
         },
+          wew:{},
         multipleSelection:[],
         deleteid:[]
       }
@@ -223,7 +213,7 @@ import { mapGetters } from 'vuex'
       }, */
       // 去后台取数据的
       getList() {
-          if (!this.hasPerm('datacollection:list')) {
+          if (!this.hasPerm('wind:list')) {
           return
         }
         // 开始转圈圈
@@ -232,10 +222,10 @@ import { mapGetters } from 'vuex'
         /* let data=qs.stringify({
           account: this.listQuery.account
         }) */
-        list(this.pageNum,this.pageRow,this.dTitle).then(response => {
-          this.list=response.records;
-          this.total=(response.total)
-          
+        list(this.pageNum,this.pageRow,this.wTitle).then(response => {
+          this.list=response.wind.records;
+          this.total=(response.wind.total)
+          this.wew=response.sys
           console.debug(this.list)
           // 转圈圈结束
           this.listLoading = false
@@ -264,10 +254,11 @@ import { mapGetters } from 'vuex'
       },
       // 显示添加的对话框
       handleCreate () {
-        
+        this.dis='none'
+        this.dis2='inline-block'
         // 重置表单数据
         this.resetTemp()
-        if(this.temp.dstatus===1){
+        /* if(this.temp.dstatus===1){
           this.temp.status='创建'
         }else if(this.temp.dstatus===2){
           this.temp.status='待审'
@@ -284,7 +275,7 @@ import { mapGetters } from 'vuex'
         this.$nextTick(() => {
           // 表单清除验证
           this.$refs['dataForm'].clearValidate()
-        })
+        }) */
       },
       // 添加对话框里，点击确定，执行添加操作
       createData(val) {
@@ -324,15 +315,14 @@ import { mapGetters } from 'vuex'
       // 显示修改对话框
       handleUpdate(row) {
         this.temp = row;
-        if(this.temp.dstatus===1){
+        if(this.temp.wstatus===1){
           this.temp.status='创建'
-        }else if(this.temp.dstatus===2){
+        }else if(this.temp.wstatus===2){
           this.temp.status='待审'
         }else{
           this.temp.status='已审核'
         }
-        this.fileList=[{name:row.dfileName,url:row.dfile}];
-        this.temp.dCreateTime=row.dcreateTime
+        this.temp.wCreateTime=row.wcreateTime
         console.debug(this.temp)
         // 将row里面与temp里属性相同的值，进行copy
         this.temp = Object.assign({}, row) // copy obj
@@ -341,7 +331,8 @@ import { mapGetters } from 'vuex'
         // 修改标题
         this.title = '修改用户'
         // 显示修改对话框
-        this.dialogFormVisible = true
+        this.dis = 'none'
+        this.dis2='inline-block'
         this.$nextTick(() => {
           // 清除校验
           this.$refs['dataForm'].clearValidate()
@@ -349,20 +340,14 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
-        
-        if(this.i===1){
-          let formData = new FormData();
-        formData.append("file", this.file);
-        this.temp.dfileName=this.file.name
-            imp(formData).then((response)=>{
-          this.temp.dfile=response.dFile
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             if(val!==0){//判断状态
             this.temp.dstatus=val;
             }
-            // 进行ajax提交
+            console.debug(this.temp)
+            /* // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
@@ -371,42 +356,17 @@ import { mapGetters } from 'vuex'
               // 显示通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message:'修改成功',
                 type: 'success',
                 duration: 2000
               })
-            })
+            }) */
           }
         })
-        })
-        }else{
-          this.temp.dfile='1'
-          this.$refs['dataForm'].validate((valid) => {
-          // 表单校验通过
-          if (valid) {
-            if(val!==0){//判断状态
-            this.temp.dstatus=val;
-            }
-            // 进行ajax提交
-            update(this.temp).then((response) => {
-              // 提交完毕，关闭对话框
-              this.dialogFormVisible = false
-              // 刷新数据表格
-              this.getList()
-              // 显示通知
-              this.$notify({
-                title: '成功',
-                message: response.data.message,
-                type: 'success',
-                duration: 2000
-              })
-            })
-          }
-        })
-        }
-        
-        
-        
+      },
+      out(){
+        this.dis='inline-block';
+        this.dis2='none'
       },
       handleOutFile(){
         this.multipleSelection.forEach(row=>{
