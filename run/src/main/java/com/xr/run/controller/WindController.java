@@ -40,7 +40,6 @@ public class WindController {
     }
     @RequestMapping("update")
     public JSONObject updateWind(Wind wind)  {
-
         windService.updateWindByWid(wind);
         return CommonUtil.successJson("修改成功!");
     }

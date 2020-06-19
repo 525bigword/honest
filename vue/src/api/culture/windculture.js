@@ -2,14 +2,14 @@ import request from '@/utils/api'
 // 添加用户
 export function add(data) {
     return request({
-        url: '/datacollection/insert',
+        url: '/wind/insert',
         method: 'post',
         params: {
-            dTitle: data.dtitle,
-            dFile: data.dFile,
-            dFileName: data.dFileName,
-            dCreateId: data.sysStaff.sid,
-            dStatus: data.dstatus
+            wTitle: data.wtitle,
+            wContent: data.wcontent,
+            wContributor: data.wnew.sid,
+            wCreateId: data.sysStaff.sid,
+            wStatus: data.wstatus
         }
     })
 }
@@ -17,7 +17,7 @@ export function add(data) {
 // 根据id删除用户
 export function deleteWind(data) {
     return request({
-        url: '/datacollection/delete',
+        url: '/wind/delete',
         method: 'post',
         data
     })
@@ -26,14 +26,14 @@ export function deleteWind(data) {
 // 修改用户
 export function update(data) {
     return request({
-        url: '/datacollection/update',
+        url: '/wind/update',
         method: 'post',
         params: {
-            dTitle: data.dtitle,
-            dFile: data.dfile,
-            dFileName: data.dfileName,
-            did: data.did,
-            dStatus: data.dstatus
+            wTitle: data.wtitle,
+            wContent: data.wcontent,
+            wContributor: data.wnew.sid,
+            wid: data.wid,
+            wStatus: data.wstatus
         }
     })
 }

@@ -196,26 +196,18 @@ export const asyncRouterMap = [
         name: '廉政文化',
         meta: { title: '廉政文化', icon: 'table' },
         children: [{
-                path: '',
-                name: '资料锦集',
-                component: _import('cultrue/datakamset'),
-                meta: { title: '资料锦集', icon: 'user' },
-                menu: 'user'
-            }, {
-                path: 'windculture',
-                name: '清风文苑',
-                component: _import('cultrue/windculture'),
-                meta: { title: '清风文苑', icon: 'user' },
-                menu: 'user'
-            },
-            {
-                path: 'tinymce',
-                component: () =>
-                    import ('@/views/cultrue/tinymce'),
-                name: 'abc',
-                meta: { title: 'abc' }
-            }
-        ]
+            path: '',
+            name: '资料锦集',
+            component: _import('cultrue/datakamset'),
+            meta: { title: '资料锦集', icon: 'user' },
+            menu: 'user'
+        }, {
+            path: 'windculture',
+            name: '清风文苑',
+            component: _import('cultrue/windculture'),
+            meta: { title: '清风文苑', icon: 'user' },
+            menu: 'user'
+        }]
     },
     { path: '*', redirect: '/404', hidden: true }
 ]

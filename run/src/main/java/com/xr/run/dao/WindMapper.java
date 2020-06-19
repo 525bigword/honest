@@ -22,10 +22,10 @@ public interface WindMapper extends BaseMapper<Wind> {
     @Update("update Wind set wTitle=#{wTitle},wContent=#{wContent},wContributor=#{wContributor},wStatus=#{wStatus} where wid=#{wid}")
     void updateWindByWid(Wind wind);
 
-    @Insert("insert into Wind(wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus) VALUES(null,#{wTitle},#{wContent},#{wContributor},NOW(),#{dCreateId},#{dStatus})")
+    @Insert("insert into Wind(wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus) VALUES(null,#{wTitle},#{wContent},#{wContributor},NOW(),#{wCreateId},#{wStatus})")
     void insertWind(Wind wind);
 
-    @Delete("delete from  Wind where did=#{wid}")
+    @Delete("delete from  Wind where wid=#{wid}")
     void deleteWindByWid(int wid);
 
 }

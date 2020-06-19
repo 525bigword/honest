@@ -43,7 +43,7 @@
         </template> -->
       </el-table-column>
       
-        <el-table-column label="标题" prop="wtitle"  align="center" width="210px">
+        <el-table-column label="标题" prop="wtitle"  align="center" width="275px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
@@ -59,7 +59,7 @@
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="wcreateTime" width="365px"  align="center">
+      <el-table-column label="创建时间" sortable prop="wcreateTime" width="300px"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.wcreateTime | dateFilter }}</span>
         </template>
@@ -87,13 +87,13 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
-          <el-button type="success" class="el-icon-top" v-if="temp.wstatus===0||temp.wstatus===1"  @click="dialogStatus==='update'?updateData(2):createData(2)">
+          <el-button :disabled="isShow" type="success" class="el-icon-top"  v-show="btnShowTj"  @click="dialogStatus==='update'?updateData(2):createData(2)">
           提交审核
         </el-button>
-        <el-button type="success" class="el-icon-top" v-if="temp.wstatus===2" @click="updateData(3)">
+        <el-button type="success" :disabled="isShow" class="el-icon-top" v-show="btnShowTs" @click="updateData(3)">
           通过审核
         </el-button>
-        <el-button type="success" class="el-icon-top"  @click="dialogStatus==='update'?updateData(0):createData(0)">
+        <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData(0):createData(0)">
           保存
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
@@ -128,7 +128,7 @@
           <el-date-picker disabled="disabled" 
     style="width: 50%"
     type="date"
-    v-model="temp.wcreateTime"
+    v-model="temp.wCreateTime"
     :format="'yyyy-MM-dd HH:mm:ss'">
 </el-date-picker>
         </el-form-item>
@@ -157,6 +157,13 @@ import { mapGetters } from 'vuex'
     },
     components: {  },
     data() {
+      const validateRequire = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('标题不能为空!'))
+      } else {
+        callback()
+      }
+    }
       return {
         dis:'inline-block',
         dis2:'none',
@@ -174,13 +181,13 @@ import { mapGetters } from 'vuex'
           wContent: '',
           wnew: {
             name: '',
-            sid: 0
+            sid: null
           },
           sysStaff: {
             name: '',
             sid: 0
           },
-          dCreateTime:new Date(),
+          wCreateTime:new Date(),
           status: '',
           wstatus:1
         },
@@ -192,7 +199,11 @@ import { mapGetters } from 'vuex'
           // 校验规则
           //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
           //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
+          wTitle: [{validator: validateRequire}]
         },
+        isShow:false,
+        btnShowTs:false,
+        btnShowTj:false,
           wew:{},
         multipleSelection:[],
         deleteid:[]
@@ -232,35 +243,36 @@ import { mapGetters } from 'vuex'
         })
       },
       resetSou(){
-        this.dTitle=''
+        this.wTitle=''
       },
       // 重置表单数据
       resetTemp() {
         this.temp = {
-          uid: undefined,
-          dTitle: '',
-          dFileName: '',
-          dFile: '',
+          wid: undefined,
+          wTitle: '',
+          wContent: '',
+          wnew: {
+            name: '',
+            sid: null
+          },
           sysStaff: {
             name: '',
             sid: 0
           },
-          dCreateTime:new Date(),
+          wCreateTime:new Date(),
           status: '',
-          dstatus:1
+          wstatus:1
         }
-        this.fileList=[]
 
       },
       // 显示添加的对话框
       handleCreate () {
-        this.dis='none'
-        this.dis2='inline-block'
         // 重置表单数据
         this.resetTemp()
-        /* if(this.temp.dstatus===1){
+        this.xianshi()
+        if(this.temp.wstatus===1){
           this.temp.status='创建'
-        }else if(this.temp.dstatus===2){
+        }else if(this.temp.wstatus===2){
           this.temp.status='待审'
         }else{
           this.temp.status='已审核'
@@ -275,18 +287,14 @@ import { mapGetters } from 'vuex'
         this.$nextTick(() => {
           // 表单清除验证
           this.$refs['dataForm'].clearValidate()
-        }) */
+        })
       },
       // 添加对话框里，点击确定，执行添加操作
       createData(val) {
+        this.isShow=true
         if(val!==0){
-            this.temp.dstatus=val;
+            this.temp.wstatus=val;
         }
-        let formData = new FormData();
-        formData.append("file", this.file);
-        this.temp.dFileName=this.file.name
-        imp(formData).then((response)=>{
-          this.temp.dFile=response.dFile
             console.debug(this.temp)
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
@@ -294,7 +302,7 @@ import { mapGetters } from 'vuex'
           if (valid) {
             // 调用api里的sys里的user.js的ajax方法
             add(this.temp).then((response) => {
-
+              
               // 关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格里的数据
@@ -302,19 +310,21 @@ import { mapGetters } from 'vuex'
               // 显示一个通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '新增成功',
                 type: 'success',
                 duration: 2000
               })
+              this.isShow=false
+              this.yincang()
             })
           }
-        })
         })
         
       },
       // 显示修改对话框
       handleUpdate(row) {
         this.temp = row;
+        this.xianshi()
         if(this.temp.wstatus===1){
           this.temp.status='创建'
         }else if(this.temp.wstatus===2){
@@ -330,25 +340,25 @@ import { mapGetters } from 'vuex'
         this.dialogStatus = 'update'
         // 修改标题
         this.title = '修改用户'
-        // 显示修改对话框
-        this.dis = 'none'
-        this.dis2='inline-block'
         this.$nextTick(() => {
           // 清除校验
           this.$refs['dataForm'].clearValidate()
         })
+        
       },
       // 执行修改操作
       updateData(val) {
+        this.isShow=true
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             if(val!==0){//判断状态
-            this.temp.dstatus=val;
+            this.temp.wstatus=val;
             }
             console.debug(this.temp)
-            /* // 进行ajax提交
+            // 进行ajax提交
             update(this.temp).then((response) => {
+             
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -360,25 +370,15 @@ import { mapGetters } from 'vuex'
                 type: 'success',
                 duration: 2000
               })
-            }) */
+              this.isShow=false
+              this.yincang()
+            })
           }
         })
+         
       },
       out(){
-        this.dis='inline-block';
-        this.dis2='none'
-      },
-      handleOutFile(){
-        this.multipleSelection.forEach(row=>{
-           let path=this.virtualIp+row.dfile
-           var aDom = document.createElement('a')
-        var evt = document.createEvent('HTMLEvents')
-        evt.initEvent('click', false, false)
-        aDom.download = name
-        aDom.href = path
-        aDom.dispatchEvent(evt)
-        aDom.click()
-          })
+        this.yincang()
       },
       handleDelete() {
         // 先弹确认取消框
@@ -391,12 +391,12 @@ import { mapGetters } from 'vuex'
         });
         }else{
            if(this.multipleSelection.length==1){
-              title=this.multipleSelection[0].dtitle;
-              this.deleteid.push(this.multipleSelection[0].did)
+              title=this.multipleSelection[0].wtitle;
+              this.deleteid.push(this.multipleSelection[0].wid)
            }else{
              title='选中'
              this.multipleSelection.filter(row=>{
-                this.deleteid.push(row.did)
+                this.deleteid.push(row.wid)
              })
            }
            this.$confirm('确认删除【'+title+'】的信息吗?', '提示', {
@@ -406,13 +406,13 @@ import { mapGetters } from 'vuex'
         }).then(() => {
           // 调用ajax去后台删除
           console.debug(this.deleteid)
-          deleteDatakamset(this.deleteid).then((response) => {
+          deleteWind(this.deleteid).then((response) => {
             // 刷新数据表格
             this.getList()
             // ajax去后台删除
             this.$notify({
               title: '成功',
-              message: response.data.message,
+              message: '删除成功',
               type: 'success',
               duration: 2000
             })
@@ -422,40 +422,6 @@ import { mapGetters } from 'vuex'
         });
         }
       },
-      handleImgChange1(file, fileList, name) {
-       
-        const isLt2M = file.size / 1024  < 500;
-      if(!isLt2M){
-        this.$message({
-          showClose:true,
-          message:'文件不能超过500k',
-          type: 'warning'
-        })
-        if(fileList){
-    this.fileList=fileList.slice(0,1)
-     this.i=0;
-  }
-      }else{
-         this.file=file.raw
-        if(fileList){
-    this.fileList=fileList.slice(-1)
-     this.i=1;
-  }
-      }
-        console.debug(this.file)
-        
-    },
-    beforeAvatarUpload(file){
-      const isLt2M = file.size / 1024  < 500;
-      if(!isLt2M){
-        this.$message({
-          showClose:true,
-          message:'文件不能超过500k',
-          type: 'warning'
-        })
-        return false;
-      }
-    },
     handleSizeChange(size) {
        this.deleteid=[];
       this.multipleSelection=[];
@@ -475,7 +441,25 @@ import { mapGetters } from 'vuex'
     },
     indexMethod(val){
       return ++val
-    }
+    },
+    xianshi(){
+      this.dis='none'
+      this.dis2='inline-block'
+      if(this.temp.wstatus===1){
+        this.btnShowTj=true;
+      }
+      if(this.temp.wstatus===2){
+        this.btnShowTs=true;
+      }
+    },
+    yincang(){
+      this.dis='inline-block'
+        this.dis2='none'
+        this.btnShowTj=false;
+        this.btnShowTs=false;
+        this.temp.wstatus=1;
+    },
+    
     },
     filters:{
       dateFilter(date,format="YYYY-MM-DD"){
