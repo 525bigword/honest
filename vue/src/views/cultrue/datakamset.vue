@@ -380,7 +380,7 @@ import { mapGetters } from 'vuex'
         })
         })
         }else{
-           this.temp.dfile=''
+          this.temp.dfile='1'
           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
@@ -463,19 +463,34 @@ import { mapGetters } from 'vuex'
         }
       },
       handleImgChange1(file, fileList, name) {
-        console.debug(file)
-      this.file=file.raw
+       
+        const isLt2M = file.size / 1024  < 500;
+      if(!isLt2M){
+        this.$message({
+          showClose:true,
+          message:'文件不能超过500k',
+          type: 'warning'
+        })
+        if(fileList){
+    this.fileList=fileList.slice(0,1)
+     this.i=0;
+  }
+      }else{
+         this.file=file.raw
         if(fileList){
     this.fileList=fileList.slice(-1)
      this.i=1;
   }
+      }
+        console.debug(this.file)
+        
     },
     beforeAvatarUpload(file){
-      const isLt2M = file.size / 1024 / 1024 < 50;
+      const isLt2M = file.size / 1024  < 500;
       if(!isLt2M){
         this.$message({
           showClose:true,
-          message:'文件不能超过50M',
+          message:'文件不能超过500k',
           type: 'warning'
         })
         return false;

@@ -32,7 +32,7 @@ export function imp(data) {
 
 // 修改用户
 export function update(data) {
-    console.debug(data.dfileName)
+    console.debug(data.dfile)
     return request({
         url: '/datacollection/update',
         method: 'post',
