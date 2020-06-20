@@ -92,7 +92,7 @@
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
         <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData():createData()">
-          保存
+          更新
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
           返回
@@ -115,7 +115,7 @@
        >
         </quill-editor>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者名字" prop="sysStaff" >
+        <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者姓名" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
         </el-form-item>
         <el-form-item style="font-weight: bold;" label="创建时间" prop="wCreateTime" >
@@ -236,10 +236,6 @@ import { mapGetters } from 'vuex'
           wid: undefined,
           wtitle: '',
           wcontent: '',
-          wnew: {
-            name: '',
-            sid: null
-          },
           sysStaff: {
             name: '',
             sid: 0
@@ -270,7 +266,7 @@ import { mapGetters } from 'vuex'
         })
       },
       // 添加对话框里，点击确定，执行添加操作
-      createData(val) {
+      createData() {
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
@@ -369,6 +365,7 @@ import { mapGetters } from 'vuex'
           console.debug(this.deleteid)
           deleteRiskpointwarning(this.deleteid).then((response) => {
             // 刷新数据表格
+            this.pageNum=1;
             this.getList()
             // ajax去后台删除
             this.$notify({

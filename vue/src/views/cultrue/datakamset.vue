@@ -148,7 +148,7 @@
           通过审核
         </el-button>
         <el-button type="primary" :disabled="isShow"  @click="dialogStatus==='update'?updateData(0):createData(0)">
-          保存
+          更新
         </el-button>
          <el-button @click="resetTemp">
           取消
@@ -480,6 +480,7 @@ import { mapGetters } from 'vuex'
           console.debug(this.deleteid)
           deleteDatakamset(this.deleteid).then((response) => {
             // 刷新数据表格
+            this.pageNum=1;
             this.getList()
             // ajax去后台删除
             this.$notify({

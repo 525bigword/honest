@@ -222,10 +222,10 @@ export const asyncRouterMap = [
             meta: { title: '风险点预警点管理', icon: 'user' },
             menu: 'user'
         }, {
-            path: 'windculture',
-            name: '清风文苑',
-            component: _import('cultrue/windculture'),
-            meta: { title: '清风文苑', icon: 'user' },
+            path: 'systemprocess',
+            name: '制度流程完善',
+            component: _import('riskmanagement/systemprocess'),
+            meta: { title: '制度流程完善', icon: 'user' },
             menu: 'user'
         }]
     },

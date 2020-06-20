@@ -19,8 +19,6 @@ import java.util.Map;
 public class RiskpointwarningController {
     @Autowired
     private RiskpointwarningService riskpointwarningService;
-    @Autowired
-    private SysStaffService sysStaffService;
     @GetMapping("/get/{pageNum}/{pageRow}")
     public JSONObject findRiskpointwarning(@PathVariable Integer pageNum, String wTitle,String wContent, @PathVariable Integer pageRow){
         if(wTitle==null||wContent==null){

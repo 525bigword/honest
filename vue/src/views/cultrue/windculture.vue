@@ -94,7 +94,7 @@
           通过审核
         </el-button>
         <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData(0):createData(0)">
-          保存
+          更新
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
           返回
@@ -414,6 +414,7 @@ import { mapGetters } from 'vuex'
           console.debug(this.deleteid)
           deleteWind(this.deleteid).then((response) => {
             // 刷新数据表格
+             this.pageNum=1;
             this.getList()
             // ajax去后台删除
             this.$notify({

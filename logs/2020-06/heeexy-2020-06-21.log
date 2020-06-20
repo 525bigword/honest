@@ -1,0 +1,74 @@
+2020-06-21 00:00:02.887 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-4] - looking up handler for path: /SysStaff/getInfo
+2020-06-21 00:00:02.889 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: SELECT u.sid userId,u.name nickname,u.pid roleId,r.pname roleName,p.menu_code menuCode,p.permission_code permissionCode FROM sys_staff u LEFT JOIN sys_post r ON r.pid = u.pid LEFT JOIN sys_post_permission rp ON u.pid = rp.postid LEFT JOIN sys_permission p ON rp.pid = p.id WHERE u.username = ? AND u.staus = '1' 
+2020-06-21 00:00:02.889 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: admin(String)
+2020-06-21 00:00:03.687 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-3] - looking up handler for path: /wind/get/1/5
+2020-06-21 00:00:03.769 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <==      Total: 1
+2020-06-21 00:00:03.770 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: SELECT p.menu_code menuCode FROM sys_permission p ORDER BY p.id 
+2020-06-21 00:00:03.771 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: 
+2020-06-21 00:00:03.810 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-3] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-21 00:00:03.813 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-21 00:00:03.814 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: (String)
+2020-06-21 00:00:03.857 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-21 00:00:03.857 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-21 00:00:03.861 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <==      Total: 81
+2020-06-21 00:00:03.863 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: SELECT p.permission_code permissionCode FROM sys_permission p ORDER BY p.id 
+2020-06-21 00:00:03.863 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: 
+2020-06-21 00:00:03.946 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:03.946 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====> Parameters: 1(Integer)
+2020-06-21 00:00:03.964 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <==      Total: 81
+2020-06-21 00:00:04.813 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <====      Total: 1
+2020-06-21 00:00:04.815 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:04.816 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====> Parameters: 2(Integer)
+2020-06-21 00:00:04.899 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <====      Total: 1
+2020-06-21 00:00:04.900 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <==      Total: 5
+2020-06-21 00:00:05.964 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-21 00:00:05.965 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: 
+2020-06-21 00:00:06.856 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <==      Total: 2
+2020-06-21 00:00:09.935 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-2] - looking up handler for path: /wind/get/3/5
+2020-06-21 00:00:10.806 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-2] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-21 00:00:10.808 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-21 00:00:10.808 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: (String)
+2020-06-21 00:00:10.850 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-21 00:00:10.850 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: (String), 10(Long), 5(Long)
+2020-06-21 00:00:10.939 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:10.940 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====> Parameters: 2(Integer)
+2020-06-21 00:00:11.829 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <====      Total: 1
+2020-06-21 00:00:11.830 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:11.831 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====> Parameters: 1(Integer)
+2020-06-21 00:00:11.913 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <====      Total: 1
+2020-06-21 00:00:11.914 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==      Total: 1
+2020-06-21 00:00:12.823 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-21 00:00:12.823 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: 
+2020-06-21 00:00:12.907 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==      Total: 2
+2020-06-21 00:00:14.490 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-1] - looking up handler for path: /wind/get/2/5
+2020-06-21 00:00:14.806 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-1] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-21 00:00:14.807 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-21 00:00:14.808 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: (String)
+2020-06-21 00:00:14.849 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-21 00:00:14.850 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: (String), 5(Long), 5(Long)
+2020-06-21 00:00:15.766 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:15.767 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====> Parameters: 2(Integer)
+2020-06-21 00:00:15.852 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <====      Total: 1
+2020-06-21 00:00:15.853 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:15.854 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====> Parameters: 1(Integer)
+2020-06-21 00:00:15.937 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <====      Total: 1
+2020-06-21 00:00:15.944 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==      Total: 5
+2020-06-21 00:00:16.850 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-21 00:00:16.851 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 
+2020-06-21 00:00:16.936 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==      Total: 2
+2020-06-21 00:00:19.377 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-10] - looking up handler for path: /wind/get/1/5
+2020-06-21 00:00:20.774 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-10] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-21 00:00:20.775 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-21 00:00:20.776 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: (String)
+2020-06-21 00:00:20.830 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-21 00:00:20.831 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-21 00:00:20.947 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:20.948 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====> Parameters: 1(Integer)
+2020-06-21 00:00:21.813 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <====      Total: 1
+2020-06-21 00:00:21.814 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-21 00:00:21.815 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====> Parameters: 2(Integer)
+2020-06-21 00:00:21.902 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <====      Total: 1
+2020-06-21 00:00:21.903 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==      Total: 5
+2020-06-21 00:00:22.807 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-21 00:00:22.808 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: 
+2020-06-21 00:00:22.890 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==      Total: 2
