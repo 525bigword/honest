@@ -27,6 +27,7 @@
       />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button
+      v-if="hasPerm('post:add')"
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
@@ -34,6 +35,7 @@
         @click="handleCreate"
       >添加</el-button>
       <el-button
+      v-if="hasPerm('post:delete')"
         class="filter-item"
         style="margin-left: 10px;"
         type="danger"
@@ -71,36 +73,16 @@
         align="center"
         :class-name="getSortClass('id')"
       >
-        <!-- <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>-->
+
       </el-table-column>
       <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
-      <!-- <el-table-column prop="menuCode" label="栏目码" width="150px" align="center">
-        
-         <template slot-scope="{row}">
-          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>-->
+
       <el-table-column align="center" prop="mname" label="部门名称"></el-table-column>
-      <!-- <el-table-column prop="menuName" label="栏目名" min-width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
-          <el-tag>{{ row.type | typeFilter }}</el-tag>
-        </template>
-      </el-table-column>-->
+
       <el-table-column align="center" prop="message" label="岗位描述"></el-table-column>
-      <!-- <el-table-column prop="permissionCode" label="权限码" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>-->
+
       <el-table-column align="center" prop="createname" label="创建人"></el-table-column>
-      <!-- <el-table-column prop="permissionName" label="权限名" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>-->
+
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
 
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
@@ -117,13 +99,8 @@
             size="mini"
             type="primary"
             @click="tree(row,$index)"
-          >权限</el-button>
-          <el-button
-            v-if="hasPerm('post:update')"
-            size="mini"
-            type="primary"
-            @click="handleUpdate(row,$index)"
           >修改</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -171,7 +148,7 @@
       </div>
     </el-dialog>
     <!-- 树形层 -->
-    <el-dialog @closed="treeClose" title="岗位权限" :fullscreen="true" :visible.sync="treeDisable">
+    <el-dialog @closed="treeClose" :title="dialogStatus==='create'?'添加':'修改'" :fullscreen="true" :visible.sync="treeDisable">
       <div align="left">
         <el-row>
           <el-col :span="10">
@@ -201,12 +178,9 @@
               <el-form-item label="岗位描述" prop="message">
                 <el-input v-model="temp.message" placeholder="岗位描述" />
               </el-form-item>
-              <el-form-item label="修改权限" >
-              <el-switch v-model="swchi" align="left" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-              </el-form-item>
 
               <!-- <div slot="footer" class="dialog-footer"> -->
-              <el-button type="primary" @click="submit">提交</el-button>
+              <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
               <el-button @click="treeDisable = false">取消</el-button>
               <!-- </div> -->
             </el-form>
@@ -245,7 +219,6 @@ export default {
         label: "menuName",
         children: "sysPermissions"
       },
-      swchi:false,
       default_checked: [],
       treedata: [],
       treeDisable: false,
@@ -260,7 +233,7 @@ export default {
         clearable: true
       },
       deletelist: [],
-      placeholder: "",
+      placeholder: "所属部门",
       bm: [],
       radio: "",
       tableKey: 0,
@@ -328,7 +301,9 @@ export default {
     submit() {},
     treeClose() {
       console.log(this.default_checked);
+      this.default_checked=[]
       // setCheckedKeys
+      this.placeholder = '所属部门'
       this.default_checked.filter(value => {
         this.$refs.tree.setChecked(value, false, true); //利用这个方法就可以获取到父节点
       });
@@ -336,11 +311,15 @@ export default {
       // this.default_checked
     },
     treecheck(leafOnly, includeHalfChecked) {
-      console.log(leafOnly, includeHalfChecked);
       let res = this.$refs.tree.getCheckedNodes(true); //利用这个方法就可以获取到父节点
       console.log(res);
+      this.default_checked=[]
+      res.filter(i=>{
+        this.default_checked.push(i.id)
+      })
     },
     tree(row) {
+      this.dialogStatus="update"
       console.log(row);
       this.placeholder = row.mname;
       console.log(row);
@@ -415,9 +394,10 @@ export default {
       // if (!this.hasPerm('staff:list')) {
       //   return
       // }
-
-      let mids = this.listQuery.bm.join(",");
-      console.log(mids);
+      console.log(this.listQuery.bm)
+      console.log(this.temp.defaultvalue)
+      // let mids = this.listQuery.bm.join(",");
+      // console.log(mids);
       this.listLoading = true;
       this.api({
         url: "syspost/get/" + this.listQuery.page + "/" + this.listQuery.limit,
@@ -425,7 +405,7 @@ export default {
         data: {
           pname: this.listQuery.name,
           message: this.listQuery.message,
-          mids: mids
+          mids: this.temp.defaultvalue[0]
         }
       }).then(response => {
         console.log("getlist", response);
@@ -499,7 +479,7 @@ export default {
     handleCreate() {
       this.resetTemp();
       this.dialogStatus = "create";
-      this.dialogFormVisible = true;
+      this.treeDisable = true;
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
       });
@@ -507,12 +487,14 @@ export default {
     createData() {
       this.temp.id = store.getters.userId;
       console.log(this.temp);
+      console.log(this.default_checked);
       if (!this.temp.pname || !this.temp.defaultvalue) {
         this.$message({
           type: "error",
           message: "请将信息填写完整"
         });
       } else {
+        let arr=this.default_checked.join(',')
         this.api({
           url: "syspost/add",
           method: "post",
@@ -520,7 +502,8 @@ export default {
             pname: this.temp.pname,
             mid: this.temp.defaultvalue,
             message: this.temp.message,
-            createId: this.temp.id
+            createId: this.temp.id,
+            arr:arr
           }
         }).then(respone => {
           console.log(respone);
@@ -535,7 +518,7 @@ export default {
               message: "添加成功"
             });
             this.getList();
-            this.dialogFormVisible = false;
+            this.treeDisable = false;
           }
         });
       }
@@ -556,12 +539,12 @@ export default {
     },
     updateData() {
       console.log("temp", this.temp);
+      console.log("this.default_checked",this.default_checked);
       this.$alert("是否确定修改", "提示", {
         showCancelButton: true,
         showConfirmButton: true,
         closeOnPressEscape: false,
         callback: action => {
-          console.log(this.temp);
           if (action === "confirm") {
             if (!this.temp.pname || !this.temp.pid || !this.temp.mid) {
               this.$message({
@@ -569,6 +552,9 @@ export default {
                 message: "请将信息填写完整"
               });
             } else {
+
+              let arr=this.default_checked.join(",")
+              console.log(arr)
               this.api({
                 url: "syspost/update",
                 method: "post",
@@ -576,11 +562,15 @@ export default {
                   pid: this.temp.pid,
                   mid: this.temp.mid,
                   pname: this.temp.pname,
-                  message: this.temp.message
+                  message: this.temp.message,
+                  createId:store.getters.userId,
+                  createTime:this.temp.createTime,
+                  arr:arr
                 }
               }).then(res => {
+                
                 this.getList();
-                this.dialogFormVisible = false;
+                this.treeDisable = false;
               });
             }
           }
@@ -588,6 +578,7 @@ export default {
       });
     },
     handleDelete(row, index) {
+      console.log(row,index)
       if (this.deletelist.length < 1) {
         this.$message({
           type: "error",

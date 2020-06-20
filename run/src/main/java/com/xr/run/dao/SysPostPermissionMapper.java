@@ -6,8 +6,10 @@ import com.xr.run.entity.SysPermission;
 import com.xr.run.entity.SysPost;
 import com.xr.run.entity.SysPostPermission;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.omg.CORBA.INTERNAL;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +30,14 @@ public interface SysPostPermissionMapper extends BaseMapper<SysPostPermission> {
      */
     @Select("select pid from sys_post_permission where postid=#{postid}")
     List<Integer> findSysPostPermissionByPostIdToPid(@Param("postid") Integer postid);
+    /**
+     * 按postid删除
+     */
+    @Delete("delete from sys_post_permission where postid=#{postid}")
+    void delSysPostPermissionByPostId(@Param("postid")Integer postid);
+    /**
+     * 新增
+     */
+    @Insert("insert into sys_post_permission value(null,#{p.pid},#{postid},1,#{p.createTime},#{p.createId})")
+    void addSysPostPermission(@Param("p")SysPost sysPost, @Param("postid")Integer postid);
 }

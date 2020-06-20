@@ -9,6 +9,7 @@ import com.xr.run.service.SysPostService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class SysPostController {
     @Autowired
     private SysStaffService sysStaffService;
     @PostMapping("get/{pageNum}/{pageRow}")
+    @RequiresPermissions("post:list")
     public JSONObject getPage(@PathVariable Integer pageNum, @PathVariable Integer pageRow,  @RequestBody JSONObject jsonObject){
         System.out.println(pageNum);
         System.out.println(pageRow);
@@ -42,7 +44,9 @@ public class SysPostController {
     }
 
     @PostMapping("add")
+    @RequiresPermissions("post:add")
     public JSONObject addSysPost(@RequestBody SysPost sysPost){
+        System.out.println(sysPost);
         try {
             sysPostService.addSysPost(sysPost);
             return CommonUtil.successJson(1);
@@ -53,6 +57,7 @@ public class SysPostController {
     }
 
     @PostMapping("update")
+    @RequiresPermissions("post:update")
     public JSONObject upSysPost(@RequestBody SysPost sysPost){
         System.out.println(sysPost);
         sysPostService.upSysPost(sysPost);
@@ -60,6 +65,7 @@ public class SysPostController {
     }
 
     @PostMapping("del")
+    @RequiresPermissions("post:delete")
     public JSONObject delSysPost(String arr){
         String[] split = arr.split(",");
         for (int i=0;i<split.length;i++){

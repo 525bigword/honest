@@ -44,6 +44,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      * 新增
      */
     @Insert("insert into sys_post value(null,#{p.pname},#{p.mid},#{p.message},#{p.createTime},#{p.createId},'1')")
+    @Options(useGeneratedKeys = true,keyProperty = "pid",keyColumn = "pid")
     void addSysPost(@Param("p")SysPost sysPost);
     /**
      * 修改
