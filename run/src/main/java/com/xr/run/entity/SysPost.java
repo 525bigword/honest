@@ -1,6 +1,7 @@
 package com.xr.run.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SysPost {
 
   private int pid;
@@ -20,6 +22,7 @@ public class SysPost {
   private int createId;
   private String staus;
   //TODO 业务属性
+  private String arr;
   private String mname;
   private String createname;
   private List<SysPost> sysPosts;
