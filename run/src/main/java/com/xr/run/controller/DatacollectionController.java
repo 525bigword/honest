@@ -38,10 +38,11 @@ public class DatacollectionController {
         Page<Datacollection> page=new Page(pageNum,pageRow);
         IPage<Datacollection> sysStaffAll = datacollectionService.findDataConllection(page,dTitle);
         return CommonUtil.successJson(sysStaffAll);
-     }
+    }
     @RequestMapping("update")
     public JSONObject updateDatacollection(Datacollection datacollection)  {
-        if(datacollection.getDFile()==""||datacollection.equals("")||datacollection==null){
+        System.out.println(datacollection.getDFile());
+        if(datacollection.getDFile().equals("1")){
             datacollectionService.updateDataConllectionByFile(datacollection);
         }else {
             String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());

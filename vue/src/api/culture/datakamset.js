@@ -7,7 +7,7 @@ export function add(data) {
         params: {
             dTitle: data.dtitle,
             dFile: data.dFile,
-            dFileName: data.dFileName,
+            dFileName: data.dfileName,
             dCreateId: data.sysStaff.sid,
             dStatus: data.dstatus
         }
@@ -32,7 +32,6 @@ export function imp(data) {
 
 // 修改用户
 export function update(data) {
-    console.debug(data.dfileName)
     return request({
         url: '/datacollection/update',
         method: 'post',

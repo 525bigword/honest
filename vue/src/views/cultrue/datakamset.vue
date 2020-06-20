@@ -3,7 +3,7 @@
     <div class="filter-container"  align="center" style="margin-top: 20px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
-      <el-input v-model="dTitle" placeholder="请输入资料锦集标题" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="dtitle" placeholder="请输入资料锦集标题" style="width: 200px;" class="filter-item"/>
      <!--  <el-form-item> -->
 
        &nbsp;&nbsp;
@@ -19,7 +19,7 @@
           </el-button>
        <!--  </el-form-item> -->
     </div>
-    <div>
+    <div style="margin-top:15px">
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
       <el-button type="primary" class="el-icon-download"  @click="handleOutFile">导出文件</el-button></div>
@@ -33,7 +33,7 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;margin-top: 30px"
+      style="width: 100%;margin-top: 20px"
       ref="multipleTable"
     >
     <el-table-column type="selection" width="60px" align="center"></el-table-column>
@@ -101,22 +101,23 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 80%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
         
-        <el-form-item label="标题" prop="dTitle" >
+        <el-form-item label="标题" prop="dtitle" >
           <el-input placeholder="请输入资料锦集标题" v-model="temp.dtitle" style="width:80%" />
         </el-form-item>
-        <el-form-item label="文件名" prop="dFileName" ref="fileName">
-          <el-upload
+        <el-form-item label="文件名" prop="dfileName" ref="fileName" >
+          <el-upload  style="width:80%"
   class="upload-demo"
+  v-model="temp.dfileName"
   ref="upload"
   action="https://localhost:8080/imp/import"
+  :on-remove="fileRemove"
   :on-change="handleImgChange1"
   accept=".doc,.docx,.pdf,.txt,.xlsx"
-  :before-upload="beforeAvatarUpload"
   :file-list="fileList"
   :limit="2"
   :auto-upload="false">
-  <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过50M</div>
+  <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
+  <div slot="tip"  class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过50M</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime" >
@@ -140,16 +141,16 @@
           dialogStatus==='create'?createData():updateData()
           dialogStatus需要我们根据情况去改变
         -->
-        <el-button type="primary" v-if="temp.dstatus===0||temp.dstatus===1"  @click="dialogStatus==='update'?updateData(2):createData(2)">
+        <el-button type="primary" :disabled="isShow"  v-show="btnShowTj"  @click="dialogStatus==='update'?updateData(2):createData(2)">
           提交审核
         </el-button>
-        <el-button type="primary" v-if="temp.dstatus===2" @click="updateData(3)">
+        <el-button type="primary" :disabled="isShow" v-show="btnShowTs" @click="updateData(3)">
           通过审核
         </el-button>
-        <el-button type="primary"  @click="dialogStatus==='update'?updateData(0):createData(0)">
+        <el-button type="primary" :disabled="isShow"  @click="dialogStatus==='update'?updateData(0):createData(0)">
           保存
         </el-button>
-         <el-button @click="dialogFormVisible = false&&resetTemp()">
+         <el-button @click="resetTemp">
           取消
         </el-button>
       </div>
@@ -177,12 +178,12 @@ import { mapGetters } from 'vuex'
         listLoading: true, // 是否使用动画
           pageNum: 1, // 分页需要的当前页
           pageRow:5, // 分页需要的每页显示多少
-          dTitle: '',
+          dtitle: '',
           dstatus: 1,
         temp: { // 添加、修改时绑定的表单数据
           uid: undefined,
-          dTitle: '',
-          dFileName: '',
+          dtitle: '',
+          dfileName: '',
           dFile: '',
           sysStaff: {
             name: '',
@@ -194,6 +195,9 @@ import { mapGetters } from 'vuex'
           fileList: []
         },
         i:0,
+        isShow:false,
+        btnShowTs:false,
+        btnShowTj:false,
         fileList: [],
         file:{},
         title: '添加', // 对话框显示的提示 根据dialogStatus create
@@ -201,11 +205,13 @@ import { mapGetters } from 'vuex'
         dialogStatus: '', // 表示表单是添加还是修改的
         rules: {
           // 校验规则
-          //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
-          //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
+          dtitle:  [{ required: true, message: '标题不能为空', trigger: ['blur','change']}],
+          dfileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
         },
         multipleSelection:[],
-        deleteid:[]
+        deleteid:[],
+        formData:null,
+        fileAgin:null
       }
     },
     // 创建实例时的钩子函数
@@ -232,7 +238,7 @@ import { mapGetters } from 'vuex'
         /* let data=qs.stringify({
           account: this.listQuery.account
         }) */
-        list(this.pageNum,this.pageRow,this.dTitle).then(response => {
+        list(this.pageNum,this.pageRow,this.dtitle).then(response => {
           this.list=response.records;
           this.total=(response.total)
           
@@ -242,14 +248,15 @@ import { mapGetters } from 'vuex'
         })
       },
       resetSou(){
-        this.dTitle=''
+        this.dtitle=''
       },
       // 重置表单数据
       resetTemp() {
+        
         this.temp = {
           uid: undefined,
-          dTitle: '',
-          dFileName: '',
+          dtitle: '',
+          dfileName: '',
           dFile: '',
           sysStaff: {
             name: '',
@@ -260,13 +267,19 @@ import { mapGetters } from 'vuex'
           dstatus:1
         }
         this.fileList=[]
-
+        this.file={}
+        this.i=0
+        this.fileAgin=''
+        this.yincang()
+        this.dialogFormVisible = false
       },
       // 显示添加的对话框
       handleCreate () {
         
         // 重置表单数据
         this.resetTemp()
+        this.i=3
+        this.xianshi()
         if(this.temp.dstatus===1){
           this.temp.status='创建'
         }else if(this.temp.dstatus===2){
@@ -288,19 +301,21 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData(val) {
+        
+        if (!this.hasPerm('datacollection:add')) {
+          return
+        }
         if(val!==0){
             this.temp.dstatus=val;
         }
-        let formData = new FormData();
-        formData.append("file", this.file);
-        this.temp.dFileName=this.file.name
-        imp(formData).then((response)=>{
-          this.temp.dFile=response.dFile
-            console.debug(this.temp)
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
-          if (valid) {
+              if (valid) {
+        imp(this.formData).then((response)=>{
+          this.temp.dFile=response.dFile
+            console.debug(this.temp)
+            this.isShow=true
             // 调用api里的sys里的user.js的ajax方法
             add(this.temp).then((response) => {
 
@@ -311,18 +326,23 @@ import { mapGetters } from 'vuex'
               // 显示一个通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '新增成功',
                 type: 'success',
                 duration: 2000
               })
-            })
+              this.isShow=false
+              this.yincang()
+              this.i=0;
+          
+          })
+          })
           }
+          
         })
-        })
-        
       },
       // 显示修改对话框
       handleUpdate(row) {
+         this.fileAgin=row.dfileName
         this.temp = row;
         if(this.temp.dstatus===1){
           this.temp.status='创建'
@@ -334,8 +354,7 @@ import { mapGetters } from 'vuex'
         this.fileList=[{name:row.dfileName,url:row.dfile}];
         this.temp.dCreateTime=row.dcreateTime
         console.debug(this.temp)
-        // 将row里面与temp里属性相同的值，进行copy
-        this.temp = Object.assign({}, row) // copy obj
+        this.xianshi()
         // 将对话框里的确定点击时，改为执行修改操作
         this.dialogStatus = 'update'
         // 修改标题
@@ -349,19 +368,24 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
-        
+        if (!this.hasPerm('datacollection:update')) {
+          return
+        }
+      if( this.fileAgin!==this.fileList[0].name){
+          this.i=1;
+      }
+      if(val!==0){//判断状态
+            this.temp.dstatus=val;
+            }
+      console.debug(this.i)
         if(this.i===1){
-          let formData = new FormData();
-        formData.append("file", this.file);
-        this.temp.dfileName=this.file.name
-            imp(formData).then((response)=>{
+            imp(this.formData).then((response)=>{
           this.temp.dfile=response.dFile
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
-            if(val!==0){//判断状态
-            this.temp.dstatus=val;
-            }
+            
+            this.isShow=true
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -371,22 +395,22 @@ import { mapGetters } from 'vuex'
               // 显示通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               })
+              this.isShow=false
+              this.yincang()
             })
           }
         })
         })
-        }else{
-           this.temp.dfile=''
+        }else if(this.i===0){
+          this.temp.dfile='1'
           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
-            if(val!==0){//判断状态
-            this.temp.dstatus=val;
-            }
+            this.isShow=true
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -396,19 +420,24 @@ import { mapGetters } from 'vuex'
               // 显示通知
               this.$notify({
                 title: '成功',
-                message: response.data.message,
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               })
+              this.isShow=false
+              this.yincang()
             })
           }
+          this.temp.dfile=''
         })
         }
-        
-        
+        this.i=0;
         
       },
       handleOutFile(){
+        if (!this.hasPerm('datacollection:out')) {
+          return
+        }
         this.multipleSelection.forEach(row=>{
            let path=this.virtualIp+row.dfile
            var aDom = document.createElement('a')
@@ -421,6 +450,9 @@ import { mapGetters } from 'vuex'
           })
       },
       handleDelete() {
+        if (!this.hasPerm('datacollection:delete')) {
+          return
+        }
         // 先弹确认取消框
         let title='';
         if(this.multipleSelection.length<1){
@@ -452,7 +484,7 @@ import { mapGetters } from 'vuex'
             // ajax去后台删除
             this.$notify({
               title: '成功',
-              message: response.data.message,
+              message:'删除成功',
               type: 'success',
               duration: 2000
             })
@@ -463,23 +495,44 @@ import { mapGetters } from 'vuex'
         }
       },
       handleImgChange1(file, fileList, name) {
-        console.debug(file)
-      this.file=file.raw
-        if(fileList){
-    this.fileList=fileList.slice(-1)
-     this.i=1;
-  }
-    },
-    beforeAvatarUpload(file){
-      const isLt2M = file.size / 1024 / 1024 < 50;
+        
+        const isLt2M = file.size / 1024  < 500;
       if(!isLt2M){
+        console.debug(this.dfileName)
         this.$message({
           showClose:true,
-          message:'文件不能超过50M',
+          message:'文件不能超过500k',
           type: 'warning'
         })
-        return false;
+        if(fileList.length==2){
+        this.fileList=fileList.slice(0,1)
+        }else{
+          this.fileList=fileList.slice(1)
+        }
+      }else{
+         this.file=file.raw
+        if(fileList){
+        this.fileList=fileList.slice(-1)
       }
+      }
+       this.formData= new FormData();
+        this.formData.append("file", this.file);
+        this.temp.dfileName=this.file.name
+      this.$refs['dataForm'].validate((valid) => {})
+       
+    },
+    xianshi(){
+      if(this.temp.dstatus===1){
+        this.btnShowTj=true;
+      }
+      if(this.temp.dstatus===2){
+        this.btnShowTs=true;
+      }
+    },
+    yincang(){
+        this.btnShowTj=false;
+        this.btnShowTs=false;
+        this.temp.dstatus=1;
     },
     handleSizeChange(size) {
        this.deleteid=[];
@@ -497,6 +550,10 @@ import { mapGetters } from 'vuex'
       let self=this;
       self.multipleSelection= rows;
       console.debug(self.multipleSelection)
+    },
+    fileRemove(file, fileList){
+      this.file={}
+      this.temp.dfileName=''
     },
     indexMethod(val){
       return ++val

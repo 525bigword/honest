@@ -201,8 +201,13 @@ export const asyncRouterMap = [
             component: _import('cultrue/datakamset'),
             meta: { title: '资料锦集', icon: 'user' },
             menu: 'user'
-        }
-        ]
+        }, {
+            path: 'windculture',
+            name: '清风文苑',
+            component: _import('cultrue/windculture'),
+            meta: { title: '清风文苑', icon: 'user' },
+            menu: 'user'
+        }]
     },
     { path: '*', redirect: '/404', hidden: true }
 ]

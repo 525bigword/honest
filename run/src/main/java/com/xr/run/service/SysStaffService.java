@@ -41,5 +41,6 @@ public interface SysStaffService extends IService<SysStaff> {
      *  按照岗位查询员工数量
      */
     Integer findSysStaffToCount(String[] pids);
+    List<SysStaff> findSysStaff();
 
 }

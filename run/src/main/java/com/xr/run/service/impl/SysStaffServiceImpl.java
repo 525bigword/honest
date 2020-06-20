@@ -108,4 +108,9 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         }
         return 0;
     }
+
+    @Override
+    public  List<SysStaff>  findSysStaff() {
+        return baseMapper.findSysStaff();
+    }
 }
