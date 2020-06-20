@@ -22,7 +22,7 @@ public  interface RiskpointwarningService extends IService<Riskpointwarning> {
      * @param wTitle
      * @return
      */
-    IPage<Riskpointwarning> findRiskpointwarning(Page page, String wTitle);
+    IPage<Riskpointwarning> findRiskpointwarning(Page page, String wTitle,String wContent);
 
     /**
      * 修改风险点预警

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 public  class RiskpointwarningServiceImpl extends ServiceImpl<RiskpointwarningMapper,Riskpointwarning> implements RiskpointwarningService {
 
     @Override
-    public IPage<Riskpointwarning> findRiskpointwarning(Page page, String wTitle) {
-        return baseMapper.findRiskpointwarning(page,wTitle);
+    public IPage<Riskpointwarning> findRiskpointwarning(Page page, String wTitle,String wContent) {
+        return baseMapper.findRiskpointwarning(page,wTitle,wContent);
     }
 
     @Override

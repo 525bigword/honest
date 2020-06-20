@@ -12,19 +12,19 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public  interface RiskpointwarningMapper extends BaseMapper<Riskpointwarning> {
-    @Select("select wid,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wTitle like CONCAT('%',#{wTitle},'%') order by wid desc")
+    @Select("select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',#{wTitle},'%') and wContent like CONCAT('%',#{wContent},'%') order by wid desc")
     @Results({
             @Result(column = "wCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<Riskpointwarning> findRiskpointwarning(Page page, String wTitle);
+    IPage<Riskpointwarning> findRiskpointwarning(Page page, String wTitle,String wContent);
 
-    @Update("update riskpointwarning set wTitle=#{wTitle},wContent=#{wContent},wStatus=#{wStatus} where wid=#{wid}")
+    @Update("update riskpointwarning set wTitle=#{wTitle},wContent=#{wContent} where wid=#{wid}")
     void updateRiskpointwarningByWid(Riskpointwarning riskpointwarning);
 
-    @Insert("insert into riskpointwarning(wid,wTitle,wContent,wCreateTime,wLoginId,wStatus) VALUES(null,#{wTitle},#{wContent},NOW(),#{wCreateId},#{wStatus})")
+    @Insert("insert into riskpointwarning(wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus) VALUES(null,#{numId},#{wTitle},#{wContent},NOW(),#{wCreateId},0)")
     void insertRiskpointwarning(Riskpointwarning riskpointwarning);
 
-    @Delete("delete from  riskpointwarning where wid=#{wid}")
+    @Delete("update riskpointwarning set wStatus=1 where wid=#{wid}")
     void deleteRiskpointwarningByWid(int wid);
 }

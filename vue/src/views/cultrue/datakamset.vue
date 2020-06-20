@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column label="创建时间" sortable prop="dcreateTime"  align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.dcreateTime | dateFilter }}</span>
+          <span>{{ scope.row.dcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <!--     自定义列-->
@@ -558,11 +558,6 @@ import { mapGetters } from 'vuex'
     indexMethod(val){
       return ++val
     }
-    },
-    filters:{
-      dateFilter(date,format="YYYY-MM-DD"){
-        return moment(date).format(format||"YYYY-MM-DD")
-      }
     }
   }
 </script>

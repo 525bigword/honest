@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column label="创建时间" sortable prop="wcreateTime" width="300px"  align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.wcreateTime | dateFilter }}</span>
+          <span>{{ scope.row.wcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -319,6 +319,8 @@ import { mapGetters } from 'vuex'
               })
               this.isShow=false
               this.yincang()
+            }).catch(err=>{
+              this.isShow=false
             })
           }
         })
@@ -465,11 +467,6 @@ import { mapGetters } from 'vuex'
         this.sid=null
     },
     
-    },
-    filters:{
-      dateFilter(date,format="YYYY-MM-DD"){
-        return moment(date).format(format||"YYYY-MM-DD")
-      }
     }
   }
 </script>

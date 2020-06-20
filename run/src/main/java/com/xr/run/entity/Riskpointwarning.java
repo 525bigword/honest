@@ -8,7 +8,8 @@ import java.util.Date;
 
 @Data
 public class Riskpointwarning {
-  private int warningId;
+  private int wid;
+  private String numId;
   private String wTitle;
   private String wContent;
   @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")//页面写入数据库时格式化

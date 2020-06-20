@@ -22,15 +22,16 @@ public class RiskpointwarningController {
     @Autowired
     private SysStaffService sysStaffService;
     @GetMapping("/get/{pageNum}/{pageRow}")
-    public JSONObject findRiskpointwarning(@PathVariable Integer pageNum, String wTitle, @PathVariable Integer pageRow){
-        if(wTitle==null){
+    public JSONObject findRiskpointwarning(@PathVariable Integer pageNum, String wTitle,String wContent, @PathVariable Integer pageRow){
+        if(wTitle==null||wContent==null){
             wTitle="";
+            wContent="";
         }
         System.out.println("findRiskpointwarning");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<Riskpointwarning> page=new Page(pageNum,pageRow);
-        IPage<Riskpointwarning> riskpointwarning = riskpointwarningService.findRiskpointwarning(page,wTitle);
+        IPage<Riskpointwarning> riskpointwarning = riskpointwarningService.findRiskpointwarning(page,wTitle,wContent);
         Map<String,Object> map=new HashMap<>();
         map.put("riskpointwarning",riskpointwarning);
         return CommonUtil.successJson(map);
