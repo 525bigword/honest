@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class SysPost {
@@ -21,4 +22,5 @@ public class SysPost {
   //TODO 业务属性
   private String mname;
   private String createname;
+  private List<SysPost> sysPosts;
 }

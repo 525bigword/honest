@@ -249,7 +249,6 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
-      bmloding:true,
       defaultvalue: ["1"],
       props: {
         value: "mid",

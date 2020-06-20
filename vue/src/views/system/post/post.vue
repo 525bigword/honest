@@ -106,20 +106,18 @@
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
       <el-table-column
         v-if="hasPerm('post:delete')"
-        label="Actions"
+        label="操作"
         align="center"
         width="230"
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row,$index}">
           <el-button
-            v-if="hasPerm('post:delete')"
+            v-if="hasPerm('post:update')"
             size="mini"
-            type="danger"
-            @click="handleDelete(row,$index)"
-          >删除</el-button>
-        </template>
-        <template slot-scope="{row,$index}">
+            type="primary"
+            @click="tree(row,$index)"
+          >权限</el-button>
           <el-button
             v-if="hasPerm('post:update')"
             size="mini"
@@ -172,8 +170,65 @@
         <el-button @click="dialogFormVisible = false">取消</el-button>
       </div>
     </el-dialog>
+    <!-- 树形层 -->
+    <el-dialog @closed="treeClose" title="岗位权限" :fullscreen="true" :visible.sync="treeDisable">
+      <div align="left">
+        <el-row>
+          <el-col :span="10">
+            <el-form
+              ref="dataForm"
+              :rules="rules"
+              :model="temp"
+              label-position="left"
+              label-width="70px"
+              style="width: 400px; margin-left:50px;"
+            >
+              <el-form-item label="岗位名称" class="link-type" prop="pname">
+                <el-input v-model="temp.pname" placeholder="岗位名称" />
+              </el-form-item>
+              <el-form-item label="所属部门">
+                <!-- //temp.parent -->
+                <el-cascader
+                  style="width:100%"
+                  :placeholder="placeholder"
+                  v-model="temp.defaultvalue"
+                  :props="props"
+                  @change="Change"
+                  :show-all-levels="false"
+                  :options="bm"
+                ></el-cascader>
+              </el-form-item>
+              <el-form-item label="岗位描述" prop="message">
+                <el-input v-model="temp.message" placeholder="岗位描述" />
+              </el-form-item>
+              <el-form-item label="修改权限" >
+              <el-switch v-model="swchi" align="left" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+              </el-form-item>
+
+              <!-- <div slot="footer" class="dialog-footer"> -->
+              <el-button type="primary" @click="submit">提交</el-button>
+              <el-button @click="treeDisable = false">取消</el-button>
+              <!-- </div> -->
+            </el-form>
+          </el-col>
+          <el-col :span="10">
+            <el-tree 
+              width="50%"
+              :data="treedata"
+              show-checkbox
+              node-key="id"
+              ref="tree"
+              @check-change="treecheck"
+              v-model="default_checked"
+              :default-checked-keys="default_checked"
+              :props="treeProps"
+            ></el-tree>
+          </el-col>
+        </el-row>
+      </div>
+    </el-dialog>
   </div>
-</template>
+</template> 
 
 <script>
 import store from "../../../store";
@@ -186,6 +241,14 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
+      treeProps: {
+        label: "menuName",
+        children: "sysPermissions"
+      },
+      swchi:false,
+      default_checked: [],
+      treedata: [],
+      treeDisable: false,
       props: {
         value: "mid",
         label: "mechanismName",
@@ -259,8 +322,64 @@ export default {
   created() {
     this.getList();
     this.getSysmechanismAll();
+    this.getTree();
   },
   methods: {
+    submit() {},
+    treeClose() {
+      console.log(this.default_checked);
+      // setCheckedKeys
+      this.default_checked.filter(value => {
+        this.$refs.tree.setChecked(value, false, true); //利用这个方法就可以获取到父节点
+      });
+      console.log(this.default_checked);
+      // this.default_checked
+    },
+    treecheck(leafOnly, includeHalfChecked) {
+      console.log(leafOnly, includeHalfChecked);
+      let res = this.$refs.tree.getCheckedNodes(true); //利用这个方法就可以获取到父节点
+      console.log(res);
+    },
+    tree(row) {
+      console.log(row);
+      this.placeholder = row.mname;
+      console.log(row);
+      this.temp.defaultvalue = [];
+      this.temp.defaultvalue.push(row.mid);
+      console.log("defaultvalue", this.temp.defaultvalue);
+      this.temp = Object.assign({}, row); // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp);
+
+      this.api({
+        url: "SysPostPermission/get/" + row.pid,
+        method: "get"
+      }).then(res => {
+        console.log(res);
+        this.default_checked = [];
+        res.filter(item => {
+          this.default_checked.push(item);
+        });
+        this.$nextTick(() => {
+          this.$refs["dataForm"].clearValidate();
+        });
+        console.log(this.default_checked);
+
+        this.treeDisable = true;
+      });
+    },
+    getTree() {
+      this.api({
+        url: "SysPostPermission/get",
+        method: "get"
+      }).then(res => {
+        console.log("getTree", res);
+        this.treedata = [];
+        res.filter(item => {
+          this.treedata.push(item);
+        });
+        console.log(this.treedata);
+      });
+    },
     toggleRowExpansion(val) {
       console.log("val", val);
       this.deletelist = [];
@@ -476,48 +595,25 @@ export default {
         });
       } else {
         console.log(this.deletelist);
-        let arr = this.deletelist.join(",");
-        this.api({
-          url:'syspost/del',
-          method:'post',
-          params:{
-            arr:arr
+        this.$alert("是否确定删除", "提示", {
+          showCancelButton: true,
+          showConfirmButton: true,
+          closeOnPressEscape: false,
+          callback: action => {
+            let arr = this.deletelist.join(",");
+            this.api({
+              url: "syspost/del",
+              method: "post",
+              params: {
+                arr: arr
+              }
+            }).then(res => {
+              console.log(res);
+              this.getList();
+            });
           }
-        }).then(res=>{
-          console.log(res)
-        })
+        });
       }
-
-      // this.api({
-      //   url: "syspermission/del",
-      //   method: "delete",
-      //   data: row
-      // }).then(res => {
-      //   // console.log(res);
-      //   if (res === 1) {
-      //     this.$notify({
-      //       title: "Success",
-      //       message: "Delete Successfully",
-      //       type: "success",
-      //       duration: 2000
-      //     });
-      //     this.list.splice(index, 1);
-      //   } else {
-      //     this.$notify({
-      //       title: "error",
-      //       message: "请最后删除列表(list)项",
-      //       type: "error",
-      //       duration: 2000
-      //     });
-      //   }
-      // });
-      // this.$notify({
-      //   title: "Success",
-      //   message: "Delete Successfully",
-      //   type: "success",
-      //   duration: 2000
-      // });
-      // this.list.splice(index, 1);
     },
     handleFetchPv(pv) {
       //   fetchPv(pv).then(response => {
