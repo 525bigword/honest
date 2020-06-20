@@ -4,7 +4,7 @@
     <div class="filter-container"  align="center" style="margin-top: 20px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
-      <el-input v-model="wTitle" placeholder="请输入清风文苑标题" style="width: 200px;" class="filter-item"/>
+      <el-input v-model="wtitle" placeholder="请输入清风文苑标题" style="width: 200px;" class="filter-item"/>
      <!--  <el-form-item> -->
 
        &nbsp;&nbsp;
@@ -100,14 +100,14 @@
           返回
         </el-button>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="清风文苑标题" prop="wTitle" >
+        <el-form-item style="font-weight: bold;" label="清风文苑标题" prop="wtitle" >
           <el-input v-model="temp.wtitle" placeholder="请输入清风文苑标题" style="width:50%" />
         </el-form-item>
         <!-- <el-form-item style="font-weight: bold;" label="所属部门" prop="dTitle" >
           <el-input placeholder="请输入清风文苑标题" style="width:30%" />
         </el-form-item> -->
-        <el-form-item style="font-weight: bold;" label="投稿人" prop="wnew" >
-          <el-select v-model="temp.wnew.sid" placeholder="请选择" style="width:30%">
+        <el-form-item style="font-weight: bold;" label="投稿人" prop="sid" >
+          <el-select v-model="temp.sid" placeholder="请选择" style="width:30%">
               <el-option
              v-for="item in wew"
             :key="item.sid"
@@ -117,7 +117,7 @@
            </el-select>
         </el-form-item>
         
-        <el-form-item style="font-weight: bold;" label="文章内容" prop="wContent" >
+        <el-form-item style="font-weight: bold;" label="文章内容" prop="wcontent" >
           <quill-editor class="editor"  style="height:400px;width:85%;"
         ref="myQuillEditor"
         v-model="temp.wcontent"
@@ -157,13 +157,13 @@ import { mapGetters } from 'vuex'
     },
     components: {  },
     data() {
-      const validateRequire = (rule, value, callback) => {
+      /* const validateRequire = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('标题不能为空!'))
       } else {
         callback()
       }
-    }
+    } */
       return {
         dis:'inline-block',
         dis2:'none',
@@ -173,12 +173,12 @@ import { mapGetters } from 'vuex'
         listLoading: true, // 是否使用动画
           pageNum: 1, // 分页需要的当前页
           pageRow:5, // 分页需要的每页显示多少
-          wTitle: '',
+          wtitle: '',
           wstatus: 1,
         temp: { // 添加、修改时绑定的表单数据
           wid: undefined,
-          wTitle: '',
-          wContent: '',
+          wtitle: '',
+          wcontent: '',
           wnew: {
             name: '',
             sid: null
@@ -189,7 +189,8 @@ import { mapGetters } from 'vuex'
           },
           wCreateTime:new Date(),
           status: '',
-          wstatus:1
+          wstatus:1,
+          sid:null
         },
         i:0,
         title: '添加', // 对话框显示的提示 根据dialogStatus create
@@ -199,7 +200,8 @@ import { mapGetters } from 'vuex'
           // 校验规则
           //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
           //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
-          wTitle: [{validator: validateRequire}]
+          wtitle: [{required:true,message:'标题不能为空',trigger:['blur','change']}],
+          sid:[{required:true,message:'请选择投稿人',trigger:['change']}]
         },
         isShow:false,
         btnShowTs:false,
@@ -233,7 +235,7 @@ import { mapGetters } from 'vuex'
         /* let data=qs.stringify({
           account: this.listQuery.account
         }) */
-        list(this.pageNum,this.pageRow,this.wTitle).then(response => {
+        list(this.pageNum,this.pageRow,this.wtitle).then(response => {
           this.list=response.wind.records;
           this.total=(response.wind.total)
           this.wew=response.sys
@@ -243,14 +245,14 @@ import { mapGetters } from 'vuex'
         })
       },
       resetSou(){
-        this.wTitle=''
+        this.wtitle=''
       },
       // 重置表单数据
       resetTemp() {
         this.temp = {
           wid: undefined,
-          wTitle: '',
-          wContent: '',
+          wtitle: '',
+          wcontent: '',
           wnew: {
             name: '',
             sid: null
@@ -261,7 +263,8 @@ import { mapGetters } from 'vuex'
           },
           wCreateTime:new Date(),
           status: '',
-          wstatus:1
+          wstatus:1,
+          sid:null
         }
 
       },
@@ -291,7 +294,6 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData(val) {
-        this.isShow=true
         if(val!==0){
             this.temp.wstatus=val;
         }
@@ -300,6 +302,7 @@ import { mapGetters } from 'vuex'
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
           if (valid) {
+            this.isShow=true
             // 调用api里的sys里的user.js的ajax方法
             add(this.temp).then((response) => {
               
@@ -333,6 +336,7 @@ import { mapGetters } from 'vuex'
           this.temp.status='已审核'
         }
         this.temp.wCreateTime=row.wcreateTime
+        this.temp.sid=row.wnew.sid
         console.debug(this.temp)
         // 将row里面与temp里属性相同的值，进行copy
         this.temp = Object.assign({}, row) // copy obj
@@ -348,13 +352,13 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
-        this.isShow=true
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             if(val!==0){//判断状态
             this.temp.wstatus=val;
             }
+            this.isShow=true
             console.debug(this.temp)
             // 进行ajax提交
             update(this.temp).then((response) => {
@@ -458,6 +462,7 @@ import { mapGetters } from 'vuex'
         this.btnShowTj=false;
         this.btnShowTs=false;
         this.temp.wstatus=1;
+        this.sid=null
     },
     
     },

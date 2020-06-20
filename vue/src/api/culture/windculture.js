@@ -7,7 +7,7 @@ export function add(data) {
         params: {
             wTitle: data.wtitle,
             wContent: data.wcontent,
-            wContributor: data.wnew.sid,
+            wContributor: data.sid,
             wCreateId: data.sysStaff.sid,
             wStatus: data.wstatus
         }
@@ -31,7 +31,7 @@ export function update(data) {
         params: {
             wTitle: data.wtitle,
             wContent: data.wcontent,
-            wContributor: data.wnew.sid,
+            wContributor: data.sid,
             wid: data.wid,
             wStatus: data.wstatus
         }

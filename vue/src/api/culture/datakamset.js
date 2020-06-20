@@ -7,7 +7,7 @@ export function add(data) {
         params: {
             dTitle: data.dtitle,
             dFile: data.dFile,
-            dFileName: data.dFileName,
+            dFileName: data.dfileName,
             dCreateId: data.sysStaff.sid,
             dStatus: data.dstatus
         }
