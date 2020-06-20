@@ -209,5 +209,25 @@ export const asyncRouterMap = [
             menu: 'user'
         }]
     },
+    {
+        path: '/riskmanagement',
+        component: Layout,
+        redirect: '/riskmanagement/',
+        name: '动态管理',
+        meta: { title: '动态管理', icon: 'table' },
+        children: [{
+            path: '',
+            name: '风险点预警点管理',
+            component: _import('riskmanagement/riskwarning'),
+            meta: { title: '风险点预警点管理', icon: 'user' },
+            menu: 'user'
+        }, {
+            path: 'windculture',
+            name: '清风文苑',
+            component: _import('cultrue/windculture'),
+            meta: { title: '清风文苑', icon: 'user' },
+            menu: 'user'
+        }]
+    },
     { path: '*', redirect: '/404', hidden: true }
 ]

@@ -14,11 +14,16 @@ import  VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import moment from 'moment'
+Vue.filter('comverTime', function(data, format) {
+    return moment(data).format(format);
+});
 Vue.use(VueQuillEditor)
 Vue.use(ElementUI, { locale })
 Vue.prototype.api = api
     //全局的常量
 Vue.prototype.hasPerm = hasPermission
+Vue.prototype.mom = moment
     //全局的常量
 Vue.prototype.virtualIp = 'http://localhost:8080/uploadimg'
 Vue.prototype.physics = 'C://File_rec/tmp/'
