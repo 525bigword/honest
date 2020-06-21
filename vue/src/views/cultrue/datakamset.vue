@@ -117,7 +117,7 @@
   :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-  <div slot="tip"  class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过50M</div>
+  <div slot="tip"  class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime" >

@@ -25,13 +25,25 @@ public class Upload {
     private String realBasePath;
     @Value("${file.accessPath}")
     private String accessPath;
+    @Value("${file.uploadDuty}")
+    private String dutyPath;
     @PostMapping("/import")
     public JSONObject importData(MultipartFile file, HttpServletRequest req) throws IOException {
+        Map filePath = getFilePath(file, req, accessPath, realBasePath);
+        return CommonUtil.successJson(filePath);
+    }
+
+    public JSONObject importDuty(MultipartFile file, HttpServletRequest req) throws IOException {
+        Map filePath = getFilePath(file, req, accessPath, dutyPath);
+        return CommonUtil.successJson(filePath);
+    }
+
+    public Map getFilePath(MultipartFile file, HttpServletRequest req,String netPath,String thisPath)throws IOException{
         String format = sdf.format(new Date());
         // 域名访问的相对路径（通过浏览器访问的链接-虚拟路径）
-        String saveToPath = accessPath + format;
+        String saveToPath = netPath + format;
         // 真实路径，实际储存的路径
-        String realPath = realBasePath + format;
+        String realPath = thisPath + format;
         // 储存文件的物理路径，使用本地路径储存
         System.out.println("--虚拟文件路径为：" + saveToPath +"--物理文件路径为：" + realPath);
         File folder = new File(realPath);
@@ -45,6 +57,6 @@ public class Upload {
         System.out.println(url);
         Map<String,String> map=new HashMap<>();
         map.put("dFile",format + newName);
-        return CommonUtil.successJson(map);
+        return map;
     }
 }

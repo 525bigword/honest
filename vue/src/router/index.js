@@ -164,15 +164,15 @@ export const asyncRouterMap = [
             menu: 'user'
         }]
     }, {
-        path: '/supervises',
+        path: '/responsibility',
         component: Layout,
-        redirect: '/supervises/',
+        redirect: '/responsibility/',
         name: '监督责任',
         meta: { title: '监督责任', icon: 'table' },
         children: [{
             path: '',
             name: '监督责任',
-            component: _import('user/user'),
+            component: _import('responsibility/spvduty'),
             meta: { title: '监督责任', icon: 'user' },
             menu: 'user'
         }]

@@ -46,3 +46,4 @@ file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
   uploadFolder: C://File_rec/tmp/
+  uploadDuty: C://File_rec/duty/
