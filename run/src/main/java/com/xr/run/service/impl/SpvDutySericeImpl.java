@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xr.run.dao.SpvDutyMapper;
 import com.xr.run.entity.SpvDuty;
+import com.xr.run.entity.SysMechanism;
 import com.xr.run.service.SpvDutyService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SpvDutySericeImpl extends ServiceImpl<SpvDutyMapper,SpvDuty> implements SpvDutyService {
@@ -39,5 +42,10 @@ public class SpvDutySericeImpl extends ServiceImpl<SpvDutyMapper,SpvDuty> implem
     @Override
     public String findSpvDutyByFile(int did) {
         return baseMapper.findSpvDutyByFile(did);
+    }
+
+    @Override
+    public List<SysMechanism> findDid() {
+        return baseMapper.findDid(0);
     }
 }

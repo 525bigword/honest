@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SpvDuty;
+import com.xr.run.entity.SysMechanism;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
@@ -31,6 +34,15 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Delete("delete from  spv_duty where did=#{did}")
     void deleteSpvDutyByDid(int did);
 
-    @Select("")
+    @Select("select DutyAccessory from spv_duty where did=#{did}")
     public String findSpvDutyByFile(int did);
+
+    @Select("select mid,mechanism_name from sys_mechanism where staus='正常' and parent=#{parent}")
+    @Results({
+            @Result(column = "mid",property = "mid"),
+            @Result(column = "mechanism_name",property = "mechanismName"),
+            @Result(column = "mid",property = "chilrenMechanism",
+            many = @Many(select = "com.xr.run.dao.SpvDutyMapper.findDid",fetchType = FetchType.DEFAULT))
+    })
+    List<SysMechanism> findDid(int parent);
 }

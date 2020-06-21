@@ -2,12 +2,18 @@ import request from '@/utils/api'
 // 添加用户
 export function add(data) {
     return request({
-        url: '/systemprocess/insert',
+        url: '/spvduty/insert',
         method: 'post',
         params: {
-            sysTitle: data.sysTitle,
-            sysContent: data.sysContent,
-            sysCreateId: data.sysStaff.sid
+            dnumId: data.dnumId,
+            dutyType: data.dutyType,
+            dutyTitle: data.dutyTitle,
+            dutyContent: data.dutyContent,
+            bid: data.bmid,
+            dutyAccessory: data.dutyAccessory,
+            dutyAccessoryName: data.dutyAccessoryName,
+            dCreateId: data.sysStaff.sid,
+            status: data.status
         }
     })
 }
@@ -15,7 +21,7 @@ export function add(data) {
 // 根据id删除用户
 export function deleteSpvduty(data) {
     return request({
-        url: '/systemprocess/delete',
+        url: '/spvduty/delete',
         method: 'post',
         data
     })
@@ -40,5 +46,19 @@ export function list(pageNum, pageRow, dutyTitle) {
         url: '/spvduty/get/' + pageNum + '/' + pageRow,
         method: 'get',
         params: { dutyTitle }
+    })
+}
+
+export function getDid() {
+    return request({
+        url: '/spvduty/getDid',
+        method: 'post'
+    })
+}
+export function impFile(data) {
+    return request({
+        url: '/imp/importDuty',
+        method: 'post',
+        data
     })
 }

@@ -48,7 +48,7 @@
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="文件名"  prop="dfileName"  align="center" width="210px">
+        <el-table-column label="文件名"  prop="dfileName"  align="center" width="250px">
         <template slot-scope="scope">
           <span>{{ scope.row.dfileName }}</span>
         </template>
@@ -112,7 +112,7 @@
   action="https://localhost:8080/imp/import"
   :on-remove="fileRemove"
   :on-change="handleImgChange1"
-  accept=".doc,.docx,.pdf,.txt,.xlsx"
+  accept=".doc,.docx,.pdf,.txt"
   :file-list="fileList"
   :limit="2"
   :auto-upload="false">
@@ -415,6 +415,7 @@ import { mapGetters } from 'vuex'
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
+              this.pageNum=1;
               // 刷新数据表格
               this.getList()
               // 显示通知
@@ -438,6 +439,14 @@ import { mapGetters } from 'vuex'
         if (!this.hasPerm('datacollection:out')) {
           return
         }
+        if(this.multipleSelection.length!==1){
+          this.$message({
+          showClose: true,
+          message: '请选择一个下载的文件',
+          type: 'warning'
+        });
+        
+        }else{
         this.multipleSelection.forEach(row=>{
            let path=this.virtualIp+row.dfile
            var aDom = document.createElement('a')
@@ -448,6 +457,7 @@ import { mapGetters } from 'vuex'
         aDom.dispatchEvent(evt)
         aDom.click()
           })
+        }
       },
       handleDelete() {
         if (!this.hasPerm('datacollection:delete')) {

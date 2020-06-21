@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SpvDuty;
+import com.xr.run.entity.SysMechanism;
 import com.xr.run.service.SpvDutyService;
 import com.xr.run.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/spvduty")
@@ -65,5 +70,26 @@ public class SpvDutyController {
     public JSONObject insertSpvDuty(SpvDuty spvDuty)  {
         spvDutyService.insertSpvDuty(spvDuty);
         return CommonUtil.successJson("新增成功!");
+    }
+
+    @RequestMapping("/getDid")
+    public JSONObject getDid(){
+        List<SysMechanism> did = spvDutyService.findDid();
+        List<Map<String,Object>> map = getMap(did);
+        return CommonUtil.successJson(map);
+    }
+    public List<Map<String,Object>> getMap(List<SysMechanism> list){
+        List<Map<String,Object>> mapList=new ArrayList<>();
+        for (SysMechanism mechain:list) {
+            Map<String,Object> map=new HashMap<>();
+            map.put("value",mechain.getMid());
+            map.put("label",mechain.getMechanismName());
+            List<Map<String,Object>> map1 = getMap(mechain.getChilrenMechanism());
+            if(map1.size()>0){
+                map.put("children",map1);
+            }
+            mapList.add(map);
+        }
+        return mapList;
     }
 }

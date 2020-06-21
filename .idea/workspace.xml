@@ -2,23 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d1508f6-86a7-499d-a5f5-011d6dbce3cb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/honest.iml" beforeDir="false" afterPath="$PROJECT_DIR$/honest.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-21.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/2020-06/heeexy-2020-06-21.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/Upload.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/Upload.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvDutyMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvDutyMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/SpvDuty.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/SpvDuty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutySerice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SpvDutySericeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SpvDutySericeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/src/test/java/com/xr/run/RunApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/test/java/com/xr/run/RunApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/responsibility/spvduty.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/responsibility/spvduty.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/cultrue/datakamset.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/cultrue/datakamset.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/responsibility/spvduty.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/responsibility/spvduty.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/vue/node_modules/" />
@@ -34,7 +29,20 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-823">
+              <caret line="20" column="25" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -64,13 +72,15 @@
         <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/SpvDuty.java" />
         <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutySerice.java" />
         <option value="$PROJECT_DIR$/run/src/main/resources/application.yml" />
-        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/Upload.java" />
-        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvDutyMapper.java" />
-        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java" />
-        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SpvDutySericeImpl.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java" />
         <option value="$PROJECT_DIR$/vue/src/views/404.vue" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java" />
+        <option value="$PROJECT_DIR$/vue/src/api/responsibility/spvduty.js" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SpvDutySericeImpl.java" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvDutyMapper.java" />
+        <option value="$PROJECT_DIR$/run/src/test/java/com/xr/run/RunApplicationTests.java" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java" />
+        <option value="$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/Upload.java" />
       </list>
     </option>
   </component>
@@ -230,43 +240,31 @@
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
               <item name="honest" type="462c0819:PsiDirectoryNode" />
               <item name="vue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="mpy" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
-              <item name="honest" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="riskmanagement" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -297,7 +295,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.RunApplication">
     <configuration name="RunApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.xr.run.RunApplication" />
       <module name="run" />
@@ -307,6 +305,22 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RunApplicationTests.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="run" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.xr.run.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.xr.run" />
+      <option name="MAIN_CLASS_NAME" value="com.xr.run.RunApplicationTests" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -361,6 +375,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.RunApplication" />
+        <item itemvalue="JUnit.RunApplicationTests.test" />
       </list>
     </recent_temporary>
   </component>
@@ -381,18 +396,45 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1592709604944</updated>
-      <workItem from="1592709631584" duration="15767000" />
+      <workItem from="1592709631584" duration="32361000" />
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="621 完善晚上">
+      <created>1592740568276</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1592740568276</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="RunApplicationTests_test - 2020.06.21 at 20h 15m 23s.xml">
+      <configuration name="RunApplicationTests.test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RunApplicationTests_test - 2020.06.21 at 20h 44m 01s.xml">
+      <configuration name="RunApplicationTests.test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RunApplicationTests_test - 2020.06.21 at 20h 50m 28s.xml">
+      <configuration name="RunApplicationTests.test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RunApplicationTests_test - 2020.06.21 at 20h 55m 18s.xml">
+      <configuration name="RunApplicationTests.test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RunApplicationTests_test - 2020.06.21 at 21h 01m 18s.xml">
+      <configuration name="RunApplicationTests.test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RunApplicationTests_test - 2020.06.21 at 21h 06m 11s.xml">
+      <configuration name="RunApplicationTests.test" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16787000" />
+    <option name="totallyTimeSpent" value="33381000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20272315" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20272315" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="JRebel" order="3" side_tool="true" />
@@ -402,7 +444,7 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4977307" visible="true" weight="0.27540985" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4977307" visible="true" weight="0.17868853" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.119672135" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -464,7 +506,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1" />
-    <option name="LAST_COMMIT_MESSAGE" value="1" />
+    <MESSAGE value="621 完善晚上" />
+    <option name="LAST_COMMIT_MESSAGE" value="621 完善晚上" />
   </component>
   <component name="WindowStateProjectService">
     <state x="379" y="0" key="CommitChangelistDialog2" timestamp="1592652410967">
@@ -548,13 +591,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/WindMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="28" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -562,45 +598,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/Upload.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/DatacollectionMapper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="246">
           <caret line="35" column="4" lean-forward="true" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1014">
-          <caret line="48" column="16" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SpvDutySericeImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="40" column="49" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
-          <folding>
-            <element signature="e#634#635#0" expanded="true" />
-            <element signature="e#666#667#0" expanded="true" />
-            <element signature="e#764#765#0" expanded="true" />
-            <element signature="e#789#790#0" expanded="true" />
-            <element signature="e#891#892#0" expanded="true" />
-            <element signature="e#916#917#0" expanded="true" />
-            <element signature="e#1013#1014#0" expanded="true" />
-            <element signature="e#1038#1039#0" expanded="true" />
-            <element signature="e#1123#1124#0" expanded="true" />
-            <element signature="e#1148#1149#0" expanded="true" />
-            <element signature="e#1177#1178#0" expanded="true" />
-            <element signature="e#1209#1210#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -640,27 +641,120 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvDutyMapper.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="45" />
+        <state relative-caret-position="156">
+          <caret line="90" column="24" selection-start-line="90" selection-start-column="24" selection-end-line="90" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java">
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SysMechanismMapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        <state relative-caret-position="-1357">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/SpvDutyService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="60" column="3" selection-start-line="60" selection-start-column="3" selection-end-line="60" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vue/src/api/culture/datakamset.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vue/src/utils/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vue/src/api/responsibility/spvduty.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-484">
+          <caret line="2" column="3" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/WindMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/service/impl/SpvDutySericeImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="806">
+          <caret line="48" column="35" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
+          <folding>
+            <element signature="e#833#834#0" expanded="true" />
+            <element signature="e#891#892#0" expanded="true" />
+            <element signature="e#1177#1178#0" expanded="true" />
+            <element signature="e#1233#1234#0" expanded="true" />
+            <element signature="e#1353#1354#0" expanded="true" />
+            <element signature="e#1380#1381#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/entity/SysMechanism.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/test/java/com/xr/run/RunApplicationTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="32" column="4" selection-start-line="32" selection-start-column="4" selection-end-line="51" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SysStaffController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="90" column="24" selection-start-line="90" selection-start-column="24" selection-end-line="90" selection-end-column="24" />
+        <state relative-caret-position="-818">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/5.1.24/mysql-connector-java-5.1.24.jar!/com/mysql/jdbc/util/ReadAheadInputStream.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="95" column="27" lean-forward="true" selection-start-line="95" selection-start-column="27" selection-end-line="95" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/Upload.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="34" column="32" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvDutyMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="30" column="34" lean-forward="true" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="138" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-823">
+          <caret line="20" column="25" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -54,7 +54,7 @@
         </el-table-column>
         <el-table-column label="责任监督类型" prop="dutyType"  align="center" width="200px">
         <template slot-scope="scope">
-          <span >{{ scope.row.dutyTitle }}</span>
+          <span >{{ scope.row.dutyType }}</span>
         </template>
         </el-table-column>
         <el-table-column label="状态" prop="status"  align="center" width="140px">
@@ -100,8 +100,8 @@
         </el-form-item>
         <el-row>
                 <el-col style="width:43%">
-        <el-form-item style="font-weight: bold;" label="责任监督编号" prop="dutyTitle" >
-          <el-input v-model="temp.dutyTitle" placeholder="请输入制度信息标题" style="width:100%" />
+        <el-form-item style="font-weight: bold;" label="责任监督编号" prop="dnumId" >
+          <el-input v-model="temp.dnumId" placeholder="请输入制度信息标题" style="width:100%" />
         </el-form-item>
                 </el-col>
                 <el-col style="width:44%">
@@ -121,19 +121,21 @@
         </el-form-item >
                 </el-col>
                 <el-col style="width:44%">
-        <el-form-item style="font-weight: bold;" label="所属部门" prop="dutyTitle" >
-          <el-select style="width:100%">
-              <el-option>ewfew</el-option>
-              <el-option>ewfew</el-option>
-              <el-option>ewfew</el-option>
-          </el-select>
+        <el-form-item style="font-weight: bold;" label="所属部门" prop="value" >
+          <el-cascader
+          ref="bbb"
+    v-model="value" style="width:100%"
+    :options="options"
+    :props="{ expandTrigger: 'hover',multiple: true,checkStrictly:true }"
+    @change="handleChange"
+    :show-all-levels="false"></el-cascader>
         </el-form-item>
                 </el-col>
         </el-row>
-        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="sysContent" >
+        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="dutyContent" >
           <quill-editor class="editor"  style="height:400px;width:85%;"
         ref="myQuillEditor"
-        v-model="temp.sysContent"
+        v-model="temp.dutyContent"
        >
         </quill-editor>
         </el-form-item>
@@ -162,7 +164,7 @@
   class="upload-demo"
   v-model="temp.dutyAccessoryName"
   ref="upload"
-  action="https://localhost:8080/imp/import"
+  action="https://localhost:8080/imp/importDuty"
   :on-remove="fileRemove"
   :on-change="handleImgChange1"
   accept=".doc,.docx,.pdf,.txt,.xlsx"
@@ -187,7 +189,7 @@
 </template>
 
 <script>
-import { add, update, list, deleteSpvduty } from '@/api/responsibility/spvduty'
+import { add, update, list, deleteSpvduty,getDid,impFile } from '@/api/responsibility/spvduty'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
   export default {
@@ -214,7 +216,7 @@ import { mapGetters } from 'vuex'
           did: undefined,
           dutyTitle: '',
           dutyType: '',
-          did: '',
+          bmid:'',
           dutyAccessoryName: '',
           dutyAccessory: '',
           fileList:[],
@@ -227,25 +229,32 @@ import { mapGetters } from 'vuex'
           sid:null,
           dnumId:'',
           status:1,
-          dstatus:''
+          dstatus:'',
+          options:[],
+          value:[]
         },
         title: '添加', // 对话框显示的提示 根据dialogStatus create
         dialogStatus: '', // 表示表单是添加还是修改的
         rules: {
           // 校验规则
           //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
-          //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
-          sysTitle: [{required:true,message:'标题不能为空',trigger:['blur','change']}]
+          dutyType: [{ required: true, message: '责任监督类型不能为空', trigger: ['change','blur']}],
+          dutyTitle: [{required:true,message:'标题不能为空',trigger:['blur','change']}]
         },
         isShow:false,
           wew:{},
         multipleSelection:[],
         deleteid:[],
-        fileList:[]
+        fileList:[],
+        options:[],
+          value:[],
+          formData:null
+        
       }
     },
     // 创建实例时的钩子函数
     created() {
+        this.getOption()
       this.getList()
       // 在创建时初始化获得部门信息
       //this.getGroupDept()
@@ -269,7 +278,6 @@ import { mapGetters } from 'vuex'
           account: this.listQuery.account
         }) */
         list(this.pageNum,this.pageRow,this.dutyTitle).then(response => {
-            console.debug(response)
           this.list=response.records;
           this.total=(response.total)
           console.debug(this.list)
@@ -278,16 +286,15 @@ import { mapGetters } from 'vuex'
         })
       },
       resetSou(){
-        this.sysTitle=''
-        this.sysContent=''
+        this.dutyTitle=''
       },
       // 重置表单数据
       resetTemp() {
         this.temp = {
-          did: undefined,
+          mid: undefined,
           dutyTitle: '',
           dutyType: '',
-          did: '',
+          bmid:'',
           dutyAccessoryName: '',
           dutyAccessory: '',
           fileList:[],
@@ -302,6 +309,8 @@ import { mapGetters } from 'vuex'
           status:1,
           dstatus:''
         }
+        this.value=[]
+        this.formData=null
 
       },
       // 显示添加的对话框
@@ -325,14 +334,22 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData() {
-        // 表单校验
+          // 表单校验
         this.$refs['dataForm'].validate((valid) => {
+            if (valid) {
+                this.$refs['bbb'].getCheckedNodes().filter(getId=>{
+              this.temp.bmid+=getId.value+','
+          })
+          this.temp.bmid=this.temp.bmid.substring(0,this.temp.bmid.length-1)
           // 所有的校验都通过
-          if (valid) {
-            this.isShow=true
-            // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
-              
+          if(this.temp.dutyAccessoryName!==''){
+            impFile(this.formData).then((response)=>{
+                this.temp.dutyAccessory=response.dFile
+                console.debug(this.temp)
+                this.isShow=true
+                // 调用api里的sys里的user.js的ajax方法
+                add(this.temp).then((response) => {
+
               // 关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格里的数据
@@ -346,9 +363,33 @@ import { mapGetters } from 'vuex'
               })
               this.isShow=false
               this.yincang()
-            })
+          
+          })
+          })
+          }else{
+                this.isShow=true
+                // 调用api里的sys里的user.js的ajax方法
+                add(this.temp).then((response) => {
+
+              // 关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格里的数据
+              this.getList()
+              // 显示一个通知
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+          
+          })
           }
+            }
         })
+        
         
       },
       // 显示修改对话框
@@ -406,12 +447,12 @@ import { mapGetters } from 'vuex'
         });
         }else{
            if(this.multipleSelection.length==1){
-              title=this.multipleSelection[0].sysTitle;
-              this.deleteid.push(this.multipleSelection[0].sysid)
+              title=this.multipleSelection[0].dutyTitle;
+              this.deleteid.push(this.multipleSelection[0].did)
            }else{
              title='选中'
              this.multipleSelection.filter(row=>{
-                this.deleteid.push(row.sysid)
+                this.deleteid.push(row.did)
              })
            }
            this.$confirm('确认删除【'+title+'】的信息吗?', '提示', {
@@ -462,8 +503,7 @@ import { mapGetters } from 'vuex'
       }
        this.formData= new FormData();
         this.formData.append("file", this.file);
-        this.temp.dfileName=this.file.name
-      this.$refs['dataForm'].validate((valid) => {})
+        this.temp.dutyAccessoryName=this.file.name
        
     },
     handleSizeChange(size) {
@@ -497,8 +537,18 @@ import { mapGetters } from 'vuex'
     },
     fileRemove(file, fileList){
       this.file={}
-      this.temp.dfileName=''
+      this.temp.dutyAccessoryName=''
     },
+    getOption(){
+         
+        getDid().then((response) => {
+            this.options=response
+            console.debug(this.options)
+            })
+    },
+    handleChange(value) {
+        console.log(value);
+      }
     
     }
   }

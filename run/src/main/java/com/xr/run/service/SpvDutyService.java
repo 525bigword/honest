@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SpvDuty;
+import com.xr.run.entity.SysMechanism;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 public interface SpvDutyService extends IService<SpvDuty> {
@@ -51,4 +53,10 @@ public interface SpvDutyService extends IService<SpvDuty> {
      * @return
      */
     public String findSpvDutyByFile(int did);
+
+    /**
+     * 查询部门及子部门
+     * @return
+     */
+    List<SysMechanism> findDid();
 }

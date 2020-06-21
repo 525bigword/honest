@@ -32,11 +32,12 @@ public class Upload {
         Map filePath = getFilePath(file, req, accessPath, realBasePath);
         return CommonUtil.successJson(filePath);
     }
-
+    @RequestMapping("/importDuty")
     public JSONObject importDuty(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, dutyPath);
         return CommonUtil.successJson(filePath);
     }
+
 
     public Map getFilePath(MultipartFile file, HttpServletRequest req,String netPath,String thisPath)throws IOException{
         String format = sdf.format(new Date());
