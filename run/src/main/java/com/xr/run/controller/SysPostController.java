@@ -64,6 +64,9 @@ public class SysPostController {
         return CommonUtil.successJson(1);
     }
 
+    public JSONObject getAll(){
+        return null;
+    }
     @PostMapping("del")
     @RequiresPermissions("post:delete")
     public JSONObject delSysPost(String arr){
@@ -78,6 +81,11 @@ public class SysPostController {
             sysPostService.delSysPost(split);
             return CommonUtil.successJson(1);
         }
+    }
+    @GetMapping("get")
+    public JSONObject getAllSysPost(){
 
+        List<SysPost> sysPost = sysPostService.getSysPost();
+        return CommonUtil.successJson(sysPost);
     }
 }

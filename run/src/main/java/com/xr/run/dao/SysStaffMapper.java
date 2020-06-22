@@ -21,12 +21,42 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             " sys_staff u WHERE u.username = #{username} AND u.password = #{password} AND u.staus = '1'")
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
-            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus}")
+            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid}")
     @Results({
+            @Result(id = true,property = "sid",column = "sid"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "age",column = "age"),
+            @Result(property = "mid",column = "mid"),
+            @Result(property = "username",column = "username"),
+            @Result(property = "password",column = "password"),
+            @Result(property = "pid",column = "pid"),
             @Result(property = "mechanismname",column = "mid", one=@One(select = "com.xr.run.dao.SysMechanismMapper.findMechanismNameByMid",fetchType = FetchType.DEFAULT)),
             @Result(property = "postname",column = "pid", one=@One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid",fetchType = FetchType.DEFAULT)),
+            @Result(property = "sex",column = "sex"),
+            @Result(property = "educationalBackground",column = "educational_background"),
+            @Result(property = "politicalAppearance",column = "political_appearance"),
+            @Result(property = "phone",column = "phone"),
     })
-    IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus);
+    IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus,@Param("mid")Integer mid);
+    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
+            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus}")
+    @Results({
+            @Result(id = true,property = "sid",column = "sid"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "age",column = "age"),
+            @Result(property = "mid",column = "mid"),
+            @Result(property = "username",column = "username"),
+            @Result(property = "password",column = "password"),
+            @Result(property = "pid",column = "pid"),
+            @Result(property = "mechanismname",column = "mid", one=@One(select = "com.xr.run.dao.SysMechanismMapper.findMechanismNameByMid",fetchType = FetchType.DEFAULT)),
+            @Result(property = "postname",column = "pid", one=@One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid",fetchType = FetchType.DEFAULT)),
+            @Result(property = "sex",column = "sex"),
+            @Result(property = "educationalBackground",column = "educational_background"),
+            @Result(property = "politicalAppearance",column = "political_appearance"),
+            @Result(property = "phone",column = "phone"),
+    })
+    IPage<SysStaff> findSysStaffAllNoMid(Page page,@Param("name") String name, @Param("staus")Integer staus);
+
     /**
      * 按名字模糊查询员工id
      */
@@ -43,7 +73,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
      * @return
      */
     @Select("select sid,name from sys_staff where staus='1'")
-    List<SysStaff> findSysStaffAll();
+    List<SysStaff> findSysStaffAlla();
     /**
      * 根据部门查询员工数量
      */
@@ -69,4 +99,18 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
      */
     @Select("select count(sid) from sys_staff where pid=#{pid}")
     Integer findSysStaffByPidToCount(@Param("pid") Integer pid);
+    //新增
+    @Insert("insert into sys_staff value(null,#{name},#{sex},#{age},#{educationalBackground},#{politicalAppearance},#{phone},#{mid},#{username},#{password},#{pid},#{createTime},#{createId},'1')")
+    void addSysStaff(SysStaff sysStaff);
+    //根据username查询
+    @Select("select count(sid) from sys_staff where username=#{username}")
+    Integer findSysStaffCount(@Param("username") String username);
+    @Update("update sys_staff set name=#{s.name},sex=#{s.sex},age=#{s.age},educational_background=#{s.educationalBackground},political_appearance=#{s.politicalAppearance},phone=#{s.phone},mid=#{s.mid},password=#{s.password},pid=#{s.pid},staus=#{s.staus} where sid=#{s.sid}")
+    void upSysStaff(@Param("s") SysStaff sysStaff);
+    //根据sid查询员工
+    @Select("select  sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid, create_time,create_id,staus from sys_staff where sid=#{sid}")
+    SysStaff findSysStaffBySid(@Param("sid")Integer sid);
+    //根据id删除(修改状态)
+    @Update("update sys_staff set staus=2 where sid=#{sid}")
+    void upSysStaffStausBySid(@Param("sid")Integer sid);
 }

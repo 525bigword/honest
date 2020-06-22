@@ -68,4 +68,9 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      */
     @Update("update sys_permission set menu_code=#{menuCode},menu_name=#{menuName},permission_code=#{permissionCode},permission_name=#{permissionName},required_permission=#{requiredPermission} where id=#{id} ")
     void upSysPermission(SysPermission sysPermission);
+    //根据Id查询
+    @Select("select menu_code from sys_permission where id in ${ids} and permission_name='列表'")
+    Set<String> findSysPermissionNameById(@Param("ids") String ids);
+    @Select("SELECT permission_code permissionCode FROM sys_permission where id in ${ids} ORDER BY id")
+    Set<String> getAllPermissionById(@Param("ids") String ids);
 }

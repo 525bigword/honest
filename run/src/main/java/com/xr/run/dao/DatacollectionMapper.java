@@ -33,6 +33,8 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     void deleteDataConllectionByDid(int did);
 
     @Select("select dFile from datacollection where did=#{did}")
-    public String findDatacollectionByFile(int did);
-
+    String findDatacollectionByFile(int did);
+    //按创建者查询状态为创建、待审
+    @Select("select count(did) from datacollection where dCreateId=#{sid} and dStatus=1 or dStatus=2")
+    Integer findDatacollectionByStatusAndSidToCount(@Param("sid")Integer sid);
 }

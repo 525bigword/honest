@@ -9,17 +9,21 @@ import com.xr.run.dao.PermissionDao;
 import com.xr.run.dao.SysPermissionMapper;
 import com.xr.run.dao.SysPostPermissionMapper;
 import com.xr.run.entity.SysPermission;
+import com.xr.run.entity.SysPostPermission;
 import com.xr.run.service.SysPermissionService;
 import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,SysPermission> implements SysPermissionService {
     @Autowired
     private SysPostPermissionMapper sysPostPermissionMapper;
+    @Autowired
+    private SysPermissionMapper sysPermissionMapper;
     /**
      * 查询某用户的 角色  菜单列表   权限列表
      */
@@ -97,6 +101,19 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
             userPermission.put("permissionList", permissionList);
         }else{
             //TODO 非超级用户读取相关信息
+            System.out.println(userPermission.getInteger("roleId"));
+            List<SysPostPermission> syspostpermissions = sysPostPermissionMapper.findSysPostPermissionByPostId(userPermission.getInteger("roleId"));
+            String ids="(";
+            for (SysPostPermission syspostpermission : syspostpermissions) {
+                ids+=syspostpermission.getId()+",";
+            }
+            ids=ids.substring(0,ids.length()-1);
+            ids+=")";
+            System.out.println(ids);
+            Set<String> menuList = sysPermissionMapper.findSysPermissionNameById(ids);
+            Set<String> permissionList = sysPermissionMapper.getAllPermissionById(ids);
+            userPermission.put("menuList", menuList);
+            userPermission.put("permissionList", permissionList);
         }
 
         return userPermission;

@@ -4,9 +4,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.RdEntityResponsibility;
 import com.xr.run.entity.RdHonestConversation;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RdHonestConversationMapper extends BaseMapper<RdHonestConversation> {
-
+    //根据谈话对象和记录人查询创建状态和待审状态的数量
+    @Select("select count(id) from rd_honest_conversation where (pid = #{pid} or personid=#{pid}) and staus='0' or staus='1'")
+    Integer findRdHonestConversationCount(@Param("pid")Integer pid);
 }

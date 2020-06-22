@@ -89,4 +89,9 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper,SysPost> imple
             baseMapper.delSysPost(Integer.parseInt(arr[i]));
         }
     }
+
+    @Override
+    public List<SysPost> getSysPost() {
+        return baseMapper.getSysPost();
+    }
 }
