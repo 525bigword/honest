@@ -52,6 +52,7 @@ public class SpvDutyController {
                 e.printStackTrace();
             }
             spvDutyService.updateSpvDutyFileByDid(spvDuty);
+            System.out.println("hgh");
         }
         return CommonUtil.successJson("修改成功!");
     }
