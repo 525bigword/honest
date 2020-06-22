@@ -6,12 +6,12 @@ import router from '../../router'
 
 const user = {
     state: {
-        nickname: "超级用户23",
-        userId: 10003,
+        nickname: "",
+        userId: 0,
         avatar: 'https://www.gravatar.com/avatar/6560ed55e62396e40b34aac1e5041028',
-        role: "管理员",
-        menus: ["role", "user", "article"],
-        permissions: ["article:list", "user:list", "user:add", "role:update", "article:add", "role:list", "article:update", "user:update", "role:delete", "role:add"],
+        role: "",
+        menus: [],
+        permissions: [],
         token: ""
     },
     mutations: {
