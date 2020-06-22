@@ -53,6 +53,7 @@ const permission = {
         GenerateRoutes({ commit }, userPermission) {
             //生成路由
             return new Promise(resolve => {
+                console.log(userPermission)
                 //roles是后台传过来的角色数组,比如['管理员','文章']
                 const role = userPermission.roleName;
                 const menus = userPermission.menuList;

@@ -17,25 +17,26 @@ router.beforeEach((to, from, next) => {
         //如果已经登录
         console.log("getToken()：" + getToken())
         console.log("to.path === '/login'：" + to.path === '/login');
-        console.log("!store.getters.role：" + !store.getters.role)
+        console.log("!store.getters.role：" + store.getters.role)
         if (to.path === '/login') {
             next({ path: '/' })
             NProgress.done() // 结束Progress
             //&&localStorage.getItem('roleName')
-        } else if (store.getters.role) {
-            console.log("getinfo")
-            store.dispatch('GetInfo').then(() => {
-                next({...to })
-            })
-            next()
-            
-        } else {
-            console.log("GetInfo()")
-            store.dispatch('GetInfo').then(() => {
-                next({...to })
-            })
-            next()
-        }
+        }else{
+            console.log(store.getters.role)
+            if (store.getters.role) {
+                next()
+            } else {
+                console.log("GetInfo()")
+                store.dispatch('GetInfo').then(() => {
+                    next({...to })
+                })
+                // const { roles } =  store.dispatch('GetInfo')
+                // const accessRoutes=store.dispatch('generateRoutes', roles)
+                // router.addRoutes(accessRoutes)
+                // next({ ...to, replace: true })
+            }
+        } 
     } else if (whiteList.indexOf(to.path) !== -1) {
         //如果前往的路径是白名单内的,就可以直接前往
         next()
