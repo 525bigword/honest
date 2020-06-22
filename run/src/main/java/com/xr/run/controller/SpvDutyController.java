@@ -39,7 +39,7 @@ public class SpvDutyController {
     @RequestMapping("update")
     public JSONObject updateSpvDuty(SpvDuty spvDuty)  {
         System.out.println(spvDuty.getDutyAccessory());
-        if(spvDuty.getDutyAccessory().equals("1")){
+        if(spvDuty.getDutyAccessoryName().equals("1")){
             spvDutyService.updateSpvDutyByDid(spvDuty);
         }else {
             String filePath = spvDutyService.findSpvDutyByFile(spvDuty.getDid());
@@ -91,5 +91,11 @@ public class SpvDutyController {
             mapList.add(map);
         }
         return mapList;
+    }
+
+    @RequestMapping("updatestatus")
+    public JSONObject updateStatus(SpvDuty spvDuty)  {
+        spvDutyService.updateStatusByDid(spvDuty);
+        return CommonUtil.successJson("修改成功!");
     }
 }

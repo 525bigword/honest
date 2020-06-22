@@ -59,4 +59,10 @@ public interface SpvDutyService extends IService<SpvDuty> {
      * @return
      */
     List<SysMechanism> findDid();
+
+    /**
+     * 修改责任监督状态
+     * @param spvDuty
+     */
+    void updateStatusByDid(SpvDuty spvDuty);
 }

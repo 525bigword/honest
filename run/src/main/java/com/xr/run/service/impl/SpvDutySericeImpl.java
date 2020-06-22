@@ -48,4 +48,9 @@ public class SpvDutySericeImpl extends ServiceImpl<SpvDutyMapper,SpvDuty> implem
     public List<SysMechanism> findDid() {
         return baseMapper.findDid(0);
     }
+
+    @Override
+    public void updateStatusByDid(SpvDuty spvDuty) {
+        baseMapper.updateStatusByDid(spvDuty);
+    }
 }

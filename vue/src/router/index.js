@@ -21,6 +21,7 @@ export const constantRouterMap = [
         }]
     }
 
+
 ]
 export default new Router({
     mode: 'history', //后端支持可开
@@ -217,9 +218,9 @@ export const asyncRouterMap = [
         meta: { title: '动态管理', icon: 'table' },
         children: [{
             path: '',
-            name: '风险点预警点管理',
+            name: '风险点预警管理',
             component: _import('riskmanagement/riskwarning'),
-            meta: { title: '风险点预警点管理', icon: 'user' },
+            meta: { title: '风险点预警管理', icon: 'user' },
             menu: 'user'
         }, {
             path: 'systemprocess',
@@ -229,5 +230,18 @@ export const asyncRouterMap = [
             menu: 'user'
         }]
     },
-    { path: '*', redirect: '/404', hidden: true }
+    {
+        path: '/workorders',
+        component: Layout,
+        redirect: '/workorders/',
+        name: '工单',
+        meta: { title: '工单', icon: 'table' },
+        children: [{
+            path: '',
+            name: '工单',
+            component: _import('workorders/workorder'),
+            meta: { title: '工单', icon: 'user' },
+            menu: 'user'
+        }]
+    }, { path: '*', redirect: '/404', hidden: true }
 ]

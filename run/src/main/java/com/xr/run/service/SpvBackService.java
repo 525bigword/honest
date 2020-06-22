@@ -1,5 +1,7 @@
 package com.xr.run.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SpvBack;
@@ -9,6 +11,19 @@ import java.util.Date;
 
 
 public interface SpvBackService extends IService<SpvBack> {
+    IPage<SpvBack> findSpvBack(Page page, String backTitle);
 
+    void updateSpvBackBySid(SpvBack spvBack);
+
+    void updateSpvBackFileBySid(SpvBack spvBack);
+
+    void insertSpvBack(SpvBack spvBack);
+
+    void deleteSpvBackBySid(int sid);
+
+    public String findSpvBackByFile(int sid);
+
+
+    void updateStatusBySid(SpvBack spvBack);
 
 }

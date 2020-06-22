@@ -76,4 +76,7 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
      */
     @Update("update sys_mechanism set mechanism_name=#{m.mechanismName},sid=#{m.sid},parent=#{m.parent},branch=#{m.branch} where mid=#{m.mid}")
     void upSysMechanismByMid(@Param("m") SysMechanism sysMechanism);
+
+    @Select("select mid,mechanism_name from sys_mechanism where mid=#{mid}")
+    SysMechanism findSysMechanismMid(int mid);
 }

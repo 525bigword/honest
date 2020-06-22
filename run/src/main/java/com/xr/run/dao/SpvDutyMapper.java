@@ -22,10 +22,10 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     })
     IPage<SpvDuty> findSpvDuty(Page page, String dutyTitle);
 
-    @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent} where did=#{did}")
+    @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},`status`=#{status} where did=#{did}")
     void updateSpvDutyByDid(SpvDuty spvDuty);
 
-    @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},dutyAccessory=#{dutyAccessory},dutyAccessoryName=#{dutyAccessoryName} where did=#{did}")
+    @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},dutyAccessory=#{dutyAccessory},dutyAccessoryName=#{dutyAccessoryName},`status`=#{status} where did=#{did}")
     void updateSpvDutyFileByDid(SpvDuty spvDuty);
 
     @Insert("insert into spv_duty(did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`) VALUES(null,#{dnumId},#{dutyType},#{dutyTitle},#{dutyContent},#{bid},#{dutyAccessory},#{dutyAccessoryName},NOW(),#{dCreateId},#{status})")
@@ -45,4 +45,8 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
             many = @Many(select = "com.xr.run.dao.SpvDutyMapper.findDid",fetchType = FetchType.DEFAULT))
     })
     List<SysMechanism> findDid(int parent);
+
+    @Update("update spv_duty set `status`=#{status} where did=#{did}")
+    void updateStatusByDid(SpvDuty spvDuty);
+
 }

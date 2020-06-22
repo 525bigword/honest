@@ -30,15 +30,31 @@ export function deleteSpvduty(data) {
 // 修改用户
 export function update(data) {
     return request({
-        url: '/systemprocess/update',
+        url: '/spvduty/update',
         method: 'post',
         params: {
-            sysTitle: data.sysTitle,
-            sysContent: data.sysContent,
-            sysid: data.sysid
+            did: data.did,
+            dutyType: data.dutyType,
+            dutyTitle: data.dutyTitle,
+            dutyContent: data.dutyContent,
+            bid: data.bmid,
+            dutyAccessory: data.dutyAccessory,
+            dutyAccessoryName: data.dutyAccessoryName,
+            status: data.status
         }
     })
 }
+export function updateStatus(data) {
+    return request({
+        url: '/spvduty/updatestatus',
+        method: 'post',
+        params: {
+            did: data.did,
+            status: data.status
+        }
+    })
+}
+
 
 // 根据用户对象进行查询用户
 export function list(pageNum, pageRow, dutyTitle) {

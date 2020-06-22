@@ -10,7 +10,7 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            <span @click="workorder" style="display:block;">工单</span>
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
@@ -45,6 +45,9 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
+    },
+    workorder(){
+       this.$router.push({path: '/workorders'})
     }
   }
 }

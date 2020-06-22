@@ -353,7 +353,6 @@ import { mapGetters } from 'vuex'
         }
         this.fileList=[{name:row.dfileName,url:row.dfile}];
         this.temp.dCreateTime=row.dcreateTime
-        console.debug(this.temp)
         this.xianshi()
         // 将对话框里的确定点击时，改为执行修改操作
         this.dialogStatus = 'update'
