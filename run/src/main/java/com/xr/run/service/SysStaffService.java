@@ -48,4 +48,6 @@ public interface SysStaffService extends IService<SysStaff> {
     void upSysStaff(SysStaff sysStaff);
     //批量删除
     Integer delSysStaff(String arr);
+    //根据ID查询所有该用户的信息
+    SysStaff findSysStaffBySid(Integer sid);
 }

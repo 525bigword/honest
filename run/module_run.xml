@@ -8,8 +8,8 @@
   
   <property name="compiler.args.run" value="-encoding UTF-8 -source 8 -target 1.8 ${compiler.args}"/>
   
-  <property name="run.output.dir" value="${module.run.basedir}/target/classes"/>
-  <property name="run.testoutput.dir" value="${module.run.basedir}/target/test-classes"/>
+  <property name="run.output.dir" value="${path.variable.maven_repository}/org/springframework/boot/spring-boot-starter-parent/2.3.0.RELEASE/target/classes"/>
+  <property name="run.testoutput.dir" value="${path.variable.maven_repository}/org/springframework/boot/spring-boot-starter-parent/2.3.0.RELEASE/target/test-classes"/>
   
   <path id="run.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
@@ -34,6 +34,8 @@
     <path refid="library.maven:_org.springframework:spring-aop:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.springframework:spring-beans:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.aspectj:aspectjweaver:1.9.5.classpath"/>
+    <path refid="library.maven:_org.springframework.boot:spring-boot-starter-mobile:1.5.9.release.classpath"/>
+    <path refid="library.maven:_org.springframework.mobile:spring-mobile-device:1.1.5.release.classpath"/>
     <path refid="library.maven:_org.apache.poi:poi:3.17.classpath"/>
     <path refid="library.maven:_commons-codec:commons-codec:1.14.classpath"/>
     <path refid="library.maven:_org.apache.commons:commons-collections4:4.1.classpath"/>
@@ -126,6 +128,8 @@
     <path refid="library.maven:_org.springframework:spring-aop:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.springframework:spring-beans:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.aspectj:aspectjweaver:1.9.5.classpath"/>
+    <path refid="library.maven:_org.springframework.boot:spring-boot-starter-mobile:1.5.9.release.classpath"/>
+    <path refid="library.maven:_org.springframework.mobile:spring-mobile-device:1.1.5.release.classpath"/>
     <path refid="library.maven:_org.apache.poi:poi:3.17.classpath"/>
     <path refid="library.maven:_commons-codec:commons-codec:1.14.classpath"/>
     <path refid="library.maven:_org.apache.commons:commons-collections4:4.1.classpath"/>
@@ -219,6 +223,8 @@
     <path refid="library.maven:_org.springframework:spring-aop:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.springframework:spring-beans:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.aspectj:aspectjweaver:1.9.5.classpath"/>
+    <path refid="library.maven:_org.springframework.boot:spring-boot-starter-mobile:1.5.9.release.classpath"/>
+    <path refid="library.maven:_org.springframework.mobile:spring-mobile-device:1.1.5.release.classpath"/>
     <path refid="library.maven:_org.apache.poi:poi:3.17.classpath"/>
     <path refid="library.maven:_commons-codec:commons-codec:1.14.classpath"/>
     <path refid="library.maven:_org.apache.commons:commons-collections4:4.1.classpath"/>
@@ -341,6 +347,8 @@
     <path refid="library.maven:_org.springframework:spring-aop:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.springframework:spring-beans:5.2.6.release.classpath"/>
     <path refid="library.maven:_org.aspectj:aspectjweaver:1.9.5.classpath"/>
+    <path refid="library.maven:_org.springframework.boot:spring-boot-starter-mobile:1.5.9.release.classpath"/>
+    <path refid="library.maven:_org.springframework.mobile:spring-mobile-device:1.1.5.release.classpath"/>
     <path refid="library.maven:_org.apache.poi:poi:3.17.classpath"/>
     <path refid="library.maven:_commons-codec:commons-codec:1.14.classpath"/>
     <path refid="library.maven:_org.apache.commons:commons-collections4:4.1.classpath"/>
@@ -459,6 +467,12 @@
     </dirset>
   </path>
   
+  <path id="run.module.test.sourcepath">
+    <dirset dir="${module.run.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
   
   <target name="compile.module.run" depends="compile.module.run.production,compile.module.run.tests" description="Compile module run"/>
   
@@ -484,7 +498,23 @@
     </copy>
   </target>
   
-  <target name="compile.module.run.tests" depends="register.custom.compilers,compile.module.run.production" description="compile module run; test classes" unless="skip.tests"/>
+  <target name="compile.module.run.tests" depends="register.custom.compilers,compile.module.run.production" description="compile module run; test classes" unless="skip.tests">
+    <mkdir dir="${run.testoutput.dir}"/>
+    <javac2 destdir="${run.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.run}/javac">
+      <compilerarg line="${compiler.args.run}"/>
+      <bootclasspath refid="run.module.bootclasspath"/>
+      <classpath refid="run.module.classpath"/>
+      <src refid="run.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.run"/>
+    </javac2>
+    
+    <copy todir="${run.testoutput.dir}">
+      <fileset dir="${module.run.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
   
   <target name="clean.module.run" description="cleanup module">
     <delete dir="${run.output.dir}"/>

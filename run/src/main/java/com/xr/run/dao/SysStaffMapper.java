@@ -97,7 +97,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     /**
      * 根据岗位查询员工数量
      */
-    @Select("select count(sid) from sys_staff where pid=#{pid}")
+    @Select("select count(sid) from sys_staff where pid=#{pid} and staus <>1")
     Integer findSysStaffByPidToCount(@Param("pid") Integer pid);
     //新增
     @Insert("insert into sys_staff value(null,#{name},#{sex},#{age},#{educationalBackground},#{politicalAppearance},#{phone},#{mid},#{username},#{password},#{pid},#{createTime},#{createId},'1')")
@@ -105,6 +105,9 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     //根据username查询
     @Select("select count(sid) from sys_staff where username=#{username}")
     Integer findSysStaffCount(@Param("username") String username);
+    //根据username查询
+    @Select("select sid from sys_staff where username=#{username}")
+    Integer findSysStaffByUserName(@Param("username") String username);
     @Update("update sys_staff set name=#{s.name},sex=#{s.sex},age=#{s.age},educational_background=#{s.educationalBackground},political_appearance=#{s.politicalAppearance},phone=#{s.phone},mid=#{s.mid},password=#{s.password},pid=#{s.pid},staus=#{s.staus} where sid=#{s.sid}")
     void upSysStaff(@Param("s") SysStaff sysStaff);
     //根据sid查询员工
@@ -113,4 +116,13 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     //根据id删除(修改状态)
     @Update("update sys_staff set staus=2 where sid=#{sid}")
     void upSysStaffStausBySid(@Param("sid")Integer sid);
+    //根据sid查询员工
+    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid, create_time,create_id,staus from sys_staff where sid=#{sid}")
+    @Results({
+            @Result(column = "mid",property = "mechanismname",one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName")),
+            @Result(column = "pid",property = "postname",one = @One(select = "com.xr.run.dao.SysPostMapper.findSysPostPnameByPid")),
+            @Result(column = "mid",property = "mid"),
+            @Result(column = "pid",property = "pid")
+    })
+    SysStaff findSysStaffBySidDetail(@Param("sid")Integer sid);
 }

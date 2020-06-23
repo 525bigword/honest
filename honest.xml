@@ -467,6 +467,10 @@
     <pathelement location="${path.variable.maven_repository}/org/springframework/boot/spring-boot-starter-logging/2.3.0.RELEASE/spring-boot-starter-logging-2.3.0.RELEASE.jar"/>
   </path>
   
+  <path id="library.maven:_org.springframework.boot:spring-boot-starter-mobile:1.5.9.release.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/springframework/boot/spring-boot-starter-mobile/1.5.9.RELEASE/spring-boot-starter-mobile-1.5.9.RELEASE.jar"/>
+  </path>
+  
   <path id="library.maven:_org.springframework.boot:spring-boot-starter-test:2.3.0.release.classpath">
     <pathelement location="${path.variable.maven_repository}/org/springframework/boot/spring-boot-starter-test/2.3.0.RELEASE/spring-boot-starter-test-2.3.0.RELEASE.jar"/>
   </path>
@@ -493,6 +497,10 @@
   
   <path id="library.maven:_org.springframework.boot:spring-boot:2.3.0.release.classpath">
     <pathelement location="${path.variable.maven_repository}/org/springframework/boot/spring-boot/2.3.0.RELEASE/spring-boot-2.3.0.RELEASE.jar"/>
+  </path>
+  
+  <path id="library.maven:_org.springframework.mobile:spring-mobile-device:1.1.5.release.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/springframework/mobile/spring-mobile-device/1.1.5.RELEASE/spring-mobile-device-1.1.5.RELEASE.jar"/>
   </path>
   
   <path id="library.maven:_org.springframework.plugin:spring-plugin-core:1.2.0.release.classpath">

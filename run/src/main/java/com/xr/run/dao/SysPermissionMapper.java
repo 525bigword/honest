@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.SysPermission;
+import com.xr.run.entity.SysStaff;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +25,11 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
             "WHERE u.username = #{username} " +
             "AND u.staus = '1'")
     JSONObject getUserPermission(String username);
-
+    /**
+     * 查询用户信息
+     */
+    @Select("SELECT sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,(select pname from sys_post where pid=sys_staff.pid) postname, create_time,create_id,staus FROM sys_staff WHERE username = #{username} and staus = 1")
+    SysStaff getSysStaffByUserName(String username);
     /**
      * 查询所有的菜单
      */

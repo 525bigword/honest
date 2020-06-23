@@ -76,7 +76,7 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper,SysPost> imple
         int pid = sysPost.getPid();
         sysPostPermissionMapper.delSysPostPermissionByPostId(pid);
         String[] split = sysPost.getArr().split(",");
-        Date date = DateUtil.getDate();
+//        Date date = DateUtil.getDate();
         for (String s : split) {
             sysPostPermissionMapper.addSysPostPermission(sysPost,Integer.parseInt(s));
         }

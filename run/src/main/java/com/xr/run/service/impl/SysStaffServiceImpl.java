@@ -170,4 +170,10 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         return 1;
     }
 
+    @Override
+    public SysStaff findSysStaffBySid(Integer sid) {
+        SysStaff sysStaffBySidDetail = baseMapper.findSysStaffBySidDetail(sid);
+        return sysStaffBySidDetail;
+    }
+
 }

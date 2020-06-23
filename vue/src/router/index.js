@@ -76,6 +76,12 @@ export const asyncRouterMap = [
                 component: _import('system/permission/permission'),
                 meta: { title: '权限管理', icon: 'password' },
                 menu: 'permission'
+            },{
+                path: 'log',
+                name: '日志管理',
+                component: _import('system/log/log'),
+                meta: { title: '日志管理', icon: 'password' },
+                menu: 'log'
             },
         ]
     },
@@ -90,7 +96,7 @@ export const asyncRouterMap = [
             name: '廉政教育',
             component: _import('user/user'),
             meta: { title: '廉政教育', icon: 'user' },
-            menu: 'politics'
+            menu: 'staff'
         }]
     },
     {
@@ -104,25 +110,25 @@ export const asyncRouterMap = [
                 name: '工作计划',
                 component: _import('duty/plan'),
                 meta: { title: '工作计划', icon: 'user' },
-                menu: 'plan'
+                menu: 'staff'
             }, {
                 path: 'deploy',
                 name: '工作部署',
                 component: _import('duty/deploy'),
                 meta: { title: '工作部署', icon: 'user' },
-                menu: 'deploy'
+                menu: 'staff'
             }, {
                 path: 'talk',
                 name: '廉政谈话',
                 component: _import('duty/talk'),
                 meta: { title: '廉政谈话', icon: 'user' },
-                menu: 'talk'
+                menu: 'staff'
             }, {
                 path: 'main',
                 name: '主体责任',
                 component: _import('duty/main'),
                 meta: { title: '主体责任', icon: 'user' },
-                menu: 'main'
+                menu: 'staff'
             }
 
         ]
@@ -138,31 +144,31 @@ export const asyncRouterMap = [
             name: '风险防控',
             component: _import('user/user'),
             meta: { title: '风险防控', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }, {
             path: '',
             name: '日常管理',
             component: _import('user/user'),
             meta: { title: '日常管理', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }, {
             path: '',
             name: '动态管理',
             component: _import('user/user'),
             meta: { title: '动态管理', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }, {
             path: '',
             name: '风险处置',
             component: _import('user/user'),
             meta: { title: '风险处置', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }, {
             path: '',
             name: '风险评价',
             component: _import('user/user'),
             meta: { title: '风险评价', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }]
     }, {
         path: '/responsibility',
@@ -175,7 +181,7 @@ export const asyncRouterMap = [
             name: '监督责任',
             component: _import('responsibility/spvduty'),
             meta: { title: '监督责任', icon: 'user' },
-            menu: 'spvduty'
+            menu: 'staff'
         }]
     }, {
         path: '/report',
@@ -188,7 +194,7 @@ export const asyncRouterMap = [
             name: '纪检报表',
             component: _import('user/user'),
             meta: { title: '纪检报表', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }]
     }, {
         path: '/culture',
@@ -201,13 +207,13 @@ export const asyncRouterMap = [
             name: '资料锦集',
             component: _import('cultrue/datakamset'),
             meta: { title: '资料锦集', icon: 'user' },
-            menu: 'dataCollection'
+            menu: 'staff'
         }, {
             path: 'windculture',
             name: '清风文苑',
             component: _import('cultrue/windculture'),
             meta: { title: '清风文苑', icon: 'user' },
-            menu: 'windculture'
+            menu: 'staff'
         }]
     },
     {
@@ -221,13 +227,13 @@ export const asyncRouterMap = [
             name: '风险点预警管理',
             component: _import('riskmanagement/riskwarning'),
             meta: { title: '风险点预警管理', icon: 'user' },
-            menu: 'riskwarning'
+            menu: 'staff'
         }, {
             path: 'systemprocess',
             name: '制度流程完善',
             component: _import('riskmanagement/systemprocess'),
             meta: { title: '制度流程完善', icon: 'user' },
-            menu: 'systemprocess'
+            menu: 'staff'
         }]
     },
     {
@@ -241,7 +247,7 @@ export const asyncRouterMap = [
             name: '工单',
             component: _import('workorders/workorder'),
             meta: { title: '工单', icon: 'user' },
-            menu: 'user'
+            menu: 'staff'
         }]
     }, { path: '*', redirect: '/404', hidden: true }
 ]

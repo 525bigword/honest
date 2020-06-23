@@ -25,6 +25,13 @@ import java.util.List;
 public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
+
+    @GetMapping("get/{sid}")
+    @RequiresPermissions("staff:delete")
+    public JSONObject getSysStaffBySid(@PathVariable Integer sid){
+        SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
+        return CommonUtil.successJson(sysStaffBySid);
+    }
     @PostMapping("delete")
     @RequiresPermissions("staff:delete")
     public JSONObject delSysStaff(String str){
