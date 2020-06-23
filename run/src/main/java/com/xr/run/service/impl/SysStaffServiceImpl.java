@@ -5,11 +5,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xr.run.dao.DatacollectionMapper;
+import com.xr.run.dao.RdHonestConversationMapper;
 import com.xr.run.dao.SysStaffMapper;
+import com.xr.run.dao.WindMapper;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysPermissionService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
+import com.xr.run.util.DateUtil;
 import com.xr.run.util.constants.Constants;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -25,16 +29,26 @@ import java.util.List;
 public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> implements SysStaffService {
     @Autowired
     private SysPermissionService sysPermissionService;
+    @Autowired
+    private RdHonestConversationMapper rdHonestConversationMapper;
+    @Autowired
+    private DatacollectionMapper datacollectionMapper;
+    @Autowired
+    private WindMapper windMapper;
     @Override
-    public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus) {
-
-        IPage<SysStaff> sysStaffAll = baseMapper.findSysStaffAll(page,name,staus);
+    public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid) {
+        IPage<SysStaff> sysStaffAll=null;
+        if(mid!=null){
+            sysStaffAll = baseMapper.findSysStaffAll(page,name,staus,mid);
+        }else{
+            sysStaffAll=baseMapper.findSysStaffAllNoMid(page,name,staus);
+        }
         return sysStaffAll;
     }
 
     @Override
     public List<SysStaff> findSysStaffAll() {
-        return baseMapper.findSysStaffAll();
+        return baseMapper.findSysStaffAlla();
     }
 
     @Override
@@ -113,4 +127,53 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     public  List<SysStaff>  findSysStaff() {
         return baseMapper.findSysStaff();
     }
+
+    @Override
+    public Integer addSysStaff(SysStaff sysStaff) {
+        System.out.println(sysStaff.getUsername());
+        Integer sysStaffCount = baseMapper.findSysStaffCount(sysStaff.getUsername());
+        if(sysStaffCount>0){
+            return 0;
+        }
+        sysStaff.setCreateTime(DateUtil.getDate());
+        baseMapper.addSysStaff(sysStaff);
+        return 1;
+    }
+
+    @Override
+    public void upSysStaff(SysStaff sysStaff) {
+        baseMapper.upSysStaff(sysStaff);
+    }
+
+    @Override
+    public Integer delSysStaff(String arr) {
+        String[] split = arr.split(",");
+        for (String s : split) {
+            SysStaff sysStaffBySid = baseMapper.findSysStaffBySid(Integer.parseInt(s));
+            int sid=sysStaffBySid.getSid();
+            Integer rdHonestConversationCount = rdHonestConversationMapper.findRdHonestConversationCount(sid);
+            if(rdHonestConversationCount>0){
+                return 2;
+            }
+            Integer datacollectionByStatusAndSidToCount = datacollectionMapper.findDatacollectionByStatusAndSidToCount(sid);
+            if(datacollectionByStatusAndSidToCount>0){
+                return 2;
+            }
+            Integer windByWstatusToCount = windMapper.findWindByWstatusToCount(sid);
+            if(windByWstatusToCount>0) {
+                return 2;
+            }
+        }
+        for (String s : split) {
+            baseMapper.upSysStaffStausBySid(Integer.parseInt(s));
+        }
+        return 1;
+    }
+
+    @Override
+    public SysStaff findSysStaffBySid(Integer sid) {
+        SysStaff sysStaffBySidDetail = baseMapper.findSysStaffBySidDetail(sid);
+        return sysStaffBySidDetail;
+    }
+
 }

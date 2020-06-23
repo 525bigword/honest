@@ -40,4 +40,7 @@ public interface SysPostPermissionMapper extends BaseMapper<SysPostPermission> {
      */
     @Insert("insert into sys_post_permission value(null,#{p.pid},#{postid},1,#{p.createTime},#{p.createId})")
     void addSysPostPermission(@Param("p")SysPost sysPost, @Param("postid")Integer postid);
+    //根据postid查询
+    @Select("select id,postid,pid from sys_post_permission where postid=#{postid} and stuas='1'")
+    List<SysPostPermission> findSysPostPermissionByPostId(@Param("postid")Integer postId);
 }

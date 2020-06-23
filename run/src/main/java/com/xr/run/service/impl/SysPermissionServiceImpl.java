@@ -9,17 +9,22 @@ import com.xr.run.dao.PermissionDao;
 import com.xr.run.dao.SysPermissionMapper;
 import com.xr.run.dao.SysPostPermissionMapper;
 import com.xr.run.entity.SysPermission;
+import com.xr.run.entity.SysPostPermission;
+import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysPermissionService;
 import org.apache.ibatis.session.SqlSessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,SysPermission> implements SysPermissionService {
     @Autowired
     private SysPostPermissionMapper sysPostPermissionMapper;
+    @Autowired
+    private SysPermissionMapper sysPermissionMapper;
     /**
      * 查询某用户的 角色  菜单列表   权限列表
      */
@@ -84,19 +89,36 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
      * 从数据库查询用户权限信息
      */
     private JSONObject getUserPermissionFromDB(String username) {
-        JSONObject userPermission = baseMapper.getUserPermission(username);
+        JSONObject userPermission = new JSONObject();//baseMapper.getUserPermission(username);
+        SysStaff sysStaffByUserName = baseMapper.getSysStaffByUserName(username);
         //管理员角色ID为1
-        int adminRoleId = 1;
+        String adminRoleId = "1";
         //如果是管理员
         String roleIdKey = "roleId";
-        if (adminRoleId == userPermission.getIntValue(roleIdKey)) {
+        if (adminRoleId.equals(sysStaffByUserName.getPid()) ) {
             //查询所有菜单  所有权限
             Set<String> menuList = baseMapper.getAllMenu();
             Set<String> permissionList = baseMapper.getAllPermission();
             userPermission.put("menuList", menuList);
             userPermission.put("permissionList", permissionList);
+            userPermission.put("sysStaffByUserName",sysStaffByUserName);
         }else{
             //TODO 非超级用户读取相关信息
+            System.out.println(userPermission.getInteger("roleId"));
+            List<SysPostPermission> syspostpermissions = sysPostPermissionMapper.findSysPostPermissionByPostId(Integer.parseInt(sysStaffByUserName.getPid()));
+            String ids="(";
+            for (SysPostPermission syspostpermission : syspostpermissions) {
+                ids+=syspostpermission.getPid()+",";
+            }
+
+            ids=ids.substring(0,ids.length()-1);
+            ids+=")";
+            System.out.println(ids);
+            Set<String> menuList = sysPermissionMapper.findSysPermissionNameById(ids);
+            Set<String> permissionList = sysPermissionMapper.getAllPermissionById(ids);
+            userPermission.put("menuList", menuList);
+            userPermission.put("permissionList", permissionList);
+            userPermission.put("sysStaffByUserName",sysStaffByUserName);
         }
 
         return userPermission;

@@ -302,6 +302,7 @@ export default {
     treeClose() {
       console.log(this.default_checked);
       this.default_checked=[]
+      
       // setCheckedKeys
       this.placeholder = '所属部门'
       this.default_checked.filter(value => {
@@ -395,7 +396,7 @@ export default {
       //   return
       // }
       console.log(this.listQuery.bm)
-      console.log(this.temp.defaultvalue)
+      console.log("this.temp.defaultvalue",this.temp.defaultvalue)
       // let mids = this.listQuery.bm.join(",");
       // console.log(mids);
       this.listLoading = true;
@@ -405,7 +406,7 @@ export default {
         data: {
           pname: this.listQuery.name,
           message: this.listQuery.message,
-          mids: this.temp.defaultvalue[0]
+          mids: this.temp.defaultvalue.length===0?this.temp.defaultvalue[0]:this.temp.defaultvalue
         }
       }).then(response => {
         console.log("getlist", response);
@@ -517,6 +518,7 @@ export default {
               type: "success",
               message: "添加成功"
             });
+            this.temp.defaultvalue=[]
             this.getList();
             this.treeDisable = false;
           }
@@ -568,7 +570,7 @@ export default {
                   arr:arr
                 }
               }).then(res => {
-                
+                this.temp.defaultvalue = [];
                 this.getList();
                 this.treeDisable = false;
               });
@@ -579,6 +581,7 @@ export default {
     },
     handleDelete(row, index) {
       console.log(row,index)
+      console.log(this.deletelist);
       if (this.deletelist.length < 1) {
         this.$message({
           type: "error",
@@ -592,6 +595,7 @@ export default {
           closeOnPressEscape: false,
           callback: action => {
             let arr = this.deletelist.join(",");
+            console.log(arr)
             this.api({
               url: "syspost/del",
               method: "post",
@@ -600,7 +604,13 @@ export default {
               }
             }).then(res => {
               console.log(res);
-              this.getList();
+              if(res===0){
+                this.$message({
+                  type:'error',
+                  message:'请保证该岗位没有员工'
+                })
+              }
+              // this.getList();
             });
           }
         });

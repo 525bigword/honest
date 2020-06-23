@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface SysStaffService extends IService<SysStaff> {
 
-    IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus);
+    IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid);
     List<SysStaff> findSysStaffAll();
     /**
      * 登录
@@ -42,5 +42,12 @@ public interface SysStaffService extends IService<SysStaff> {
      */
     Integer findSysStaffToCount(String[] pids);
     List<SysStaff> findSysStaff();
-
+    //新增
+    Integer addSysStaff(SysStaff sysStaff);
+    //修改
+    void upSysStaff(SysStaff sysStaff);
+    //批量删除
+    Integer delSysStaff(String arr);
+    //根据ID查询所有该用户的信息
+    SysStaff findSysStaffBySid(Integer sid);
 }

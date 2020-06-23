@@ -16,9 +16,9 @@ const user = {
     },
     mutations: {
         SET_USER: (state, userInfo) => {
-            state.nickname = userInfo.nickname;
-            state.userId = userInfo.userId;
-            state.role = userInfo.roleName;
+            state.nickname = userInfo.sysStaffByUserName.name;
+            state.userId = userInfo.sysStaffByUserName.sid;
+            state.role = userInfo.sysStaffByUserName.postname;
             state.menus = userInfo.menuList;
             state.permissions = userInfo.permissionList;
         },
@@ -47,10 +47,10 @@ const user = {
                     if (data.result === "success") {
                         //cookie中保存前端登录状态
                         console.log(data.data.roleName)
-                        localStorage.setItem("roleName",data.data.roleName)
-                        localStorage.setItem("roleId",data.data.roleId)
-                        localStorage.setItem("userId",data.data.userId)
-                        commit('SET_USER_ID', data.userId);
+                        localStorage.setItem("roleName",data.data.postname)
+                        localStorage.setItem("roleId",data.data.pid)
+                        localStorage.setItem("userId",data.data.sid)
+                        commit('SET_USER_ID', data.data.sid);
                         setToken();
                     }
                     resolve(data);
@@ -88,7 +88,7 @@ const user = {
         LogOut({ commit }) {
             return new Promise((resolve) => {
                 api({
-                    url: "login/logout",
+                    url: "SysStaff/logout",
                     method: "post"
                 }).then(data => {
                     commit('RESET_USER')

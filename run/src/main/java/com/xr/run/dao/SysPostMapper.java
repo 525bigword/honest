@@ -56,4 +56,9 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      */
     @Update("update sys_post set staus='2' where pid = #{pid}")
     void delSysPost(@Param("pid")Integer pid);
+    /**
+     * 获取全部SysPost
+     */
+    @Select("select pid,pname from sys_post where staus='1'")
+    List<SysPost> getSysPost();
 }

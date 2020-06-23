@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Data
-@TableName("sys_staff")
 public class SysStaff {
 //"select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
 //        "create_time,create_id,staus"
