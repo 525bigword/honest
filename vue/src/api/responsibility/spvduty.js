@@ -45,16 +45,27 @@ export function update(data) {
     })
 }
 export function updateStatus(data) {
+    console.debug(data)
     return request({
         url: '/spvduty/updatestatus',
         method: 'post',
         params: {
             did: data.did,
-            status: data.status
+            status: data.status,
+            dutyType: data.dutyType,
+            dCreateId: data.sysStaff.sid,
+            bid: data.bid
         }
     })
 }
-
+// 根据用户对象进行查询用户
+export function blist(pageNum, pageRow, did) {
+    return request({
+        url: '/spvback/get/' + pageNum + '/' + pageRow,
+        method: 'get',
+        params: { did }
+    })
+}
 
 // 根据用户对象进行查询用户
 export function list(pageNum, pageRow, dutyTitle) {
@@ -64,6 +75,19 @@ export function list(pageNum, pageRow, dutyTitle) {
         params: { dutyTitle }
     })
 }
+
+export function updatestatusall(back, status) {
+    return request({
+        url: '/spvback/updatestatusall',
+        method: 'post',
+        params: {
+            backType: back.backType,
+            status: status,
+            sid: back.cid
+        }
+    })
+}
+
 
 export function getDid() {
     return request({

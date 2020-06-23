@@ -49,4 +49,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Update("update spv_duty set `status`=#{status} where did=#{did}")
     void updateStatusByDid(SpvDuty spvDuty);
 
+    @Select("select dutyContent from spv_duty where did=#{did}")
+    String getSpvDuty(int did);
+
 }

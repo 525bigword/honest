@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SpvDuty;
 import com.xr.run.service.SpvBackService;
+import com.xr.run.service.SpvDutyService;
 import com.xr.run.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,23 +19,30 @@ import java.io.File;
 public class SpvBackController {
     @Autowired
     private SpvBackService spvBackService;
+    @Autowired
+    private SpvDutyService spvDutyService;
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
-    public JSONObject findSpvBack(@PathVariable Integer pageNum, String backTitle, @PathVariable Integer pageRow){
-        if(backTitle==null){
-            backTitle="";
+    public JSONObject findSpvBack(@PathVariable Integer pageNum, String backType,int did, @PathVariable Integer pageRow){
+        if(backType==null){
+            backType="";
         }
         System.out.println("findSpvBack");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<SpvBack> page=new Page(pageNum,pageRow);
-        IPage<SpvBack> spvBack = spvBackService.findSpvBack(page,backTitle);
+        IPage<SpvBack> spvBack=null;
+        if(did!=0){
+            spvBack=spvBackService.findSpvBackByDid(page,did);
+        }else {
+             spvBack = spvBackService.findSpvBack(page, backType);
+        }
         return CommonUtil.successJson(spvBack);
     }
     @RequestMapping("update")
     public JSONObject updateSpvBack(SpvBack spvBack)  {
-        System.out.println(spvBack.getBackAccessoryName());
+        System.out.println(spvBack);
         if(spvBack.getBackAccessoryName().equals("1")){
             spvBackService.updateSpvBackBySid(spvBack);
         }else {
@@ -60,6 +68,28 @@ public class SpvBackController {
     @RequestMapping("updatestatus")
     public JSONObject updateStatus(SpvBack spvBack)  {
         spvBackService.updateStatusBySid(spvBack);
+        return CommonUtil.successJson("修改成功!");
+    }
+    @RequestMapping("updatestatusall")
+    public JSONObject updateStatusall(SpvBack spvBack)  {
+        String[] sid = spvBack.getBackType().split(",");
+        if (sid.length==1){
+            SpvBack spvBack1=new SpvBack();
+            spvBack.setSid(Integer.parseInt(sid[0]));
+            spvBack.setStatus(spvBack.getStatus());
+            spvBackService.updateStatusBySid(spvBack);
+        }else{
+            for (int i = 0; i < sid.length; i++) {
+                SpvBack spvBack1=new SpvBack();
+                spvBack.setSid(Integer.parseInt(sid[i]));
+                spvBack.setStatus(spvBack.getStatus());
+                spvBackService.updateStatusBySid(spvBack);
+            }
+        }
+        SpvDuty spvDuty=new SpvDuty();
+        spvDuty.setDid(spvBack.getSid());
+        spvDuty.setStatus(spvBack.getStatus());
+        spvDutyService.updateStatusByDid(spvDuty);
         return CommonUtil.successJson("修改成功!");
     }
 }

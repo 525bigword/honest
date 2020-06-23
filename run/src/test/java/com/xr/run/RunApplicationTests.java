@@ -1,6 +1,10 @@
 package com.xr.run;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xr.run.dao.SpvBackMapper;
 import com.xr.run.dao.SpvDutyMapper;
+import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.SysPost;
 import com.xr.run.service.SysPermissionService;
@@ -22,7 +26,7 @@ class RunApplicationTests {
     @Autowired
     DataSource dataSource;//Druid数据源
     @Autowired
-    private  SpvDutyMapper spvDutyMapper;
+    private SpvBackMapper spvBackMapper;
     @Autowired
     private SysPostPermissionService sysPostPermissionService;
     @Test
@@ -31,12 +35,9 @@ class RunApplicationTests {
     }
     @Test
     public void test(){
-//        List<SysPost> treeSysPost = sysPostPermissionService.findTreeSysPost();
-        List<SysMechanism> did = spvDutyMapper.findDid(0);
-        System.out.println(did);
-        List<Map> map = getMap(did);
-        System.out.println(map);
-
+        Page page=new Page(1,5);
+        IPage<SpvBack> spvBack = spvBackMapper.findSpvBack(page, "");
+        System.out.println(spvBack.getRecords());
     }
     public List<Map> getMap(List<SysMechanism> list){
         List<Map> mapList=new ArrayList<>();
