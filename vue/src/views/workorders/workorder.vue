@@ -64,7 +64,7 @@
         </el-table-column>
         <el-table-column label="状态" prop="status" align="center" width="140px">
           <template slot-scope="scope">
-            <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':'已结束'))}}</span>
+            <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===5?'已通报':'已结束')))}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="225px">
@@ -77,7 +77,10 @@
               style="color:#1890ff"
               @click="handBack(scope.row)"
             >{{ scope.row.status===1||scope.row.status===3?'提交反馈':''}}&nbsp;&nbsp;</a>
-           
+           <a
+              style="color:#1890ff"
+              @click="tongbaoshow(scope.row)"
+            >{{ scope.row.status===5?'查看通报':''}}&nbsp;&nbsp;</a>
           </template>
         </el-table-column>
       </el-table>
@@ -210,6 +213,29 @@
         </el-row>
       </el-form>
     </div>
+    <div :style="{'display':dis5}">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="center"
+        label-width="130px"
+        style="width: 95%; margin-left:40px;"
+      >
+      <div class="filter-container" align="right" style="margin-top: 20px;margin-right:40px">
+        <el-button type="primary" class="el-icon-back" @click="back2()">返回</el-button>
+        <!--  </el-form-item> -->
+      </div>
+      <el-form-item style="font-weight: bold;" label="通报内容" prop="tongzhi">
+          <quill-editor disabled="disabled"
+            class="editor"
+            style="height:340px;width:90%;margin-top:20px"
+            ref="myQuillEditor"
+            v-model="temp.tongzhi"
+          ></quill-editor>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -231,6 +257,7 @@ export default {
     return {
       dis: "inline-block",
       dis2: "none",
+      dis5:'none',
       tableKey: 0,
       list: [], // 后台返回，给数据表格展示的数据
       total: 0, // 总记录数
@@ -263,7 +290,8 @@ export default {
         status: 1,
         dstatus: "",
         dutyContent:'',
-        gettop:''
+        gettop:'',
+        tongzhi:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -359,12 +387,14 @@ export default {
           this.temp.dstatus='已提交'
       }else if(this.temp.status===3){
           this.temp.dstatus='待检查'
+      }else if(this.temp.status===5){
+        this.temp.dstatus='已通报'
       }else{
         this.temp.dstatus='已结束'
       }
         this.fileList = [{ name: row.backAccessoryName, url: row.backAccessory }];
-        if(row.backAccessory===''){
-        this.fileList=[];
+        if(row.backAccessory===''||row.backAccessory===null){
+        this.fileList=[]
       }
       // 将对话框里的确定点击时，改为执行修改操作
       this.dialogStatus = "update";
@@ -402,25 +432,9 @@ export default {
                 this.yincang();
               });
             });
-          }else if(this.fileList.length!==0&&this.fileAgin === this.fileList[0].name){
-            this.temp.backAccessoryName = "1";
-            update(this.temp).then(response => {
-              // 关闭对话框
-              this.dialogFormVisible = false;
-              // 刷新数据表格里的数据
-              this.getList();
-              // 显示一个通知
-              this.$notify({
-                title: "成功",
-                message: "修改成功",
-                type: "success",
-                duration: 2000
-              });
-              this.isShow = false;
-              this.yincang();
-            });
-          }else{
-              this.isShow = true;
+          }else if(this.fileList.length===0&&this.fileAgin !==''){
+            this.temp.backAccessoryName=''
+            this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
               update(this.temp).then(response => {
                 // 关闭对话框
@@ -437,6 +451,23 @@ export default {
                 this.isShow = false;
                 this.yincang();
               });
+          }else{
+              this.temp.backAccessoryName = "1";
+            update(this.temp).then(response => {
+              // 关闭对话框
+              this.dialogFormVisible = false;
+              // 刷新数据表格里的数据
+              this.getList();
+              // 显示一个通知
+              this.$notify({
+                title: "成功",
+                message: "修改成功",
+                type: "success",
+                duration: 2000
+              });
+              this.isShow = false;
+              this.yincang();
+            });
           }
         }
       });
@@ -539,6 +570,18 @@ export default {
                 duration: 2000
               });
             });
+    },
+    back2(){
+      this.dis= "inline-block"
+      this.dis2= "none"
+      this.dis5='none'
+    },
+    tongbaoshow(row){
+      console.debug(this.temp)
+      this.temp=row
+      this.dis= "none"
+      this.dis2= "none"
+      this.dis5='inline-block'
     }
   }
 };

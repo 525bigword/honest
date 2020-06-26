@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SpvBack;
+import com.xr.run.entity.SpvDuty;
 import com.xr.run.service.SpvBackService;
 import com.xr.run.service.SpvDutyService;
 import com.xr.run.util.CommonUtil;
@@ -71,7 +72,24 @@ public class SpvBackController {
     }
     @RequestMapping("updatestatusall")
     public JSONObject updateStatusall(SpvBack spvBack)  {
-
+        System.out.println(spvBack);
+        String[] split = spvBack.getBackType().split(",");
+        SpvBack spvBack1=new SpvBack();
+        spvBack1.setStatus(spvBack.getStatus());
+        if (split.length==1){
+            spvBack1.setSid(Integer.parseInt(split[0]));
+            spvBackService.updateStatusBySid(spvBack1);
+        }else{
+            for (int i = 0; i < split.length; i++) {
+                spvBack1.setSid(Integer.parseInt(split[i]));
+                spvBackService.updateStatusBySid(spvBack1);
+            }
+        }//修改子部门信息状态
+        //修改父部门
+        SpvDuty spvDuty=new SpvDuty();
+        spvDuty.setDid(spvBack.getbid());
+        spvDuty.setStatus(spvBack.getSid());
+        spvDutyService.updateStatusByDid(spvDuty);
         return CommonUtil.successJson("修改成功!");
     }
 }

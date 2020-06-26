@@ -52,4 +52,10 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Select("select dutyContent from spv_duty where did=#{did}")
     String getSpvDuty(int did);
 
+    @Select("select tongbao from spv_duty where did=#{did}")
+    String getTongzhi(int did);
+
+    @Update("update spv_duty set tongbao=#{tongbao} where did=#{did}")
+    void updateTongBaoByDid(SpvDuty spvDuty);
+
 }

@@ -113,4 +113,10 @@ public class SpvDutyController {
         spvDutyService.updateStatusByDid(spvDuty);
         return CommonUtil.successJson("修改成功!");
     }
+
+    @RequestMapping("updatetong")
+    public JSONObject updateTongBaoByDid(SpvDuty spvDuty){
+        spvDutyService.updateTongBaoByDid(spvDuty);
+        return CommonUtil.successJson("发布成功!");
+    }
 }

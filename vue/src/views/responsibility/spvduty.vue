@@ -73,7 +73,7 @@
             <a
               style="color:#1890ff"
               @click="handleUpdate(scope.row)"
-            >{{ scope.row.status===1||scope.row.status===6?'编辑':''}}&nbsp;&nbsp;</a>
+            >{{ scope.row.status===1?'编辑':''}}&nbsp;&nbsp;</a>
             <a
               style="color:#1890ff"
               @click="handBackList(scope.row)"
@@ -81,7 +81,10 @@
             <a
               style="color:#1890ff"
               @click="handleStatusUpdate(scope.row)"
-            >{{ scope.row.status===1?'发布通知':(scope.row.status===6?'发布通报':'')}}</a>
+            >{{ scope.row.status===1?'发布通知':''}}</a>
+            <a
+              style="color:#1890ff" href="#"
+            >{{ scope.row.status===6?'已通报':''}}</a>
           </template>
         </el-table-column>
       </el-table>
@@ -224,8 +227,9 @@
     </div>
     <div :style="{'display':dis3}">
       <div class="filter-container" align="right" style="margin-top: 20px;">
-        <el-button type="primary" @click="agincheck(3)">再检查</el-button>
-        <el-button type="primary" @click="jieshu">结束此任务</el-button>
+        <el-button type="primary" :style="{'display':checkShow}" @click="agincheck(3,4)">再检查</el-button>
+        <el-button type="primary" @click="agincheck(4,0)">结束任务</el-button>
+        <el-button type="primary" :style="{'display':tongShow}" @click="fabutongbao()">发布通报</el-button>
         <el-button type="primary" class="el-icon-back" @click="goback">返回</el-button>
         <!--  </el-form-item> -->
       </div>
@@ -274,7 +278,7 @@
         </el-table-column>
         <el-table-column label="状态" prop="status" align="center" width="140px">
           <template slot-scope="scope">
-            <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':''))}}</span>
+            <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===4?'结束':'已通报')))}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="225px">
@@ -385,6 +389,30 @@
         
       </el-form>
     </div>
+    <div :style="{'display':dis5}">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="back"
+        label-position="center"
+        label-width="130px"
+        style="width: 95%; margin-left:40px;"
+      >
+      <div class="filter-container" align="right" style="margin-top: 20px;margin-right:30px">
+        <el-button type="primary"  @click="fabu(5,6)">发布通知</el-button>
+        <el-button type="primary" class="el-icon-back" @click="back2()">返回</el-button>
+        <!--  </el-form-item> -->
+      </div>
+      <el-form-item style="font-weight: bold;" label="通报内容" prop="tongbao">
+          <quill-editor
+            class="editor"
+            style="height:340px;width:90%;margin-top:20px"
+            ref="myQuillEditor"
+            v-model="temp.tongbao"
+          ></quill-editor>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -399,7 +427,8 @@ import {
   updateStatus,
   blist,
   btylist,
-  updatestatusall
+  updatestatusall,
+  updatetong
 } from "@/api/responsibility/spvduty";
 import qs from "qs";
 import { mapGetters } from "vuex";
@@ -413,7 +442,10 @@ export default {
       dis2: "none",
       dis3:"none",
       dis4:"none",
+      dis5:'none',
       tableKey: 0,
+      checkShow:'none',
+      tongShow:'none',
       list: [], // 后台返回，给数据表格展示的数据
       blist: [], // 后台返回，给数据表格展示的数据
       total: 0, // 总记录数
@@ -449,7 +481,8 @@ export default {
         status: 1,
         dstatus: "",
         options: [],
-        value: []
+        value: [],
+        tongbao:''
       },
       back: {
         // 添加、修改时绑定的表单数据
@@ -931,6 +964,16 @@ export default {
       this.dis='none'
       this.dis2='none'
       this.dis3='inline-block'
+      if(row.status===2){
+        this.checkShow='inline-block'
+      }else{
+         this.checkShow='none'
+      }
+      if(row.status===4){
+        this.tongShow='inline-block'
+      }else{
+        this.tongShow='none'
+      }
       this.temp=row
       this.getbList(row.did)
     },
@@ -979,15 +1022,16 @@ export default {
       this.dis2='none'
       this.dis3='inline-block'
       this.dis4='none'
+      this.dis5='none'
+      this.temp.tongbao=''
     },
-    agincheck(status){
-      this.gincheck(status)
+    agincheck(bstatus,dstatus){
+      this.gincheck(bstatus,dstatus)
     },
-    gincheck(status){
+    gincheck(bstatus,dstatus){
         let i=0;
         this.back.backType=''
         this.blist.filter(bl=>{
-          console.debug(bl)
          this.back.backType+=bl.sid+','
           if(bl.status===2){
             i++;
@@ -997,24 +1041,24 @@ export default {
             0,
             this.back.backType.length - 1
           );
-          console.debug(this.back.backType)
-           this.back.cid=this.temp.did
-           this.back.status=1
-           this.back.sid=1
+           this.back.bid=this.temp.did //父id
+           this.back.status=bstatus //子部门状态
+           this.back.sid=dstatus //父窗口状态
            console.debug(this.back)
-        /* if(i!==this.blist.length){
-          this.$confirm('还有子部门未反馈信息，确定要进行再检查吗?', '提示', {
+           let title='再检查';
+           if(bstatus===4&&dstatus===0){
+             title='结束'
+           }
+        if(i!==this.blist.length){
+          this.$confirm('还有子部门未反馈信息，确定要将项目进行'+title+'吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          /* console.debug(sid)
-          this.back.cid=this.temp.did
-          updatestatusall(this.back,3).then((response) => {
+          updatestatusall(this.back).then((response) => {
             // 刷新数据表格
-             this.bpageNum=1;
-            this.getbList()
+            this.getbList(this.temp.did)
             // ajax去后台删除
             this.$notify({
               title: '成功',
@@ -1022,45 +1066,71 @@ export default {
               type: 'success',
               duration: 2000
             })
+            this.goback()
+            this.getList();
+
           }) 
         })
-        } */
+        }
         },
-        jieshu(){
-          this.ieshu()
+        fabutongbao(){
+          this.dis='none'
+          this.dis1='none'
+          this.dis2='none'
+          this.dis3='none'
+          this.dis4='none'
+          this.dis5='inline-block'
+
         },
-        ieshu(){
+        fabu(bstatus,dstatus){
+          console.debug(this.temp.tongbao)
           let i=0;
+        this.back.backType=''
         this.blist.filter(bl=>{
+         this.back.backType+=bl.sid+','
           if(bl.status===2){
             i++;
           }
         })
-        console.debug(i)
+        this.back.backType = this.back.backType.substring(
+            0,
+            this.back.backType.length - 1
+          );
+           this.back.bid=this.temp.did //父id
+           this.back.status=bstatus //子部门状态
+           this.back.sid=dstatus //父窗口状态
+           console.debug(this.back)
         if(i!==this.blist.length){
-          this.$confirm('还有子部门未反馈信息，确定要进行再检查吗?', '提示', {
+          this.$confirm('还有子部门未反馈信息，确定要进行项目通报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          console.debug(this.deleteid)
-          deleteWind(this.deleteid).then((response) => {
+          updatetong(this.temp).then((response)=>{
+            updatestatusall(this.back).then((response) => {
             // 刷新数据表格
-             this.pageNum=1;
-            this.getList()
+            this.getbList(this.temp.did)
             // ajax去后台删除
             this.$notify({
               title: '成功',
-              message: '删除成功',
+              message: '操作成功',
               type: 'success',
               duration: 2000
             })
+            this.dis='inline-block'
+      this.dis2='none'
+      this.dis3='none'
+      this.dis4='none'
+      this.dis5='none'
+      this.temp.tongbao=''
+             this.getList();
+          }) 
           })
+          
         })
-        }}
-        
-    
+        }
+        }
     }
 }
 </script>

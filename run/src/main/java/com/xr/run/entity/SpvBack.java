@@ -36,6 +36,7 @@ public class SpvBack {
     return sysStaff.getSid();
   }
   private String gettop;
+  private String tongzhi;
   private int did;
   private int status;
 

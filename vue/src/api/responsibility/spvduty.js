@@ -76,14 +76,27 @@ export function list(pageNum, pageRow, dutyTitle) {
     })
 }
 
-export function updatestatusall(back, status) {
+export function updatestatusall(back) {
     return request({
         url: '/spvback/updatestatusall',
         method: 'post',
         params: {
             backType: back.backType,
-            status: status,
-            sid: back.cid
+            bid: back.bid,
+            status: back.status,
+            sid: back.sid,
+            bCreateId: 0
+        }
+    })
+}
+export function updatetong(data) {
+    return request({
+        url: '/spvduty/updatetong',
+        method: 'post',
+        params: {
+            did: data.did,
+            tongbao: data.tongbao,
+            bCreateId: 0
         }
     })
 }
