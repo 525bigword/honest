@@ -50,7 +50,7 @@
         </el-table-column>
         <el-table-column label="文件名"  prop="dfileName"  align="center" width="250px">
         <template slot-scope="scope">
-          <span>{{ scope.row.dfileName }}</span>
+          <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName }}</a>
         </template>
       </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="210px">
@@ -211,7 +211,8 @@ import { mapGetters } from 'vuex'
         multipleSelection:[],
         deleteid:[],
         formData:null,
-        fileAgin:null
+        fileAgin:null,
+        hre:''
       }
     },
     // 创建实例时的钩子函数
@@ -457,6 +458,10 @@ import { mapGetters } from 'vuex'
         aDom.click()
           })
         }
+      },
+      yulan(row){
+        this.hre=this.virtualIp+row.dfile
+
       },
       handleDelete() {
         if (!this.hasPerm('datacollection:delete')) {

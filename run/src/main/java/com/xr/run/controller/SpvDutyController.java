@@ -104,11 +104,10 @@ public class SpvDutyController {
         spvBack.setBackType(spvDuty.getDutyType());
         spvBack.setBCreateId(spvDuty.getdCreateId());
         spvBack.setDid(spvDuty.getDid());
-        spvBack.setStatus(spvDuty.getStatus());
         String [] split = spvDuty.getBid().split(",");
-        for (String i:split
-             ) {
-            spvBack.setBid(Integer.parseInt(i));
+        spvBack.setStatus(Integer.parseInt(split[0]));
+        for (int i = 1; i < split.length; i++) {
+            spvBack.setBid(Integer.parseInt(split[i]));
             spvBackService.insertSpvBack(spvBack);
         }
         spvDutyService.updateStatusByDid(spvDuty);

@@ -3,19 +3,19 @@ package com.xr.run;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.SpvBackMapper;
-import com.xr.run.dao.SpvDutyMapper;
 import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SysMechanism;
-import com.xr.run.entity.SysPost;
-import com.xr.run.service.SysPermissionService;
 import com.xr.run.service.SysPostPermissionService;
-import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.sql.DataSource;
 import java.io.File;
+
+import com.jacob.activeX.ActiveXComponent;
+import com.jacob.com.ComThread;
+import com.jacob.com.Dispatch;
+import com.jacob.com.Variant;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.Map;
 
 @SpringBootTest
 class RunApplicationTests {
+    private static final int wdFormatPDF = 17; // PDF 格式
     @Autowired
     DataSource dataSource;//Druid数据源
     @Autowired

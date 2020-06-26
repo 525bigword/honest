@@ -82,7 +82,10 @@ public class LogAspect {
             } else if (arg instanceof HttpServletResponse) {
                 argList.add("response");
             } else {
-                argList.add(JSON.toJSON(arg));
+                try{
+                argList.add(JSON.toJSON(arg));}catch (Exception e){
+
+                }
             }
         }
         log.info(argList.toString());

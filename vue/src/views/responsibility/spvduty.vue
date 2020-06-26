@@ -290,14 +290,14 @@
       @current-change="handleCurrentChange"-->
       <div class="block" align="center" style="margin-top: 20px">
         <el-pagination
-          v-show="total>0"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="pageNum"
+          v-show="btotal>0"
+          @size-change="handleSizeChange1"
+          @current-change="handleCurrentChange1"
+          :current-page="bpageNum"
           :page-sizes="[5,10, 20, 30, 40,50]"
-          :page-size="pageRow"
+          :page-size="bpageRow"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
+          :total="btotal"
         ></el-pagination>
       </div>
     </div>
@@ -342,50 +342,7 @@
               />
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
-          <quill-editor
-            disabled="disabled"
-            class="editor"
-            style="height:300px;width:85%;"
-            ref="myQuillEditor"
-            v-model="back.gettop"
-          ></quill-editor>
-        </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
-          <quill-editor
-            disabled="disabled"
-            class="editor"
-            style="height:400px;width:85%;"
-            ref="myQuillEditor"
-            v-model="back.backContent"
-          ></quill-editor>
-        </el-form-item>
-        <el-row style="margin-top: 125px">
-          <el-col style="width:43%">
-            <el-form-item style="font-weight: bold;" label="创建时间" prop="newTime">
-              <el-date-picker
-                disabled="disabled"
-                style="width: 100%"
-                type="date"
-                v-model="back.newTime"
-                :format="'yyyy-MM-dd HH:mm:ss'"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col>
           <el-col style="width:44%">
-            <el-form-item style="font-weight: bold;" label="创建人" prop="sysStaff">
-              <el-input
-                v-model="back.sysStaff.name"
-                placeholder="请输入创建人"
-                style="width:100%"
-                disabled="disabled"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col style="width:43%">
             <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
               <el-upload
                 style="width:100%"
@@ -406,17 +363,26 @@
               </el-upload>
             </el-form-item>
           </el-col>
-          <el-col style="width:44%">
-            <el-form-item style="font-weight: bold;" label="状态" prop="dstatus">
-              <el-input
-                v-model="back.dstatus"
-                placeholder="请输入制度信息标题"
-                style="width:100%"
-                disabled="disabled"
-              />
-            </el-form-item>
-          </el-col>
         </el-row>
+        <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
+          <quill-editor
+            disabled="disabled"
+            class="editor"
+            style="height:300px;width:85%;"
+            ref="myQuillEditor"
+            v-model="back.gettop"
+          ></quill-editor>
+        </el-form-item>
+        <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
+          <quill-editor
+            disabled="disabled"
+            class="editor"
+            style="height:400px;width:85%;"
+            ref="myQuillEditor"
+            v-model="back.backContent"
+          ></quill-editor>
+        </el-form-item>
+        
       </el-form>
     </div>
   </div>
@@ -902,6 +868,14 @@ export default {
       this.pageNum = currentPage;
       this.getList();
     },
+    handleSizeChange1(size) {
+      this.bpageRow = size;
+      this.getbList(this.temp.did);
+    },
+    handleCurrentChange1(currentPage) {
+      this.bpageNum = currentPage;
+      this.getbList(this.temp.did);
+    },
     handleSelectChangeLeft(rows) {
       let self = this;
       self.multipleSelection = rows;
@@ -917,6 +891,7 @@ export default {
       }else if(this.temp.status===6){
         this.temp.status=0
       }
+      this.temp.bid=1+','+this.temp.bid
       updateStatus(this.temp).then(response => {
               // 刷新数据表格
               this.getList();
@@ -1010,8 +985,10 @@ export default {
     },
     gincheck(status){
         let i=0;
+        this.back.backType=''
         this.blist.filter(bl=>{
-         this.back.backType+=bl.sid
+          console.debug(bl)
+         this.back.backType+=bl.sid+','
           if(bl.status===2){
             i++;
           }
@@ -1020,14 +997,21 @@ export default {
             0,
             this.back.backType.length - 1
           );
-        if(i!==this.blist.length){
+          console.debug(this.back.backType)
+           this.back.cid=this.temp.did
+           this.back.status=1
+           this.back.sid=1
+           console.debug(this.back)
+        /* if(i!==this.blist.length){
           this.$confirm('还有子部门未反馈信息，确定要进行再检查吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          /* updatestatusall().then((response) => {
+          /* console.debug(sid)
+          this.back.cid=this.temp.did
+          updatestatusall(this.back,3).then((response) => {
             // 刷新数据表格
              this.bpageNum=1;
             this.getbList()
@@ -1038,9 +1022,9 @@ export default {
               type: 'success',
               duration: 2000
             })
-          }) */
+          }) 
         })
-        }
+        } */
         },
         jieshu(){
           this.ieshu()
