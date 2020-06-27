@@ -112,12 +112,12 @@
   action="https://localhost:8080/imp/import"
   :on-remove="fileRemove"
   :on-change="handleImgChange1"
-  accept=".doc,.docx,.pdf,.txt"
+  accept=".doc,.docx,.pdf"
   :file-list="fileList"
   :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-  <div slot="tip"  class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+  <div slot="tip"  class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过500k</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime" >
@@ -180,6 +180,7 @@ import { mapGetters } from 'vuex'
           pageRow:5, // 分页需要的每页显示多少
           dtitle: '',
           dstatus: 1,
+          dpdf:'',
         temp: { // 添加、修改时绑定的表单数据
           uid: undefined,
           dtitle: '',
@@ -192,7 +193,8 @@ import { mapGetters } from 'vuex'
           dCreateTime:new Date(),
           status: '',
           dstatus:1,
-          fileList: []
+          fileList: [],
+          dpdf:''
         },
         i:0,
         isShow:false,
@@ -415,7 +417,6 @@ import { mapGetters } from 'vuex'
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
-              this.pageNum=1;
               // 刷新数据表格
               this.getList()
               // 显示通知
@@ -460,8 +461,7 @@ import { mapGetters } from 'vuex'
         }
       },
       yulan(row){
-        this.hre=this.virtualIp+row.dfile
-
+        this.hre=this.virtualIp+row.dpdf
       },
       handleDelete() {
         if (!this.hasPerm('datacollection:delete')) {

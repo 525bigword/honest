@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.Datacollection;
 import com.xr.run.service.DatacollectionService;
+import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +55,8 @@ public class DatacollectionController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            String pdf = getPdf(datacollection.getDFile());
+            datacollection.setDPdf(pdf);
             datacollectionService.updateDataConllectionByDid(datacollection);
         }
         return CommonUtil.successJson("修改成功!");
@@ -71,7 +74,19 @@ public class DatacollectionController {
     }
     @RequestMapping("insert")
     public JSONObject insertDatacollection(Datacollection datacollection)  {
+        String pdf = getPdf(datacollection.getDFile());
+        datacollection.setDPdf(pdf);
         datacollectionService.insertDataConllection(datacollection);
         return CommonUtil.successJson("新增成功!");
+    }
+
+    public String getPdf(String path){
+        if(path.contains(".doc")||path.contains(".docx")){
+            String path1 = path.substring(0, path.lastIndexOf("."));
+            String url=path1+".pdf";
+            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+            return url;
+        }
+        return null;
     }
 }

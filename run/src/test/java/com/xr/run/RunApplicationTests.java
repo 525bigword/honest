@@ -1,5 +1,6 @@
 package com.xr.run;
 
+import com.aspose.words.SaveFormat;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.SpvBackMapper;
@@ -11,11 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 
-import com.jacob.activeX.ActiveXComponent;
-import com.jacob.com.ComThread;
-import com.jacob.com.Dispatch;
-import com.jacob.com.Variant;
+import com.aspose.words.Document;
 import javax.sql.DataSource;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,5 +52,7 @@ class RunApplicationTests {
         }
         return mapList;
     }
+
+
 
 }

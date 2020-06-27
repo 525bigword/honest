@@ -26,7 +26,6 @@ Vue.prototype.hasPerm = hasPermission
 Vue.prototype.mom = moment
     //全局的常量
 Vue.prototype.virtualIp = 'http://localhost:8080/uploadimg'
-Vue.prototype.physics = 'C://File_rec/tmp/'
     //生产环境时自动设置为 false 以阻止 vue 在启动时生成生产提示。
 Vue.config.productionTip = (process.env.NODE_ENV != 'production')
 new Vue({
