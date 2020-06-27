@@ -92,4 +92,10 @@ public class SpvBackController {
         spvDutyService.updateStatusByDid(spvDuty);
         return CommonUtil.successJson("修改成功!");
     }
+
+    @RequestMapping("delete")
+    public JSONObject deleteSpvBackBySid(int sid){
+        spvBackService.deleteSpvBackBySid(sid);
+        return CommonUtil.successJson("删除成功!");
+    }
 }

@@ -46,6 +46,15 @@ export function updateStatus(data) {
         }
     })
 }
+export function deleteSid(data) {
+    return request({
+        url: '/spvback/delete',
+        method: 'post',
+        params: {
+            sid: data
+        }
+    })
+}
 
 
 // 根据用户对象进行查询用户

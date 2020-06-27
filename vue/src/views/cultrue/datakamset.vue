@@ -42,18 +42,18 @@
           <span>{{ scope.row.did }}</span>
         </template> -->
       </el-table-column>
-        <el-table-column label="标题" prop="dtitle"  align="center" width="210px">
+        <el-table-column label="标题" prop="dtitle"  align="center" width="270px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="文件名"  prop="dfileName"  align="center" width="250px">
+        <el-table-column label="文件名"  prop="dfileName"  align="center" width="260px">
         <template slot-scope="scope">
           <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName }}</a>
         </template>
       </el-table-column>
-      <el-table-column label="创建人" prop="sysStaff"   align="center" width="210px">
+      <el-table-column label="创建人" prop="sysStaff"   align="center" width="180px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
@@ -461,7 +461,12 @@ import { mapGetters } from 'vuex'
         }
       },
       yulan(row){
-        this.hre=this.virtualIp+row.dpdf
+        if(row.dpdf!==null&&row.dpdf!==''){
+          this.hre=this.virtualIp+row.dpdf
+        }else{
+          this.hre=this.virtualIp+row.dfile
+        }
+        
       },
       handleDelete() {
         if (!this.hasPerm('datacollection:delete')) {

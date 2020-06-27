@@ -10,7 +10,7 @@
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/workorders">
           <el-dropdown-item>
-            <span @click="workorder" style="display:block;">工单</span>
+            <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>

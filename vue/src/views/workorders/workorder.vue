@@ -1,8 +1,7 @@
 <template>
   <div class="app-container">
     <div :style="{'display':dis}">
-      <div class="filter-container" align="center" style="margin-top: 20px;">
-        <!-- v-waves -->
+      <!-- <div class="filter-container" align="center" style="margin-top: 20px;">
         <label>责任反馈类型</label>&nbsp;&nbsp;
         <el-input
           v-model="backType"
@@ -17,37 +16,31 @@
           class="el-icon-search"
         >查询</el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <el-button type="primary" class="el-icon-refresh" @click="resetSou">重置</el-button>
-        <!--  </el-form-item> -->
-      </div>
+      </div> -->
       <el-table
         :key="tableKey"
         v-loading="listLoading"
         @selection-change="handleSelectChangeLeft"
         :data="list"
-        border
         fit
         highlight-current-row
-        style="width: 100%;margin-top: 30px"
+        style="width: 100%;margin-top: 0px"
         ref="multipleTable"
       >
-        <el-table-column type="selection" width="60px" align="center"></el-table-column>
         <el-table-column
-          label="序号"
           prop="index"
           align="center"
           width="100px"
           type="index"
           :index="indexMethod"
         >
-          <!-- <template slot-scope="scope">
-          <span>{{ scope.row.did }}</span>
-          </template>-->
-        <!-- <el-table-column label="责任反馈标题" prop="backTitle" align="center" width="250px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.backTitle }}</span>
-          </template> -->
         </el-table-column>
-        <el-table-column label="责任监督类型" prop="backType" align="center" width="200px">
+        <el-table-column width="700px">
+          <template slot-scope="scope">
+            <span>{{ scope.row.gettop | getContent }}</span>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="责任监督类型" prop="backType" align="center" width="200px">
           <template slot-scope="scope">
             <span>{{ scope.row.backType }}</span>
           </template>
@@ -61,13 +54,13 @@
           <template slot-scope="scope">
             <span>{{ scope.row.sysStaff.name }}</span>
           </template>
-        </el-table-column>
-        <el-table-column label="状态" prop="status" align="center" width="140px">
+        </el-table-column> -->
+        <el-table-column  prop="status" align="center" width="90px">
           <template slot-scope="scope">
             <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===5?'已通报':'已结束')))}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="225px">
+        <el-table-column  align="center" width="220px">
           <template slot-scope="scope">
             <a
               style="color:#1890ff"
@@ -81,6 +74,10 @@
               style="color:#1890ff"
               @click="tongbaoshow(scope.row)"
             >{{ scope.row.status===5?'查看通报':''}}&nbsp;&nbsp;</a>
+            <a
+              style="color:#1890ff"
+              @click="deletz(scope.row)"
+            >删除通知&nbsp;&nbsp;</a>
           </template>
         </el-table-column>
       </el-table>
@@ -245,7 +242,8 @@ import {
   update,
   list,
   impFile,
-  updateStatus
+  updateStatus,
+  deleteSid
 } from "@/api/workorders/workorder";
 import qs from "qs";
 import { mapGetters } from "vuex";
@@ -582,6 +580,42 @@ export default {
       this.dis= "none"
       this.dis2= "none"
       this.dis5='inline-block'
+    },
+    deletz(row){
+      if(row.status!==5&&row.status!==4){
+        this.$message({
+          showClose: true,
+          message: '任务还未收到通报或未结束,删除失败',
+          type: 'warning'
+        });
+        return;
+      }else{
+        this.$confirm('确认删除这条待办信息吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 调用ajax去后台删除
+          deleteSid(row.sid).then((response) => {
+            // 刷新数据表格
+            this.pageNum=1;
+            this.getList()
+            // ajax去后台删除
+            this.$notify({
+              title: '成功',
+              message:'删除成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        })
+      }
+    }
+  },
+  filters:{
+    getContent(val){
+      /* val.replace(/<\/?[^>]*>/g, ""); */
+      return val.replace(/<\/?[^>]*>/g, "").slice(0,100) +'......'
     }
   }
 };

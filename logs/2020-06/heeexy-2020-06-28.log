@@ -1,0 +1,433 @@
+2020-06-28 00:00:02.393 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT u.sid,u.name, u.sex,u.age,u.educational_background,u.political_appearance,u.phone,u.mid,u.username,u.password,u.pid,u.create_time,u.create_id,u.staus FROM sys_staff u WHERE u.username = ? AND u.password = ? AND u.staus = '1' 
+2020-06-28 00:00:02.456 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: admin(String), 123456(String)
+2020-06-28 00:00:03.295 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==      Total: 1
+2020-06-28 00:00:03.319 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,(select pname from sys_post where pid=sys_staff.pid) postname, create_time,create_id,staus FROM sys_staff WHERE username = ? and staus = 1 
+2020-06-28 00:00:03.320 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: admin(String)
+2020-06-28 00:00:04.218 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==      Total: 1
+2020-06-28 00:00:04.221 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT p.menu_code menuCode FROM sys_permission p ORDER BY p.id 
+2020-06-28 00:00:04.221 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: 
+2020-06-28 00:00:04.339 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==      Total: 85
+2020-06-28 00:00:04.342 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT p.permission_code permissionCode FROM sys_permission p ORDER BY p.id 
+2020-06-28 00:00:04.343 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: 
+2020-06-28 00:00:05.216 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==      Total: 85
+2020-06-28 00:00:05.708 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-8] - looking up handler for path: /SysStaff/getInfo
+2020-06-28 00:00:05.710 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: SELECT sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,(select pname from sys_post where pid=sys_staff.pid) postname, create_time,create_id,staus FROM sys_staff WHERE username = ? and staus = 1 
+2020-06-28 00:00:05.711 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: admin(String)
+2020-06-28 00:00:06.266 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==      Total: 1
+2020-06-28 00:00:06.268 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: SELECT p.menu_code menuCode FROM sys_permission p ORDER BY p.id 
+2020-06-28 00:00:06.269 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: 
+2020-06-28 00:00:06.373 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==      Total: 85
+2020-06-28 00:00:06.375 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: SELECT p.permission_code permissionCode FROM sys_permission p ORDER BY p.id 
+2020-06-28 00:00:06.376 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: 
+2020-06-28 00:00:07.269 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==      Total: 85
+2020-06-28 00:00:12.339 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-7] - looking up handler for path: /systemprocess/get/1/5
+2020-06-28 00:00:12.361 INFO  --- [LogAspect.java:72][http-nio-8080-exec-7] - 请求方式：GET
+2020-06-28 00:00:12.366 INFO  --- [LogAspect.java:74][http-nio-8080-exec-7] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:00:12.461 INFO  --- [LogAspect.java:91][http-nio-8080-exec-7] - [1, , , 5]
+2020-06-28 00:00:12.478 INFO  --- [LogAspect.java:118][http-nio-8080-exec-7] - 系统名称：Windows
+2020-06-28 00:00:12.478 INFO  --- [LogAspect.java:121][http-nio-8080-exec-7] - 浏览器名称：Chrome
+2020-06-28 00:00:13.240 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:00:13.242 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: 1(Integer), /systemprocess/get/1/5(String), GET(String), 127.0.0.1(String), [1, , , 5](String), pc(String), Chrome(String), 2020-06-28 00:00:12.0(Timestamp)
+2020-06-28 00:00:13.343 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <==    Updates: 1
+2020-06-28 00:00:14.213 INFO  --- [LogAspect.java:139][http-nio-8080-exec-7] - 
+2020-06-28 00:00:14.346 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-7] - JsqlParserCountOptimize sql=select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc
+2020-06-28 00:00:14.443 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: SELECT COUNT(1) FROM systemprocess WHERE sysStatus = 0 AND sysTitle LIKE CONCAT('%', ?, '%') AND sysContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:00:14.444 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: (String), (String)
+2020-06-28 00:00:15.233 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc LIMIT ?,? 
+2020-06-28 00:00:15.234 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: (String), (String), 0(Long), 5(Long)
+2020-06-28 00:00:15.343 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:00:15.344 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ====> Parameters: 1(Integer)
+2020-06-28 00:00:16.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <====      Total: 1
+2020-06-28 00:00:16.219 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <==      Total: 5
+2020-06-28 00:00:27.805 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-6] - looking up handler for path: /systemprocess/get/1/5
+2020-06-28 00:00:27.809 INFO  --- [LogAspect.java:72][http-nio-8080-exec-6] - 请求方式：GET
+2020-06-28 00:00:27.810 INFO  --- [LogAspect.java:74][http-nio-8080-exec-6] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:00:27.810 INFO  --- [LogAspect.java:91][http-nio-8080-exec-6] - [1, 可, 1, 5]
+2020-06-28 00:00:27.810 INFO  --- [LogAspect.java:118][http-nio-8080-exec-6] - 系统名称：Windows
+2020-06-28 00:00:27.810 INFO  --- [LogAspect.java:121][http-nio-8080-exec-6] - 浏览器名称：Chrome
+2020-06-28 00:00:28.214 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:00:28.217 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==> Parameters: 1(Integer), /systemprocess/get/1/5(String), GET(String), 127.0.0.1(String), [1, 可, 1, 5](String), pc(String), Chrome(String), 2020-06-28 00:00:27.0(Timestamp)
+2020-06-28 00:00:28.318 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - <==    Updates: 1
+2020-06-28 00:00:29.214 INFO  --- [LogAspect.java:139][http-nio-8080-exec-6] - 
+2020-06-28 00:00:29.317 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-6] - JsqlParserCountOptimize sql=select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc
+2020-06-28 00:00:29.331 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==>  Preparing: SELECT COUNT(1) FROM systemprocess WHERE sysStatus = 0 AND sysTitle LIKE CONCAT('%', ?, '%') AND sysContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:00:29.332 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==> Parameters: 可(String), 1(String)
+2020-06-28 00:00:29.385 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==>  Preparing: select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc LIMIT ?,? 
+2020-06-28 00:00:29.386 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==> Parameters: 可(String), 1(String), 0(Long), 5(Long)
+2020-06-28 00:00:30.291 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:00:30.292 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ====> Parameters: 1(Integer)
+2020-06-28 00:00:30.405 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - <====      Total: 1
+2020-06-28 00:00:30.408 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - <==      Total: 2
+2020-06-28 00:00:48.337 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-5] - looking up handler for path: /systemprocess/get/1/5
+2020-06-28 00:00:48.342 INFO  --- [LogAspect.java:72][http-nio-8080-exec-5] - 请求方式：GET
+2020-06-28 00:00:48.342 INFO  --- [LogAspect.java:74][http-nio-8080-exec-5] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:00:48.343 INFO  --- [LogAspect.java:91][http-nio-8080-exec-5] - [1, 赤, , 5]
+2020-06-28 00:00:48.343 INFO  --- [LogAspect.java:118][http-nio-8080-exec-5] - 系统名称：Windows
+2020-06-28 00:00:48.343 INFO  --- [LogAspect.java:121][http-nio-8080-exec-5] - 浏览器名称：Chrome
+2020-06-28 00:00:48.396 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:00:48.398 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==> Parameters: 1(Integer), /systemprocess/get/1/5(String), GET(String), 127.0.0.1(String), [1, 赤, , 5](String), pc(String), Chrome(String), 2020-06-28 00:00:48.0(Timestamp)
+2020-06-28 00:00:49.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - <==    Updates: 1
+2020-06-28 00:00:49.369 INFO  --- [LogAspect.java:139][http-nio-8080-exec-5] - 
+2020-06-28 00:00:50.264 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-5] - JsqlParserCountOptimize sql=select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc
+2020-06-28 00:00:50.266 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==>  Preparing: SELECT COUNT(1) FROM systemprocess WHERE sysStatus = 0 AND sysTitle LIKE CONCAT('%', ?, '%') AND sysContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:00:50.267 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==> Parameters: 赤(String), (String)
+2020-06-28 00:00:50.319 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==>  Preparing: select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc LIMIT ?,? 
+2020-06-28 00:00:50.320 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==> Parameters: 赤(String), (String), 0(Long), 5(Long)
+2020-06-28 00:00:51.218 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:00:51.219 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ====> Parameters: 1(Integer)
+2020-06-28 00:00:51.322 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - <====      Total: 1
+2020-06-28 00:00:51.323 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - <==      Total: 1
+2020-06-28 00:01:09.605 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-4] - looking up handler for path: /systemprocess/get/1/5
+2020-06-28 00:01:09.608 INFO  --- [LogAspect.java:72][http-nio-8080-exec-4] - 请求方式：GET
+2020-06-28 00:01:09.608 INFO  --- [LogAspect.java:74][http-nio-8080-exec-4] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:01:09.609 INFO  --- [LogAspect.java:91][http-nio-8080-exec-4] - [1, , 我, 5]
+2020-06-28 00:01:09.609 INFO  --- [LogAspect.java:118][http-nio-8080-exec-4] - 系统名称：Windows
+2020-06-28 00:01:09.609 INFO  --- [LogAspect.java:121][http-nio-8080-exec-4] - 浏览器名称：Chrome
+2020-06-28 00:01:10.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:01:10.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: 1(Integer), /systemprocess/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 我, 5](String), pc(String), Chrome(String), 2020-06-28 00:01:09.0(Timestamp)
+2020-06-28 00:01:10.317 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <==    Updates: 1
+2020-06-28 00:01:11.212 INFO  --- [LogAspect.java:139][http-nio-8080-exec-4] - 
+2020-06-28 00:01:11.314 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-4] - JsqlParserCountOptimize sql=select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc
+2020-06-28 00:01:11.317 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: SELECT COUNT(1) FROM systemprocess WHERE sysStatus = 0 AND sysTitle LIKE CONCAT('%', ?, '%') AND sysContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:01:11.317 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: (String), 我(String)
+2020-06-28 00:01:21.906 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-3] - looking up handler for path: /systemprocess/get/1/5
+2020-06-28 00:01:21.908 INFO  --- [LogAspect.java:72][http-nio-8080-exec-3] - 请求方式：GET
+2020-06-28 00:01:21.909 INFO  --- [LogAspect.java:74][http-nio-8080-exec-3] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:01:21.909 INFO  --- [LogAspect.java:91][http-nio-8080-exec-3] - [1, 我, , 5]
+2020-06-28 00:01:21.911 INFO  --- [LogAspect.java:118][http-nio-8080-exec-3] - 系统名称：Windows
+2020-06-28 00:01:21.912 INFO  --- [LogAspect.java:121][http-nio-8080-exec-3] - 浏览器名称：Chrome
+2020-06-28 00:01:22.235 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:01:22.236 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: 1(Integer), /systemprocess/get/1/5(String), GET(String), 127.0.0.1(String), [1, 我, , 5](String), pc(String), Chrome(String), 2020-06-28 00:01:21.0(Timestamp)
+2020-06-28 00:01:22.339 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <==    Updates: 1
+2020-06-28 00:01:23.232 INFO  --- [LogAspect.java:139][http-nio-8080-exec-3] - 
+2020-06-28 00:01:23.334 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-3] - JsqlParserCountOptimize sql=select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc
+2020-06-28 00:01:23.339 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: SELECT COUNT(1) FROM systemprocess WHERE sysStatus = 0 AND sysTitle LIKE CONCAT('%', ?, '%') AND sysContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:01:23.340 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: 我(String), (String)
+2020-06-28 00:01:23.394 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: select sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus from systemprocess where sysStatus=0 and sysTitle like CONCAT('%',?,'%') and sysContent like CONCAT('%',?,'%') order by sysid desc LIMIT ?,? 
+2020-06-28 00:01:23.395 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: 我(String), (String), 0(Long), 5(Long)
+2020-06-28 00:01:24.266 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:01:24.267 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====> Parameters: 1(Integer)
+2020-06-28 00:01:24.369 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <====      Total: 1
+2020-06-28 00:01:24.369 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <==      Total: 1
+2020-06-28 00:01:33.978 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-2] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:01:33.985 INFO  --- [LogAspect.java:72][http-nio-8080-exec-2] - 请求方式：GET
+2020-06-28 00:01:33.986 INFO  --- [LogAspect.java:74][http-nio-8080-exec-2] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:01:33.986 INFO  --- [LogAspect.java:91][http-nio-8080-exec-2] - [1, , , 5]
+2020-06-28 00:01:33.987 INFO  --- [LogAspect.java:118][http-nio-8080-exec-2] - 系统名称：Windows
+2020-06-28 00:01:33.987 INFO  --- [LogAspect.java:121][http-nio-8080-exec-2] - 浏览器名称：Chrome
+2020-06-28 00:01:34.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:01:34.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, , , 5](String), pc(String), Chrome(String), 2020-06-28 00:01:33.0(Timestamp)
+2020-06-28 00:01:34.314 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==    Updates: 1
+2020-06-28 00:01:35.211 INFO  --- [LogAspect.java:139][http-nio-8080-exec-2] - 
+2020-06-28 00:01:35.337 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-2] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:01:35.348 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:01:35.349 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: (String), (String)
+2020-06-28 00:01:35.400 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:01:35.401 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: (String), (String), 0(Long), 5(Long)
+2020-06-28 00:01:36.271 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:01:36.273 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====> Parameters: 1(Integer)
+2020-06-28 00:01:36.373 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <====      Total: 1
+2020-06-28 00:01:36.378 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==      Total: 5
+2020-06-28 00:01:44.602 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-1] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:01:44.603 INFO  --- [LogAspect.java:72][http-nio-8080-exec-1] - 请求方式：GET
+2020-06-28 00:01:44.604 INFO  --- [LogAspect.java:74][http-nio-8080-exec-1] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:01:44.604 INFO  --- [LogAspect.java:91][http-nio-8080-exec-1] - [1, 人, , 5]
+2020-06-28 00:01:44.604 INFO  --- [LogAspect.java:118][http-nio-8080-exec-1] - 系统名称：Windows
+2020-06-28 00:01:44.604 INFO  --- [LogAspect.java:121][http-nio-8080-exec-1] - 浏览器名称：Chrome
+2020-06-28 00:01:45.214 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:01:45.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, 人, , 5](String), pc(String), Chrome(String), 2020-06-28 00:01:44.0(Timestamp)
+2020-06-28 00:01:45.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==    Updates: 1
+2020-06-28 00:01:46.212 INFO  --- [LogAspect.java:139][http-nio-8080-exec-1] - 
+2020-06-28 00:01:46.312 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-1] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:01:46.314 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:01:46.315 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 人(String), (String)
+2020-06-28 00:01:46.365 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:01:46.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 人(String), (String), 0(Long), 5(Long)
+2020-06-28 00:01:47.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:01:47.264 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====> Parameters: 1(Integer)
+2020-06-28 00:01:47.363 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <====      Total: 1
+2020-06-28 00:01:47.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==      Total: 2
+2020-06-28 00:01:55.531 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-10] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:01:55.533 INFO  --- [LogAspect.java:72][http-nio-8080-exec-10] - 请求方式：GET
+2020-06-28 00:01:55.533 INFO  --- [LogAspect.java:74][http-nio-8080-exec-10] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:01:55.533 INFO  --- [LogAspect.java:91][http-nio-8080-exec-10] - [1, , 的, 5]
+2020-06-28 00:01:55.534 INFO  --- [LogAspect.java:118][http-nio-8080-exec-10] - 系统名称：Windows
+2020-06-28 00:01:55.534 INFO  --- [LogAspect.java:121][http-nio-8080-exec-10] - 浏览器名称：Chrome
+2020-06-28 00:01:56.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:01:56.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 的, 5](String), pc(String), Chrome(String), 2020-06-28 00:01:55.0(Timestamp)
+2020-06-28 00:01:56.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==    Updates: 1
+2020-06-28 00:01:57.211 INFO  --- [LogAspect.java:139][http-nio-8080-exec-10] - 
+2020-06-28 00:01:57.310 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-10] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:01:57.313 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:01:57.314 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: (String), 的(String)
+2020-06-28 00:01:57.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:01:57.365 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: (String), 的(String), 0(Long), 5(Long)
+2020-06-28 00:01:58.264 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:01:58.267 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====> Parameters: 1(Integer)
+2020-06-28 00:01:58.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <====      Total: 1
+2020-06-28 00:01:58.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==      Total: 1
+2020-06-28 00:02:18.636 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-9] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:02:18.637 INFO  --- [LogAspect.java:72][http-nio-8080-exec-9] - 请求方式：GET
+2020-06-28 00:02:18.638 INFO  --- [LogAspect.java:74][http-nio-8080-exec-9] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:02:18.638 INFO  --- [LogAspect.java:91][http-nio-8080-exec-9] - [1, 风, 的, 5]
+2020-06-28 00:02:18.638 INFO  --- [LogAspect.java:118][http-nio-8080-exec-9] - 系统名称：Windows
+2020-06-28 00:02:18.639 INFO  --- [LogAspect.java:121][http-nio-8080-exec-9] - 浏览器名称：Chrome
+2020-06-28 00:02:19.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:02:19.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, 风, 的, 5](String), pc(String), Chrome(String), 2020-06-28 00:02:18.0(Timestamp)
+2020-06-28 00:02:19.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==    Updates: 1
+2020-06-28 00:02:20.212 INFO  --- [LogAspect.java:139][http-nio-8080-exec-9] - 
+2020-06-28 00:02:20.322 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-9] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:02:20.325 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:02:20.326 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: 风(String), 的(String)
+2020-06-28 00:02:20.375 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:02:20.377 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: 风(String), 的(String), 0(Long), 5(Long)
+2020-06-28 00:02:21.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:02:21.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ====> Parameters: 1(Integer)
+2020-06-28 00:02:21.363 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <====      Total: 1
+2020-06-28 00:02:21.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==      Total: 1
+2020-06-28 00:02:36.225 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-8] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:02:36.226 INFO  --- [LogAspect.java:72][http-nio-8080-exec-8] - 请求方式：GET
+2020-06-28 00:02:36.227 INFO  --- [LogAspect.java:74][http-nio-8080-exec-8] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:02:36.227 INFO  --- [LogAspect.java:91][http-nio-8080-exec-8] - [1, , , 5]
+2020-06-28 00:02:36.227 INFO  --- [LogAspect.java:118][http-nio-8080-exec-8] - 系统名称：Windows
+2020-06-28 00:02:36.228 INFO  --- [LogAspect.java:121][http-nio-8080-exec-8] - 浏览器名称：Chrome
+2020-06-28 00:02:36.278 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:02:36.282 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, , , 5](String), pc(String), Chrome(String), 2020-06-28 00:02:36.0(Timestamp)
+2020-06-28 00:02:36.381 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==    Updates: 1
+2020-06-28 00:02:37.265 INFO  --- [LogAspect.java:139][http-nio-8080-exec-8] - 
+2020-06-28 00:02:37.363 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-8] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:02:37.365 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:02:37.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: (String), (String)
+2020-06-28 00:02:38.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:02:38.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: (String), (String), 0(Long), 5(Long)
+2020-06-28 00:02:38.314 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:02:38.320 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ====> Parameters: 1(Integer)
+2020-06-28 00:02:39.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <====      Total: 1
+2020-06-28 00:02:39.214 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==      Total: 5
+2020-06-28 00:02:52.900 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-7] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:02:52.903 INFO  --- [LogAspect.java:72][http-nio-8080-exec-7] - 请求方式：GET
+2020-06-28 00:02:52.903 INFO  --- [LogAspect.java:74][http-nio-8080-exec-7] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:02:52.903 INFO  --- [LogAspect.java:91][http-nio-8080-exec-7] - [1, 风, 的, 5]
+2020-06-28 00:02:52.904 INFO  --- [LogAspect.java:118][http-nio-8080-exec-7] - 系统名称：Windows
+2020-06-28 00:02:52.904 INFO  --- [LogAspect.java:121][http-nio-8080-exec-7] - 浏览器名称：Chrome
+2020-06-28 00:02:53.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:02:53.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, 风, 的, 5](String), pc(String), Chrome(String), 2020-06-28 00:02:52.0(Timestamp)
+2020-06-28 00:02:53.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <==    Updates: 1
+2020-06-28 00:02:54.211 INFO  --- [LogAspect.java:139][http-nio-8080-exec-7] - 
+2020-06-28 00:02:54.310 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-7] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:02:54.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:02:54.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: 风(String), 的(String)
+2020-06-28 00:02:54.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:02:54.367 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: 风(String), 的(String), 0(Long), 5(Long)
+2020-06-28 00:02:55.264 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:02:55.265 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ====> Parameters: 1(Integer)
+2020-06-28 00:02:55.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <====      Total: 1
+2020-06-28 00:02:55.367 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <==      Total: 1
+2020-06-28 00:03:04.404 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-6] - looking up handler for path: /riskpointwarning/get/1/5
+2020-06-28 00:03:04.410 INFO  --- [LogAspect.java:72][http-nio-8080-exec-6] - 请求方式：GET
+2020-06-28 00:03:04.410 INFO  --- [LogAspect.java:74][http-nio-8080-exec-6] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:03:04.410 INFO  --- [LogAspect.java:91][http-nio-8080-exec-6] - [1, , , 5]
+2020-06-28 00:03:04.411 INFO  --- [LogAspect.java:118][http-nio-8080-exec-6] - 系统名称：Windows
+2020-06-28 00:03:04.411 INFO  --- [LogAspect.java:121][http-nio-8080-exec-6] - 浏览器名称：Chrome
+2020-06-28 00:03:05.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:03:05.214 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==> Parameters: 1(Integer), /riskpointwarning/get/1/5(String), GET(String), 127.0.0.1(String), [1, , , 5](String), pc(String), Chrome(String), 2020-06-28 00:03:04.0(Timestamp)
+2020-06-28 00:03:05.313 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - <==    Updates: 1
+2020-06-28 00:03:06.212 INFO  --- [LogAspect.java:139][http-nio-8080-exec-6] - 
+2020-06-28 00:03:06.311 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-6] - JsqlParserCountOptimize sql=select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:03:06.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==>  Preparing: SELECT COUNT(1) FROM riskpointwarning WHERE wStatus = 0 AND wTitle LIKE CONCAT('%', ?, '%') AND wContent LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:03:06.313 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==> Parameters: (String), (String)
+2020-06-28 00:03:06.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==>  Preparing: select wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus from riskpointwarning where wStatus=0 and wTitle like CONCAT('%',?,'%') and wContent like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:03:06.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ==> Parameters: (String), (String), 0(Long), 5(Long)
+2020-06-28 00:03:07.264 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:03:07.265 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - ====> Parameters: 1(Integer)
+2020-06-28 00:03:07.366 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - <====      Total: 1
+2020-06-28 00:03:07.369 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-6] - <==      Total: 5
+2020-06-28 00:03:34.969 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-5] - looking up handler for path: /datacollection/get/1/5
+2020-06-28 00:03:34.972 INFO  --- [LogAspect.java:72][http-nio-8080-exec-5] - 请求方式：GET
+2020-06-28 00:03:34.972 INFO  --- [LogAspect.java:74][http-nio-8080-exec-5] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:03:34.972 INFO  --- [LogAspect.java:91][http-nio-8080-exec-5] - [1, , 5]
+2020-06-28 00:03:34.973 INFO  --- [LogAspect.java:118][http-nio-8080-exec-5] - 系统名称：Windows
+2020-06-28 00:03:34.973 INFO  --- [LogAspect.java:121][http-nio-8080-exec-5] - 浏览器名称：Chrome
+2020-06-28 00:03:35.211 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:03:35.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==> Parameters: 1(Integer), /datacollection/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 5](String), pc(String), Chrome(String), 2020-06-28 00:03:34.0(Timestamp)
+2020-06-28 00:03:35.310 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - <==    Updates: 1
+2020-06-28 00:03:36.213 INFO  --- [LogAspect.java:139][http-nio-8080-exec-5] - 
+2020-06-28 00:03:36.339 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-5] - JsqlParserCountOptimize sql=SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc
+2020-06-28 00:03:36.340 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==>  Preparing: SELECT COUNT(1) FROM datacollection WHERE dTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:03:36.341 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==> Parameters: (String)
+2020-06-28 00:03:36.392 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==>  Preparing: SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc LIMIT ?,? 
+2020-06-28 00:03:36.394 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-28 00:03:37.269 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:03:37.271 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - ====> Parameters: 1(Integer)
+2020-06-28 00:03:37.372 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - <====      Total: 1
+2020-06-28 00:03:37.374 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-5] - <==      Total: 5
+2020-06-28 00:03:43.620 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-4] - looking up handler for path: /datacollection/get/1/5
+2020-06-28 00:03:43.622 INFO  --- [LogAspect.java:72][http-nio-8080-exec-4] - 请求方式：GET
+2020-06-28 00:03:43.622 INFO  --- [LogAspect.java:74][http-nio-8080-exec-4] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:03:43.622 INFO  --- [LogAspect.java:91][http-nio-8080-exec-4] - [1, 你, 5]
+2020-06-28 00:03:43.623 INFO  --- [LogAspect.java:118][http-nio-8080-exec-4] - 系统名称：Windows
+2020-06-28 00:03:43.623 INFO  --- [LogAspect.java:121][http-nio-8080-exec-4] - 浏览器名称：Chrome
+2020-06-28 00:03:44.211 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:03:44.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: 1(Integer), /datacollection/get/1/5(String), GET(String), 127.0.0.1(String), [1, 你, 5](String), pc(String), Chrome(String), 2020-06-28 00:03:43.0(Timestamp)
+2020-06-28 00:03:44.313 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <==    Updates: 1
+2020-06-28 00:03:45.211 INFO  --- [LogAspect.java:139][http-nio-8080-exec-4] - 
+2020-06-28 00:03:45.309 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-4] - JsqlParserCountOptimize sql=SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc
+2020-06-28 00:03:45.310 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: SELECT COUNT(1) FROM datacollection WHERE dTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:03:45.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: 你(String)
+2020-06-28 00:03:45.363 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==>  Preparing: SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc LIMIT ?,? 
+2020-06-28 00:03:45.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ==> Parameters: 你(String), 0(Long), 5(Long)
+2020-06-28 00:03:46.264 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:03:46.265 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - ====> Parameters: 1(Integer)
+2020-06-28 00:03:46.367 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <====      Total: 1
+2020-06-28 00:03:46.368 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-4] - <==      Total: 1
+2020-06-28 00:03:52.095 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-3] - looking up handler for path: /datacollection/get/1/5
+2020-06-28 00:03:52.098 INFO  --- [LogAspect.java:72][http-nio-8080-exec-3] - 请求方式：GET
+2020-06-28 00:03:52.098 INFO  --- [LogAspect.java:74][http-nio-8080-exec-3] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:03:52.099 INFO  --- [LogAspect.java:91][http-nio-8080-exec-3] - [1, , 5]
+2020-06-28 00:03:52.100 INFO  --- [LogAspect.java:118][http-nio-8080-exec-3] - 系统名称：Windows
+2020-06-28 00:03:52.101 INFO  --- [LogAspect.java:121][http-nio-8080-exec-3] - 浏览器名称：Chrome
+2020-06-28 00:03:52.211 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:03:52.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: 1(Integer), /datacollection/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 5](String), pc(String), Chrome(String), 2020-06-28 00:03:52.0(Timestamp)
+2020-06-28 00:03:52.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <==    Updates: 1
+2020-06-28 00:03:53.210 INFO  --- [LogAspect.java:139][http-nio-8080-exec-3] - 
+2020-06-28 00:03:53.309 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-3] - JsqlParserCountOptimize sql=SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc
+2020-06-28 00:03:53.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: SELECT COUNT(1) FROM datacollection WHERE dTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:03:53.317 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: (String)
+2020-06-28 00:03:53.368 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==>  Preparing: SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc LIMIT ?,? 
+2020-06-28 00:03:53.368 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-28 00:03:54.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:03:54.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - ====> Parameters: 1(Integer)
+2020-06-28 00:03:54.363 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <====      Total: 1
+2020-06-28 00:03:54.365 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-3] - <==      Total: 5
+2020-06-28 00:03:59.697 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-2] - looking up handler for path: /wind/get/1/5
+2020-06-28 00:03:59.706 INFO  --- [LogAspect.java:72][http-nio-8080-exec-2] - 请求方式：GET
+2020-06-28 00:03:59.706 INFO  --- [LogAspect.java:74][http-nio-8080-exec-2] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:03:59.706 INFO  --- [LogAspect.java:91][http-nio-8080-exec-2] - [1, , 5]
+2020-06-28 00:03:59.707 INFO  --- [LogAspect.java:118][http-nio-8080-exec-2] - 系统名称：Windows
+2020-06-28 00:03:59.707 INFO  --- [LogAspect.java:121][http-nio-8080-exec-2] - 浏览器名称：Chrome
+2020-06-28 00:04:00.211 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:04:00.215 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: 1(Integer), /wind/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 5](String), pc(String), Chrome(String), 2020-06-28 00:03:59.0(Timestamp)
+2020-06-28 00:04:00.313 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==    Updates: 1
+2020-06-28 00:04:01.213 INFO  --- [LogAspect.java:139][http-nio-8080-exec-2] - 
+2020-06-28 00:04:01.350 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-2] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:04:01.353 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:04:01.354 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: (String)
+2020-06-28 00:04:01.406 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:04:01.407 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-28 00:04:02.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:02.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====> Parameters: 2(Integer)
+2020-06-28 00:04:02.362 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <====      Total: 1
+2020-06-28 00:04:02.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:02.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ====> Parameters: 1(Integer)
+2020-06-28 00:04:03.261 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <====      Total: 1
+2020-06-28 00:04:03.264 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==      Total: 5
+2020-06-28 00:04:04.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-28 00:04:04.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - ==> Parameters: 
+2020-06-28 00:04:04.310 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-2] - <==      Total: 5
+2020-06-28 00:04:15.775 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-1] - looking up handler for path: /wind/get/1/5
+2020-06-28 00:04:15.776 INFO  --- [LogAspect.java:72][http-nio-8080-exec-1] - 请求方式：GET
+2020-06-28 00:04:15.777 INFO  --- [LogAspect.java:74][http-nio-8080-exec-1] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:04:15.777 INFO  --- [LogAspect.java:91][http-nio-8080-exec-1] - [1, 你, 5]
+2020-06-28 00:04:15.777 INFO  --- [LogAspect.java:118][http-nio-8080-exec-1] - 系统名称：Windows
+2020-06-28 00:04:15.778 INFO  --- [LogAspect.java:121][http-nio-8080-exec-1] - 浏览器名称：Chrome
+2020-06-28 00:04:16.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:04:16.213 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 1(Integer), /wind/get/1/5(String), GET(String), 127.0.0.1(String), [1, 你, 5](String), pc(String), Chrome(String), 2020-06-28 00:04:15.0(Timestamp)
+2020-06-28 00:04:16.310 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==    Updates: 1
+2020-06-28 00:04:17.230 INFO  --- [LogAspect.java:139][http-nio-8080-exec-1] - 
+2020-06-28 00:04:17.330 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-1] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:04:17.331 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:04:17.331 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 你(String)
+2020-06-28 00:04:17.393 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:04:17.394 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 你(String), 0(Long), 5(Long)
+2020-06-28 00:04:18.281 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:18.282 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====> Parameters: 1(Integer)
+2020-06-28 00:04:18.380 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <====      Total: 1
+2020-06-28 00:04:18.382 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:18.383 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ====> Parameters: 2(Integer)
+2020-06-28 00:04:19.261 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <====      Total: 1
+2020-06-28 00:04:19.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==      Total: 2
+2020-06-28 00:04:20.231 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-28 00:04:20.232 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - ==> Parameters: 
+2020-06-28 00:04:20.332 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-1] - <==      Total: 5
+2020-06-28 00:04:33.140 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-10] - looking up handler for path: /wind/get/1/5
+2020-06-28 00:04:33.142 INFO  --- [LogAspect.java:72][http-nio-8080-exec-10] - 请求方式：GET
+2020-06-28 00:04:33.142 INFO  --- [LogAspect.java:74][http-nio-8080-exec-10] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:04:33.143 INFO  --- [LogAspect.java:91][http-nio-8080-exec-10] - [1, , 5]
+2020-06-28 00:04:33.143 INFO  --- [LogAspect.java:118][http-nio-8080-exec-10] - 系统名称：Windows
+2020-06-28 00:04:33.143 INFO  --- [LogAspect.java:121][http-nio-8080-exec-10] - 浏览器名称：Chrome
+2020-06-28 00:04:33.210 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:04:33.211 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: 1(Integer), /wind/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 5](String), pc(String), Chrome(String), 2020-06-28 00:04:33.0(Timestamp)
+2020-06-28 00:04:33.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==    Updates: 1
+2020-06-28 00:04:34.211 INFO  --- [LogAspect.java:139][http-nio-8080-exec-10] - 
+2020-06-28 00:04:34.310 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-10] - JsqlParserCountOptimize sql=select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc
+2020-06-28 00:04:34.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: SELECT COUNT(1) FROM Wind WHERE wTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:04:34.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: (String)
+2020-06-28 00:04:34.362 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',?,'%') order by wid desc LIMIT ?,? 
+2020-06-28 00:04:34.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-28 00:04:35.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:35.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====> Parameters: 2(Integer)
+2020-06-28 00:04:35.363 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <====      Total: 1
+2020-06-28 00:04:35.364 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:35.365 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ====> Parameters: 1(Integer)
+2020-06-28 00:04:36.259 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <====      Total: 1
+2020-06-28 00:04:36.261 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==      Total: 5
+2020-06-28 00:04:36.408 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==>  Preparing: select sid,`name` from sys_staff 
+2020-06-28 00:04:36.408 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - ==> Parameters: 
+2020-06-28 00:04:37.259 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-10] - <==      Total: 5
+2020-06-28 00:04:41.498 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-9] - looking up handler for path: /datacollection/get/1/5
+2020-06-28 00:04:41.499 INFO  --- [LogAspect.java:72][http-nio-8080-exec-9] - 请求方式：GET
+2020-06-28 00:04:41.499 INFO  --- [LogAspect.java:74][http-nio-8080-exec-9] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:04:41.501 INFO  --- [LogAspect.java:91][http-nio-8080-exec-9] - [1, , 5]
+2020-06-28 00:04:41.501 INFO  --- [LogAspect.java:118][http-nio-8080-exec-9] - 系统名称：Windows
+2020-06-28 00:04:41.502 INFO  --- [LogAspect.java:121][http-nio-8080-exec-9] - 浏览器名称：Chrome
+2020-06-28 00:04:42.210 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:04:42.211 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: 1(Integer), /datacollection/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 5](String), pc(String), Chrome(String), 2020-06-28 00:04:41.0(Timestamp)
+2020-06-28 00:04:42.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==    Updates: 1
+2020-06-28 00:04:43.210 INFO  --- [LogAspect.java:139][http-nio-8080-exec-9] - 
+2020-06-28 00:04:43.308 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-9] - JsqlParserCountOptimize sql=SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc
+2020-06-28 00:04:43.309 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT COUNT(1) FROM datacollection WHERE dTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:04:43.310 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: (String)
+2020-06-28 00:04:43.360 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==>  Preparing: SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc LIMIT ?,? 
+2020-06-28 00:04:43.361 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-28 00:04:44.272 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:44.273 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - ====> Parameters: 1(Integer)
+2020-06-28 00:04:44.372 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <====      Total: 1
+2020-06-28 00:04:44.376 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-9] - <==      Total: 5
+2020-06-28 00:04:53.996 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-8] - looking up handler for path: /datacollection/get/1/5
+2020-06-28 00:04:53.997 INFO  --- [LogAspect.java:72][http-nio-8080-exec-8] - 请求方式：GET
+2020-06-28 00:04:53.998 INFO  --- [LogAspect.java:74][http-nio-8080-exec-8] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:04:53.998 INFO  --- [LogAspect.java:91][http-nio-8080-exec-8] - [1, 的, 5]
+2020-06-28 00:04:53.998 INFO  --- [LogAspect.java:118][http-nio-8080-exec-8] - 系统名称：Windows
+2020-06-28 00:04:53.999 INFO  --- [LogAspect.java:121][http-nio-8080-exec-8] - 浏览器名称：Chrome
+2020-06-28 00:04:54.210 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:04:54.212 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: 1(Integer), /datacollection/get/1/5(String), GET(String), 127.0.0.1(String), [1, 的, 5](String), pc(String), Chrome(String), 2020-06-28 00:04:53.0(Timestamp)
+2020-06-28 00:04:54.312 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==    Updates: 1
+2020-06-28 00:04:55.209 INFO  --- [LogAspect.java:139][http-nio-8080-exec-8] - 
+2020-06-28 00:04:55.309 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-8] - JsqlParserCountOptimize sql=SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc
+2020-06-28 00:04:55.310 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: SELECT COUNT(1) FROM datacollection WHERE dTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:04:55.311 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: 的(String)
+2020-06-28 00:04:55.361 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==>  Preparing: SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc LIMIT ?,? 
+2020-06-28 00:04:55.361 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ==> Parameters: 的(String), 0(Long), 5(Long)
+2020-06-28 00:04:56.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:04:56.263 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - ====> Parameters: 1(Integer)
+2020-06-28 00:04:56.361 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <====      Total: 1
+2020-06-28 00:04:56.362 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-8] - <==      Total: 1
+2020-06-28 00:05:07.164 DEBUG --- [PropertySourcedRequestMappingHandlerMapping.java:108][http-nio-8080-exec-7] - looking up handler for path: /datacollection/get/1/5
+2020-06-28 00:05:07.166 INFO  --- [LogAspect.java:72][http-nio-8080-exec-7] - 请求方式：GET
+2020-06-28 00:05:07.167 INFO  --- [LogAspect.java:74][http-nio-8080-exec-7] - 请求ip：127.0.0.1----------------127.0.0.1
+2020-06-28 00:05:07.167 INFO  --- [LogAspect.java:91][http-nio-8080-exec-7] - [1, , 5]
+2020-06-28 00:05:07.168 INFO  --- [LogAspect.java:118][http-nio-8080-exec-7] - 系统名称：Windows
+2020-06-28 00:05:07.168 INFO  --- [LogAspect.java:121][http-nio-8080-exec-7] - 浏览器名称：Chrome
+2020-06-28 00:05:07.218 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: insert into sys_log value(null,?,?,?,?,?,?,?,?) 
+2020-06-28 00:05:07.219 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: 1(Integer), /datacollection/get/1/5(String), GET(String), 127.0.0.1(String), [1, , 5](String), pc(String), Chrome(String), 2020-06-28 00:05:07.0(Timestamp)
+2020-06-28 00:05:07.317 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <==    Updates: 1
+2020-06-28 00:05:08.210 INFO  --- [LogAspect.java:139][http-nio-8080-exec-7] - 
+2020-06-28 00:05:08.308 DEBUG --- [JsqlParserCountOptimize.java:78][http-nio-8080-exec-7] - JsqlParserCountOptimize sql=SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc
+2020-06-28 00:05:08.309 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: SELECT COUNT(1) FROM datacollection WHERE dTitle LIKE CONCAT('%', ?, '%') 
+2020-06-28 00:05:08.309 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: (String)
+2020-06-28 00:05:08.360 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==>  Preparing: SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',?,'%') order by did desc LIMIT ?,? 
+2020-06-28 00:05:08.360 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ==> Parameters: (String), 0(Long), 5(Long)
+2020-06-28 00:05:09.261 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ====>  Preparing: select sid,`name` from sys_staff where sid=? 
+2020-06-28 00:05:09.262 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - ====> Parameters: 1(Integer)
+2020-06-28 00:05:09.360 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <====      Total: 1
+2020-06-28 00:05:09.362 DEBUG --- [BaseJdbcLogger.java:143][http-nio-8080-exec-7] - <==      Total: 5

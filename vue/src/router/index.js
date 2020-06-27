@@ -76,7 +76,7 @@ export const asyncRouterMap = [
                 component: _import('system/permission/permission'),
                 meta: { title: '权限管理', icon: 'password' },
                 menu: 'permission'
-            },{
+            }, {
                 path: 'log',
                 name: '日志管理',
                 component: _import('system/log/log'),
@@ -241,12 +241,10 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/workorders/',
         name: '工单',
-        meta: { title: '工单', icon: 'table' },
         children: [{
             path: '',
             name: '工单',
             component: _import('workorders/workorder'),
-            meta: { title: '工单', icon: 'user' },
             menu: 'staff'
         }]
     }, { path: '*', redirect: '/404', hidden: true }
