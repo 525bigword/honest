@@ -37,7 +37,7 @@ class RunApplicationTests {
     @Test
     public void test(){
         Page page=new Page(1,5);
-        IPage<SpvBack> spvBack = spvBackMapper.findSpvBack(page, "");
+        IPage<SpvBack> spvBack = spvBackMapper.findSpvBack(page, 10);
         System.out.println(spvBack.getRecords());
     }
     public List<Map> getMap(List<SysMechanism> list){

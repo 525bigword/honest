@@ -12,7 +12,8 @@ const user = {
         role: "",
         menus: [],
         permissions: [],
-        token: ""
+        token: "",
+        mid: 0
     },
     mutations: {
         SET_USER: (state, userInfo) => {
@@ -20,11 +21,12 @@ const user = {
             state.userId = userInfo.sysStaffByUserName.sid;
             state.role = userInfo.sysStaffByUserName.postname;
             state.menus = userInfo.menuList;
+            state.mid = userInfo.sysStaffByUserName.mid;
             state.permissions = userInfo.permissionList;
         },
         SET_USER_ID: (state, userInfo) => {
             state.nickname = userInfo;
-            
+
         },
         RESET_USER: (state) => {
             state.nickname = "";
@@ -47,9 +49,9 @@ const user = {
                     if (data.result === "success") {
                         //cookie中保存前端登录状态
                         console.log(data.data.roleName)
-                        localStorage.setItem("roleName",data.data.postname)
-                        localStorage.setItem("roleId",data.data.pid)
-                        localStorage.setItem("userId",data.data.sid)
+                        localStorage.setItem("roleName", data.data.postname)
+                        localStorage.setItem("roleId", data.data.pid)
+                        localStorage.setItem("userId", data.data.sid)
                         commit('SET_USER_ID', data.data.sid);
                         setToken();
                     }

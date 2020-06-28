@@ -249,7 +249,7 @@ import qs from "qs";
 import { mapGetters } from "vuex";
 export default {
   name: "userTable",
-  computed: { ...mapGetters(["nickname", "userId"]) },
+  computed: { ...mapGetters(["nickname", "userId","mid"]) },
   components: {},
   data() {
     return {
@@ -326,13 +326,16 @@ export default {
       }, */
     // 去后台取数据的
     getList() {
+      if (!this.hasPerm('back:list')) {
+          return
+        }
       // 开始转圈圈
       this.listLoading = true;
       // debugger // 调试
       /* let data=qs.stringify({
           account: this.listQuery.account
         }) */
-      list(this.pageNum, this.pageRow, this.backType).then(response => {
+      list(this.pageNum, this.pageRow,this.mid).then(response => {
         this.list = response.records;
         this.total = response.total;
         console.debug(this.list);

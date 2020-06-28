@@ -24,20 +24,12 @@ public class SpvBackController {
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
-    public JSONObject findSpvBack(@PathVariable Integer pageNum, String backType,int did, @PathVariable Integer pageRow){
-        if(backType==null){
-            backType="";
-        }
+    public JSONObject findSpvBack(@PathVariable Integer pageNum,int bid, @PathVariable Integer pageRow){
         System.out.println("findSpvBack");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<SpvBack> page=new Page(pageNum,pageRow);
-        IPage<SpvBack> spvBack=null;
-        if(did!=0){
-            spvBack=spvBackService.findSpvBackByDid(page,did);
-        }else {
-             spvBack = spvBackService.findSpvBack(page, backType);
-        }
+        IPage<SpvBack> spvBack=spvBackService.findSpvBack(page,bid);
         return CommonUtil.successJson(spvBack);
     }
     @RequestMapping("update")

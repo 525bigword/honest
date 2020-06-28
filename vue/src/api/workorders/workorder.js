@@ -58,13 +58,12 @@ export function deleteSid(data) {
 
 
 // 根据用户对象进行查询用户
-export function list(pageNum, pageRow, backType) {
+export function list(pageNum, pageRow, bid) {
     return request({
         url: '/spvback/get/' + pageNum + '/' + pageRow,
         method: 'get',
         params: {
-            backType: backType,
-            did: 0
+            bid: bid
         }
     })
 }

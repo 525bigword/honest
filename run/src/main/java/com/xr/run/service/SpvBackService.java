@@ -11,7 +11,7 @@ import java.util.Date;
 
 
 public interface SpvBackService extends IService<SpvBack> {
-    IPage<SpvBack> findSpvBack(Page page, String backType);
+    IPage<SpvBack> findSpvBack(Page page, int bid);
 
     void updateSpvBackBySid(SpvBack spvBack);
 

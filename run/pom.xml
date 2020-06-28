@@ -17,18 +17,10 @@
             <version>1.5.3</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <dependency>
-            <groupId>net.sf.jacob-project</groupId>
-            <artifactId>jacob</artifactId>
-            <version>1.14.3</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 <!--    <properties>-->
 <!--        <java.version>1.8</java.version>-->

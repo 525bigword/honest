@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface SpvBackMapper extends BaseMapper<SpvBack> {
-    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back  where backType like CONCAT('%',#{backType},'%') order by sid desc")
+    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back  where bid=#{bid} order by sid desc")
     @Results({
             @Result(column = "bid",property = "sysMechanism",
             one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismMid",fetchType = FetchType.DEFAULT)),
@@ -23,7 +23,7 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
             @Result(column = "did",property = "tongzhi",
             one = @One(select = "com.xr.run.dao.SpvDutyMapper.getTongzhi",fetchType = FetchType.DEFAULT))
     })
-    IPage<SpvBack> findSpvBack(Page page, String backType);
+    IPage<SpvBack> findSpvBack(Page page, int bid);
 
     @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent} where sid=#{sid}")
     void updateSpvBackBySid(SpvBack spvBack);
