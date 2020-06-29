@@ -28,4 +28,5 @@ public class Datacollection {
   }
 
   private int dStatus;
+  private String dPdf;
 }

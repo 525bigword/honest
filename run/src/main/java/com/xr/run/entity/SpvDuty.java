@@ -29,5 +29,6 @@ public class SpvDuty {
     return sysStaff.getSid();
   }
   private int status;
+  private String tongbao;
 
 }

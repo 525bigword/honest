@@ -13,20 +13,20 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DatacollectionMapper extends BaseMapper<Datacollection> {
-    @Select("SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus from datacollection where dTitle like CONCAT('%',#{dTitle},'%') order by did desc")
+    @Select("SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',#{dTitle},'%') order by did desc")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
             one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
     IPage<Datacollection> findDataConllection(Page page, String dTitle);
 
-    @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus} where did=#{did}")
+    @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus},dPdf=#{dPdf} where did=#{did}")
     void updateDataConllectionByDid(Datacollection datacollection);
 
     @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dStatus=#{dStatus} where did=#{did}")
     void updateDataConllectionByFile(Datacollection datacollection);
 
-    @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus})")
+    @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus},#{dPdf})")
     void insertDataConllection(Datacollection datacollection);
 
     @Delete("delete from  datacollection where did=#{did}")

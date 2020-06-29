@@ -76,7 +76,7 @@ export const asyncRouterMap = [
                 component: _import('system/permission/permission'),
                 meta: { title: '权限管理', icon: 'password' },
                 menu: 'permission'
-            },{
+            }, {
                 path: 'log',
                 name: '日志管理',
                 component: _import('system/log/log'),
@@ -208,13 +208,13 @@ export const asyncRouterMap = [
             name: '资料锦集',
             component: _import('cultrue/datakamset'),
             meta: { title: '资料锦集', icon: 'user' },
-            menu: 'staff'
+            menu: 'dataCollection'
         }, {
             path: 'windculture',
             name: '清风文苑',
             component: _import('cultrue/windculture'),
             meta: { title: '清风文苑', icon: 'user' },
-            menu: 'staff'
+            menu: 'wind'
         }]
     },
     {
@@ -228,13 +228,13 @@ export const asyncRouterMap = [
             name: '风险点预警管理',
             component: _import('riskmanagement/riskwarning'),
             meta: { title: '风险点预警管理', icon: 'user' },
-            menu: 'staff'
+            menu: 'riskpointwarning'
         }, {
             path: 'systemprocess',
             name: '制度流程完善',
             component: _import('riskmanagement/systemprocess'),
             meta: { title: '制度流程完善', icon: 'user' },
-            menu: 'staff'
+            menu: 'systemprocess'
         }]
     },
     {
@@ -242,13 +242,11 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/workorders/',
         name: '工单',
-        meta: { title: '工单', icon: 'table' },
         children: [{
             path: '',
             name: '工单',
             component: _import('workorders/workorder'),
-            meta: { title: '工单', icon: 'user' },
-            menu: 'staff'
+            menu: 'spvback'
         }]
     }, { path: '*', redirect: '/404', hidden: true }
 ]

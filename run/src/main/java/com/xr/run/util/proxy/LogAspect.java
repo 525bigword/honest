@@ -38,7 +38,7 @@ public class LogAspect {
      * ..表示包及子包 该方法代表controller层的所有方法
      * TODO 路径需要根据自己项目定义
      */
-    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))")
+    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))")
     public void controllerMethod() {
         log.info("切了");
     }
@@ -80,7 +80,10 @@ public class LogAspect {
             } else if (arg instanceof HttpServletResponse) {
                 argList.add("response");
             } else {
-                argList.add(JSON.toJSON(arg));
+                try{
+                argList.add(JSON.toJSON(arg));}catch (Exception e){
+
+                }
             }
         }
         log.info(argList.toString());

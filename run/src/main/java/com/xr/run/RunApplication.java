@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @MapperScan("com.xr.run.dao")
 public class RunApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(RunApplication.class, args);
     }

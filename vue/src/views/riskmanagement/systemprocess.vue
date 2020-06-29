@@ -46,19 +46,19 @@
         </template> -->
         
       </el-table-column>
-        <el-table-column label="制度信息标题" prop="sysTitle"  align="center" width="350px">
+        <el-table-column label="制度信息标题" prop="sysTitle"  align="center" width="450px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.sysTitle }}</a>
         </template>
         </el-table-column>
         
-      <el-table-column label="创建人" prop="sysStaff"   align="center" width="270px">
+      <el-table-column label="创建人" prop="sysStaff"   align="center" width="230px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="sysCreateTime" width="320px"  align="center">
+      <el-table-column label="创建时间" sortable prop="sysCreateTime" width="270px"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.wcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>

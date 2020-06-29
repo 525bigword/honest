@@ -42,18 +42,18 @@
           <span>{{ scope.row.did }}</span>
         </template> -->
       </el-table-column>
-        <el-table-column label="标题" prop="dtitle"  align="center" width="210px">
+        <el-table-column label="标题" prop="dtitle"  align="center" width="270px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="文件名"  prop="dfileName"  align="center" width="250px">
+        <el-table-column label="文件名"  prop="dfileName"  align="center" width="260px">
         <template slot-scope="scope">
-          <span>{{ scope.row.dfileName }}</span>
+          <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName }}</a>
         </template>
       </el-table-column>
-      <el-table-column label="创建人" prop="sysStaff"   align="center" width="210px">
+      <el-table-column label="创建人" prop="sysStaff"   align="center" width="180px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
@@ -112,12 +112,12 @@
   action="https://localhost:8080/imp/import"
   :on-remove="fileRemove"
   :on-change="handleImgChange1"
-  accept=".doc,.docx,.pdf,.txt"
+  accept=".doc,.docx,.pdf"
   :file-list="fileList"
   :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-  <div slot="tip"  class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+  <div slot="tip"  class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过500k</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime" >
@@ -180,6 +180,7 @@ import { mapGetters } from 'vuex'
           pageRow:5, // 分页需要的每页显示多少
           dtitle: '',
           dstatus: 1,
+          dpdf:'',
         temp: { // 添加、修改时绑定的表单数据
           uid: undefined,
           dtitle: '',
@@ -192,7 +193,8 @@ import { mapGetters } from 'vuex'
           dCreateTime:new Date(),
           status: '',
           dstatus:1,
-          fileList: []
+          fileList: [],
+          dpdf:''
         },
         i:0,
         isShow:false,
@@ -211,7 +213,8 @@ import { mapGetters } from 'vuex'
         multipleSelection:[],
         deleteid:[],
         formData:null,
-        fileAgin:null
+        fileAgin:null,
+        hre:''
       }
     },
     // 创建实例时的钩子函数
@@ -414,7 +417,6 @@ import { mapGetters } from 'vuex'
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
-              this.pageNum=1;
               // 刷新数据表格
               this.getList()
               // 显示通知
@@ -457,6 +459,14 @@ import { mapGetters } from 'vuex'
         aDom.click()
           })
         }
+      },
+      yulan(row){
+        if(row.dpdf!==null&&row.dpdf!==''){
+          this.hre=this.virtualIp+row.dpdf
+        }else{
+          this.hre=this.virtualIp+row.dfile
+        }
+        
       },
       handleDelete() {
         if (!this.hasPerm('datacollection:delete')) {

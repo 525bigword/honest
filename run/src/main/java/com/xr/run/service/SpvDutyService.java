@@ -65,4 +65,10 @@ public interface SpvDutyService extends IService<SpvDuty> {
      * @param spvDuty
      */
     void updateStatusByDid(SpvDuty spvDuty);
+
+    /**
+     * 修改通报内容
+     * @param spvDuty
+     */
+    void updateTongBaoByDid(SpvDuty spvDuty);
 }

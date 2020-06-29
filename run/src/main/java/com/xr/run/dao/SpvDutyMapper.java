@@ -49,4 +49,13 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Update("update spv_duty set `status`=#{status} where did=#{did}")
     void updateStatusByDid(SpvDuty spvDuty);
 
+    @Select("select dutyContent from spv_duty where did=#{did}")
+    String getSpvDuty(int did);
+
+    @Select("select tongbao from spv_duty where did=#{did}")
+    String getTongzhi(int did);
+
+    @Update("update spv_duty set tongbao=#{tongbao} where did=#{did}")
+    void updateTongBaoByDid(SpvDuty spvDuty);
+
 }

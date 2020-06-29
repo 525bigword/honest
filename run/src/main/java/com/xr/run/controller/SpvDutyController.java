@@ -3,8 +3,10 @@ package com.xr.run.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SpvDuty;
 import com.xr.run.entity.SysMechanism;
+import com.xr.run.service.SpvBackService;
 import com.xr.run.service.SpvDutyService;
 import com.xr.run.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class SpvDutyController {
     @Autowired
     private SpvDutyService spvDutyService;
+    @Autowired
+    private SpvBackService spvBackService;
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
@@ -96,7 +100,23 @@ public class SpvDutyController {
 
     @RequestMapping("updatestatus")
     public JSONObject updateStatus(SpvDuty spvDuty)  {
+        SpvBack spvBack = new SpvBack();
+        spvBack.setBackType(spvDuty.getDutyType());
+        spvBack.setBCreateId(spvDuty.getdCreateId());
+        spvBack.setDid(spvDuty.getDid());
+        String [] split = spvDuty.getBid().split(",");
+        spvBack.setStatus(Integer.parseInt(split[0]));
+        for (int i = 1; i < split.length; i++) {
+            spvBack.setBid(Integer.parseInt(split[i]));
+            spvBackService.insertSpvBack(spvBack);
+        }
         spvDutyService.updateStatusByDid(spvDuty);
         return CommonUtil.successJson("修改成功!");
+    }
+
+    @RequestMapping("updatetong")
+    public JSONObject updateTongBaoByDid(SpvDuty spvDuty){
+        spvDutyService.updateTongBaoByDid(spvDuty);
+        return CommonUtil.successJson("发布成功!");
     }
 }

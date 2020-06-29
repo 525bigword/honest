@@ -12,22 +12,26 @@ import java.util.List;
 
 @Repository
 public interface SpvBackMapper extends BaseMapper<SpvBack> {
-    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back where BackTitle like CONCAT('%',#{backTitle},'%') order by sid desc")
+    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back  where bid=#{bid} order by sid desc")
     @Results({
             @Result(column = "bid",property = "sysMechanism",
             one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismMid",fetchType = FetchType.DEFAULT)),
-            @Result(column = "dCreateId",property = "sysStaff",
-                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
+            @Result(column = "bCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "did",property = "gettop",
+            one = @One(select = "com.xr.run.dao.SpvDutyMapper.getSpvDuty",fetchType = FetchType.DEFAULT)),
+            @Result(column = "did",property = "tongzhi",
+            one = @One(select = "com.xr.run.dao.SpvDutyMapper.getTongzhi",fetchType = FetchType.DEFAULT))
     })
-    IPage<SpvBack> findSpvBack(Page page, String backTitle);
+    IPage<SpvBack> findSpvBack(Page page, int bid);
 
-    @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent},`status`=#{status} where sid=#{sid}")
+    @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent} where sid=#{sid}")
     void updateSpvBackBySid(SpvBack spvBack);
 
-    @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent},BackAccessory=#{backAccessory},backAccessoryName=#{backAccessoryName},`status`=#{status} where sid=#{sid}")
+    @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent},BackAccessory=#{backAccessory},backAccessoryName=#{backAccessoryName} where sid=#{sid}")
     void updateSpvBackFileBySid(SpvBack spvBack);
 
-    @Insert("insert into spv_back(sid,BackType,bid,NewTime,bCreateId,did,`status`) VALUES (NULL,#{backType},#{bid},NOW(),bCreateId,did,1)")
+    @Insert("insert into spv_back(sid,BackType,bid,NewTime,bCreateId,did,`status`) VALUES (NULL,#{backType},#{bid},NOW(),#{bCreateId},#{did},#{status})")
     void insertSpvBack(SpvBack spvBack);
 
     @Delete("delete from  spv_back where sid=#{sid}")
@@ -39,5 +43,16 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
 
     @Update("update spv_back set `status`=#{status} where sid=#{sid}")
     void updateStatusBySid(SpvBack spvBack);
+
+    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back  where did=#{did} order by sid desc")
+    @Results({
+            @Result(column = "bid",property = "sysMechanism",
+                    one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismMid",fetchType = FetchType.DEFAULT)),
+            @Result(column = "bCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "did",property = "gettop",
+                    one = @One(select = "com.xr.run.dao.SpvDutyMapper.getSpvDuty",fetchType = FetchType.DEFAULT))
+    })
+    IPage<SpvBack> findSpvBackByDid(Page page, int did);
 
 }

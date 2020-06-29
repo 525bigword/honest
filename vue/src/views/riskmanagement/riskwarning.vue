@@ -51,19 +51,19 @@
           <span>{{ scope.row.numId }}</span>
         </template>
       </el-table-column>
-        <el-table-column label="标题" prop="wtitle"  align="center" width="275px">
+        <el-table-column label="标题" prop="wtitle"  align="center" width="390px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
         </el-table-column>
         
-      <el-table-column label="创建人" prop="sysStaff"   align="center" width="210px">
+      <el-table-column label="创建人" prop="sysStaff"   align="center" width="180px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="wcreateTime" width="300px"  align="center">
+      <el-table-column label="创建时间" sortable prop="wcreateTime" width="210px"  align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.wcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>

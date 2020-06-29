@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class SpvBack {
@@ -12,7 +13,7 @@ public class SpvBack {
   private String backType;
   private String backTitle;
   private String backContent;
-    private Integer bid;
+  private Integer bid;
   private SysMechanism sysMechanism;
   public int getbid() {
     if (bid!=null){
@@ -27,12 +28,15 @@ public class SpvBack {
   private Date newTime;
   private Integer bCreateId;
   private SysStaff sysStaff;
+  private List<SpvBack> spvBacks;
   public int getbCreateId() {
     if (bCreateId!=null){
       return bCreateId;
     }
     return sysStaff.getSid();
   }
+  private String gettop;
+  private String tongzhi;
   private int did;
   private int status;
 

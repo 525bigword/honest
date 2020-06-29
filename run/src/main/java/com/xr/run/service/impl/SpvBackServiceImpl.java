@@ -14,8 +14,8 @@ public class SpvBackServiceImpl extends ServiceImpl<SpvBackMapper,SpvBack> imple
 
 
     @Override
-    public IPage<SpvBack> findSpvBack(Page page, String backTitle) {
-        return baseMapper.findSpvBack(page,backTitle);
+    public IPage<SpvBack> findSpvBack(Page page, int bid) {
+        return baseMapper.findSpvBack(page,bid);
     }
 
     @Override
@@ -46,5 +46,10 @@ public class SpvBackServiceImpl extends ServiceImpl<SpvBackMapper,SpvBack> imple
     @Override
     public void updateStatusBySid(SpvBack spvBack) {
         baseMapper.updateStatusBySid(spvBack);
+    }
+
+    @Override
+    public IPage<SpvBack> findSpvBackByDid(Page page, int did) {
+        return baseMapper.findSpvBackByDid(page,did);
     }
 }
