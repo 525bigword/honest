@@ -63,7 +63,8 @@ export function list(pageNum, pageRow, bid) {
         url: '/spvback/get/' + pageNum + '/' + pageRow,
         method: 'get',
         params: {
-            bid: bid
+            bid: bid,
+            did: 0
         }
     })
 }

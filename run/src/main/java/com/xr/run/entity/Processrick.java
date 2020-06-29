@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Data
 public class Processrick {
-
   private int proid;
   private int processId;
   private String proName;
@@ -19,6 +18,7 @@ public class Processrick {
   private String proAccessory;
   private Date proCreateTime;
   private int proCreateId;
+  private SysStaff sysStaff;
   private String proCreateName;
   private int proStatus;
 

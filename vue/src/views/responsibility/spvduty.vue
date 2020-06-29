@@ -1013,7 +1013,7 @@ export default {
         this.back.dstatus='已结束'
       }
         this.fileList = [{ name: row.backAccessoryName, url: row.backAccessory }];
-        if(row.backAccessory===''){
+        if(row.backAccessoryName===null||row.backAccessoryName===''){
         this.fileList=[];
       }
     },
