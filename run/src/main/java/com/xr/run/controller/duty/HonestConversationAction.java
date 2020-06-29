@@ -1,17 +1,27 @@
 package com.xr.run.controller.duty;
 
 import com.alibaba.fastjson.JSON;
+import com.xr.run.entity.SysStaff;
+import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
 import com.xr.run.service.duty.HonestConversationService;
 import com.xr.run.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/duty/talk")
@@ -40,21 +50,31 @@ public class HonestConversationAction {
     }
     /*新增工作部署*/
     @RequestMapping("addHonestConversation")
-    public ResponseResult addHonestConversation(HonestConversation honestConversation){
+    public ResponseResult addHonestConversation(HonestConversation honestConversation,String  puni){
+        System.out.println("puni"+puni);
+        System.out.println("honestConver"+honestConversation);
         SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
+        Date date1=null;
         try {
             date = SDF.parse(honestConversation.getCreatetime());
+            date1= SDF.parse(honestConversation.getTime());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         Calendar cal = Calendar.getInstance();
+        Calendar cal1 = Calendar.getInstance();
         cal.setTime(date);
+        cal1.setTime(date1);
         cal.add(Calendar.HOUR, 8);// 24小时制
+        cal1.add(Calendar.HOUR,8);
+        date1=cal1.getTime();
         date = cal.getTime();
         cal = null;
+        cal1=null;
         honestConversation.setCreatetime(format.format(date));
+        honestConversation.setTime(format.format(date1));
         System.out.println(honestConversation+"honestConversation");
         honestConversationService.addHonestConversation(honestConversation);
         ResponseResult result=new ResponseResult();
@@ -63,7 +83,26 @@ public class HonestConversationAction {
     }
     /*更新工作部署*/
     @RequestMapping("updateHonestConversation")
-    public ResponseResult updateHonestConversation(HonestConversation honestConversation){
+    public ResponseResult updateHonestConversation (HonestConversation honestConversation)throws ParseException {
+        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date date1=null;
+        try {
+
+            date1= SDF.parse(honestConversation.getTime());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Calendar cal1 = Calendar.getInstance();
+
+        cal1.setTime(date1);
+
+        cal1.add(Calendar.HOUR,8);
+        date1=cal1.getTime();
+        cal1=null;
+        honestConversation.setTime(format.format(date1));
         honestConversationService.updateHonestConversation(honestConversation);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","更新成功");
@@ -72,15 +111,18 @@ public class HonestConversationAction {
     /*提交审核*/
     @RequestMapping("subauditHonestConversation")
     public ResponseResult subauditHonestConversation(Integer id){
+        System.out.println("id"+id);
+        System.out.println("提交");
         honestConversationService.subauditHonestConversation(id);
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("message","提交成功");
+      //  result.getData().put("message","提交成功");
         return result;
     }
     /*审核通过*/
     @RequestMapping("passauditHonestConversation")
-    public ResponseResult passauditHonestConversation(Integer id){
-        honestConversationService.passauditHonestConversation(id);
+    public ResponseResult passauditHonestConversation(Integer id,Integer status){
+        System.out.println("审核 id="+id+",status="+status);
+        honestConversationService.passauditHonestConversation(id,status);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","审核通过");
         return result;
@@ -97,7 +139,50 @@ public class HonestConversationAction {
         }
 
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("msg","删除成功");
+        result.getInfo().put("message","删除成功");
+        return result;
+    }
+    @RequestMapping("initpersons")
+    public ResponseResult findallduty(Integer id){
+        List<SysStaff> list=honestConversationService.findallduty(id);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("list",list);
+        return result;
+
+    }
+    @RequestMapping("getFileGroup")
+    public ResponseResult getFileGroup(Integer parent){
+        ResponseResult result=new ResponseResult();
+        List<SysMechanism> findallunit = honestConversationService.findallunit(parent);
+        result.getInfo().put("list",findallunit);
+        return result;
+    }
+    //@Value("${file.uploadFolder}")
+    private String realBasePath="E:/file/template/";
+    @Value("${file.staticAccessPath}")
+    private String accessPath;
+    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
+    @RequestMapping("uploading")
+    public ResponseResult uploadFile(@RequestParam("filename") MultipartFile file, HttpServletRequest req) throws IOException {
+        ResponseResult result=new ResponseResult();
+        String format = sdf.format(new Date());
+       // String realPath = req.getServletContext().getRealPath("/honest/upload") + format;
+        // 域名访问的相对路径（通过浏览器访问的链接-虚拟路径）
+        String saveToPath = accessPath + format;
+        // 真实路径，实际储存的路径
+        String realPath = realBasePath + format;
+        File folder = new File(realPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        String oldName = file.getOriginalFilename();
+        String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
+        file.transferTo(new File(folder,newName));
+      //  String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/honest/upload" + format + newName;
+        String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()+ "/honest/upload/" + newName;
+        System.out.println(url);
+        result.getInfo().put("url",url);
+        result.getInfo().put("message","上传成功");
         return result;
     }
 }

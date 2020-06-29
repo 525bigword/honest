@@ -1,6 +1,6 @@
-import api from '@/utils/api'
+import request from '@/utils/api'
 export function list(data){
-  return api({
+  return request({
     url: '/duty/plan/list',
     method: 'post',
     data
@@ -8,21 +8,21 @@ export function list(data){
 }
 /*新增工作计划*/
 export function add(data){
-  return api({
+  return request({
     url: '/duty/plan/addWorkPlan',
     method: 'post',
     data
   })
 }
 export function del(data){
-  return api({
+  return request({
     url: '/duty/plan/delWorkplanByid',
     method: 'post',
     data
   })
 }
 export function findbytitle(data) {
-return api({
+return request({
   url: '/duty/plan/findbytitle',
   method:'post',
   data
@@ -30,7 +30,7 @@ return api({
 }
 /*更新计划内容*/
 export function updatecontent(data) {
-  return api({
+  return request({
     url: '/duty/plan/updatecontent',
     method:'post',
     data
@@ -38,7 +38,7 @@ export function updatecontent(data) {
 }
 /*提交审核*/
 export function subaudit(data) {
-  return api({
+  return request({
     url: '/duty/plan/subaudit',
     method:'post',
     data
@@ -46,7 +46,7 @@ export function subaudit(data) {
 }
 /*通过审核*/
 export function passaudit(data) {
-  return api({
+  return request({
     url: '/duty/plan/passaudit',
     method:'post',
     data

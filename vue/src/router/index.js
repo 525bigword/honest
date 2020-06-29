@@ -110,25 +110,25 @@ export const asyncRouterMap = [
                 name: '工作计划',
                 component: _import('duty/plan'),
                 meta: { title: '工作计划', icon: 'user' },
-                menu: 'staff'
+                menu: 'workplan'
             }, {
                 path: 'deploy',
                 name: '工作部署',
                 component: _import('duty/deploy'),
                 meta: { title: '工作部署', icon: 'user' },
-                menu: 'staff'
+                menu: 'workdeployment'
             }, {
                 path: 'talk',
                 name: '廉政谈话',
                 component: _import('duty/talk'),
                 meta: { title: '廉政谈话', icon: 'user' },
-                menu: 'staff'
+                menu: 'honestconversation'
             }, {
                 path: 'main',
                 name: '主体责任',
                 component: _import('duty/main'),
                 meta: { title: '主体责任', icon: 'user' },
-                menu: 'staff'
+                menu: 'entityresponsibility'
             }
 
         ]
@@ -185,15 +185,15 @@ export const asyncRouterMap = [
             menu: 'staff'
         }]
     }, {
-        path: '/report',
+        path: '/inspect',
         component: Layout,
-        redirect: '/report/',
+        redirect: '/user/',
         name: '纪检报表',
         meta: { title: '纪检报表', icon: 'table' },
         children: [{
             path: '',
             name: '纪检报表',
-            component: _import('user/user'),
+            component: _import('inspect/report'),
             meta: { title: '纪检报表', icon: 'user' },
             menu: 'staff'
         }]
@@ -236,7 +236,38 @@ export const asyncRouterMap = [
             meta: { title: '制度流程完善', icon: 'user' },
             menu: 'systemprocess'
         }]
-    },
+    }, {
+    path: '/daily',
+    component: Layout,
+    redirect: '/user/',
+    name: '日常管理',
+    meta: { title: '日常管理', icon: 'table' },
+    children: [{
+      path: 'letter',
+      name: '信访举报管理',
+      component: _import('daily/letter'),
+      meta: { title: '信访举报管理', icon: 'user' },
+      menu: 'letter'
+    }, {
+      path: 'supervise',
+      name: '三重一大事项监管',
+      component: _import('daily/supervise'),
+      meta: { title: '三重一大事项监管', icon: 'user' },
+      menu: 'supervise'
+    }, {
+      path: 'collect',
+      name: '三重一大事项汇总',
+      component: _import('daily/collect'),
+      meta: { title: '三重一大事项汇总', icon: 'user' },
+      menu: 'collect'
+    }, {
+      path: 'reference',
+      name: '三重一大事项备案审批',
+      component: _import('daily/reference'),
+      meta: { title: '三重一大事项备案审批', icon: 'user' },
+      menu: 'reference'
+    }]
+  },
     {
         path: '/workorders',
         component: Layout,

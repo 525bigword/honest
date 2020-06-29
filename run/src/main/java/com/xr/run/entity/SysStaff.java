@@ -3,6 +3,7 @@ package com.xr.run.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.xr.run.entity.duty.Post;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,4 +35,5 @@ public class SysStaff {
   private String mechanismname;
   private String postname;
   private List<SysMechanism> mechanisms=new ArrayList<>();
+  private List<Post> posts=new ArrayList<>();
 }

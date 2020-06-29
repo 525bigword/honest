@@ -2,14 +2,73 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.duty.HonestConversationMapper">
+    <resultMap id="baseMap" type="com.xr.run.entity.duty.HonestConversation">
+        <result column="id" property="id"></result>
+        <result column="pid" property="pid"></result>
+        <result column="personid" property="personid"></result>
+        <result column="personname" property="personname"></result>
+        <result column="type" property="type"></result>
+        <result column="time" property="time"></result>
+        <result column="site" property="site"></result>
+        <result column="syllabus" property="syllabus"></result>
+        <result column="content" property="content"></result>
+        <result column="createname" property="createname"></result>
+        <result column="create_time" property="createtime"></result>
+        <result column="staus" property="staus"></result>
+        <result column="punit" property="punit"></result>
+        <collection property="users" ofType="com.xr.run.entity.SysStaff">
+            <result column="name" property="name"></result>
+            <result column="political_appearance" property="politicalAppearance"></result>
+            <association property="mechanisms" javaType="com.xr.run.entity.SysMechanism" >
+                <result column="mechanism_name" property="mechanismName"></result>
+            </association>
+            <association property="posts" javaType="com.xr.run.entity.duty.Post" >
+                <result column="pname" property="pname"></result>
+            </association>
+
+        </collection>
+    </resultMap>
 <!--初始化廉政谈话页面-->
-    <select id="list" resultType="com.xr.run.entity.duty.HonestConversation">
-        select id,`type`,`time`,site,staus from rd_honest_conversation
+    <select id="list" resultMap="baseMap">
+  select rhc.id,rhc.pid,rhc.personid,rhc.punit,sm.mechanism_name,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_post sp where rhc.pid=h.sid and h.mid=sm.mid and h.pid=sp.pid
     </select>
-    <select id="listBytitle" resultType="com.xr.run.entity.duty.HonestConversation" parameterType="com.xr.run.entity.duty.HonestConversation">
-        select rhc.id,rhc.`type`,rhc.`time`,rhc.site,rhc.staus from rd_honest_conversation rhc where rhc.`type` like CONCAT('%',#{type},'%')
+    <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.HonestConversation">
+  select rhc.id,rhc.pid,rhc.personid,rhc.punit,sm.mechanism_name,h.sid,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_post sp where rhc.pid=h.sid and h.mid=sm.mid and h.pid=sp.pid
+    and rhc.`type` like CONCAT('%',#{type},'%')
     </select>
-    <delete id="delHonestConversationt" parameterType="Integer" >
+    <delete id="delHonestConversationt"   parameterType="Integer" >
         delete from rd_honest_conversation  where id=#{id}
     </delete>
+    <!--新增廉政谈话-->
+    <insert id="addHonestConversation" parameterType="com.xr.run.entity.duty.HonestConversation">
+        insert into rd_honest_conversation(punit,pid,personid,`time`,politcs,pduty,`type`,site,syllabus,content,create_id,create_time,staus) values(#{punit},#{pid},#{personid},#{time},#{politcs},#{pduty},#{type},#{site},#{syllabus},#{content},#{createid},#{createtime},#{staus})
+    </insert>
+    <!--更新廉政谈话-->
+    <update id="updateHonestConversation">
+        update rd_honest_conversation set punit=#{punit},pid=#{pid},personid=#{personid},`time`=#{time},politcs=#{politcs},pduty=#{pduty},`type`=#{type},site=#{site},syllabus=#{syllabus},content=#{content} where id=#{id}
+    </update>
+    <!--提交审核-->
+    <update id="subauditHonestConversation" parameterType="Integer">
+        update rd_honest_conversation set staus=1 where id=#{id}
+    </update>
+    <!--通过审核还是撤回审核-->
+    <update id="passauditHonestConversation" parameterType="com.xr.run.entity.duty.HonestConversation">
+         update rd_honest_conversation set staus=#{staus} where id=#{id}
+    </update>
+    <!--根据职务查人-->
+    <resultMap id="bpmap" type="com.xr.run.entity.SysStaff">
+        <result column="sid" property="sid"></result>
+        <result column="name" property="name"></result>
+    </resultMap>
+    <select id="findallduty" resultType="com.xr.run.entity.SysStaff" parameterType="Integer">
+select h.sid,h.`name`from Sys_Staff h where  h.mid=#{id}
+    </select>
+    <!--查询职务-->
+    <resultMap id="mmap" type="com.xr.run.entity.SysMechanism">
+        <result column="mid" property="mid"></result>
+        <result column="mechanism_name" property="mechanismName"></result>
+    </resultMap>
+    <select id="findallunit" resultMap="mmap">
+select sm.mid,sm.mechanism_name from sys_mechanism sm where sm.parent=#{parent}
+    </select>
 </mapper>

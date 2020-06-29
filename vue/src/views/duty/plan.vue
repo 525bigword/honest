@@ -21,8 +21,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div><el-form-item>
-      <el-button type="primary" class="el-icon-plus" @click="add">新增</el-button>
-      <el-button type="primary" class="el-icon-delete" @click="dele">删除</el-button></el-form-item></div>
+      <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(role.includes('单位/部门负责人')||role.includes('纪检监察科科长')?'':'none')}">新增</el-button>
+      <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(role.includes('单位/部门负责人')||role.includes('纪检监察科科长')?'':'none')}">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -33,10 +33,7 @@
           label="序号"
           width="180">
         </el-table-column>
-        <el-table-column
-          prop="staus"
-          label="状态" v-if="false">
-        </el-table-column>
+
         <el-table-column
           prop="title"
           label="标题"
@@ -60,6 +57,10 @@
           prop="createtime"
           label="发布时间">
         </el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态"  :formatter="cstatus">
+        </el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -80,9 +81,9 @@
 
           <el-form-item label="工作计划标题">
 
-                <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px" ></el-input>
+                <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
-          <el-form-item label="所属部门">
+          <el-form-item label="所属部门" v-if="false">
             <el-input style="width: 400px" v-model="userInfo.deptName" placeholder="所属部门"  auto-complete="off"
                       @click.native="changeSelectTree()"
                       @blur="hideParentClick">
@@ -101,10 +102,10 @@
             </el-tree>
           </el-form-item><br/>
           <el-form-item label="工作计划内容">
-            <el-input v-model="userInfo.content" placeholder="内容" type="textarea"  style="width: 400px" ></el-input>
+            <el-input v-model="userInfo.content" placeholder="内容" type="textarea"  style="width: 400px"  v-bind:disabled='nr'></el-input>
           </el-form-item><br/>
           <el-form-item label="状态">
-            <el-input v-model="userInfo.staus" placeholder="状态"  disabled="disabled"  style="width: 400px" ></el-input>
+            <el-input v-model="userInfo.staus" placeholder="状态" v-if="false"  disabled="disabled"  style="width: 400px" ></el-input>
           </el-form-item><br/>
           <el-form-item label="创建者姓名">
             <el-input v-model="userInfo.createname" placeholder="创建者姓名" disabled="disabled"  style="width: 400px" ></el-input>
@@ -114,12 +115,13 @@
           </el-form-item><br/>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="deselect()">返回</el-button>
-          <el-button >提交审核</el-button>
-          <el-button >更新</el-button>
-          <el-button >保存</el-button>
-          <el-button >通过</el-button>
-          <el-button type="primary" @click="submitUser()" >确 定</el-button>
+
+          <el-button type="primary"  @click="tjshmethod()" v-bind:style="{display:tjsh}">提交审核</el-button>
+          <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+          <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser()">保存</el-button>
+          <el-button type="primary"  @click="tgmethod()" v-bind:style="{display:tg}">通过</el-button>
+          <el-button type="primary"  @click="tgmethod()"  v-bind:style="{display:btg}">不通过</el-button>
+          <el-button type="primary" class="el-icon-back" @click="deselect()">返回</el-button>
         </div>
       </el-dialog>
     </el-form>
@@ -127,41 +129,114 @@
 </template>
 
 <script>
-  import { add, list,del,findbytitle,subaudit } from '@/api/duty/plan'
+  import { add, list,del,findbytitle,subaudit,updatecontent,passaudit } from '@/api/duty/plan'
   import { mapGetters } from 'vuex'
   import qs from 'qs'
   export default {  computed: {
       ...mapGetters([
-        'userId',
-        'nickname'
+        'nickname',
+        'userId', 'role'
       ])
     },
-  created() {
+  created() {//创建时调用初始化页面的方法
     this.initList()
   },
     methods:{
+    //重置
       onrest(){
         this.search=''
+      },//判断状态给提示
+    cstatus: function (row, column, cellValue) {
+      if (cellValue == 0){
+        return '创建';
+      }else if (cellValue == 1){
+        return '待审';
+      }
+      else{
+        return '已审核'
+      }
+    },
+      //更新数据
+      gxmethod(){
+        let postData = qs.stringify({
+          id:this.userInfo.id,
+          title:this.userInfo.title,
+          content:this.userInfo.content
+        });
+        updatecontent(postData).then((responese)=>{
+          this.iconFormVisible = false;
+          this.initList()
+        })
+          console.log('gx'+this.userInfo.id)
       },
+      //提交审核
+      tjshmethod(){
+        let postData = qs.stringify({
+          id:this.userInfo.id
+        });
+        console.log('tjsh'+this.userInfo.id)
+        subaudit(postData).then((response)=>{
+          this.iconFormVisible = false;
+          this.initList()
+        })
+      },
+      //通过审核
+      tgmethod(){
+        let postData = qs.stringify({
+          id:this.userInfo.id
+        });
+        console.log('tg'+this.userInfo.id)
+        passaudit(postData).then((response)=>{
+          this.iconFormVisible = false;
+          this.initList()
+        })
+      },
+      //初始化页面
       initList() {
         list(this.listQuery).then(response =>{
-          console.log('查询返回'+JSON.stringify(response.list))
+          console.debug(response.data)
           this.tableData = response.list
           this.total = response.list.length
         })
       },
-      // 编辑
+      // 进入编辑页面
       handleEdit(index, row) {
         this.dialogTitle = '编辑';
         this.userInfo = row;
+        console.log('编辑status'+row.staus)
         if(row.staus==0){
-          this.userInfo.staus='创建'
+
+          this.nr=false
+          this.bt=false//标题不禁用
+          this.bc='none',//保存按钮
+            this.tg='none',//通过按钮不显示
+            this.btg='none'//不通过按钮不显示
+          if(this.role.includes('纪检监察科科长')||this.role.includes('单位/部门负责人')) {
+            this.gx = '',//更新按钮显示
+              this.tjsh = ''//提交审核按钮显示
+          }
         }
         else if(row.staus==1){
-          this.userInfo.staus='待审'
+          this.nr='disabled'//内容禁用
+          this.bt='disabled'//标题禁用
+
+          this.bc='none'//保存按钮
+            if(this.role.includes('纪检监察科科长')){
+            this.tg=''//通过按钮显示
+            this.btg=''//不通过按钮显示
+            }
+            this.gx='none'//更新按钮不显示
+            this.tjsh='none'//提交审核按钮不显示
         }
         else{
-          this.userInfo.staus='已审核'
+
+          this.nr='disabled'
+          this.bt='disabled'
+          this.bc='none',//保存按钮
+            this.tg='none',//通过按钮不显示
+            this.btg='none',//不通过按钮不显示
+            this.gx='none',//更新按钮不显示
+            this.tjsh='none'//提交审核按钮显示
         }
         this.iconFormVisible = true;
         this.rowIndex = index;
@@ -171,6 +246,7 @@
         let postData = qs.stringify({
          title:this.search
         });
+        console.log(postData+'postdate--------')
         this.listLoading = true
         findbytitle(postData).then((response) =>{
           this.currentPage = 1
@@ -180,9 +256,10 @@
           this.listLoading=false
         })
       },
+      //删除
       dele(){
         var data = this.$refs.multipleTable.selection;
-        console.log('data.lent'+data.length)
+        console.debug("11"+data)
         if(JSON.stringify(data)=='[]'){
           this.$notify({
             title: '温馨提示',
@@ -197,7 +274,7 @@
         });
 
         console.debug('选中行数据'+JSON.stringify(data))
-      del(postData).then((response) =>{
+        del(postData).then((response) =>{
           this.initList();
           this.$notify({
             title: '成功',
@@ -230,6 +307,7 @@
         if (!value) return true;
         return data.label.indexOf(value) !== -1;
       },
+      //分页
       handleSizeChange(size) {
         this.pageSize = size;
         console.log(this.pageSize)
@@ -238,30 +316,31 @@
         this.currentPage = currentPage;
         console.log(this.currentPage)  //点击第几页
       },
-  /*赋值当前时间*/
-      time(){
-        this.$set(this.userInfo,'createtime',new Date())
-
-       console.debug("11")
-      },
-      //新增
+      //新增页面显示，初始化默认值
       add() {
         this.dialogTitle = '增加';
-        this.userInfo={};
+        //新增时初始化隐藏和显示的按钮
+        this.nr=false
+        this.bt=false
+        this.bc='',//保存按钮显示
+           this.tg='none',//通过按钮隐藏
+          this.btg='none',//不通过按钮隐藏
+          this.gx='none',//更新按钮隐藏
+        this.tjsh=''//提交审核按钮显示
+        this.userInfo={};//清空数据
+        //新增时初始化默认值
         this.userInfo.title='履行全面从严治党主体责任年度工作计划和措施'
         this.userInfo.staus='创建'
         this.userInfo.createname =this.nickname
-        console.debug('userId='+this.userId)
+      //  console.debug('id='+this.id)
         /* 动态赋值实时设置当前时间*/
         this.$set(this.userInfo,'createtime',new Date())
-       //this.timer= setInterval(this.time, 1000 );
-
-        this.iconFormVisible = true;
+        this.iconFormVisible = true;//新增弹窗出现
       },
       //弹窗取消
       deselect(){
         this.iconFormVisible = false
-        clearInterval(this.timer)
+        this.initList()
       },
       // 弹窗确定
       submitUser() {
@@ -274,10 +353,9 @@
           createid:this.userId
         });
         if (this.dialogTitle === '增加') {
-          //新增
              add(postData).then((response) => {
                 this.iconFormVisible = false;
-                clearInterval(this.timer)
+                //clearInterval(this.timer)
                 this.initList();
                 this.$notify({
                   title: '成功',
@@ -293,6 +371,13 @@
     },
     data() {
       return {
+        nr:false,
+        bt:false,
+        bc:'',//保存按钮
+        tg:'none',//通过按钮
+        btg:'none',//不通过按钮
+        gx:'none',//更新按钮
+        tjsh:'',//控制提交审核按钮
         timer:'',
         iconFormVisible: false,
         userInfo: {},
@@ -356,31 +441,7 @@
             }]
           }],
         isShowSelect:false,
-      tableData: [{
-          id:'1',
-          title: '履行全面从严治党主体责任年度工作计划和措施',
-          deptName: '市场分部',
-        createname: '系统管理员',
-          createtime:'2020/6/13'
-        }, {
-          id:'2',
-          title: '履行全面从严治党主体责任年度工作计划和措施',
-          deptName: '市场分部',
-        createname: '系统管理员',
-          createtime:'2020/6/14'
-        }, {
-          id:'3',
-          title: '履行全面从严治党主体责任年度工作计划和措施',
-        deptName: '怀化市烟草专卖局（公司）',
-          createName: '系统管理员',
-          createtime:'2020/6/15'
-        }, {
-          id:'4',
-          title: '履行全面从严治党主体责任年度工作计划和措施',
-          deptName: '综合管理部',
-        createname: '系统管理员',
-          createtime:'2020/6/23'
-        }]
+      tableData: []
       }
     },
   }

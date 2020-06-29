@@ -1,6 +1,6 @@
-import api from '@/utils/api'
+import request from '@/utils/api'
 export function list(data){
-  return api({
+  return request({
     url: '/duty/talk/list',
     method: 'post',
     data
@@ -8,21 +8,21 @@ export function list(data){
 }
 /*新增工作计划*/
 export function add(data){
-  return api({
+  return request({
     url: '/duty/talk/addHonestConversation',
     method: 'post',
     data
   })
 }
 export function del(data){
-  return api({
+  return request({
     url: '/duty/talk/delhonestConversation',
     method: 'post',
     data
   })
 }
 export function findbytitle(data) {
-  return api({
+  return request({
     url: '/duty/talk/findbytitle',
     method:'post',
     data
@@ -30,7 +30,7 @@ export function findbytitle(data) {
 }
 /*更新计划内容*/
 export function updatecontent(data) {
-  return api({
+  return request({
     url: '/duty/talk/updateHonestConversation',
     method:'post',
     data
@@ -38,16 +38,32 @@ export function updatecontent(data) {
 }
 /*提交审核*/
 export function subaudit(data) {
-  return api({
-    url: '/duty/talk/subaudit',
+  return request({
+    url: '/duty/talk/subauditHonestConversation',
     method:'post',
     data
   })
 }
 /*通过审核*/
 export function passaudit(data) {
-  return api({
-    url: '/duty/talk/passaudit',
+  return request({
+    url: '/duty/talk/passauditHonestConversation',
+    method:'post',
+    data
+  })
+}
+/*级联选择框*/
+export function getFileGroup(data) {
+return request({
+  url:'/duty/talk/getFileGroup',
+  method:'post',
+  data
+})
+}
+/*select选择框*/
+export function initpersons(data) {
+  return request({
+    url:'/duty/talk/initpersons',
     method:'post',
     data
   })

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.inspect.DcpReportMapper">
+    <resultMap id="basemap" type="com.xr.run.entity.inspect.Report">
+        <result column="id" property="id"></result>
+        <result column="reporttype" property="reportType"></result>
+        <result column="report" property="report" ></result>
+        <result column="newTime" property="newTime"></result>
+        <result column="status" property="status"></result>
+        <result column="url" property="url"></result>
+        <association property="eid" javaType="com.xr.run.entity.SysStaff">
+            <result column="name" property="name"></result>
+        </association>
+
+    </resultMap>
+    <select id="list" resultMap="basemap">
+select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url from dcp_report re,Sys_Staff h where h.sid=re.eid
+    </select>
+    <select id="fintBywhere" resultMap="basemap">
+        select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url from dcp_report re,Sys_Staff h where h.sid=re.eid
+        <if test="reportType != null and !reportType.equals('')">
+        and re.reporttype like #{reportType}</if>
+        <if test="newTime != null and !newTime.equals('')">
+            and re.newtime like #{newTime}
+        </if>
+    </select>
+    <insert id="addreport" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
+        insert into dcp_report(reportType,report,newTime,eid,status,url) values(#{reportType},#{report},#{newTime},#{sid},#{status},#{url})
+    </insert>
+    <delete id="delReport" parameterType="Integer">
+        delete from dcp_report where id=#{id}
+    </delete>
+    <update id="gxpost" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
+        update dcp_report set reportType=#{reportType},report=#{report},url=#{url} where id=#{id}
+    </update>
+</mapper>

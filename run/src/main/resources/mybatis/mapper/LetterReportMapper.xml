@@ -2,7 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.LetterReportMapper">
-    <select id="list" resultType="String">
-
+    <select id="list" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
+select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus=#{lStatus}
     </select>
+    <insert id="addletter">
+        insert into daily_letterreport(letterid,ltime,lComplainantName,lDeptId,lPostId,lpersonbereported,lPbrDeptId,lPbrPostId,lcontent,lCreateTime,lCreateName,lCreateid,lStatus) values(#{letterId},#{lTime},#{lComplainantName},#{lDeptId},#{lPostId},#{lPersonBeReported},#{lPbrDeptId},#{lPbrPostId},#{lContent},#{lCreateTime},#{lCreateName},#{lCreateId},#{lStatus})
+    </insert>
+    <delete id="deletter" parameterType="Integer">
+        delete from daily_letterreport where lid=#{lid}
+    </delete>
+    <select id="findbyName" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
+        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus!=0
+        where 1=1   <if test="lComplainantName != null and !lComplainantName.equals('')">
+        AND lComplainantName like #{lComplainantName}</if>
+        <if test="lPersonBeReported != null and !lPersonBeReported.equals('')">
+            AND lpersonbereported like #{lPersonBeReported}
+    </if>
+    </select>
+    <!--纪检监察员编写内容摘要提交审核-->
+    <update id="shbc" parameterType="com.xr.run.entity.daily.LetterReport">
+        update daily_letterreport set lsynopsis=#{lSynopsis},lStatus=2 where lid=#{lid}
+    </update>
+    <select id="listLetterByid" resultType="com.xr.run.entity.daily.LetterReport" parameterType="Integer">
+select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lCreateid=#{lid}
+    </select>
+    <!--用户提交审核-->
+    <update id="tjshme" parameterType="Integer" >
+        update daily_letterreport set lStatus=1 where lid=#{lid}
+    </update>
+    <!--转办部门-->
+    <update id="turndept" parameterType="Integer">
+        update daily_letterreport set lStatus=3 where lid=#{lid}
+    </update>
 </mapper>

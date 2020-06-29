@@ -1,6 +1,6 @@
-import api from '@/utils/api'
+import request from '@/utils/api'
 export function list(data){
-  return api({
+  return request({
     url: '/duty/deploy/list',
     method: 'post',
     data
@@ -8,21 +8,21 @@ export function list(data){
 }
 /*新增工作计划*/
 export function add(data){
-  return api({
+  return request({
     url: '/duty/deploy/addDeployment',
     method: 'post',
     data
   })
 }
 export function del(data){
-  return api({
+  return request({
     url: '/duty/deploy/delDeployment',
     method: 'post',
     data
   })
 }
 export function findbytitle(data) {
-  return api({
+  return request({
     url: '/duty/deploy/findbytitle',
     method:'post',
     data
@@ -30,8 +30,8 @@ export function findbytitle(data) {
 }
 /*更新计划内容*/
 export function updatecontent(data) {
-  return api({
-    url: '/duty/deploy/updatecontent',
+  return request({
+    url: '/duty/deploy/updateDeployment',
     method:'post',
     data
   })
@@ -39,7 +39,7 @@ export function updatecontent(data) {
 /*提交审核*/
 export function subaudit(data) {
   return request({
-    url: '/duty/deploy/subaudit',
+    url: '/duty/deploy/subauditDeployment',
     method:'post',
     data
   })
@@ -47,7 +47,7 @@ export function subaudit(data) {
 /*通过审核*/
 export function passaudit(data) {
   return request({
-    url: '/duty/deploy/passaudit',
+    url: '/duty/deploy/passauditDeployment',
     method:'post',
     data
   })

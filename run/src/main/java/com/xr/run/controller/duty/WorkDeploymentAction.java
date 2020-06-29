@@ -96,7 +96,7 @@ public class WorkDeploymentAction {
         }
 
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("msg","删除成功");
+        result.getInfo().put("message","删除成功");
         return result;
     }
 }

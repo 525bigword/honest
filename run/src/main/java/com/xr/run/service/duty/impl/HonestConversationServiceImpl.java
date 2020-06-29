@@ -1,6 +1,8 @@
 package com.xr.run.service.duty.impl;
 
 import com.xr.run.dao.duty.HonestConversationMapper;
+import com.xr.run.entity.SysStaff;
+import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
 import com.xr.run.service.duty.HonestConversationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +41,22 @@ honestConversationMapper.subauditHonestConversation(id);
     }
 
     @Override
-    public void passauditHonestConversation(Integer id) {
-honestConversationMapper.passauditHonestConversation(id);
+    public void passauditHonestConversation(Integer id,Integer status) {
+honestConversationMapper.passauditHonestConversation(id,status);
     }
 
     @Override
     public void delHonestConversationt(Integer id) {
 honestConversationMapper.delHonestConversationt(id);
+    }
+
+    @Override
+    public List<SysStaff> findallduty(Integer id) {
+        return honestConversationMapper.findallduty(id);
+    }
+
+    @Override
+    public List<SysMechanism> findallunit(Integer parent) {
+        return honestConversationMapper.findallunit(parent);
     }
 }

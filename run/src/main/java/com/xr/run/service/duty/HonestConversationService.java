@@ -1,5 +1,7 @@
 package com.xr.run.service.duty;
 
+import com.xr.run.entity.SysStaff;
+import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
 
 import java.util.List;
@@ -16,7 +18,9 @@ public interface HonestConversationService {
     /*提交审核*/
     public void subauditHonestConversation(Integer id);
     /*审核通过*/
-    public void passauditHonestConversation(Integer id);
+    public void passauditHonestConversation(Integer id, Integer status);
     /*删除谈话*/
     public void delHonestConversationt(Integer id);
+    public List<SysStaff> findallduty(Integer id);
+    public List<SysMechanism> findallunit(Integer parent);
 }
