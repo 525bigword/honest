@@ -65,7 +65,6 @@ public class IndexController {
         if(dutyTitle==null){
             dutyTitle="";
         }
-
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         System.out.println("findSpvDuty");

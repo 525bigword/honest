@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProcessrickMapper extends BaseMapper<Processrick> {
-    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick  and  proName like CONCAT('%',#{proName},'%') order by proid desc")
+    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick  where  proName like CONCAT('%',#{proName},'%') order by proid desc")
     @Results({
             @Result(column = "proCreateId",property = "proCreateId"),
             @Result(column = "proCreateId",property = "sysStaff",
