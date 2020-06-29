@@ -63,7 +63,10 @@ export function blist(pageNum, pageRow, did) {
     return request({
         url: '/spvback/get/' + pageNum + '/' + pageRow,
         method: 'get',
-        params: { did }
+        params: {
+            did: did,
+            bid: 0
+        }
     })
 }
 
