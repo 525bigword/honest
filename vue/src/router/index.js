@@ -151,6 +151,7 @@ export const asyncRouterMap = [
             component: _import('user/user'),
             meta: { title: '日常管理', icon: 'user' },
             menu: 'staff'
+            
         }, {
             path: '',
             name: '动态管理',
