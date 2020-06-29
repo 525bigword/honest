@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SysLog;
+import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysLogService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
