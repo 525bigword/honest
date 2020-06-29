@@ -1,6 +1,5 @@
 package com.xr.run;
 
-import com.aspose.words.SaveFormat;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.SpvBackMapper;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 
-import com.aspose.words.Document;
 import javax.sql.DataSource;
 import java.io.FileOutputStream;
 import java.io.IOException;

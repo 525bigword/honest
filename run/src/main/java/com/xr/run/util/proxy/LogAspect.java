@@ -1,6 +1,4 @@
 package com.xr.run.util.proxy;
-
-
 import com.alibaba.fastjson.JSON;
 import com.xr.run.entity.SysLog;
 import com.xr.run.entity.SysStaff;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.apache.shiro.session.Session;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -38,9 +35,10 @@ public class LogAspect {
     @Autowired
     private SysLogService sysLogService;
     /**
-     * ..表示包及子包 该方法代表controller层的所有方法  TODO 路径需要根据自己项目定义
+     * ..表示包及子包 该方法代表controller层的所有方法
+     * TODO 路径需要根据自己项目定义
      */
-    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))")
+    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))&& !execution(* com.xr.run.controller.ThymeleafController.*(..))")
     public void controllerMethod() {
         log.info("切了");
     }
@@ -122,19 +120,6 @@ public class LogAspect {
         sysLog.setType(browserName);
         sysLog.setTime(DateUtil.getDate());
         sysLogService.addSysLog(sysLog);
-        // 处理请求参数
-//        String[] paramNames = ((MethodSignature) signature).getParameterNames();
-//        Object[] paramValues = joinPoint.getArgs();
-//        int paramLength = null == paramNames ? 0 : paramNames.length;
-//        if (paramLength == 0) {
-//            requestLog.append("请求参数 = {} ");
-//        } else {
-//            requestLog.append("请求参数 = [");
-//            for (int i = 0; i < paramLength - 1; i++) {
-//                requestLog.append(paramNames[i]).append("=").append(JSONObject.toJSONString(paramValues[i])).append(",");
-//            }
-//            requestLog.append(paramNames[paramLength - 1]).append("=").append(JSONObject.toJSONString(paramValues[paramLength - 1])).append("]");
-//        }
 
         log.info(requestLog.toString());
     }
