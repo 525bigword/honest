@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DcpReportMapper extends BaseMapper<DcpReport> {
-    @Select("select id,ReportType,report,NewTime,eid,`status`,url from dcp_report where `status`<>-1  and  report like CONCAT('%',#{report},'%') order by pid desc")
+    @Select("select id,ReportType,report,NewTime,eid,`status`,url from dcp_report where `status`<>-1  and  report like CONCAT('%',#{report},'%') order by id desc")
     @Results({
             @Result(column = "eid",property = "eid"),
             @Result(column = "eid",property = "sysStaff",

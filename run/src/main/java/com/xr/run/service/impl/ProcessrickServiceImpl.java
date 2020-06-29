@@ -9,11 +9,13 @@ import com.xr.run.entity.Processrick;
 import com.xr.run.service.ProcessrickService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProcessrickServiceImpl extends ServiceImpl<ProcessrickMapper,Processrick> implements ProcessrickService {
 
     @Override
-    public IPage<Processrick> findProcessrickIndex(Page page, String proName) {
-        return baseMapper.findProcessrickIndex(page,proName);
+    public List<Processrick> findProcessrickIndex(Page page, String proName) {
+        return baseMapper.findProcessrickIndex(proName);
     }
 }

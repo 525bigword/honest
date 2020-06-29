@@ -95,8 +95,8 @@ public class IndexController {
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<Processrick> page=new Page(pageNum,pageRow);
-        IPage<Processrick> findwp =processrickService.findProcessrickIndex(page,proName);
-        return CommonUtil.successJson(findwp);
+//        IPage<Processrick> findwp =processrickService.findProcessrickIndex(page,proName);
+        return CommonUtil.successJson("findwp");
     }
 
     /*责任纪实 工作计划根据标题模糊查询 内容做显示详情*/

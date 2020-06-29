@@ -11,6 +11,19 @@ import java.util.Date;
  */
 public class DateUtil {
     /**
+     * 修改时间格式
+     * @param
+     * @return
+     */
+    public static String upDate(Date argDate){
+        long time = argDate.getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String date = df.format(time);// new Date()为获取当前系统时间，也可使用当前时间戳
+        Date parse = null;
+
+        return date;
+    }
+    /**
      * 获取当前时间
      * @param formate 时间格式
      * @return

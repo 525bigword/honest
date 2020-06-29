@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.duty.EntityResponsibilityMapper">
+    <!--初始化查询-->
+    <resultMap id="baseMap" type="com.xr.run.entity.duty.EntityResponsibility">
+        <result column="id" property="id"></result>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="create_time" property="createtime"></result>
+        <result column="staus" property="staus"></result>
+        <association property="users" javaType="com.xr.run.entity.SysStaff">
+            <id column="sid" property="sid"></id>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+    <select id="list" resultMap="baseMap" parameterType="com.xr.run.entity.duty.EntityResponsibility">
+  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,h.name from rd_entity_responsibility rwd,sys_staff h where rwd.create_id=h.sid </select>
+    <!--按标题查询-->
+    <select id="findbytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.EntityResponsibility">
+      select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,h.name from rd_entity_responsibility rwd,sys_staff h where rwd.create_id=h.sid and rwd.title like CONCAT('%',#{title},'%')
+    </select>
+    <!--新增工作计划-->
+    <insert id="addEntityResponsibility" parameterType="com.xr.run.entity.duty.EntityResponsibility">
+        insert into rd_entity_responsibility(title,content,create_time,create_id,staus) values(#{title},#{content},#{createtime},#{createid},#{staus})
+    </insert>
+    <!--根据id更新工作计划-->
+    <update id="updateEntityResponsibility" parameterType="com.xr.run.entity.duty.EntityResponsibility">
+        update rd_entity_responsibility set title=#{title},content=#{content},create_time=#{createname} where id=#{id}
+    </update>
+    <!--按序号删除工作计划-->
+    <delete id="del" parameterType="Integer">
+        delete from rd_entity_responsibility where id=#{id}
+    </delete>
+    <!--提交审核-->
+    <update id="subaudit">
+        update rd_entity_responsibility set staus=1 where id=#{id}
+    </update>
+    <!--审核通过-->
+    <update id="passaudit">
+        update rd_entity_responsibility set staus=2 where id=#{id}
+    </update>
+
+</mapper>

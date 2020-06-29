@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.duty.WorkDeploymentMapper">
+    <!--初始化查询-->
+    <resultMap id="baseMap" type="com.xr.run.entity.duty.WorkDeployment">
+        <result column="id" property="id"></result>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="create_time" property="createtime"></result>
+      <result column="staus" property="status"></result>
+        <association property="users" javaType="com.xr.run.entity.SysStaff">
+            <id column="sid" property="sid"></id>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+    <select id="list" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
+  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,h.sid,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid </select>
+    <!--按标题查询-->
+    <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
+      select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.title like CONCAT('%',#{title},'%')
+    </select>
+    <!--新增工作计划-->
+    <insert id="addDeployment" parameterType="com.xr.run.entity.duty.WorkDeployment">
+        insert into rd_work_deployment(title,content,create_time,create_id,staus) values(#{title},#{content},#{createtime},#{createid},#{status})
+    </insert>
+    <!--根据id更新工作计划-->
+    <update id="updateWorkPlan" parameterType="com.xr.run.entity.duty.WorkDeployment">
+        update rd_work_deployment set title=#{title},content=#{content},create_time=#{createname} where id=#{id}
+    </update>
+    <!--按序号删除工作计划-->
+    <delete id="delDeployment" parameterType="Integer">
+        delete from rd_work_deployment where id=#{id}
+    </delete>
+    <!--提交审核-->
+    <update id="subaudit">
+        update rd_work_deployment set staus=1 where id=#{id}
+    </update>
+    <!--审核通过-->
+    <update id="passauditDeployment">
+        update rd_work_deployment set staus=2 where id=#{id}
+    </update>
+
+</mapper>

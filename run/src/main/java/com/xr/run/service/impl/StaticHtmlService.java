@@ -25,14 +25,16 @@ public class StaticHtmlService implements com.xr.run.service.StaticHtmlService {
     private ApplicationContext appContext;//这是Spring容器上下文
 
     @Override
-    public void genHtmlPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response) {
+    public void genHtmlPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response,String filename) {
         FileWriter fileWriter = null;
         try {
-            String fileName = request.getRequestURI();
+//            String fileName = request.getRequestURI();
+//            System.out.println(fileName);
 //            if(!fileName.endsWith(".html")) {//将.html结尾的请求生成静态页面
 //                return;
-//            }
-            fileName = "D:\\index.html";//config.getHtmlPath() + fileName;//构造静态html文件完整路径
+//            }'
+//            fileName=fileName.substring(0,fileName.lastIndexOf("."));
+            String fileName = "D:\\IDE\\tomcat\\apache-tomcat-9.0.36\\webapps\\hoonest\\"+filename+".html";//config.getHtmlPath() + fileName;//构造静态html文件完整路径
             File file = new File(fileName);
             if(!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
