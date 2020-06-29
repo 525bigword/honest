@@ -79,4 +79,16 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
 
     @Select("select mid,mechanism_name from sys_mechanism where mid=#{mid}")
     SysMechanism findSysMechanismMid(int mid);
+    //全部信息
+    @Select("select mid,mechanism_name,sid,parent,branch,create_time,create_id,staus from sys_mechanism")
+    @Results({
+            @Result(property = "sname",column = "sid",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
+            @Result(property = "parentName",column = "parent",one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName")),
+            @Result(property = "parent",column = "parent"),
+            @Result(property = "sid",column = "sid"),
+            @Result(property = "branch",column = "branch"),
+            @Result(property = "branchName",column = "branch",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
+            @Result(property = "createName",column = "create_id",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
+    })
+    List<SysMechanism> findSysMechanism();
 }

@@ -24,4 +24,6 @@ public interface SysPostService extends IService<SysPost> {
     void delSysPost(String[] arr);
     //获取全部岗位
     List<SysPost> getSysPost();
+    //获取全部岗位信息
+    List<SysPost> getAllSysPost();
 }

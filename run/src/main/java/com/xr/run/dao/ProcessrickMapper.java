@@ -13,6 +13,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProcessrickMapper extends BaseMapper<Processrick> {
     @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick  where  proName like CONCAT('%',#{proName},'%') order by proid desc")
@@ -21,5 +23,5 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
             @Result(column = "proCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<Processrick> findProcessrickIndex(Page page, String proName);
+    List<Processrick> findProcessrickIndex(String proName);
 }
