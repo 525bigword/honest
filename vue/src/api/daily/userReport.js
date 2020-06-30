@@ -13,3 +13,10 @@ export function tjshme(data){
     data
   })
 }
+export function bjbcmethod(data){
+  return request({
+    url: '/daily/letter/bjbcmethod',
+    method: 'post',
+    data
+  })
+}

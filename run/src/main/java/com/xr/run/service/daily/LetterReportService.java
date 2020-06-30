@@ -26,4 +26,6 @@ public interface LetterReportService {
     public void kezhangbc(LetterReport letterReport);
     /*转办部门处理结果*/
     public void deptbc(LetterReport letterReport);
+    /*用户更新*/
+    public void bjbcmethod(LetterReport letterReport);
 }

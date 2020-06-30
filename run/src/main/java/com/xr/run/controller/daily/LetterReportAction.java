@@ -102,4 +102,12 @@ letterReportService.shbc(letterReport);
         result.getInfo().put("message","已处理完成");
         return result;
     }
+    /*用户更新信访内容*/
+    @RequestMapping("bjbcmethod")
+    public ResponseResult bjbcmethod(LetterReport letterReport){
+        letterReportService.bjbcmethod(letterReport);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","已处理完成");
+        return result;
+    }
 }

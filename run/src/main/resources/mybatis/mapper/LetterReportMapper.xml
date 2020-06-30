@@ -12,8 +12,12 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
         delete from daily_letterreport where lid=#{lid}
     </delete>
     <select id="findbyName" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus!=0
-          <if test="lComplainantName != null and !lComplainantName.equals('')">
+        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where 1=1
+        <if test="lCreateId != null and !lCreateId.equals('')">
+            AND lr.lCreateId=#{lCreateId}</if>
+        <if test="lStatus != 1">
+            AND lr.lStatus!=0</if>
+        <if test="lComplainantName != null and !lComplainantName.equals('')">
         AND lComplainantName like #{lComplainantName}</if>
         <if test="lPersonBeReported != null and !lPersonBeReported.equals('')">
             AND lpersonbereported like #{lPersonBeReported}
@@ -41,5 +45,9 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
     <!--转办部门处理结果-->
     <update id="deptbc" parameterType="com.xr.run.entity.daily.LetterReport">
          update daily_letterreport set lStatus=4,lresult=#{lResult},lResultTime=#{lResultTime} where lid=#{lid}
+    </update>
+    <!--用户更新-->
+    <update id="bjbcmethod" parameterType="com.xr.run.entity.daily.LetterReport">
+          update daily_letterreport set lcontent=#{lContent} where lid=#{lid}
     </update>
 </mapper>

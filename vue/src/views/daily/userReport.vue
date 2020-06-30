@@ -43,51 +43,51 @@
 
         </el-table-column>
         <el-table-column
-          prop="lTime"
+          prop="ltime"
           label="信访时间"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="lComplainantName"
+          prop="lcomplainantName"
           label="来访人姓名"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="lDeptId"
+          prop="ldeptId"
           label="来访人单位/部门"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="lPostId"
+          prop="lpostId"
           label="来访人岗位/职务">
         </el-table-column>
         <el-table-column
-          prop="lPersonBeReported"
+          prop="lpersonBeReported"
           label="被反映人姓名">
         </el-table-column>
         <el-table-column
-          prop="lPbrDeptId"
+          prop="lpbrDeptId"
           label="被反映人单位/部门">
         </el-table-column>
         <el-table-column
-          prop="lPbrPostId"
+          prop="lpbrPostId"
           label="被反映人岗位/职务">
         </el-table-column>
         <el-table-column
-          prop="lContent"
+          prop="lcontent"
           label="原始信访内容">
         </el-table-column>
 
-        <el-table-column prop="lCreateName" label="创建人姓名" v-if="false" >
+        <el-table-column prop="lcreateName" label="创建人姓名" v-if="false" >
 
         </el-table-column>
-        <el-table-column prop="lStatus" label="状态" v-if="false" >
+        <el-table-column prop="lstatus" label="状态" v-if="false" >
 
         </el-table-column>
-        <el-table-column prop="lCreateTime" label="创建时间" v-if="false"></el-table-column>
+        <el-table-column prop="lcreateTime" label="创建时间" v-if="false"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lStatus">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" v-if="scope.row.lStatus==0" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==0" @click="bj(scope.$index, scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -120,35 +120,35 @@
             <el-input v-model="userInfo.letterId" placeholder="信访编号" style="width: 830px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="来访人姓名">
-            <el-input v-model="userInfo.lComplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.lcomplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人姓名">
-            <el-input v-model="userInfo.lPersonBeReported" v-bind:disabled='bename' placeholder="被反映人姓名" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lpersonBeReported" v-bind:disabled='bename' placeholder="被反映人姓名" style="width: 300px" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="来访人部门/单位">
-            <el-input v-model="userInfo.lDeptId" placeholder="来访人部门/单位" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.ldeptId" placeholder="来访人部门/单位" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人部门/单位">
-            <el-input v-model="userInfo.lPbrDeptId"  v-bind:disabled='beunit'  placeholder="被反映人部门/单位" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lpbrDeptId"  v-bind:disabled='beunit'  placeholder="被反映人部门/单位" style="width: 300px" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="来访人岗位/职务">
-            <el-input v-model="userInfo.lPostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.lpostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人岗位/职务">
-            <el-input v-model="userInfo.lPbrPostId" v-bind:disabled='beduty' placeholder="被反映人岗位/职务" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lpbrPostId" v-bind:disabled='beduty' placeholder="被反映人岗位/职务" style="width: 300px" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="原始信访内容">
-            <el-input type="textarea" v-model="userInfo.lContent" placeholder="原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
+            <el-input type="textarea" v-model="userInfo.lcontent" placeholder="原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="创建者">
-            <el-input v-model="userInfo.lCreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.lcreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="创建时间">
-            <el-date-picker v-model="userInfo.lCreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.lcreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item>
           <br/>
         </div>
@@ -161,13 +161,12 @@
   import { mapGetters } from 'vuex'
   import qs from 'qs'
   import {xfbh,add,del,findbyName} from '@/api/daily/letter'
-  import {listLetterByid,tjshme} from '@/api/daily/userReport'
+  import {listLetterByid,tjshme,bjbcmethod} from '@/api/daily/userReport'
   import {getFileGroup} from '@/api/duty/talk'
   export default {  computed: {
       ...mapGetters([
-        'name',
-        'id',
-        'roles'
+        'nickname',
+        'userId', 'role'
       ])
     },
     created() {
@@ -184,7 +183,7 @@
           this.initList();
           this.$notify({
             title: '成功',
-            message: response.data.message,
+            message: response.message,
             type: 'success',
             duration: 2000
           })
@@ -194,13 +193,18 @@
       bjbcmethod(){
         let posdata=qs.stringify({
          lid:this.userInfo.lid,
-          lComplainantName:this.userInfo.lComplainantName,
-          lPersonBeReported:this.userInfo.lPersonBeReported,
-          lDeptId:this.userInfo.lDeptId,
-          lPostId:this.userInfo.lPostId,
-          lPbrDeptId:this.userInfo.lPbrDeptId,
-          lPbrPostId:this.userInfo.lPbrPostId,
-          lContent:this.userInfo.lContent
+          lContent:this.userInfo.lcontent
+        })
+        bjbcmethod(posdata).then((response)=>{
+          this.tf='';
+        this.ad='none'
+        this.initList();
+        this.$notify({
+          title: '成功',
+          message: response.message,
+          type: 'success',
+          duration: 2000
+        })
         })
       },//重置
       onrest(){
@@ -212,24 +216,26 @@
       //初始化页面
       initList() {
         let posdata=qs.stringify({
-          lid:this.id
+          lid:this.userId
         })
         listLetterByid(posdata).then(response =>{
-          console.debug(response.data)
-          this.tableData = response.data.list
-          this.total = response.data.list.length
+          console.debug(response)
+          this.tableData = response.list
+          this.total = response.list.length
         })
       },//新增
       add(){
         this.userInfo={};
         xfbh().then((response)=>{
-          this.userInfo.letterId='XF'+response.data.xfbh
-          console.log('XF'+response.data.xfbh)
-          this.userInfo.lCreateName =this.name
-
-          console.debug('id='+this.id)
+          this.userInfo.letterId='XF'+response.xfbh
+          console.log('XF'+response.xfbh)
+          this.userInfo.lcreateName =this.nickname
+        this.userInfo.lcomplainantName=this.nickname
+        this.userInfo.lpostId=this.role
+        this.userInfo.ldeptId='纪检部'
+         // console.debug('id='+this.id)
           /* 动态赋值实时设置当前时间*/
-          this.$set(this.userInfo,'lCreateTime',new Date())
+          this.$set(this.userInfo,'lcreateTime',new Date())
           this.tf='none';
           this.ad=''
           this.tj='',//提交按钮
@@ -242,25 +248,26 @@
 
       },//新增提交
       submitUser(){
-        let endtime = new Date(this.userInfo.lCreateTime).toJSON();
-        this.userInfo.lCreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        let endtime = new Date(this.userInfo.lcreateTime).toJSON();
+        this.userInfo.lcreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
         let posdata=qs.stringify({
           letterId:this.userInfo.letterId,
           userName:this.userInfo.userName,
-          lComplainantName:this.userInfo.lComplainantName,
-          lPersonBeReported:this.userInfo.lPersonBeReported,
-          lDeptId:this.userInfo.lDeptId,
-          lPostId:this.userInfo.lPostId,
-          lPbrDeptId:this.userInfo.lPbrDeptId,
-          lPbrPostId:this.userInfo.lPbrPostId,
-          lContent:this.userInfo.lContent,
-          lCreateName:this.name,
-          lTime: this.userInfo.lCreateTime,
-          lCreateTime:this.userInfo.lCreateTime,
-          lCreateId:this.id,
+          lComplainantName:this.userInfo.lcomplainantName,
+          lPersonBeReported:this.userInfo.lpersonBeReported,
+          lDeptId:this.userInfo.ldeptId,
+          lPostId:this.userInfo.lpostId,
+          lPbrDeptId:this.userInfo.lpbrDeptId,
+          lPbrPostId:this.userInfo.lpbrPostId,
+          lContent:this.userInfo.lcontent,
+          lCreateName:this.nickname,
+          lTime: this.userInfo.lcreateTime,
+          lCreateTime:this.userInfo.lcreateTime,
+          lCreateId:this.userId,
           lStatus:0
         })
         add(posdata).then((response)=>{
@@ -269,7 +276,7 @@
           this.initList();
           this.$notify({
             title: '成功',
-            message: response.data.message,
+            message: response.message,
             type: 'success',
             duration: 2000
           })
@@ -282,13 +289,13 @@
         this.tj='none',//提交按钮
 
         this.bjbc=''
-        this.ysnr='disabled'//原始信访内容
+        this.ysnr=false//原始信访内容
         this.beunit='disabled',//被反映人单位
           this.beduty='disabled',//被反映人职务
           this.bename='disabled'//被反映人姓名
         this.sfjc='disabled'
         this.userInfo=row
-        this.userInfo.lCreateName=this.name
+        this.userInfo.lcreateName=this.nickname
       },// 删除
       del(){
         var data = this.$refs.multipleTable.selection;
@@ -329,7 +336,7 @@
              this.initList();
              this.$notify({
                title: '成功',
-               message: response.data.message,
+               message: response.message,
                type: 'success',
                duration: 2000
              })
@@ -341,14 +348,16 @@
       onSearch() {
         let postData = qs.stringify({
           lComplainantName:this.search,
-          lPersonBeReported:this.besearch
+          lPersonBeReported:this.besearch,
+          lCreateId:this.userId,
+          lStatus:1
         });
         this.listLoading = true
         findbyName(postData).then((response) =>{
           this.currentPage = 1
-          this.tableData = response.data.list
+          this.tableData = response.list
           console.debug(this.tableData)
-          this.total=response.data.list.length
+          this.total=response.list.length
           this.listLoading=false
         })
       },

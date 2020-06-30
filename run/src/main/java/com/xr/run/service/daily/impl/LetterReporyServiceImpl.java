@@ -67,4 +67,9 @@ public class LetterReporyServiceImpl implements LetterReportService {
     public void deptbc(LetterReport letterReport) {
 letterReportMapper.deptbc(letterReport);
     }
+
+    @Override
+    public void bjbcmethod(LetterReport letterReport) {
+        letterReportMapper.bjbcmethod(letterReport);
+    }
 }

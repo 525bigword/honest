@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.*;
+import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.*;
+import com.xr.run.service.daily.LetterReportService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value="/th")
@@ -44,6 +47,8 @@ public class ThymeleafController {
     private RdEntityResponsibilityService rdEntityResponsibilityService;
     @Autowired
     private PostriskcombingService postriskcombingService;
+    @Autowired
+    private LetterReportService letterreportService;
     @RequestMapping("/produce")
     public void index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         Page page=new Page(1,10);
@@ -256,5 +261,22 @@ public class ThymeleafController {
         modelAndView.addObject("list",findspv.getRecords());
         modelAndView.setViewName("jdzr/index");
         return modelAndView;
+    }
+    /*信访举报 填写受理登记表*/
+    @RequestMapping("letterreporter")
+    public ModelAndView addLetter(){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("letterid", "XF"+UUID.randomUUID().toString());
+        modelAndView.setViewName("xfjb/letterRepoter");
+        return modelAndView;
+
+    }
+    @RequestMapping("addletter")
+    public ModelAndView addletter(LetterReport letterReport){
+        letterreportService.addletter(letterReport);
+        ModelAndView modelAndView=new ModelAndView();
+      //  modelAndView.addObject("message", "举报成功");
+        modelAndView.setViewName("xfjb/letterRepoter");
+      return modelAndView;
     }
 }

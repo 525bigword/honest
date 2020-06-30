@@ -266,6 +266,12 @@ export const asyncRouterMap = [
       component: _import('daily/reference'),
       meta: { title: '三重一大事项备案审批', icon: 'user' },
       menu: 'reference'
+    },{
+      path: 'userreport',
+      name: '用户举报',
+      component: _import('daily/userReport'),
+      meta: { title: '用户举报', icon: 'user' },
+      menu: 'userreport'
     }]
   },
     {
