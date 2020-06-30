@@ -9,7 +9,9 @@ export function add(data) {
             dFile: data.dFile,
             dFileName: data.dfileName,
             dCreateId: data.sysStaff.sid,
-            dStatus: data.dstatus
+            dStatus: data.dstatus,
+            dVideo: data.dvideo,
+            dVideoName:data.dvideoName
         }
     })
 }
@@ -29,6 +31,13 @@ export function imp(data) {
         data
     })
 }
+export function vimp(data) {
+    return request({
+        url: '/imp/vido',
+        method: 'post',
+        data
+    })
+}
 
 // 修改用户
 export function update(data) {
@@ -40,7 +49,9 @@ export function update(data) {
             dFile: data.dfile,
             dFileName: data.dfileName,
             did: data.did,
-            dStatus: data.dstatus
+            dStatus: data.dstatus,
+            dVideo: data.dvideo,
+            dVideoName:data.dvideoName
         }
     })
 }

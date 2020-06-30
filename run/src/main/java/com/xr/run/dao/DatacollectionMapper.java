@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DatacollectionMapper extends BaseMapper<Datacollection> {
-    @Select("SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf from datacollection where dTitle like CONCAT('%',#{dTitle},'%') order by did desc")
+    @Select("SELECT did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName from datacollection where dTitle like CONCAT('%',#{dTitle},'%') order by did desc")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
             one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
@@ -23,10 +23,16 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus},dPdf=#{dPdf} where did=#{did}")
     void updateDataConllectionByDid(Datacollection datacollection);
 
-    @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dStatus=#{dStatus} where did=#{did}")
+    @Update("update datacollection set dTitle=#{dTitle},dStatus=#{dStatus} where did=#{did}")
     void updateDataConllectionByFile(Datacollection datacollection);
 
-    @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus},#{dPdf})")
+    @Update("update datacollection set dTitle=#{dTitle},dVideo=#{dVideo},dVideoName=#{dVideoName},dStatus=#{dStatus} where did=#{did}")
+    void updateDataConllectionByVideo(Datacollection datacollection);
+
+    @Update("update datacollection set dTitle=#{dTitle},dVideo=#{dVideo},dVideoName=#{dVideoName},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus},dPdf=#{dPdf} where did=#{did}")
+    void updateDataConllectionByVideoAndFile(Datacollection datacollection);
+
+    @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus},#{dPdf},#{dVideo},#{dVideoName})")
     void insertDataConllection(Datacollection datacollection);
 
     @Delete("delete from  datacollection where did=#{did}")
@@ -34,6 +40,9 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
 
     @Select("select dFile from datacollection where did=#{did}")
     String findDatacollectionByFile(int did);
+
+    @Select("select dVideo from datacollection where did=#{did}")
+    String findDatacollectionBydVideo(int did);
     //按创建者查询状态为创建、待审
     @Select("select count(did) from datacollection where dCreateId=#{sid} and dStatus=1 or dStatus=2")
     Integer findDatacollectionByStatusAndSidToCount(@Param("sid")Integer sid);

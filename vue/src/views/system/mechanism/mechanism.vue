@@ -592,8 +592,7 @@ export default {
       //   });
     },
     handleDownload() {
-    window.location.href="http://localhost:8080/export/mechanism";
-
+      window.location.href="http://localhost:8080/export/mechanism";
     },
     formatJson(filterVal) {
       return this.list.map(v =>

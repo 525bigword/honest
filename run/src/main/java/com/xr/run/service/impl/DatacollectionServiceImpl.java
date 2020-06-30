@@ -42,4 +42,19 @@ public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper,
         baseMapper.updateDataConllectionByFile(datacollection);
     }
 
+    @Override
+    public void updateDataConllectionByVideo(Datacollection datacollection) {
+        baseMapper.updateDataConllectionByVideo(datacollection);
+    }
+
+    @Override
+    public void updateDataConllectionByVideoAndFile(Datacollection datacollection) {
+        baseMapper.updateDataConllectionByVideoAndFile(datacollection);
+    }
+
+    @Override
+    public String findDatacollectionBydVideo(int did) {
+        return baseMapper.findDatacollectionBydVideo(did);
+    }
+
 }

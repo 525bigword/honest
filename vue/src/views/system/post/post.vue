@@ -623,29 +623,7 @@ export default {
       //   });
     },
     handleDownload() {
-      // var a = document.createElement('a');
-      // a.download = file.name;
-      // a.href = file.url;
-      // a.dispatchEvent(event);
-      this.api({
-        url: "/ExcelDownload",
-        method: "post"
-      }).then(res => {
-        console.log(res);
-      });
-
-      //   this.downloadLoading = true
-      //   import('@/vendor/Export2Excel').then(excel => {
-      //     const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-      //     const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-      //     const data = this.formatJson(filterVal)
-      //     excel.export_json_to_excel({
-      //       header: tHeader,
-      //       data,
-      //       filename: 'table-list'
-      //     })
-      //     this.downloadLoading = false
-      //   })
+      window.location.href="http://localhost:8080/export/post";
     },
     formatJson(filterVal) {
       return this.list.map(v =>

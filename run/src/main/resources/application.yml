@@ -47,6 +47,8 @@ file:
   staticAccessPath: /uploadimg/**
   uploadFolder: C://File_rec/tmp/
   uploadDuty: C://File_rec/duty/
+  uploadVideo: D:/IDE/tomcat/apache-tomcat-9.0.36/webapps/hoonest/vido
+
 files:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**

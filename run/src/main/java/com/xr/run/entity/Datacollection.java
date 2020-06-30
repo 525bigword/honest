@@ -29,4 +29,6 @@ public class Datacollection {
 
   private int dStatus;
   private String dPdf;
+  private String dVideo;
+  private String dVideoName;
 }

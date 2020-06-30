@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.Creditrating;
 import com.xr.run.entity.Datacollection;
 import lombok.Data;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -50,4 +51,23 @@ public interface DatacollectionService extends IService<Datacollection> {
      * @param datacollection
      */
     void updateDataConllectionByFile(Datacollection datacollection);
+
+    /**
+     * 修改资料锦集的视频
+     * @param datacollection
+     */
+    void updateDataConllectionByVideo(Datacollection datacollection);
+
+    /**
+     * 修改锦集视频和文档
+     * @param datacollection
+     */
+    void updateDataConllectionByVideoAndFile(Datacollection datacollection);
+
+    /**
+     * 查询视频地址
+     * @param did
+     * @return
+     */
+    String findDatacollectionBydVideo(int did);
 }

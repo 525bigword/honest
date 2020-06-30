@@ -23,9 +23,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/datacollection")
 public class DatacollectionController {
-/*    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
     @Value("${file.uploadFolder}")
     private String realBasePath;
+    @Value("${file.uploadVideo}")
+    private String videoBasePath;
+
     @Autowired
     private DatacollectionService datacollectionService;
     @GetMapping("/get/{pageNum}/{pageRow}")
@@ -45,7 +47,7 @@ public class DatacollectionController {
         System.out.println(datacollection.getDFile());
         if(datacollection.getDFile().equals("1")){
             datacollectionService.updateDataConllectionByFile(datacollection);
-        }else {
+        }else if(datacollection.getDVideo().equals("1")){
             String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
             try {
                 File file = new File(realBasePath + filePath);
@@ -58,6 +60,39 @@ public class DatacollectionController {
             String pdf = getPdf(datacollection.getDFile());
             datacollection.setDPdf(pdf);
             datacollectionService.updateDataConllectionByDid(datacollection);
+        }else if(datacollection.getDFile().equals("2")){
+            String filePath = datacollectionService.findDatacollectionBydVideo(datacollection.getDid());
+            try {
+                File file = new File(videoBasePath + filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            datacollectionService.updateDataConllectionByVideo(datacollection);
+        }else{
+            String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
+            try {
+                File file = new File(realBasePath + filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String pdf = getPdf(datacollection.getDFile());
+            datacollection.setDPdf(pdf);
+            String videoPath = datacollectionService.findDatacollectionBydVideo(datacollection.getDid());
+            try {
+                File file = new File(videoBasePath + videoPath);
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            datacollectionService.updateDataConllectionByVideoAndFile(datacollection);
         }
         return CommonUtil.successJson("修改成功!");
     }
@@ -88,5 +123,5 @@ public class DatacollectionController {
             return url;
         }
         return null;
-    }*/
+    }
 }
