@@ -58,7 +58,7 @@
           label="发布时间">
         </el-table-column>
         <el-table-column
-          prop="status"
+          prop="staus"
           label="状态"  :formatter="cstatus">
         </el-table-column>
       </el-table>

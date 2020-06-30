@@ -41,4 +41,14 @@ public class SupervisionfilingServiceImpl implements SupervisionfilingService {
     public void updatesupervision(Supervisionfiling supervisionfiling) {
         supervisionfilingMapper.updatesupervision(supervisionfiling);
     }
+
+    @Override
+    public List<Supervisionfiling> findbysFilingId(String sFilingId) {
+        return supervisionfilingMapper.findbysFilingId(sFilingId);
+    }
+
+    @Override
+    public void tgsh(Supervisionfiling supervisionfiling) {
+        supervisionfilingMapper.tgsh(supervisionfiling);
+    }
 }

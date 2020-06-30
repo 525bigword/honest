@@ -19,4 +19,8 @@ public interface SupervisionfilingMapper {
     public void tjshme(Integer sid);
     /*更新*/
     public void updatesupervision(Supervisionfiling supervisionfiling);
+    /*根据编号查询*/
+    public List<Supervisionfiling> findbysFilingId(String sFilingId);
+    /*审核意见*/
+    public void tgsh(Supervisionfiling supervisionfiling);
 }

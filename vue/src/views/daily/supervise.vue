@@ -54,12 +54,13 @@
         </el-table-column>
         <el-table-column
           prop="screateTime"
-          label="发布时间">
+          label="发布时间"   >
         </el-table-column>
         <el-table-column
           prop="sstatus"
-          label="路径"
-          width="180"  v-if="false"></el-table-column>
+          label="状态"
+          width="180"   :formatter="cstatus"></el-table-column>
+
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -150,7 +151,17 @@
     created() {
       this.initList()
     },
-    methods:{
+    methods:{//判断状态给提示
+      cstatus: function (row, column, cellValue) {
+        if (cellValue == 0){
+          return '创建';
+        }else if (cellValue == 1){
+          return '待审';
+        }
+        else{
+          return '已审核'
+        }
+      },
       //文件预览
       handlePreview(file) {
         console.log('file'+JSON.stringify(file))
@@ -162,7 +173,7 @@
         }
       },
       handleChange(file, fileList) {
-        this.userInfo.sAccessory=file.name
+        this.userInfo.saccessory=file.name
         console.log('localFile'+JSON.stringify(file.name))
 
       },
@@ -211,8 +222,8 @@
 
       },//新增提交
       submitUser(){
-        let endtime = new Date(this.userInfo.sCreateTime).toJSON();
-        this.userInfo.sCreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        let endtime = new Date(this.userInfo.screateTime).toJSON();
+        this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -248,13 +259,13 @@
         this.ad=''//编辑/审核页面出来,
 
         this.userInfo=row
-        this.fileList=[{name:row.sAccessory,url:row.url}]
-        if(row.sStatus==0){
+        this.fileList=[{name:row.saccessory,url:row.url}]
+        if(row.sstatus==0){
           this.tj=''//提交审核按钮
             this.bc='none'//保存按钮隐藏
           this.gx=''//更新按钮显示
         }
-        else if(row.sStatus==1){
+        else if(row.sstatus==1){
           this.tj='none'//提交审核按钮
           this.bc='none'//保存按钮隐藏
           this.gx='none'//更新按钮显示
@@ -289,12 +300,12 @@
         let posdata=qs.stringify({
           url:this.userInfo.url,
           sid:this.userInfo.sid,
-          sPaperItems:this.userInfo.sPaperItems,
-          sEnforcementMode:this.userInfo.sEnforcementMode,//this.$refs.text.value,
-          sAccessory:this.userInfo.sAccessory,
-          sCost:this.userInfo.sCost,
-          sUndertaker:this.userInfo.sUndertaker,
-          sUndertakerDeptId:this.userInfo.sUndertakerDeptId,
+          sPaperItems:this.userInfo.spaperItems,
+          sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
+          sAccessory:this.userInfo.saccessory,
+          sCost:this.userInfo.scost,
+          sUndertaker:this.userInfo.sundertaker,
+          sUndertakerDeptId:this.userInfo.sundertakerDeptId,
         })
         gxme(posdata).then((response)=>{
           this.initList();
@@ -309,7 +320,7 @@
         })
       },
       back(){
-        console.log(this.userInfo.sEnforcementMode)
+        console.log(this.userInfo.senforcementMode)
         console.log(this.userInfo.cfil)
         this.tf=''//父页面隐藏
         this.ad='none'},//删除
@@ -349,12 +360,12 @@
         this.tj='none'
         this.gx='none'
         this.bc=''
-        this.userInfo.sEnforcementMode=''
-        this.userInfo.sFilingId='BA'+this.genID(10);
-        this.userInfo.sStatus='创建'
-        this.userInfo.sCreateName=this.name
+        this.userInfo.senforcementMode=''
+        this.userInfo.sfilingId='BA'+this.genID(10);
+        this.userInfo.sstatus='创建'
+        this.userInfo.screateName=this.name
         /* 动态赋值实时设置当前时间*/
-        this.$set(this.userInfo,'sCreateTime',new Date())
+        this.$set(this.userInfo,'screateTime',new Date())
       },
       handleSizeChange(size) {
         this.pageSize = size;

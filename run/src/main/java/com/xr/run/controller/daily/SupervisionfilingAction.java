@@ -30,6 +30,13 @@ public ResponseResult findbytitle(String sPaperItems){
     result.getInfo().put("list",list);
     return result;
 }
+    @RequestMapping("findbysFilingId")
+    public ResponseResult findbysFilingId(String sFilingId){
+        List<Supervisionfiling> list = supervisionfilingService.findbysFilingId(sFilingId);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("list",list);
+        return result;
+    }
 @RequestMapping("addsupervisionfiling")
     public ResponseResult addsupervisionfiling(Supervisionfiling supervisionfiling){
    supervisionfilingService.addsupervisionfiling(supervisionfiling);
@@ -65,6 +72,13 @@ public ResponseResult findbytitle(String sPaperItems){
         supervisionfilingService.updatesupervision(supervisionfiling);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","更新成功");
+        return result;
+    }
+    @RequestMapping("tgsh")
+    public ResponseResult tgsh(Supervisionfiling supervisionfiling){
+        supervisionfilingService.tgsh(supervisionfiling);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","审核完成");
         return result;
     }
 }

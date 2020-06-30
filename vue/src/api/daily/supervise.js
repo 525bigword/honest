@@ -32,6 +32,13 @@ export function findbytitle(data){
     data
   });
 }
+export function findbysFilingId(data){
+  return request({
+    method: 'post',
+    url: '/daily/supervisionfiling/findbysFilingId',
+    data
+  });
+}
 export function addsuper(data){
   return request({
     method: 'post',
@@ -57,7 +64,14 @@ export function tjshme(data){
 export function gxme(data){
   return request({
     method: 'post',
-    url: '/daily/supervisionfiling/updatesupervision',
+    url: '/daily/supervisionfiling/tgsh',
+    data
+  });
+}
+export function tgshme(data){
+  return request({
+    method: 'post',
+    url: '/daily/supervisionfiling/tgsh',
     data
   });
 }

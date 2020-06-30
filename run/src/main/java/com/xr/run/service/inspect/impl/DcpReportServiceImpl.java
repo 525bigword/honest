@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service(value = "DcpReportService")
 public class DcpReportServiceImpl implements DcpReportService  {
     @Autowired
     private DcpReportMapper dcpReportMapper;

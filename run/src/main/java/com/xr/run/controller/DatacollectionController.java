@@ -23,7 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/datacollection")
 public class DatacollectionController {
-    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
+/*    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
     @Value("${file.uploadFolder}")
     private String realBasePath;
     @Autowired
@@ -88,5 +88,5 @@ public class DatacollectionController {
             return url;
         }
         return null;
-    }
+    }*/
 }

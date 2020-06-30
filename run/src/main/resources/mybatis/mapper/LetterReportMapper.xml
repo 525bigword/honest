@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.LetterReportMapper">
     <select id="list" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus=#{lStatus}
+select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus!=0
     </select>
     <insert id="addletter">
         insert into daily_letterreport(letterid,ltime,lComplainantName,lDeptId,lPostId,lpersonbereported,lPbrDeptId,lPbrPostId,lcontent,lCreateTime,lCreateName,lCreateid,lStatus) values(#{letterId},#{lTime},#{lComplainantName},#{lDeptId},#{lPostId},#{lPersonBeReported},#{lPbrDeptId},#{lPbrPostId},#{lContent},#{lCreateTime},#{lCreateName},#{lCreateId},#{lStatus})
@@ -12,8 +12,8 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
         delete from daily_letterreport where lid=#{lid}
     </delete>
     <select id="findbyName" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus!=0
-        where 1=1   <if test="lComplainantName != null and !lComplainantName.equals('')">
+        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus from daily_letterreport lr where lr.lStatus!=0
+          <if test="lComplainantName != null and !lComplainantName.equals('')">
         AND lComplainantName like #{lComplainantName}</if>
         <if test="lPersonBeReported != null and !lPersonBeReported.equals('')">
             AND lpersonbereported like #{lPersonBeReported}
@@ -33,5 +33,13 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
     <!--转办部门-->
     <update id="turndept" parameterType="Integer">
         update daily_letterreport set lStatus=3 where lid=#{lid}
+    </update>
+    <!--监察科自办-->
+    <update id="kezhangbc" parameterType="com.xr.run.entity.daily.LetterReport">
+  update daily_letterreport set lStatus=4,lSupervisionResutl=#{lSupervisionResutl},lSupervisionResultTime=#{lSupervisionResultTime},lSupervisionComments=#{lSupervisionComments},lSupervisionCommentsTime=#{lSupervisionCommentsTime}  where lid=#{lid}
+       </update>
+    <!--转办部门处理结果-->
+    <update id="deptbc" parameterType="com.xr.run.entity.daily.LetterReport">
+         update daily_letterreport set lStatus=4,lresult=#{lResult},lResultTime=#{lResultTime} where lid=#{lid}
     </update>
 </mapper>

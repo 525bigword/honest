@@ -50,16 +50,16 @@
         <el-table-column
           prop="lcomplainantName"
           label="来访人姓名"
-          width="180">
+          width="70">
         </el-table-column>
         <el-table-column
           prop="ldeptId"
           label="来访人单位/部门"
-          width="180">
+          width="130">
         </el-table-column>
         <el-table-column
           prop="lpostId"
-          label="来访人岗位/职务">
+          label="来访人岗位/职务"  width="100">
         </el-table-column>
         <el-table-column
           prop="lpersonBeReported"
@@ -71,28 +71,41 @@
         </el-table-column>
         <el-table-column
           prop="lpbrPostId"
-          label="被反映人岗位/职务">
+          label="被反映人岗位/职务"  width="100">
         </el-table-column>
         <el-table-column
         prop="lcontent"
-        label="原始信访内容">
+        label="原始信访内容"  width="100">
       </el-table-column>
         <el-table-column
           prop="lsynopsis"
-          label="信访内容摘要">
+          label="信访内容摘要"  width="80">
         </el-table-column>
         <el-table-column prop="lcreateName" label="创建人姓名" v-if="false" >
-
         </el-table-column>
-
+        <el-table-column prop="lresult" label="转办处理结果" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lresultTime" label="转办处理时间" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lsupervisionComments" label="监察科部门意见" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lsupervisionCommentsTime" label="监察科部门意见处理时间" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lsupervisionResutl" label="监察科自办结果" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lsupervisionResultTime" label="监察科时间" v-if="false" >
+        </el-table-column>
         <el-table-column prop="lCreateTime" label="创建时间" v-if="false"></el-table-column>
-        <el-table-column prop="lstatus" label="状态" :formatter="cstatus">
+        <el-table-column prop="lstatus" label="状态" :formatter="cstatus" width="80">
 
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus" >
           <template slot-scope="scope">
             <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(role.includes('纪检监察员')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lStatus==2||scope.row.lStatus==3" v-bind:style="{display:(role.includes('纪检监察科科长')||role.includes('单位/部门负责人')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(role.includes('纪检监察科科长')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
+
           </template>
         </el-table-column>
       </el-table>
@@ -113,14 +126,18 @@
         <div style="background-color: white;width: 100%;height: 65px" >
 <br/>
         <div align="right" ><el-form-item >
-          <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser"  v-bind:style="{display:tj}">提交</el-button>
           <el-button type="primary" class="el-icon-edit" @click="turn" v-if="role.includes('纪检监察科科长')"  v-bind:style="{display:zb}">转办</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="shbc"  v-bind:style="{display:bc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="bjbcmethod"  v-bind:style="{display:bjbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="role.includes('纪检监察科科长')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="role.includes('单位/部门负责人')" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="role.includes('局领导')" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="role.includes('纪检组长')" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white">
         <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
+          <el-form-item label="状态"  v-if="false">
+            <el-input v-model="userInfo.lstatus" placeholder="状态" style="width: 300px" v-if="false"></el-input>
+          </el-form-item>
         <el-form-item label="信访编号">
 
           <el-input v-model="userInfo.letterId" placeholder="信访编号" style="width: 300px" disabled="disabled"></el-input>
@@ -135,69 +152,69 @@
         </el-form-item>
           <br />
         <el-form-item label="来访人姓名">
-          <el-input v-model="userInfo.lComplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
+          <el-input v-model="userInfo.lcomplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
         </el-form-item>
           <el-form-item label="被反映人姓名">
-            <el-input v-model="userInfo.lPersonBeReported" v-bind:disabled='bename' placeholder="被反映人姓名" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lpersonBeReported" v-bind:disabled='bename' placeholder="被反映人姓名" style="width: 300px" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="来访人部门/单位">
-            <el-input v-model="userInfo.lDeptId" placeholder="来访人部门/单位" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.ldeptId" placeholder="来访人部门/单位" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人部门/单位">
-            <el-input v-model="userInfo.lPbrDeptId"  v-bind:disabled='beunit'  placeholder="被反映人部门/单位" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lpbrDeptId"  v-bind:disabled='beunit'  placeholder="被反映人部门/单位" style="width: 300px" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="来访人岗位/职务">
-            <el-input v-model="userInfo.lPostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.lpostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人岗位/职务">
-            <el-input v-model="userInfo.lPbrPostId" v-bind:disabled='beduty' placeholder="被反映人岗位/职务" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lpbrPostId" v-bind:disabled='beduty' placeholder="被反映人岗位/职务" style="width: 300px" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="原始信访内容">
-            <el-input type="textarea" v-model="userInfo.lContent" placeholder="原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
+            <el-input type="textarea" v-model="userInfo.lcontent" placeholder="原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="信访内容摘要"  v-bind:style="{display:nrzy}" >
-            <el-input type="textarea" v-bind:disabled="sfjc" v-model="userInfo.lSynopsis" placeholder="信访内容摘要" style="width: 840px;"  ></el-input>
+            <el-input type="textarea" v-bind:disabled="sfjc" v-model="userInfo.lsynopsis" placeholder="信访内容摘要" style="width: 840px;"  ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="监察科部门意见" v-if="role.includes('纪检监察科科长')" >
-            <el-input v-model="userInfo.yj" placeholder="监察科部门意见" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lsupervisionComments" placeholder="监察科部门意见" style="width: 300px" ></el-input>
           </el-form-item>
-          <el-form-item label="意见签署时间" v-if="role.includes('纪检监察科科长')" >
-            <el-date-picker v-model="userInfo.lCreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          <el-form-item label="监察科部门意见签署时间" v-if="role.includes('纪检监察科科长')" >
+            <el-date-picker v-model="userInfo.lsupervisionCommentsTime" placeholder="监察科部门意见签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="纪检组长意见" v-if="role.includes('纪检组长')" >
             <el-input v-model="userInfo.yj" placeholder="纪检组长意见" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="纪检组长签署时间" v-if="role.includes('纪检组长')" >
-            <el-date-picker v-model="userInfo.lCreateTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.lcreateTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="局领导意见" v-if="role.includes('局领导')" >
             <el-input v-model="userInfo.yj" placeholder="局领导意见" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="局领导签署时间" v-if="role.includes('局领导')" >
-            <el-date-picker v-model="userInfo.lCreateTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.lcreateTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="转办部门处理结果" v-if="role.includes('单位/部门负责人')" >
-            <el-input v-model="userInfo.yj" placeholder="转办部门处理结果" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lresult" placeholder="转办部门处理结果" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="转办部门处理时间"  v-if="role.includes('单位/部门负责人')" >
-            <el-date-picker v-model="userInfo.lCreateTime" placeholder="转办部门处理时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.lresultTime" placeholder="转办部门处理时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
-          <el-form-item label="监察科自办结果"  v-if="role.includes('纪检监察员')" >
-            <el-input v-model="userInfo.yj" placeholder="监察科自办结果" style="width: 300px" ></el-input>
+          <el-form-item label="监察科自办结果"  v-if="role.includes('纪检监察科科长')" >
+            <el-input v-model="userInfo.lsupervisionResutl" placeholder="监察科自办结果" style="width: 300px" ></el-input>
           </el-form-item>
-          <el-form-item label="监察科自办时间"  v-if="role.includes('纪检监察员')" >
-            <el-date-picker v-model="userInfo.lCreateTime" placeholder="监察科自办时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          <el-form-item label="监察科自办时间"  v-if="role.includes('纪检监察科科长')" >
+            <el-date-picker v-model="userInfo.lsupervisionResultTime" placeholder="监察科自办时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="创建者"  v-if="false">
-            <el-input v-model="userInfo.lCreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
+            <el-input v-model="userInfo.lcreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="创建时间"  v-if="false">
-            <el-date-picker v-model="userInfo.lCreateTime" v-if="false" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.lcreateTime" v-if="false" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item>
           <br/>
         </div>
@@ -209,7 +226,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import qs from 'qs'
-  import {xfbh,list,add,del,findbyName,shbc,turndept} from '@/api/daily/letter'
+  import {xfbh,list,add,del,findbyName,shbc,turndept,kezhangbc,deptbc} from '@/api/daily/letter'
   import {getFileGroup} from '@/api/duty/talk'
   export default {  computed: {
       ...mapGetters([
@@ -220,19 +237,98 @@
     created() {
         this.initList();
     },
-    methods:{//判断状态给提示
+    methods:{
+    //监察科自办
+      kezhangbc(){
+        let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
+        this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
+        let stime = new Date(this.userInfo.lsupervisionResultTime).toJSON();
+        this.userInfo.lsupervisionResultTime = new Date(+new Date(stime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
+
+        let posdata=qs.stringify({
+  lid:this.userInfo.lid,
+  lSupervisionComments:this.userInfo.lsupervisionComments,//监察科部门意见
+  lSupervisionCommentsTime:this.userInfo.lsupervisionCommentsTime,//监察科部门意见签署时间
+           lSupervisionResutl:this.userInfo.lsupervisionResutl,//监察科自办结果
+  lSupervisionResultTime:this.userInfo.lsupervisionResultTime//监察科自办时间
+})
+        kezhangbc(posdata).then((response)=>{
+          this.tf='';
+        this.ad='none'
+        this.initList();
+        this.$notify({
+          title: '温馨提示',
+          message: '监察科自办处理完成',
+          type: 'success',
+          duration: 2000
+        })
+        })
+      },
+      //转办部门处理
+      deptbc(){
+        let endtime = new Date(this.userInfo.lresultTime).toJSON();
+        this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
+
+        let posdata=qs.stringify({
+          lid:this.userInfo.lid,
+          lResult:this.userInfo.lresult,
+          lResultTime:this.userInfo.lresultTime
+        })
+        deptbc(posdata).then((response)=>{
+          this.tf='';
+        this.ad='none'
+        this.initList();
+          this.$notify({
+          title: '温馨提示',
+          message: '本部门处理完成',
+          type: 'success',
+          duration: 2000
+        })
+        })
+      },//局领导签署意见
+      leaderbc(){
+
+      },//纪检组长签署意见
+      zzbc(){
+
+      },
+    //判断状态给提示
     cstatus: function (row, column, cellValue) {
       if (cellValue == 0){
         return '创建';
       }else if (cellValue == 1){
         return '待审';
       }
-      else{
+      else if(cellValue==2){
+        return '审核中'
+      }
+      else if(cellValue==3){
+        return '转办'
+      }
+      else {
         return '已审核'
       }
     },
     //转办部门
       turn(){
+if(this.userInfo.lstatus==3){
+  this.$notify({
+    title: '温馨提示',
+    message: '已转办部门',
+    type: 'warning',
+    duration: 2000
+  })
+}
+else {
   let posdata=qs.stringify({
     lid:this.userInfo.lid
   })
@@ -246,7 +342,7 @@
             type: 'success',
             duration: 2000
           })
-        })
+        })}
       },
       bjbcmethod(){},//重置
      onrest(){
@@ -275,67 +371,7 @@
           this.tableData = response.list
           this.total = response.list.length
         })
-      },//新增
-       add(){
-        this.userInfo={};
-         xfbh().then((response)=>{
-           this.userInfo.letterId='XF'+response.xfbh
-           console.log('XF'+response.xfbh)
-           this.userInfo.lCreateName =this.nickname
-
-          // console.debug('id='+this.id)
-           /* 动态赋值实时设置当前时间*/
-           this.$set(this.userInfo,'lCreateTime',new Date())
-           this.tf='none';
-           this.ad=''
-           this.zhuanban='none'
-           this.zhuanbanjy='disabled'
-          this.tj='',//提交按钮
-             this.zb='none'//转办按钮默认隐藏
-             this.bc='none'//保存按钮默认隐藏
-           this.bjbc='none'//编辑保存按钮隐藏
-           this.ysnr=false//原始信访内容
-           this.beunit=false//被反映人单位
-             this.beduty=false//被反映人职务
-             this.bename=false//被反映人姓名
-         })
-
-      },//新增提交
-      submitUser(){
-        let endtime = new Date(this.userInfo.lCreateTime).toJSON();
-        this.userInfo.lCreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-        let posdata=qs.stringify({
-          letterId:this.userInfo.letterId,
-          userName:this.userInfo.userName,
-          lComplainantName:this.userInfo.lComplainantName,
-          lPersonBeReported:this.userInfo.lPersonBeReported,
-          lDeptId:this.userInfo.lDeptId,
-          lPostId:this.userInfo.lPostId,
-          lPbrDeptId:this.userInfo.lPbrDeptId,
-          lPbrPostId:this.userInfo.lPbrPostId,
-          lContent:this.userInfo.lContent,
-          lCreateName:this.nickname,
-          lTime: this.userInfo.lCreateTime,
-          lCreateTime:this.userInfo.lCreateTime,
-          lCreateId:this.userId,
-          lStatus:0
-        })
-        add(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-        })
-      },
-      //审核
+      },//审核
       handleEdit(index, row) {
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
@@ -355,9 +391,20 @@
 
         console.debug('测试状态'+row.lStatus)
        // console.debug('id='+this.id)
+      },//详情
+      details(index, row) {
+        this.tf='none';
+        this.ad=''//编辑/审核页面出来,
+        this.nrzy=''//内容摘要显示
+        this.tj='none',//提交按钮
+          this.zb='none',//转办按钮默认隐藏
+          this.bc='none'//保存按钮默认隐藏
+        this.xqbc='none'//点击详情时保存都隐藏
+        this.userInfo=row
       },
       //编辑
       bj(index, row) {
+
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
         this.nrzy=''
@@ -373,6 +420,9 @@
           this.bename='disabled'//被反映人姓名
         this.sfjc='disabled'
         this.userInfo=row
+        this.$set(this.userInfo,'lresultTime',new Date())
+        this.$set(this.userInfo,'lsupervisionCommentsTime',new Date())
+        this.$set(this.userInfo,'lsupervisionResultTime',new Date())
        // this.userInfo.lCreateName=this.nickname
       },//纪检监察员审核提交保存
       shbc(){
@@ -437,6 +487,7 @@
       },
       //返回
       back(){this.ad='none',this.tf='' ,this.nrzy='none'//内容摘要文本框
+         this.xqbc=''//点击返回是保存都隐藏
          },
       handleSizeChange(size) {
         this.pageSize = size;
@@ -449,6 +500,7 @@
     },
     data() {
       return {
+        xqbc:'',//点击详情时保存隐藏
         defaUnit:'请选择转办部门',
         options_cascader:[],//级联选择器的options属性
         options:[],
@@ -471,7 +523,7 @@
                 for(let item of response.list){
                   nodes.push({
                     value:item.mid,
-                    label: item.mechanismname
+                    label: item.mechanismName
                   });
                 }
               }

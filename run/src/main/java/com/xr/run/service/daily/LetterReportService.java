@@ -22,4 +22,8 @@ public interface LetterReportService {
     public void tjshme(Integer lid);
     /*转办部门*/
     public void turndept(Integer lid);
+    /*监察科自办结果*/
+    public void kezhangbc(LetterReport letterReport);
+    /*转办部门处理结果*/
+    public void deptbc(LetterReport letterReport);
 }

@@ -19,6 +19,7 @@ public class Supervisionfiling {
     private Integer sCreateId;
     private String sCreateName;
     private Integer sStatus;
+    private String auditorrole;
     //功能需求
     private String url;
 }

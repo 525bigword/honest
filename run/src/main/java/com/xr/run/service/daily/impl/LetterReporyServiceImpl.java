@@ -57,4 +57,14 @@ public class LetterReporyServiceImpl implements LetterReportService {
     public void turndept(Integer lid) {
         letterReportMapper.turndept(lid);
     }
+
+    @Override
+    public void kezhangbc(LetterReport letterReport) {
+        letterReportMapper.kezhangbc(letterReport);
+    }
+
+    @Override
+    public void deptbc(LetterReport letterReport) {
+letterReportMapper.deptbc(letterReport);
+    }
 }

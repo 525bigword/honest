@@ -47,3 +47,8 @@ file:
   staticAccessPath: /uploadimg/**
   uploadFolder: C://File_rec/tmp/
   uploadDuty: C://File_rec/duty/
+files:
+  accessPath: /uploadimg/
+  staticAccessPath: /uploadimg/**
+  uploadFolder: D://IDE/
+  uploadDuty: D://IDE

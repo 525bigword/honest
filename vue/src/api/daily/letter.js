@@ -48,3 +48,19 @@ export function turndept(data){
     data
   })
 }
+/*监察科自办结果*/
+export function kezhangbc(data){
+  return request({
+    url: '/daily/letter/kezhangbc',
+    method: 'post',
+    data
+  })
+}
+/*转办部门处理结果*/
+export function deptbc(data){
+  return request({
+    url: '/daily/letter/deptbc',
+    method: 'post',
+    data
+  })
+}

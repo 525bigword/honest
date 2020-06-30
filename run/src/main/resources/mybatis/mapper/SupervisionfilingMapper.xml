@@ -3,11 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.SupervisionfilingMapper">
     <select id="list" resultType="com.xr.run.entity.daily.Supervisionfiling">
-select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url from daily_supervisionFiling
+select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole from daily_supervisionFiling
     </select>
     <select id="findbytitle" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-    select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url from daily_supervisionFiling
+    select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole from daily_supervisionFiling
    where  sPaperItems like CONCAT('%',#{sPaperItems},'%')
+    </select>
+    <select id="findbysFilingId" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
+     select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole from daily_supervisionFiling
+   where  sFilingId like CONCAT('%',#{sFilingId},'%')
     </select>
     <insert id="addsupervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
         insert into daily_supervisionFiling(sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sCreateTime,sCreateName,sCreateId,sStatus,url)
@@ -22,5 +26,9 @@ select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,s
     <!--更新-->
     <update id="updatesupervision" parameterType="com.xr.run.entity.daily.Supervisionfiling">
         update daily_supervisionFiling set sPaperItems=#{sPaperItems},sAccessory=#{sAccessory},sEnforcementMode=#{sEnforcementMode},sCost=#{sCost},sUndertaker=#{sUndertaker},sUndertakerDeptId=#{sUndertakerDeptId},url=#{url} where sid=#{sid}
+    </update>
+    <!--审核意见-->
+    <update id="tgsh" parameterType="com.xr.run.entity.daily.Supervisionfiling">
+        update daily_supervisionFiling set sStatus=2 ,sauditOpinion=#{sAuditOpinion},auditorrole=#{auditorrole} where sid=#{sid}
     </update>
 </mapper>

@@ -79,11 +79,27 @@ letterReportService.shbc(letterReport);
         result.getInfo().put("message","提交审核成功");
         return result;
     }
-    @RequestMapping("turndept")
+   @RequestMapping("turndept")
     public ResponseResult turndept(Integer lid){
         letterReportService.turndept(lid);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","转办部门成功");
+        return result;
+    }
+    /*监察科自办结果*/
+    @RequestMapping("kezhangbc")
+    public ResponseResult kezhangbc(LetterReport letterReport){
+        letterReportService.kezhangbc(letterReport);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","自办处理完成");
+        return result;
+    }
+    /*转办部门处理结果*/
+    @RequestMapping("deptbc")
+    public ResponseResult deptbc(LetterReport letterReport){
+     letterReportService.deptbc(letterReport);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","已处理完成");
         return result;
     }
 }
