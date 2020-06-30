@@ -10,8 +10,9 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 public interface ProcessrickService extends IService<Processrick> {
-    IPage<Processrick> findProcessrickIndex(Page page, String proName);
+    List<Processrick> findProcessrickIndex(Page page, String proName);
 }

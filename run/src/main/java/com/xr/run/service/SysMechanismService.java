@@ -22,4 +22,5 @@ public interface SysMechanismService extends IService<SysMechanism> {
     Integer delSysMechanism(Integer mid);
     void unDelSysMechanism(Integer mid);
     void upSysmechanism(SysMechanism sysMechanism);
+    List<SysMechanism> findAllSysMechanism();
 }

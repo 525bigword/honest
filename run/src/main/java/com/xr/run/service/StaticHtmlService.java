@@ -6,6 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface StaticHtmlService {
-    void genHtmlPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response);
+    void genHtmlPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response,String filename);
     void deleteHtmlPage(String fileName);
 }

@@ -3,53 +3,217 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}">${title}</title>
+    <title>廉政文化</title>
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
     <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
     <style type="text/css">
-        .ms-menue-content-model >div:last-child >div:first-child{
-            text-align: center;
-        }
-        .ms-menue-content-model >div:last-child >div:first-child > div:first-child{
-            padding-top: 30px;
-            padding-bottom: 19px;
-            height: 17px;
-            line-height: 15px;
-        }
-        .ms-menue-content-model >div:last-child >div:first-child > div:last-child{
-            padding-bottom: 15px;
-        }
-        .ms-menue-content-model >div:last-child >div:nth-child(2){
-            border-bottom: 1px solid rgba(238,238,238,1);
-        }
-        /*文章标题样式*/
-        .ms-menue-content-model >div:last-child >div:first-child > div:first-child > label{
-            font-size:18px;
-            font-weight:bold;
-            color:rgba(51,51,51,1);
-        }
-        /*文章简要信息样式*/
-        .ms-menue-content-model >div:last-child >div:first-child > div:last-child {
-            font-weight:400;
+        .ms-menue-content-model p{
+            font-weight:500;
             color:rgba(153,153,153,1);
+            padding-bottom: 13px;
+        }
+        .ms-menue-content-model  p >label >a{
+            color:rgba(153,153,153,1);
+            line-height: 12px;
+            display: inline;
+        }
+
+        .content-list{
+            border:1px solid rgba(238,238,238,1);
+        }
+        .content-list>div:first-child>span {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: rgba(51, 51, 51, 1);
+            padding: 19px 0 16px;
+            border-bottom: 1px solid rgba(238, 238, 238, 1);
+        }
+        .content-list>div:first-child {
+            padding-left: 56px;
+        }
+
+        .content-list>div:first-child>ul {
+            padding: 0 0 28px 21px;
+        }
+
+        .content-list>div:first-child>ul>li {
             height: 13px;
             line-height: 13px;
+            padding: 15px 0;
+            border-bottom: 1px rgb(173, 173, 173) dashed;
+            color: #3D7D53;
         }
-        .ms-menue-content-model >.content-list>div:nth-child(2){
-            margin:25px 32px 0;
-            padding-bottom: 25px;
+
+        .content-list>div:first-child>ul>li:last-child {
+            margin: 0;
         }
-        .ms-menue-content-model >.content-list>div:nth-child(2)> p{
-            width: 100%;
-            word-break: break-all;
+
+        .content-list>div:first-child>ul>li>label {
+            line-height: 30px;
+            font-weight: 500;
+            font-weight: bold;
         }
-        .ms-menue-content-model >.content-list>div:last-child{
-            padding: 23px 41px 25px;
+
+        .content-list>div:first-child>ul>li>select,
+        .content-list>div:first-child>ul>li>input {
+            border-radius: 4px;
+            width: 116px;
+            height: 30px;
+            border: 1px solid lightgray;
+        }
+
+        .content-list>div:first-child>ul>li>input {
+            padding: 0;
+            width: 114px;
+        }
+
+        .content-list>div:first-child>ul>li>button {
+            padding: 6px 20px;
+            font-weight: 600;
+            border: 1px solid lightgray;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 4px;
+        }
+        /*表格样式*/
+
+        .content-list>div:last-child {
+            width: 841px;
+            min-height: 300px;
+            padding: 19px 16px 42px 16px;
+        }
+
+        .content-list>div:last-child>table {
+            border-collapse: collapse;
+            border: none;
+        }
+
+        table>tbody>tr {
+            margin: 10px 0;
+        }
+
+        table>tbody>tr>th:first-child,
+        table>tbody>tr>td:first-child {
+            width: 50px;
+            height: 36px;
+        }
+
+        .cut-page {
+            padding: 23px 0 38px 0;
+            margin-left: 510px;
+            margin-bottom: 40px;
+        }
+
+        .cut-page>li {
+            float: left;
+            padding: 3px 10px;
+            border: 1px solid rgba(238, 238, 238, 1);
+            margin-left: 6px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            font-size: 13px;
+            margin-top: -5px;
+        }
+
+        .gs_lieb {
+            width: 657px;
+            margin-left: 36px;
+            overflow: hidden;
+            padding-left: 5px;
+            margin-bottom: 20px;
+        }
+
+        .gs_lieb span {
+            width: auto;
+        }
+
+        .gs_lieb a {
+            width: 425px;
+        }
+
+        .gs_lieb>li {
+            width: 657px;
+            height: 25px;
+            padding-top: 15px;
+            border-bottom: 1px #dbdbdb dashed;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .gs_lieb>li:first-child {
+            font-weight: bold;
+        }
+
+        .gs_lieb>li>.time {
+            color: #0a3b76;
+            margin-right: 30px;
+        }
+
+        .left {
+            float: left;
+        }
+        #box{
+            width: 380px;
+            float: right;
+            font-family: 'Microsoft YaHei';
+            font-size: 14px;
+        }
+        #box input{
+            width: 260px;
+            border: 1px solid #e2e2e2;
+            height: 30px;
+            float: left;
+            background-image: url(http://localhost:4031/ms-mcms/templets/1/yancao/images/search.png);
+            background-repeat: no-repeat;
+            background-size: 25px;
+            background-position:5px center;
+            padding:0 0 0 40px;
+        }
+        #search{
+            width: 78px;
+            height: 32px;
+            float: right;
+            background: #3d7d53;
+            color: white;
+            text-align: center;
+            line-height: 32px;
+            cursor: pointer;
+        }
+        #search:hover{
+            background: #285e3a;
         }
     </style>
 </head>
+<script type="text/javascript">
+    var that = this;
+    var departments = []; //部门
+    var jobs = []; //岗位
+    var names = []; //姓名
+    function resquestMethod(type, url, data, getData) {
+        $.ajax({
+            async: true,
+            url: url,
+            type: type,
+            data: data,
+            success: function(data) {
+                getData = data.rows;
+                console.log(getData);
+            },
+            error: function(data) {
+                console.log("失败了");
+            }
+        })
+    }
+    function submit() {
+        var title = $("input[name='basic_title']").val();
+        if(title){
+            document.getElementById("searchDataForm").submit();
+        }
+    }
+</script>
 
 <body>
 <style type="text/css">
@@ -107,13 +271,12 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/1/index.html','_self')"><a>首页</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//189/index.html','_blank')"><a>纪检报表</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//195/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//207/index.html','_blank')"><a>监督责任</a></li>
+        <li class="active-li" onclick="window.open('http://localhost:8080/th/datacollection','_self')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/rdworkplan','_self')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/dcpreport','_self')"><a>纪检报表</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/postriskcombing','_self')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/spvduty','_self')"><a>监督责任</a></li>
+        <li class="" onclick=""><a>信访举报</a></li>
     </ul>
 </div>
 <script type="text/javascript">
@@ -121,7 +284,8 @@
     if(url == 'http://localhost:4031/ms-mcms/html/1/index.html'){
         $("#home").attr("class","active-li");
     }
-</script>		<div class="margin-center ms-menue-content-model">
+</script>
+<div class="margin-center ms-menue-content-model">
     <div class="menue-list">
         <ul class="list-style-none">
             <li class="ms-relative">
@@ -129,45 +293,39 @@
                 <div class="shape-circular ms-absolute">
                     <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
                 </div>
-                <span><label>廉政教育</label></span>
+                <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class=""><label><a href="http://localhost:4031/ms-mcms/html/1//181/191/index.html" >廉政要闻</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:8080/th/datacollection','_self')"><label><a>资料集锦</a></label></span>
                     </li>
                     <li>
-                        <span class="active-span-title"><label><a href="http://localhost:4031/ms-mcms/html/1//181/192/index.html" >文件制度</a></label></span>
+                        <span class="" onclick="window.open('http://localhost:8080/th/wind','_self')"><label><a>清风文苑</a></label></span>
                     </li>
-                    <li>
-                        <span class=""><label><a href="http://localhost:4031/ms-mcms/html/1//181/193/index.html" >领导讲话</a></label></span>
-                    </li>
-                    <li>
-                        <span class=""><label><a href="http://localhost:4031/ms-mcms/html/1//181/194/index.html" >警钟长鸣</a></label></span>
-                    </li>
+
                 </ul>
             </li>
         </ul>
     </div>
-    <div></div>
+    <div class="search" style="width: 888px;">
+
+
+    </div>
+
     <div class="content-list">
-
         <div>
-            <div>
-                <label th:text="${subject}">${subject}</label>
-            </div>
-            <div>
-                <span>上传者：<label >烟草</label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label >2019-05-28</label></span>&nbsp;&nbsp;&nbsp;
-            </div>
-        </div>
-        <div>
-					<span th:text="${context}" style="color: #000000">${context}</span>
-
-        </div>
-        <div>
-            <label class="ms-relative" style="top:-3px;">|</label>
-            <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/1/index.html">返回首页</a></span>
+            <ul>
+                <li th:each="list,iterStat : ${list}">
+                    <a th:href="'http://localhost:4031/hoonest/'+${list.dTitle}+'.html'" th:text="${list.dTitle}"></a>
+                </li>
+            </ul>
         </div>
     </div>
+
 </div>
-</body>
+<!--底部内容-->
+<div class="footer max-width margin-center">
+    主 管：xxxxxxxxxxxxxxxxxxx 主 办：xxxxxxxxxxxx<br/>
+    版权所有：xxxxxxxxxx专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
+    备案序号：湘ICP备xxxxxxxx号<br/>
+</div>	</body>
 </html>
