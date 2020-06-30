@@ -18,7 +18,7 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
 
     @Select("select mid,mechanism_name,sid,parent,branch,create_time,create_id,staus from sys_mechanism where EXISTS " +
             "(SELECT sid FROM sys_staff WHERE `NAME` LIKE CONCAT('%',#{principal},'%') AND sys_mechanism.sid = sys_staff.sid AND staus = '1')" +
-            " and mechanism_name like CONCAT('%',#{mechanism},'%') and staus=#{staus} limit #{index},#{pagenum}")
+            " and mechanism_name like CONCAT('%',#{mechanism},'%') and staus=#{staus} order by mid desc limit #{index},#{pagenum} ")
     @Results({
             @Result(property = "sname",column = "sid",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
             @Result(property = "parentName",column = "parent",one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName")),

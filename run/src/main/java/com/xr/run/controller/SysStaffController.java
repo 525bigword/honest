@@ -73,7 +73,6 @@ public class SysStaffController {
         CommonUtil.hasAllRequired(requestJson, "username,password");
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
 
-        Object principal = SecurityUtils.getSubject().getPrincipal();
 
         return jsonObject;
     }

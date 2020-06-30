@@ -25,7 +25,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
      */
     @Select("select pid,pname,mid,message,create_time,create_id,staus from sys_post where EXISTS " +
             "(select mid from sys_mechanism where sys_post.mid=sys_mechanism.mid ${str} AND staus = '正常') and " +
-            "pname like CONCAT('%',#{pame},'%') and staus='1' and message like CONCAT('%',#{message},'%') limit #{pageNum},#{pageRow}")
+            "pname like CONCAT('%',#{pame},'%') and staus='1' and message like CONCAT('%',#{message},'%') order by pid desc limit #{pageNum},#{pageRow} ")
     @Results({
             @Result(column = "create_id",property = "createname",one=@One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
             @Result(column = "mid",property = "mname",one=@One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName")),
