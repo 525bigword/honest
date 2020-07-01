@@ -67,10 +67,10 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
             System.out.println(token.getUsername());
             System.out.println(token.getPassword());
             System.out.println(token.isRememberMe());
-            JSONObject userPermission = sysPermissionService.getUserPermission(token.getUsername());
-            SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_PERMISSION, userPermission);
+//            JSONObject userPermission = sysPermissionService.getUserPermission(token.getUsername());
+//            SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_PERMISSION, userPermission);
             info.put("result", "success");
-            info.put("data", userPermission);
+//            info.put("data", userPermission);
         } catch (AuthenticationException e) {
             e.printStackTrace();
             info.put("result", "fail");
