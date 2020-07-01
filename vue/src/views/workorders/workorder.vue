@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
+    <div :style="{'display':dis}" style="width:100%">
       <el-table
         :key="tableKey"
         v-loading="listLoading"
@@ -29,7 +29,7 @@
             <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===5?'已通报':'已结束')))}}</span>
           </template>
         </el-table-column>
-        <el-table-column  align="center" width="220px">
+        <el-table-column  align="center" >
           <template slot-scope="scope">
             <a
               style="color:#1890ff"

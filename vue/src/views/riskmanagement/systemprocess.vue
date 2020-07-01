@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
+    <div :style="{'display':dis}" style="width:100%">
     <div class="filter-container"  style="margin-top: 20px;margin-left:60px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
@@ -58,7 +58,7 @@
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="sysCreateTime" width="270px"  align="center">
+      <el-table-column label="创建时间" sortable prop="sysCreateTime"   align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.wcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>
