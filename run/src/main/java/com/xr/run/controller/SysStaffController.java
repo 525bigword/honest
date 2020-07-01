@@ -26,6 +26,8 @@ public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
 
+
+
     @GetMapping("get/{sid}")
     @RequiresPermissions("staff:delete")
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){

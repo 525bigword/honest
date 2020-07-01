@@ -75,7 +75,7 @@
           </el-col>
           <el-col class="right" :span="2">年龄</el-col>
           <el-col :span="8">
-            <el-input placeholder="年龄" v-model="form.age"></el-input>
+            <el-input  onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="年龄" v-model="form.age"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="学历" :line="true">
@@ -216,7 +216,7 @@ export default {
   created() {
     this.getList();
     this.getSysmechanismAll();
-    this.getPost();
+    // this.getPost();
   },
   computed: {
     staus(val) {
@@ -250,6 +250,16 @@ export default {
     Change(val) {
       console.log(this.form.mid);
       console.log(val);
+      this.api({
+        url:'syspost/get/'+val,
+        method:'get'
+      }).then(res=>{
+        console.log(res)
+        this.postList=[];
+        res.filter(item=>{
+          this.postList.push(item)
+        })
+      })
       // this.temp.defaultvalue = val;
     },
     toggleRowExpansion(val){
@@ -426,10 +436,21 @@ export default {
     },
     Close(){
       this.form={}
+      this.postList=[]
     },
     showUpdate(scope,$index) {
       console.log(scope)
       console.log($index)
+      this.api({
+        url:'syspost/get/'+scope.row.mid,
+        method:'get'
+      }).then(res=>{
+        console.log(res)
+        this.postList=[];
+        res.filter(item=>{
+          this.postList.push(item)
+        })
+      })
       // //显示修改对话框
       this.form=scope.row
       this.form.pid=scope.row.postname

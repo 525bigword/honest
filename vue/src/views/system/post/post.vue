@@ -609,7 +609,9 @@ export default {
                   type:'error',
                   message:'请保证该岗位没有员工'
                 })
+                return
               }
+              this.getList()
               // this.getList();
             });
           }

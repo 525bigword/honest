@@ -99,4 +99,9 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper,SysPost> imple
     public List<SysPost> getAllSysPost() {
         return baseMapper.getSysPostAll();
     }
+
+    @Override
+    public List<SysPost> getPostByMid(Integer mid) {
+        return baseMapper.getSysPostByMid(mid);
+    }
 }
