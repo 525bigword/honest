@@ -26,4 +26,6 @@ public interface SysPostService extends IService<SysPost> {
     List<SysPost> getSysPost();
     //获取全部岗位信息
     List<SysPost> getAllSysPost();
+    //根据部门获取岗位
+    List<SysPost> getPostByMid(Integer mid);
 }

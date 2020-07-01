@@ -24,6 +24,16 @@ public class SysPostController {
     private SysPostService sysPostService;
     @Autowired
     private SysStaffService sysStaffService;
+
+    //根据部门查询岗位
+    @GetMapping("get/{mid}")
+    public JSONObject getPost(@PathVariable Integer mid){
+        if(mid==null){
+            return CommonUtil.successJson();
+        }
+        return CommonUtil.successJson(sysPostService.getPostByMid(mid));
+    }
+
     @PostMapping("get/{pageNum}/{pageRow}")
     @RequiresPermissions("post:list")
     public JSONObject getPage(@PathVariable Integer pageNum, @PathVariable Integer pageRow,  @RequestBody JSONObject jsonObject){
