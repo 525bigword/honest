@@ -44,7 +44,7 @@ public class Upload {
     }
 
     @RequestMapping("/vido")
-    public Object uploadfile(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject uploadfile(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, vidoPath);
         return CommonUtil.successJson(filePath);
     }

@@ -11,7 +11,7 @@ export function add(data) {
             dCreateId: data.sysStaff.sid,
             dStatus: data.dstatus,
             dVideo: data.dvideo,
-            dVideoName:data.dvideoName
+            dVideoName: data.dvideoName
         }
     })
 }
@@ -46,12 +46,12 @@ export function update(data) {
         method: 'post',
         params: {
             dTitle: data.dtitle,
-            dFile: data.dfile,
+            dFile: data.dFile,
             dFileName: data.dfileName,
             did: data.did,
             dStatus: data.dstatus,
             dVideo: data.dvideo,
-            dVideoName:data.dvideoName
+            dVideoName: data.dvideoName
         }
     })
 }

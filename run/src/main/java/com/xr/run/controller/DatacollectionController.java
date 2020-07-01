@@ -35,7 +35,7 @@ public class DatacollectionController {
         if(dTitle==null){
             dTitle="";
         }
-        System.out.println("进来了");
+        System.out.println("哪个");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<Datacollection> page=new Page(pageNum,pageRow);
@@ -81,6 +81,7 @@ public class DatacollectionController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("删除文件后");
             String pdf = getPdf(datacollection.getDFile());
             datacollection.setDPdf(pdf);
             String videoPath = datacollectionService.findDatacollectionBydVideo(datacollection.getDid());

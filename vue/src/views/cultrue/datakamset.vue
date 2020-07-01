@@ -109,12 +109,13 @@
         <el-form-item label="标题" prop="dtitle"  >
           <el-input placeholder="请输入资料锦集标题" v-model="temp.dtitle" style="width:80%" />
         </el-form-item>
-        <el-form-item label="文件名" prop="dfileName" ref="fileName" >
+        <el-form-item label="文件名" prop="dfileName"  >
           <el-upload  style="width:80%"
   class="upload-demo"
   v-model="temp.dfileName"
   ref="upload"
   action="https://localhost:8080/imp/import"
+  :on-remove="fileRemove"
   :on-change="handleImgChange1"
   accept=".doc,.docx,.pdf"
   :file-list="fileList"
@@ -124,7 +125,7 @@
   <div slot="tip"  class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
   </el-upload>
         </el-form-item>
-        <el-form-item label="视频文件" prop="dvideoName" ref="videoName" >
+        <el-form-item label="视频文件" prop="dvideoName">
           <el-upload  style="width:80%"
   class="upload-demo"
   v-model="temp.dvideoName"
@@ -213,8 +214,8 @@ import { mapGetters } from 'vuex'
           dCreateTime:new Date(),
           status: '',
           dstatus:1,
-          fileList: [],
-          viList:[],
+          fileList: null,
+          viList:null,
           dpdf:'',
           dvideoName:'',
           dvideo:''
@@ -223,8 +224,8 @@ import { mapGetters } from 'vuex'
         isShow:false,
         btnShowTs:false,
         btnShowTj:false,
-        fileList: [],
-        viList:[],
+        fileList: null,
+        viList:null,
         file:{},
         vfile:{},
         title: '添加', // 对话框显示的提示 根据dialogStatus create
@@ -298,10 +299,11 @@ import { mapGetters } from 'vuex'
           status: '',
           dstatus:1,
           dvideo:'',
-          dvide:''
+          dvide:'',
+          dvideoName:''
         }
-        this.fileList=[]
-        this.viList=[]
+        this.fileList=null
+        this.viList=null
         this.file={}
         this.vfile={}
         this.i=0
@@ -325,6 +327,7 @@ import { mapGetters } from 'vuex'
         }
         this.temp.sysStaff.name=this.nickname
         this.temp.sysStaff.sid=this.userId
+        console.debug(this.temp)
         // 点击确定时，是执行添加操作
         this.dialogStatus = 'create'
         this.title="添加用户"
@@ -391,10 +394,10 @@ import { mapGetters } from 'vuex'
         }else{
           this.temp.status='已审核'
         }
-        if(row.dfileName!==null){
+        if(row.dfileName!==null&&row.dfileName!==''){
           this.fileList=[{name:row.dfileName,url:row.dfile}];
         }
-        if(row.dvideoName!==null){
+        if(row.dvideoName!==null&&row.dvideoName!==''){
           this.viList=[{name:row.dvideoName,url:row.dvideo}];
         }
         
@@ -416,26 +419,28 @@ import { mapGetters } from 'vuex'
         if (!this.hasPerm('datacollection:update')) {
           return
         }
-        if(this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
+        console.debug(this.fileList)
+        console.debug(this.viList)
+          if(this.fileList!==null&&this.viList!==null&&this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
           this.i=6
-        }else if( this.fileAgin!==this.fileList[0].name){//换文件
+        }else if( this.fileList!==null&&this.fileAgin!==this.fileList[0].name){//换文件
           this.i=1;
-        }else if(this.vfileAgin!==this.viList[0].name){//换视频
+        }else if(this.viList!==null&&this.vfileAgin!==this.viList[0].name){//换视频
           this.i=2
         }
-
+        console.debug(this.temp)
+        console.debug(this.i)
       if(val!==0){//判断状态
             this.temp.dstatus=val;
             }
       console.debug(this.i)
         if(this.i===1){
           this.temp.dvideo='1'
-            imp(this.formData).then((response)=>{
-          this.temp.dfile=response.dFile
-        this.$refs['dataForm'].validate((valid) => {
+          this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
-            
+            imp(this.formData).then((response)=>{
+          this.temp.dFile=response.dFile
             this.isShow=true
             // 进行ajax提交
             update(this.temp).then((response) => {
@@ -453,8 +458,9 @@ import { mapGetters } from 'vuex'
               this.isShow=false
               this.yincang()
             })
-          }
+          
         })
+        }
         })
         }else if(this.i===6){
           this.$refs['dataForm'].validate((valid) => {
@@ -487,13 +493,12 @@ import { mapGetters } from 'vuex'
           
         })
         }else if(this.i===2){
-           this.temp.dfile='2'
-          vimp(this.formData).then((response)=>{
-           this.temp.dvideo=resp.dFile
-        this.$refs['dataForm'].validate((valid) => {
+           this.temp.dFile='2'
+           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
-            
+          vimp(this.vformData).then((resp)=>{
+           this.temp.dvideo=resp.dFile
             this.isShow=true
             // 进行ajax提交
             update(this.temp).then((response) => {
@@ -511,11 +516,12 @@ import { mapGetters } from 'vuex'
               this.isShow=false
               this.yincang()
             })
-          }
+         
         })
+         }
           })
         }else if(this.i===0){
-          this.temp.dfile='1'
+          this.temp.dFile='1'
           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
@@ -538,6 +544,7 @@ import { mapGetters } from 'vuex'
             })
           }
           this.temp.dfile=''
+          this.temp.dFile=''
         })
         }
         this.i=0;
@@ -679,6 +686,7 @@ import { mapGetters } from 'vuex'
         this.vformData.append("file", this.vfile);
         this.temp.dvideoName=this.vfile.name
         this.$refs['dataForm'].validate((valid) => {})
+        
     },
     xianshi(){
       if(this.temp.dstatus===1){
@@ -712,11 +720,13 @@ import { mapGetters } from 'vuex'
     },
     fileRemove(file, fileList){
       this.file={}
-      this.fileList={}
+      this.temp.dfileName=''
+      this.fileList=null
     },
-    fileRemove(file, fileList){
+    fileRemove1(file, fileList){
       this.vfile={}
-      this.fileList={}
+      this.temp.dvideoName=''
+      this.viList=null
     },
     indexMethod(val){
       return ++val
