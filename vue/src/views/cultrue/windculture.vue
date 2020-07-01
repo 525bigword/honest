@@ -1,12 +1,10 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
-    <div class="filter-container"  align="center" style="margin-top: 20px">
+    <div :style="{'display':dis}" class="filter-container" >
+    <div  align="center" style="margin-top: 20px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
       <el-input v-model="wtitle" placeholder="请输入清风文苑标题" style="width: 200px;" class="filter-item"/>
-     <!--  <el-form-item> -->
-
        &nbsp;&nbsp;
           <el-button
             type="primary"
@@ -18,7 +16,6 @@
             class="el-icon-refresh" 
             @click="resetSou">重置
           </el-button>
-       <!--  </el-form-item> -->
     </div>
     <div style="margin-top:15px">
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
@@ -31,11 +28,11 @@
       :default-sort = "{prop: 'dcreateTime', order: 'descending'}"
       :data="list"
       border
-      fit
       highlight-current-row
       style="width: 100%;margin-top: 20px"
       ref="multipleTable"
     >
+    
     <el-table-column type="selection" width="60px" align="center"></el-table-column>
       <el-table-column label="序号" prop="index"  align="center" width="90px" type="index" :index="indexMethod">
         <!-- <template slot-scope="scope">
@@ -45,7 +42,6 @@
       
         <el-table-column label="标题" prop="wtitle"  align="center" width="390px">
         <template slot-scope="scope">
-
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
         </el-table-column>
@@ -59,7 +55,7 @@
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="wcreateTime" width="250px"  align="center">
+      <el-table-column label="创建时间" sortable prop="wcreateTime" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.wcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>
