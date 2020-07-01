@@ -208,7 +208,7 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -363,7 +363,7 @@
                 disabled="disabled"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -862,7 +862,7 @@ export default {
       }
     },
     handleImgChange1(file, fileList, name) {
-      const isLt2M = file.size / 1024 < 500;
+      const isLt2M = file.size / 1024/1024  < 10;
       if (!isLt2M) {
         console.debug(this.dutyAccessoryName);
         this.$message({

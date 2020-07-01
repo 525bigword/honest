@@ -113,7 +113,7 @@
             v-html="temp.gettop">
         </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
+        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
           <quill-editor
             class="editor"
             style="height:400px;width:85%;"
@@ -161,7 +161,7 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -444,7 +444,7 @@ export default {
       this.yincang();
     },
     handleImgChange1(file, fileList, name) {
-      const isLt2M = file.size / 1024 < 500;
+      const isLt2M = file.size / 1024/1024  < 10;
       if (!isLt2M) {
         this.$message({
           showClose: true,
@@ -585,7 +585,7 @@ export default {
   filters:{
     getContent(val){
       /* val.replace(/<\/?[^>]*>/g, ""); */
-      return val.replace(/<\/?[^>]*>/g, "").slice(0,100) +'......'
+      return val.replace(/<\/?[^>]*>/g, "").slice(0,88) +'......'
     }
   }
 };
