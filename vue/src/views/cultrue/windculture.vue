@@ -107,11 +107,19 @@
           <el-input placeholder="请输入清风文苑标题" style="width:30%" />
         </el-form-item> -->
         <el-form-item style="font-weight: bold;" label="投稿人" prop="sid" >
-          <el-select v-model="temp.sid" placeholder="请选择" style="width:30%">
+          <el-select v-model="temp.wnew.mid" placeholder="请选择部门" style="width:23%" v-cloak  @change="bmChange">
               <el-option
-             v-for="item in wew"
+             v-for="item in melist"
+            :key="item.mid"
+            :label="item.mechanismName"
+           :value="item.mid">
+            </el-option>
+           </el-select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <el-select v-model="temp.sid" :style="{'display':dis3}" placeholder="请选择投稿人" v-cloak style="width:23%">
+              <el-option
+             v-for="item in stafflist"
             :key="item.sid"
-            :label="'用户编号：'+item.sid+'     姓名：'+item.name"
+            :label="item.name"
            :value="item.sid">
             </el-option>
            </el-select>
@@ -145,7 +153,7 @@
 </template>
 
 <script>
-import { add, update, list, deleteWind } from '@/api/culture/windculture'
+import { add, update, list, deleteWind,melist,stafflist } from '@/api/culture/windculture'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
   export default {
@@ -167,6 +175,7 @@ import { mapGetters } from 'vuex'
       return {
         dis:'inline-block',
         dis2:'none',
+        dis3:'none',
         tableKey: 0,
         list: [], // 后台返回，给数据表格展示的数据
         total: 0, // 总记录数
@@ -181,7 +190,8 @@ import { mapGetters } from 'vuex'
           wcontent: '',
           wnew: {
             name: '',
-            sid: null
+            sid: null,
+            mid:null
           },
           sysStaff: {
             name: '',
@@ -208,12 +218,15 @@ import { mapGetters } from 'vuex'
         btnShowTj:false,
           wew:{},
         multipleSelection:[],
-        deleteid:[]
+        deleteid:[],
+        melist:[],
+        stafflist:[]
       }
     },
     // 创建实例时的钩子函数
     created() {
       this.getList()
+      
       // 在创建时初始化获得部门信息
       //this.getGroupDept()
     },
@@ -241,12 +254,32 @@ import { mapGetters } from 'vuex'
           this.wew=response.sys
           console.debug(this.list)
           // 转圈圈结束
+           this.listLoading = false
+        })
+       
+      },
+      getMeList(){
+         this.listLoading = true
+          melist().then(response => {
+          this.melist=response;
+          console.debug(this.melist)
+          // 转圈圈结束
+          this.listLoading = false
+        })
+      },
+      getStaffList(){
+         this.listLoading = true
+        stafflist(this.temp.wnew.mid).then(response=>{
+          this.stafflist=response;
+          console.debug(this.stafflist)
+          // 转圈圈结束
           this.listLoading = false
         })
       },
       resetSou(){
         this.wtitle=''
       },
+      
       // 重置表单数据
       resetTemp() {
         this.temp = {
@@ -273,6 +306,7 @@ import { mapGetters } from 'vuex'
         // 重置表单数据
         this.resetTemp()
         this.xianshi()
+        this.getMeList()
         if(this.temp.wstatus===1){
           this.temp.status='创建'
         }else if(this.temp.wstatus===2){
@@ -330,6 +364,8 @@ import { mapGetters } from 'vuex'
       handleUpdate(row) {
         this.temp = row;
         this.xianshi()
+        this.getMeList()
+      this.getStaffList()
         if(this.temp.wstatus===1){
           this.temp.status='创建'
         }else if(this.temp.wstatus===2){
@@ -340,6 +376,7 @@ import { mapGetters } from 'vuex'
         this.temp.wCreateTime=row.wcreateTime
         this.temp.sid=row.wnew.sid
         console.debug(this.temp)
+        this.dis3='inline-block'
         // 将row里面与temp里属性相同的值，进行copy
         this.temp = Object.assign({}, row) // copy obj
         // 将对话框里的确定点击时，改为执行修改操作
@@ -466,8 +503,24 @@ import { mapGetters } from 'vuex'
         this.btnShowTs=false;
         this.temp.wstatus=1;
         this.sid=null
+        this.dis3='none'
+        this.melist=[],
+        this.stafflist=[]
     },
+    bmChange(){
+      this.getStaffList()
+      this.dis3='inline-block'
+      this.temp.sid=null
+    },
+    yanchi(){
+      this.dis3='inline-block'
+    }
     
     }
   }
 </script>
+<style scoped>
+  [v-cloak]{
+      display: none;
+    }
+</style>

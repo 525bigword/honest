@@ -37,6 +37,23 @@ export function update(data) {
         }
     })
 }
+export function melist(data) {
+    return request({
+        url: '/sysmechanism/findSysMechanisms/',
+        method: 'post',
+        data
+    })
+}
+
+export function stafflist(mid) {
+    return request({
+        url: '/SysStaff/findSysStaffByMid/',
+        method: 'post',
+        params: {
+            mid: mid
+        }
+    })
+}
 
 // 根据用户对象进行查询用户
 export function list(pageNum, pageRow, wTitle) {

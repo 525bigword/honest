@@ -85,8 +85,11 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
      * @param sid
      * @return
      */
-    @Select("select sid,`name` from sys_staff where sid=#{sid}")
+    @Select("select sid,`name`,mid from sys_staff where sid=#{sid}")
     SysStaff findSysStaffById(int sid);
+
+    @Select("select sid,`name`,mid from sys_staff where mid=#{mid}")
+    List<SysStaff> findSysStaffByMid(int mid);
     /**
      * 查询全部
      * @return

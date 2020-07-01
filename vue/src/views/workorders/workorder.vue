@@ -1,22 +1,6 @@
 <template>
   <div class="app-container">
     <div :style="{'display':dis}">
-      <!-- <div class="filter-container" align="center" style="margin-top: 20px;">
-        <label>责任反馈类型</label>&nbsp;&nbsp;
-        <el-input
-          v-model="backType"
-          placeholder="请输入责任反馈类型"
-          style="width: 200px;"
-          class="filter-item"
-        />&nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button
-          style="margin-left:60px"
-          type="primary"
-          @click="getList"
-          class="el-icon-search"
-        >查询</el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button type="primary" class="el-icon-refresh" @click="resetSou">重置</el-button>
-      </div> -->
       <el-table
         :key="tableKey"
         v-loading="listLoading"
@@ -40,21 +24,6 @@
             <span>{{ scope.row.gettop | getContent }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="责任监督类型" prop="backType" align="center" width="200px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.backType }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="部门" prop="sysMechanism" align="center" width="200px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.sysMechanism.mechanismName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建人" prop="sysStaff" align="center" width="200px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.sysStaff.name }}</span>
-          </template>
-        </el-table-column> -->
         <el-table-column  prop="status" align="center" width="90px">
           <template slot-scope="scope">
             <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===5?'已通报':'已结束')))}}</span>
@@ -138,12 +107,11 @@
           </el-col>
         </el-row>
          <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
-          <quill-editor disabled="disabled"
-            class="editor"
-            style="height:300px;width:85%;"
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="temp.gettop"
-          ></quill-editor>
+            v-html="temp.gettop">
+        </el-card>
         </el-form-item>
         <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
           <quill-editor
@@ -224,12 +192,11 @@
         <!--  </el-form-item> -->
       </div>
       <el-form-item style="font-weight: bold;" label="通报内容" prop="tongzhi">
-          <quill-editor disabled="disabled"
-            class="editor"
-            style="height:340px;width:90%;margin-top:20px"
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="temp.tongzhi"
-          ></quill-editor>
+            v-html="temp.tongzhi">
+        </el-card>
         </el-form-item>
       </el-form>
     </div>

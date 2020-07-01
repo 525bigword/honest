@@ -24,7 +24,7 @@
        <!--  </el-form-item> -->
     </div>
     <div style="margin-top:15px">
-      <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
+      <el-button type="primary" class="el-icon-plus" @click="handleCreate">增加监控</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
     </div>
     <el-table

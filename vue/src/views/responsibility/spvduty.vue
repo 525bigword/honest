@@ -369,22 +369,18 @@
           </el-col>
         </el-row>
         <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
-          <quill-editor
-            disabled="disabled"
-            class="editor"
-            style="height:300px;width:85%;"
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="back.gettop"
-          ></quill-editor>
+            v-html="back.gettop">
+        </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
-          <quill-editor
-            disabled="disabled"
-            class="editor"
-            style="height:400px;width:85%;"
+        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="back.backContent"
-          ></quill-editor>
+            v-html="back.backContent">
+        </el-card>
         </el-form-item>
         
       </el-form>
