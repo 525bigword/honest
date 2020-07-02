@@ -12,7 +12,7 @@
           <el-date-picker
             v-model="formInline.enddate"
             type="daterange"
-            format="yyyy-MM-dd HH:mm:ss"
+            format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"
@@ -47,7 +47,7 @@
         v-if="hasPerm('log:list')"
         label="操作"
         align="center"
-        width="230"
+        
         class-name="small-padding fixed-width"
       >
         <template slot-scope="{row,$index}">

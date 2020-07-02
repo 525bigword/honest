@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
+    <div :style="{'display':dis}" style="width:100%">
     <div class="filter-container"  style="margin-top: 20px;margin-left:60px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
@@ -24,7 +24,7 @@
        <!--  </el-form-item> -->
     </div>
     <div style="margin-top:15px">
-      <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
+      <el-button type="primary" class="el-icon-plus" @click="handleCreate">增加监控</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
     </div>
     <el-table
@@ -63,7 +63,7 @@
           <span>{{ scope.row.sysStaff.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" sortable prop="wcreateTime" width="210px"  align="center">
+      <el-table-column label="创建时间" sortable prop="wcreateTime"   align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.wcreateTime | comverTime('YYYY-MM-DD') }}</span>
         </template>

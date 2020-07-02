@@ -39,6 +39,7 @@ public class SpvBack {
   private String tongzhi;
   private int did;
   private int status;
+  private String bPdf;
 
 
 }

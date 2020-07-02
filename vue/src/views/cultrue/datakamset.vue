@@ -285,7 +285,6 @@ import { mapGetters } from 'vuex'
       },
       // 重置表单数据
       resetTemp() {
-        
         this.temp = {
           uid: undefined,
           dtitle: '',
@@ -316,6 +315,8 @@ import { mapGetters } from 'vuex'
       handleCreate () {
         // 重置表单数据
         this.resetTemp()
+        this.fileList=[]
+        this.viList=[]
         this.i=3
         this.xianshi()
         if(this.temp.dstatus===1){
@@ -416,9 +417,9 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
-        if (!this.hasPerm('datacollection:update')) {
+        /* if (!this.hasPerm('datacollection:update')) {
           return
-        }
+        } */
         console.debug(this.fileList)
         console.debug(this.viList)
           if(this.fileList!==null&&this.viList!==null&&this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
@@ -692,7 +693,7 @@ import { mapGetters } from 'vuex'
       if(this.temp.dstatus===1){
         this.btnShowTj=true;
       }
-      if(this.temp.dstatus===2){
+      if(this.temp.dstatus===2&&this.hasPerm('datacollection:update')){
         this.btnShowTs=true;
       }
     },

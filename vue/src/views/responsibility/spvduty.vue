@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
+    <div :style="{'display':dis}" style="width:100%">
       <div class="filter-container" align="center" style="margin-top: 20px;">
         <!-- v-waves -->
         <label>责任监督标题</label>&nbsp;&nbsp;
@@ -68,7 +68,7 @@
             <span>{{ scope.row.status===0?'结束':(scope.row.status===1?'通知':(scope.row.status===2?'自查':(scope.row.status===3?'再检查':(scope.row.status===4?'整改通知':(scope.row.status===5?'提整改报告':'通报')))))}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="225px">
+        <el-table-column label="操作" align="center" >
           <template slot-scope="scope">
             <a
               style="color:#1890ff"
@@ -208,7 +208,7 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -225,7 +225,7 @@
         </el-row>
       </el-form>
     </div>
-    <div :style="{'display':dis3}">
+    <div :style="{'display':dis3}" style="width:100%">
       <div class="filter-container" align="right" style="margin-top: 20px;">
         <el-button type="primary" :style="{'display':checkShow}" @click="agincheck(3,4)">再检查</el-button>
         <el-button type="primary" @click="agincheck(4,0)">结束任务</el-button>
@@ -281,7 +281,7 @@
             <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===4?'结束':'已通报')))}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="225px">
+        <el-table-column label="操作" align="center" >
           <template slot-scope="scope">
             <a
               style="color:#1890ff"
@@ -305,7 +305,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div :style="{'display':dis4}">
+    <div :style="{'display':dis4}" style="width:100%">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -348,43 +348,23 @@
           </el-col>
           <el-col style="width:44%">
             <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
-              <el-upload
-                style="width:100%"
-                class="upload-demo"
-                v-model="back.backAccessoryName"
-                ref="upload"
-                action="https://localhost:8080/imp/importDuty"
-                :on-remove="fileRemove"
-                :on-change="handleImgChange1"
-                accept=".doc, .docx, .pdf, .txt, .xlsx"
-                :file-list="fileList"
-                :limit="2"
-                :auto-upload="false"
-                disabled="disabled"
-              >
-                <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
-              </el-upload>
+              <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
-          <quill-editor
-            disabled="disabled"
-            class="editor"
-            style="height:300px;width:85%;"
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="back.gettop"
-          ></quill-editor>
+            v-html="back.gettop">
+        </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
-          <quill-editor
-            disabled="disabled"
-            class="editor"
-            style="height:400px;width:85%;"
+        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="back.backContent"
-          ></quill-editor>
+            v-html="back.backContent">
+        </el-card>
         </el-form-item>
         
       </el-form>
@@ -506,7 +486,8 @@ export default {
         dstatus: "",
         dutyContent:'',
         gettop:'',
-        cid:0
+        cid:0,
+        bpdf:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -713,7 +694,7 @@ export default {
         big.push(sz)
       });
       this.value=big;
-      this.fileList = [{ name: row.dutyAccessoryName, url: row.dutyAccessory }];
+      
       this.temp = row;
       this.xianshi();
       if(this.temp.status===1){
@@ -731,8 +712,8 @@ export default {
       }else{
           this.temp.dstatus='结束'
       }
-      if(row.dutyAccessory===''){
-        this.fileList=[];
+      if(row.dutyAccessory!==''&&row.dutyAccessory!==null){
+        this.fileList = [{ name: row.dutyAccessoryName, url: row.dutyAccessory }];
       }
       // 将对话框里的确定点击时，改为执行修改操作
       this.dialogStatus = "update";
@@ -866,7 +847,7 @@ export default {
       }
     },
     handleImgChange1(file, fileList, name) {
-      const isLt2M = file.size / 1024 < 500;
+      const isLt2M = file.size / 1024/1024  < 10;
       if (!isLt2M) {
         console.debug(this.dutyAccessoryName);
         this.$message({
@@ -976,6 +957,7 @@ export default {
       }
       this.temp=row
       this.getbList(row.did)
+
     },
     getbList(did){
       this.listLoading = true;
@@ -986,7 +968,7 @@ export default {
       blist(this.bpageNum, this.bpageRow,did).then(response => {
         this.blist = response.records;
         this.btotal = response.total;
-        console.debug(this.list);
+        console.debug(this.blist);
         // 转圈圈结束
         this.listLoading = false;
       });
@@ -1072,6 +1054,12 @@ export default {
           }) 
         })
         }
+        },
+        handleImgChan(){
+          var path=this.virtualIp+this.back.bpdf
+          if(this.back.backAccessoryName!==null&&this.back.backAccessoryName!==''){
+            window.open(path)
+          }
         },
         fabutongbao(){
           this.dis='none'

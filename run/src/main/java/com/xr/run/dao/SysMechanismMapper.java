@@ -91,4 +91,12 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
             @Result(property = "createName",column = "create_id",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
     })
     List<SysMechanism> findSysMechanism();
+
+
+    @Select("select mid,mechanism_name from sys_mechanism")
+    @Results({
+            @Result(id = true,column = "mid",property ="mid" ),
+            @Result(column = "mechanism_name",property = "mechanismName")
+    })
+    public List<SysMechanism> findSysMechanisms();
 }

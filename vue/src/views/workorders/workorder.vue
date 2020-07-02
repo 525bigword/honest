@@ -1,22 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
-      <!-- <div class="filter-container" align="center" style="margin-top: 20px;">
-        <label>责任反馈类型</label>&nbsp;&nbsp;
-        <el-input
-          v-model="backType"
-          placeholder="请输入责任反馈类型"
-          style="width: 200px;"
-          class="filter-item"
-        />&nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button
-          style="margin-left:60px"
-          type="primary"
-          @click="getList"
-          class="el-icon-search"
-        >查询</el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button type="primary" class="el-icon-refresh" @click="resetSou">重置</el-button>
-      </div> -->
+    <div :style="{'display':dis}" style="width:100%">
       <el-table
         :key="tableKey"
         v-loading="listLoading"
@@ -40,27 +24,12 @@
             <span>{{ scope.row.gettop | getContent }}</span>
           </template>
         </el-table-column>
-        <!-- <el-table-column label="责任监督类型" prop="backType" align="center" width="200px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.backType }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="部门" prop="sysMechanism" align="center" width="200px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.sysMechanism.mechanismName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="创建人" prop="sysStaff" align="center" width="200px">
-          <template slot-scope="scope">
-            <span>{{ scope.row.sysStaff.name }}</span>
-          </template>
-        </el-table-column> -->
         <el-table-column  prop="status" align="center" width="90px">
           <template slot-scope="scope">
             <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===5?'已通报':'已结束')))}}</span>
           </template>
         </el-table-column>
-        <el-table-column  align="center" width="220px">
+        <el-table-column  align="center" >
           <template slot-scope="scope">
             <a
               style="color:#1890ff"
@@ -99,7 +68,7 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
     @change="onEditorChange($event)"-->
-    <div :style="{'display':dis2}">
+    <div :style="{'display':dis2}" style="width:100%">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -138,14 +107,13 @@
           </el-col>
         </el-row>
          <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
-          <quill-editor disabled="disabled"
-            class="editor"
-            style="height:300px;width:85%;"
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="temp.gettop"
-          ></quill-editor>
+            v-html="temp.gettop">
+        </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:125px" label="责任监督内容" prop="backContent">
+        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
           <quill-editor
             class="editor"
             style="height:400px;width:85%;"
@@ -193,7 +161,7 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个txt/word/pdf文件，且不超过500k</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -210,7 +178,7 @@
         </el-row>
       </el-form>
     </div>
-    <div :style="{'display':dis5}">
+    <div :style="{'display':dis5}" style="width:100%">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -224,12 +192,11 @@
         <!--  </el-form-item> -->
       </div>
       <el-form-item style="font-weight: bold;" label="通报内容" prop="tongzhi">
-          <quill-editor disabled="disabled"
-            class="editor"
-            style="height:340px;width:90%;margin-top:20px"
+          <el-card class="box-card"
+          style="width:85%;"
             ref="myQuillEditor"
-            v-model="temp.tongzhi"
-          ></quill-editor>
+            v-html="temp.tongzhi">
+        </el-card>
         </el-form-item>
       </el-form>
     </div>
@@ -393,9 +360,9 @@ export default {
       }else{
         this.temp.dstatus='已结束'
       }
+        
+        if(row.backAccessory!==''&&row.backAccessory!==null){
         this.fileList = [{ name: row.backAccessoryName, url: row.backAccessory }];
-        if(row.backAccessory===''||row.backAccessory===null){
-        this.fileList=[]
       }
       // 将对话框里的确定点击时，改为执行修改操作
       this.dialogStatus = "update";
@@ -477,7 +444,7 @@ export default {
       this.yincang();
     },
     handleImgChange1(file, fileList, name) {
-      const isLt2M = file.size / 1024 < 500;
+      const isLt2M = file.size / 1024/1024  < 10;
       if (!isLt2M) {
         this.$message({
           showClose: true,
@@ -618,7 +585,7 @@ export default {
   filters:{
     getContent(val){
       /* val.replace(/<\/?[^>]*>/g, ""); */
-      return val.replace(/<\/?[^>]*>/g, "").slice(0,100) +'......'
+      return val.replace(/<\/?[^>]*>/g, "").slice(0,88) +'......'
     }
   }
 };

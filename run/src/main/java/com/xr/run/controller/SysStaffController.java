@@ -26,6 +26,8 @@ public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
 
+
+
     @GetMapping("get/{sid}")
     @RequiresPermissions("staff:delete")
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
@@ -96,6 +98,18 @@ public class SysStaffController {
         System.out.println(sysStaff);
         sysStaffService.upSysStaff(sysStaff);
         return CommonUtil.successJson(1);
+    }
+
+    /**
+     * 根据部门查用户集合
+     * Author mpy
+     * @param mid
+     * @return
+     */
+    @RequestMapping("findSysStaffByMid")
+    public JSONObject findSysStaffByMid(int mid){
+        List<SysStaff> sysStaffByMid = sysStaffService.findSysStaffByMid(mid);
+        return  CommonUtil.successJson(sysStaffByMid);
     }
 
 }

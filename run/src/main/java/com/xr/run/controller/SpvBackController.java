@@ -7,6 +7,7 @@ import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SpvDuty;
 import com.xr.run.service.SpvBackService;
 import com.xr.run.service.SpvDutyService;
+import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,8 @@ public class SpvBackController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            String pdf = getPdf(spvBack.getBackAccessory());
+            spvBack.setBPdf(pdf);
             spvBackService.updateSpvBackFileBySid(spvBack);
         }
         return CommonUtil.successJson("修改成功!");
@@ -96,4 +99,16 @@ public class SpvBackController {
         spvBackService.deleteSpvBackBySid(sid);
         return CommonUtil.successJson("删除成功!");
     }
+
+    public String getPdf(String path){
+        if(path.contains(".doc")||path.contains(".docx")){
+            String path1 = path.substring(0, path.lastIndexOf("."));
+            String url=path1+".pdf";
+            System.out.println(url);
+            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+            return url;
+        }
+        return null;
+    }
+
 }

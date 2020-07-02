@@ -88,6 +88,11 @@ public class SysMechanismServiceImpl extends ServiceImpl<SysMechanismMapper,SysM
         return baseMapper.findSysMechanism();
     }
 
+    @Override
+    public List<SysMechanism> findSysMechanisms() {
+        return baseMapper.findSysMechanisms();
+    }
+
 
     private List<SysMechanism> findSysMechanismAllchrlen(List<SysMechanism> sysMechanismList){
         List<SysMechanism> sysMechanisms=new ArrayList<>();

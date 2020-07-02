@@ -50,4 +50,11 @@ public interface SysStaffService extends IService<SysStaff> {
     Integer delSysStaff(String arr);
     //根据ID查询所有该用户的信息
     SysStaff findSysStaffBySid(Integer sid);
+
+    /**
+     * 根据部门查用户
+     * @param mid
+     * @return
+     */
+    List<SysStaff> findSysStaffByMid(int mid);
 }

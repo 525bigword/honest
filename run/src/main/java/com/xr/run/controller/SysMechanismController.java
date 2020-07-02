@@ -37,6 +37,11 @@ public class SysMechanismController {
         return CommonUtil.successJson(sysMechanismAll);
     }
 
+    @RequestMapping("/findSysMechanisms")
+    public JSONObject findSysMechanisms(){
+        List<SysMechanism> sysMechanisms = sysMechanismService.findSysMechanisms();
+        return CommonUtil.successJson(sysMechanisms);
+    }
     @PostMapping("add")
     public JSONObject addSysmechanism(SysMechanism sysMechanism){
         sysMechanismService.addSysMechanism(sysMechanism);
