@@ -36,7 +36,7 @@ public class SysLogController {
         pageNum=pageNum<1?1:pageNum;
         pageRow=pageRow<5?5:pageRow;
         Page page=new Page(pageNum,pageRow);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//注意月份是MM
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
         IPage<SysLog> sysLog=null;
         try {
             if(begin!=null&&end!=null){
