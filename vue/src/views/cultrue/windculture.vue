@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}" class="filter-container" >
-    <div  align="center" style="margin-top: 20px">
+    <div :style="{'display':dis}" style="width:100%">
+    <div class="filter-container" align="center" style="margin-top: 20px;">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
       <el-input v-model="wtitle" placeholder="请输入清风文苑标题" style="width: 200px;" class="filter-item"/>

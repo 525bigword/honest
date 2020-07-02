@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}">
+    <div :style="{'display':dis}" style="width:100%">
       <div class="filter-container" align="center" style="margin-top: 20px;">
         <!-- v-waves -->
         <label>责任监督标题</label>&nbsp;&nbsp;
@@ -68,7 +68,7 @@
             <span>{{ scope.row.status===0?'结束':(scope.row.status===1?'通知':(scope.row.status===2?'自查':(scope.row.status===3?'再检查':(scope.row.status===4?'整改通知':(scope.row.status===5?'提整改报告':'通报')))))}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="225px">
+        <el-table-column label="操作" align="center" >
           <template slot-scope="scope">
             <a
               style="color:#1890ff"
@@ -225,7 +225,7 @@
         </el-row>
       </el-form>
     </div>
-    <div :style="{'display':dis3}">
+    <div :style="{'display':dis3}" style="width:100%">
       <div class="filter-container" align="right" style="margin-top: 20px;">
         <el-button type="primary" :style="{'display':checkShow}" @click="agincheck(3,4)">再检查</el-button>
         <el-button type="primary" @click="agincheck(4,0)">结束任务</el-button>
@@ -281,7 +281,7 @@
             <span>{{ scope.row.status===1?'待提交':(scope.row.status===2?'已提交':(scope.row.status===3?'待检查':(scope.row.status===4?'结束':'已通报')))}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" width="225px">
+        <el-table-column label="操作" align="center" >
           <template slot-scope="scope">
             <a
               style="color:#1890ff"
