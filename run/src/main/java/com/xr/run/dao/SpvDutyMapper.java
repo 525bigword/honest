@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
-    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status` from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') order by did desc")
+    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status` from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
@@ -31,7 +31,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Insert("insert into spv_duty(did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`) VALUES(null,#{dnumId},#{dutyType},#{dutyTitle},#{dutyContent},#{bid},#{dutyAccessory},#{dutyAccessoryName},NOW(),#{dCreateId},#{status})")
     void insertSpvDuty(SpvDuty spvDuty);
 
-    @Delete("delete from  spv_duty where did=#{did}")
+    @Update("update spv_duty set `status`=-1 where did=#{did}")
     void deleteSpvDutyByDid(int did);
 
     @Select("select DutyAccessory from spv_duty where did=#{did}")

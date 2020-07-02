@@ -79,7 +79,7 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
       @change="onEditorChange($event)" -->
-    <div :style="{'display':dis2}">
+    <div :style="{'display':dis2}" style="width:100%">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
