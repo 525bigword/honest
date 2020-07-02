@@ -285,7 +285,6 @@ import { mapGetters } from 'vuex'
       },
       // 重置表单数据
       resetTemp() {
-        
         this.temp = {
           uid: undefined,
           dtitle: '',
@@ -316,6 +315,8 @@ import { mapGetters } from 'vuex'
       handleCreate () {
         // 重置表单数据
         this.resetTemp()
+        this.fileList=[]
+        this.viList=[]
         this.i=3
         this.xianshi()
         if(this.temp.dstatus===1){
@@ -692,7 +693,7 @@ import { mapGetters } from 'vuex'
       if(this.temp.dstatus===1){
         this.btnShowTj=true;
       }
-      if(this.temp.dstatus===2){
+      if(this.temp.dstatus===2&&this.userId!==4){
         this.btnShowTs=true;
       }
     },
