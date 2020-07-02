@@ -305,7 +305,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div :style="{'display':dis4}">
+    <div :style="{'display':dis4}" style="width:100%">
       <el-form
         ref="dataForm"
         :rules="rules"
