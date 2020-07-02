@@ -68,7 +68,7 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
     @change="onEditorChange($event)"-->
-    <div :style="{'display':dis2}">
+    <div :style="{'display':dis2}" style="width:100%">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -178,7 +178,7 @@
         </el-row>
       </el-form>
     </div>
-    <div :style="{'display':dis5}">
+    <div :style="{'display':dis5}" style="width:100%">
       <el-form
         ref="dataForm"
         :rules="rules"
