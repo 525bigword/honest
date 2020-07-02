@@ -40,20 +40,6 @@ public class EntityResponsibilityAction {
     /*新增工作部署*/
     @RequestMapping("addEntityResponsibility")
     public ResponseResult addEntityResponsibility(EntityResponsibility entityResponsibility){
-        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = SDF.parse(entityResponsibility.getCreatetime());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR, 8);// 24小时制
-        date = cal.getTime();
-        cal = null;
-        entityResponsibility.setCreatetime(format.format(date));
         System.out.println(entityResponsibility+"entityResponsibility");
         Integer integer = entityResponsibilityService.addEntityResponsibility(entityResponsibility);
         ResponseResult result=new ResponseResult();

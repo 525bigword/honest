@@ -26,7 +26,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
@@ -90,9 +90,11 @@
             <el-input v-model="userInfo.title" placeholder="请输入主体责任标题" v-bind:disabled='bt' style="width: 300px"></el-input>
           </el-form-item><br/>
           <el-form-item label="主体责任内容">
-            <el-card class="box-card" v-html="userInfo.content" style="margin-bottom:30px;width: 830px;height: 350px;text-align: center" v-if="dialogTitle!='增加'"></el-card>
+            <el-card class="box-card" style="margin-bottom:30px;width: 830px;height: 350px;text-align: left" v-if="userInfo.staus!=0&&dialogTitle!='增加'">
+              <div  v-html="userInfo.content"></div>
+            </el-card>
 
-            <quill-editor  v-if="dialogTitle=='增加'" id="editer"  v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
+            <quill-editor  v-if="dialogTitle=='增加'||userInfo.staus==0" id="editer"  v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
 
           </el-form-item><br/>
           <el-form-item label="创建者姓名">
@@ -236,10 +238,12 @@
       },
       //初始化页面
       initList() {
+    this.listLoading=true
         list(this.listQuery).then(response =>{
           console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       }, add() {
         this.nr=false
@@ -370,6 +374,11 @@
       },
       // 新增
       submitUser() {
+        let endtime = new Date(this.userInfo.createtime).toJSON();
+        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
         let postData = qs.stringify({
           title: this.userInfo.title,
           content: this.userInfo.content,
@@ -405,6 +414,7 @@
     },
     data() {
       return {
+        listLoading:true,
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
         nr:'disabled',

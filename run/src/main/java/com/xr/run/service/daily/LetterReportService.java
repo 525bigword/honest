@@ -28,4 +28,8 @@ public interface LetterReportService {
     public void deptbc(LetterReport letterReport);
     /*用户更新*/
     public void bjbcmethod(LetterReport letterReport);
+    /*局领导*/
+    public void leaderbc(LetterReport letterReport);
+    /*纪检组长*/
+    public void zzbc(LetterReport letterReport);
 }

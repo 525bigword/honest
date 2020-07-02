@@ -24,7 +24,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="sid"
@@ -136,7 +136,9 @@
             <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number" disabled="disabled"></el-input>
           </el-form-item><br/><div>
           <el-form-item label="实施方式">
-            <el-card class="box-card" v-html="userInfo.senforcementMode" style="margin-bottom:30px;width: 830px;height: 450px;text-align: center"></el-card>
+            <el-card class="box-card"  style="margin-bottom:30px;width: 830px;height: 450px;text-align: left">
+              <div v-html="userInfo.senforcementMode"></div>
+            </el-card>
             <!--   <quill-editor id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 300px; margin-bottom: 80px" />
            -->  </el-form-item></div><br/><div><el-form-item label="审核人角色" v-if="false">
           <el-input v-model="userInfo.auditorrole" placeholder="审核人角色"  style="width: 300px" ></el-input>
@@ -273,10 +275,13 @@
       },
       //初始化页面
       initList() {
+        this.listLoading=true
         list(this.listQuery).then(response =>{
+
           console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       },//重置
       onrest(){
@@ -414,7 +419,7 @@
         pageSize:10,
         total:0,
         currentPage:1,
-
+listLoading:true,
         tableData: []
       }
     }

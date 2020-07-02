@@ -255,7 +255,7 @@
       },//新增提交
       submitUser(){
         let endtime = new Date(this.userInfo.lcreateTime).toJSON();
-        this.userInfo.lcreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lcreateTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
 
           .toISOString()
           .replace(/T/g, " ")

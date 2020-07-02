@@ -34,7 +34,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%;" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading" >
         <el-table-column type="selection"  width="55px"></el-table-column>
         <el-table-column prop="lid" v-if="false">
 
@@ -95,6 +95,14 @@
         </el-table-column>
         <el-table-column prop="lsupervisionResultTime" label="监察科时间" v-if="false" >
         </el-table-column>
+        <el-table-column prop="ldisciplinaryComments" label="纪检组长意见" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="ldisciplinaryTime" label="纪检组长签署时间" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lleadersComments" label="局领导意见" v-if="false" >
+        </el-table-column>
+        <el-table-column prop="lleadersTime" label="局领导签署时间" v-if="false" >
+        </el-table-column>
         <el-table-column prop="lCreateTime" label="创建时间" v-if="false"></el-table-column>
         <el-table-column prop="lstatus" label="状态" :formatter="cstatus" width="80">
 
@@ -102,7 +110,7 @@
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
           <template slot-scope="scope" >
             <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(role.includes('纪检监察员')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(role.includes('纪检监察科科长')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(role.includes('纪检监察科科长')||role.includes('纪检组长')||role.includes('局领导')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
             <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
             <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
 
@@ -188,16 +196,16 @@
             <el-date-picker v-model="userInfo.lsupervisionCommentsTime" placeholder="监察科部门意见签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="纪检组长意见" v-if="role.includes('纪检组长')" >
-            <el-input v-model="userInfo.yj" placeholder="纪检组长意见" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="纪检组长意见" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="纪检组长签署时间" v-if="role.includes('纪检组长')" >
-            <el-date-picker v-model="userInfo.lcreateTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.ldisciplinaryTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="局领导意见" v-if="role.includes('局领导')" >
-            <el-input v-model="userInfo.yj" placeholder="局领导意见" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lleadersComments" placeholder="局领导意见" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="局领导签署时间" v-if="role.includes('局领导')" >
-            <el-date-picker v-model="userInfo.lcreateTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            <el-date-picker v-model="userInfo.lleadersTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="转办部门处理结果" v-if="role.includes('单位/部门负责人')" >
             <el-input v-model="userInfo.lresult" placeholder="转办部门处理结果" style="width: 300px" ></el-input>
@@ -227,7 +235,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import qs from 'qs'
-  import {xfbh,list,add,del,findbyName,shbc,turndept,kezhangbc,deptbc} from '@/api/daily/letter'
+  import {xfbh,list,add,del,findbyName,shbc,turndept,kezhangbc,deptbc,leaderbc,zzbc} from '@/api/daily/letter'
   import {getFileGroup} from '@/api/duty/talk'
   export default {  computed: {
       ...mapGetters([
@@ -248,12 +256,12 @@
     //监察科自办
       kezhangbc(){
         let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
-        this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lsupervisionCommentsTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
         let stime = new Date(this.userInfo.lsupervisionResultTime).toJSON();
-        this.userInfo.lsupervisionResultTime = new Date(+new Date(stime) + 8 * 3600 * 1000)
+        this.userInfo.lsupervisionResultTime = new Date(new Date(stime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -280,7 +288,7 @@
       //转办部门处理
       deptbc(){
         let endtime = new Date(this.userInfo.lresultTime).toJSON();
-        this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lresultTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -303,10 +311,52 @@
         })
       },//局领导签署意见
       leaderbc(){
+        let endtime = new Date(this.userInfo.lleadersTime).toJSON();
+        this.userInfo.lleadersTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
 
+        let posdata=qs.stringify({
+          lid:this.userInfo.lid,
+          lLeadersComments:this.userInfo.lleadersComments,
+          lLeadersTime:this.userInfo.lleadersTime
+        })
+        leaderbc(posdata).then((response)=>{
+          this.tf='';
+          this.ad='none'
+          this.initList();
+          this.$notify({
+            title: '温馨提示',
+            message: '局领导处理完成',
+            type: 'success',
+            duration: 2000
+          })
+        })
       },//纪检组长签署意见
       zzbc(){
+        let endtime = new Date(this.userInfo.ldisciplinaryTime).toJSON();
+        this.userInfo.ldisciplinaryTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
 
+        let posdata=qs.stringify({
+          lid:this.userInfo.lid,
+          lDisciplinaryComments:this.userInfo.ldisciplinaryComments,
+          lDisciplinaryTime:this.userInfo.ldisciplinaryTime
+        })
+        zzbc(posdata).then((response)=>{
+          this.tf='';
+          this.ad='none'
+          this.initList();
+          this.$notify({
+            title: '温馨提示',
+            message: '纪检组长处理完成',
+            type: 'success',
+            duration: 2000
+          })
+        })
       },
     //判断状态给提示
     cstatus: function (row, column, cellValue) {
@@ -373,10 +423,12 @@ else {
         let posdata=qs.stringify({
           lStatus:status
         })
+        this.listLoading=true
         list(posdata).then(response =>{
           console.log(JSON.stringify(response))
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       },//审核
       handleEdit(index, row) {
@@ -430,6 +482,8 @@ else {
         this.$set(this.userInfo,'lresultTime',new Date())
         this.$set(this.userInfo,'lsupervisionCommentsTime',new Date())
         this.$set(this.userInfo,'lsupervisionResultTime',new Date())
+        this.$set(this.userInfo,'ldisciplinaryTime',new Date())
+        this.$set(this.userInfo,'lleadersTime',new Date())
        // this.userInfo.lCreateName=this.nickname
       },//纪检监察员审核提交保存
       shbc(){
@@ -541,6 +595,7 @@ else {
 
           }
         },
+        listLoading:true,
         zhuanbanjy:'disabled',
         zhuanban:'none',
         ysnr:false,//原始信访内容

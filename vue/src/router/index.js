@@ -195,7 +195,7 @@ export const asyncRouterMap = [
             name: '纪检报表',
             component: _import('inspect/report'),
             meta: { title: '纪检报表', icon: 'user' },
-            menu: 'staff'
+            menu: 'report'
         }]
     }, {
         path: '/culture',

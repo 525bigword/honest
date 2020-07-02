@@ -110,4 +110,20 @@ letterReportService.shbc(letterReport);
         result.getInfo().put("message","已处理完成");
         return result;
     }
+    /*局领导签署意见*/
+    @RequestMapping("leaderbc")
+    public ResponseResult leaderbc(LetterReport letterReport){
+        letterReportService.leaderbc(letterReport);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","已处理完成");
+        return result;
+    }
+    /*纪检组长签署意见*/
+    @RequestMapping("zzbc")
+    public ResponseResult zzbc(LetterReport letterReport){
+        letterReportService.zzbc(letterReport);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","已处理完成");
+        return result;
+    }
 }

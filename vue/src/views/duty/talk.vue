@@ -27,7 +27,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
@@ -133,7 +133,7 @@
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                         clearable v-model="userInfo.punit" @change="handleItemChange"  style="width: 300px"></el-cascader>
+                         clearable v-model="userInfo.punit" @change="handleItemChange"  style="width: 400px"></el-cascader>
           </el-form-item>
           <el-form-item label="谈话对象姓名">
             <el-select v-model="userInfo.pid" placeholder="请选择谈话对象姓名" style="width: 400px">
@@ -305,7 +305,7 @@
       gxmethod(){//更新
 
         let endtime = new Date(this.userInfo.time).toJSON();
-        this.userInfo.time = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.time = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -387,10 +387,6 @@
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        this.$notify({
-          type: 'success',
-          message: '驳回成功'
-        });
 
        let postData = qs.stringify({
           id:this.userInfo.id,
@@ -547,10 +543,12 @@
       },
       //初始化页面
       initList() {
+    this.listLoading=true
         list(this.listQuery).then(response =>{
           console.log(response)
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       }, add() {
         this.tf='none';
@@ -579,6 +577,7 @@
     },
     data() {
       return {
+        listLoading:true,
         defaUnit:'请选择谈话对象单位',
         options_cascader:[],//级联选择器的options属性
         options:[],

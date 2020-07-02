@@ -132,8 +132,10 @@
 
         <div>
         <el-form-item label="实施方式">
-          <el-card class="box-card" v-html="userInfo.senforcementMode" style="margin-bottom:30px;width: 830px;height: 450px;text-align: center" v-if="dialogTitle!='增加'"></el-card>
-          <quill-editor v-if="dialogTitle=='增加'" id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" />
+          <el-card class="box-card" style="margin-bottom:30px;width: 830px;height: 450px;text-align: left" v-if="userInfo.sstatus!=0&&dialogTitle!='增加'">
+            <div  v-html="userInfo.senforcementMode"></div>
+          </el-card>
+          <quill-editor v-if="dialogTitle=='增加'||userInfo.sstatus==0" id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" />
         </el-form-item></div><br/><div>
         <el-form-item label="状态" v-if="false">
           <el-input v-model="userInfo.sstatus" placeholder="状态" style="width: 300px" disabled="disabled" ></el-input>
@@ -282,7 +284,7 @@
       },//新增提交
       submitUser(){
         let endtime = new Date(this.userInfo.screateTime).toJSON();
-        this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.screateTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")

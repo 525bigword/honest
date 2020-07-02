@@ -64,3 +64,19 @@ export function deptbc(data){
     data
   })
 }
+/*局领导*/
+export function leaderbc(data){
+  return request({
+    url: '/daily/letter/leaderbc',
+    method: 'post',
+    data
+  })
+}
+/*纪检组长*/
+export function zzbc(data){
+  return request({
+    url: '/daily/letter/zzbc',
+    method: 'post',
+    data
+  })
+}

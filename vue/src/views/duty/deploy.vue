@@ -26,7 +26,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
@@ -92,9 +92,11 @@
             <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
           <el-form-item label="文章内容">
-            <el-card class="box-card" v-html="userInfo.content" style="margin-bottom:30px;width: 830px;height: 350px;text-align: center" v-if="dialogTitle!='增加'"></el-card>
+            <el-card class="box-card"  style="margin-bottom:30px;width: 830px;height: 350px;text-align: left" v-if="userInfo.status!=0&&dialogTitle!='增加'">
+              <div  class="clearfix" v-html="userInfo.content"></div>
+            </el-card>
 
-            <quill-editor id="editer"   v-if="dialogTitle=='增加'" v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
+            <quill-editor id="editer"   v-if="userInfo.status==0||dialogTitle=='增加'" v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
      </el-form-item><br/>
 
           <el-form-item label="创建者姓名">
@@ -176,7 +178,7 @@ this.search=''
     tjshmethod(){
       if(this.dialogTitle=="增加"){
         let endtime = new Date(this.userInfo.createtime).toJSON();
-        this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -245,10 +247,12 @@ this.search=''
     },
       //初始化页面
       initList() {
+    this.listLoading=true
         list(this.listQuery).then(response =>{
           console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       },//删除
       dele(){
@@ -316,7 +320,7 @@ this.search=''
       //新增工作计划
       submitUser() {
         let endtime = new Date(this.userInfo.createtime).toJSON();
-        this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -394,6 +398,7 @@ this.search=''
           this.total=response.list.length
           this.ad='none'//默认新增页面隐藏
           this.tf=''//表格页面显示
+          this.listLoading=false
         })
       }, //返回
       deselect(){
@@ -431,7 +436,7 @@ this.search=''
         pageSize:10,
         total:0,
         currentPage:1,
-
+        listLoading:true,
         tableData: []
       }
     }

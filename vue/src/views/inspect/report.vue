@@ -12,7 +12,6 @@
             <el-option label="半年报" value="半年报"></el-option>
             <el-option label="及时报" value="及时报"></el-option>
             <el-option label="重要节点报" value="重要节点报"></el-option>
-            <el-option label="三重一大报" value="三重一大报"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -131,7 +130,6 @@
               <el-option label="半年报" value="半年报"></el-option>
               <el-option label="及时报" value="及时报"></el-option>
               <el-option label="重要节点报" value="重要节点报"></el-option>
-              <el-option label="三重一大报" value="三重一大报"></el-option>
             </el-select>
           </el-form-item><br/>
 
@@ -206,7 +204,8 @@ import { fileUpload } from '@/api/daily/supervise'
         }
         else if(val==='重要节点报'){
           this.placeholders='请选择重要节点'
-          this.options=[{id:1,name:'春节'},{id:2,name:'端午节'},{id:3,name:'中秋节'},{id:4,name:'国庆节'},{id:5,name:'元旦节'}]
+          this.options=[{id:1,name:'春节'},{id:2,name:'端午节'},{id:3,name:'中秋节'},{id:4,name:'国庆节'},{id:5,name:'元旦节'},,{id:6,name:'劳动节'},{id:6,name:'端午' +
+              '节'}]
         }
         else if(val==='及时报'){
           this.placeholders='请选择重要时间'
@@ -254,7 +253,7 @@ import { fileUpload } from '@/api/daily/supervise'
         console.log('this.times'+this.times)
         if(this.times!==''){
         let endtime = new Date(this.time).toJSON();
-        this.times= new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.times= new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")}
@@ -294,7 +293,7 @@ import { fileUpload } from '@/api/daily/supervise'
       },//新增提交
       submitUser(){
         let endtime = new Date(this.userInfo.lCreateTime).toJSON();
-        this.userInfo.lCreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lCreateTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -315,7 +314,7 @@ import { fileUpload } from '@/api/daily/supervise'
           this.initList();
           this.$notify({
             title: '成功',
-            message: response.message,
+            message: '新增成功',
             type: 'success',
             duration: 2000
           })

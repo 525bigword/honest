@@ -72,4 +72,14 @@ letterReportMapper.deptbc(letterReport);
     public void bjbcmethod(LetterReport letterReport) {
         letterReportMapper.bjbcmethod(letterReport);
     }
+
+    @Override
+    public void leaderbc(LetterReport letterReport) {
+        letterReportMapper.leaderbc(letterReport);
+    }
+
+    @Override
+    public void zzbc(LetterReport letterReport) {
+letterReportMapper.zzbc(letterReport);
+    }
 }

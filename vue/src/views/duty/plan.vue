@@ -26,7 +26,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"   ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%"   ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
@@ -191,7 +191,7 @@
         console.log('dialogTitle'+this.dialogTitle)
         if(this.dialogTitle=='新增'){
           let endtime = new Date(this.userInfo.createtime).toJSON();
-          this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+          this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
             .toISOString()
             .replace(/T/g, " ")
             .replace(/\.[\d]{3}Z/, "")
@@ -257,10 +257,12 @@
       },
       //初始化页面
       initList() {
+        this.listLoading=true
         list(this.listQuery).then(response =>{
           console.debug(response.data)
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       },
       // 进入编辑页面
@@ -317,6 +319,7 @@
           this.tableData = response.list
           console.debug(this.tableData)
           this.total=response.list.length
+          this.listLoading = false
           this.ad='none'//默认新增页面隐藏
           this.tf=''//表格页面显示
         })
@@ -421,7 +424,7 @@
       // 新增提交
       submitUser() {
         let endtime = new Date(this.userInfo.createtime).toJSON();
-        this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -454,6 +457,7 @@
     },
     data() {
       return {
+        listLoading:true,
         dialogTitle:'新增',//辨别新增还是编辑
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
