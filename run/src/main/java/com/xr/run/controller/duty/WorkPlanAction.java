@@ -37,26 +37,13 @@ public class WorkPlanAction {
         result.getInfo().put("total",list.size());
         return result;
     }
-    @RequestMapping("/addWorkPlan")
+    @RequestMapping("addWorkPlan")
     public ResponseResult addWorkPlan(WorkPlan workPlan) throws ParseException {
-        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = SDF.parse(workPlan.getCreatetime());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR, 8);// 24小时制
-        date = cal.getTime();
-        cal = null;
-        workPlan.setCreatetime(format.format(date));
         System.out.println("workPlan"+workPlan);
-    workPlanService.addWorkPlan(workPlan);
+        Integer integer = workPlanService.addWorkPlan(workPlan);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","新增成功");
+        result.getInfo().put("id",integer);
         return result;
     }
     @RequestMapping("updatecontent")
@@ -76,8 +63,8 @@ public class WorkPlanAction {
     }
     /*通过审核*/
     @RequestMapping("passaudit")
-    public ResponseResult passaudit(Integer id) {
-        workPlanService.passaudit(id);
+    public ResponseResult passaudit(WorkPlan workPlan) {
+        workPlanService.passaudit(workPlan);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","审核通过");
         return result;

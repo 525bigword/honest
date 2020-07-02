@@ -15,7 +15,9 @@
         <result column="createname" property="createname"></result>
         <result column="create_time" property="createtime"></result>
         <result column="staus" property="staus"></result>
+        <result column="auditresult" property="auditresult"></result>
         <result column="punit" property="punit"></result>
+        <result column="dept" property="dept"></result>
         <collection property="users" ofType="com.xr.run.entity.SysStaff">
             <result column="name" property="name"></result>
             <result column="political_appearance" property="politicalAppearance"></result>
@@ -30,10 +32,10 @@
     </resultMap>
 <!--初始化廉政谈话页面-->
     <select id="list" resultMap="baseMap">
-  select rhc.id,rhc.pid,rhc.personid,rhc.punit,sm.mechanism_name,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_post sp where rhc.pid=h.sid and h.mid=sm.mid and h.pid=sp.pid
+  select rhc.id,rhc.pid,rhc.personid,rhc.auditresult,rhc.punit,rhc.dept,sm.mechanism_name,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_post sp where rhc.pid=h.sid and h.mid=sm.mid and h.pid=sp.pid
     </select>
     <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.HonestConversation">
-  select rhc.id,rhc.pid,rhc.personid,rhc.punit,sm.mechanism_name,h.sid,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_post sp where rhc.pid=h.sid and h.mid=sm.mid and h.pid=sp.pid
+  select rhc.id,rhc.pid,rhc.personid,rhc.punit,rhc.dept,rhc.auditresult,sm.mechanism_name,h.sid,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_post sp where rhc.pid=h.sid and h.mid=sm.mid and h.pid=sp.pid
     and rhc.`type` like CONCAT('%',#{type},'%')
     </select>
     <delete id="delHonestConversationt"   parameterType="Integer" >
@@ -41,11 +43,11 @@
     </delete>
     <!--新增廉政谈话-->
     <insert id="addHonestConversation" parameterType="com.xr.run.entity.duty.HonestConversation">
-        insert into rd_honest_conversation(punit,pid,personid,`time`,politcs,pduty,`type`,site,syllabus,content,create_id,create_time,staus) values(#{punit},#{pid},#{personid},#{time},#{politcs},#{pduty},#{type},#{site},#{syllabus},#{content},#{createid},#{createtime},#{staus})
+        insert into rd_honest_conversation(punit,pid,personid,`time`,politcs,pduty,`type`,site,syllabus,content,create_id,create_time,staus,dept) values(#{punit},#{pid},#{personid},#{time},#{politcs},#{pduty},#{type},#{site},#{syllabus},#{content},#{createid},#{createtime},#{staus},#{dept})
     </insert>
     <!--更新廉政谈话-->
     <update id="updateHonestConversation">
-        update rd_honest_conversation set punit=#{punit},pid=#{pid},personid=#{personid},`time`=#{time},politcs=#{politcs},pduty=#{pduty},`type`=#{type},site=#{site},syllabus=#{syllabus},content=#{content} where id=#{id}
+        update rd_honest_conversation set punit=#{punit},pid=#{pid},personid=#{personid},`time`=#{time},politcs=#{politcs},pduty=#{pduty},`type`=#{type},site=#{site},syllabus=#{syllabus},content=#{content},dept=#{dept} where id=#{id}
     </update>
     <!--提交审核-->
     <update id="subauditHonestConversation" parameterType="Integer">
@@ -53,7 +55,7 @@
     </update>
     <!--通过审核还是撤回审核-->
     <update id="passauditHonestConversation" parameterType="com.xr.run.entity.duty.HonestConversation">
-         update rd_honest_conversation set staus=#{staus} where id=#{id}
+         update rd_honest_conversation set staus=#{staus},auditresult=#{auditresult} where id=#{id}
     </update>
     <!--根据职务查人-->
     <resultMap id="bpmap" type="com.xr.run.entity.SysStaff">

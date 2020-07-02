@@ -23,8 +23,9 @@ public class EntityResponsibilityServiceImpl implements EntityResponsibilityServ
     }
 
     @Override
-    public void addEntityResponsibility(EntityResponsibility entityResponsibility) {
+    public Integer addEntityResponsibility(EntityResponsibility entityResponsibility) {
 entityResponsibilityMapper.addEntityResponsibility(entityResponsibility);
+return entityResponsibility.getId();
     }
 
     @Override
@@ -43,7 +44,7 @@ entityResponsibilityMapper.subaudit(id);
     }
 
     @Override
-    public void passaudit(Integer id) {
-entityResponsibilityMapper.passaudit(id);
+    public void passaudit(EntityResponsibility entityResponsibility) {
+entityResponsibilityMapper.passaudit(entityResponsibility);
     }
 }

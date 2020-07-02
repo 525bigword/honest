@@ -55,9 +55,10 @@ public class EntityResponsibilityAction {
         cal = null;
         entityResponsibility.setCreatetime(format.format(date));
         System.out.println(entityResponsibility+"entityResponsibility");
-       entityResponsibilityService.addEntityResponsibility(entityResponsibility);
+        Integer integer = entityResponsibilityService.addEntityResponsibility(entityResponsibility);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","新增成功");
+        result.getInfo().put("id",integer);
         return result;
     }
     /*更新工作部署*/
@@ -78,8 +79,8 @@ public class EntityResponsibilityAction {
     }
     /*审核通过*/
     @RequestMapping("passaudit")
-    public ResponseResult passaudit(Integer id){
-        entityResponsibilityService.passaudit(id);
+    public ResponseResult passaudit(EntityResponsibility entityResponsibility){
+        entityResponsibilityService.passaudit(entityResponsibility);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","审核通过");
         return result;

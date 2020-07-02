@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :inline="true" class="demo-form-inline">
+    <el-form :inline="true" class="demo-form-inline" v-bind:style="{display:tf}">
       <div align="center" style="margin-top: 30px">
         <el-form-item>
           <el-input
@@ -26,12 +26,12 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable">
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
           label="序号"
-          width="180">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="title"
@@ -56,6 +56,7 @@
           prop="staus"
           label="状态"  :formatter="cstatus">
         </el-table-column>
+        <el-table-column prop="auditresult" label="审核结果"></el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -67,18 +68,31 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
-      </div>
-
-      <!--弹窗-->
-      <el-dialog :title="dialogTitle" width="50%" :visible.sync="iconFormVisible">
-        <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="120px">
+      </div></el-form>
+      <!--隐藏窗-->
+      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
+        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px">
+          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
+            <br/>
+            <div align="right">
+              <el-button type="primary"  @click="tjshmethod()" v-bind:style="{display:tjsh}">提交审核</el-button>
+              <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+              <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser()">保存</el-button>
+              <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
+              <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
+              <el-button type="primary" class="el-icon-back" @click="deselect()">返回</el-button>
+            </div></div>
+          <br/>
+          <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
           <el-form-item label="主体责任标题">
 
-            <el-input v-model="userInfo.title" placeholder="请输入主体责任标题" v-bind:disabled='bt'></el-input>
+            <el-input v-model="userInfo.title" placeholder="请输入主体责任标题" v-bind:disabled='bt' style="width: 300px"></el-input>
           </el-form-item><br/>
           <el-form-item label="主体责任内容">
-            <quill-editor id="editer"  v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 400px;" />
+            <el-card class="box-card" v-html="userInfo.content" style="margin-bottom:30px;width: 830px;height: 350px;text-align: center" v-if="dialogTitle!='增加'"></el-card>
+
+            <quill-editor  v-if="dialogTitle=='增加'" id="editer"  v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
 
           </el-form-item><br/>
           <el-form-item label="创建者姓名">
@@ -89,18 +103,10 @@
           </el-form-item><br/>
           <el-form-item label="状态" v-if="false">
             <el-input v-model="userInfo.staus"  placeholder="状态"  disabled="disabled"  style="width: 300px" ></el-input>
-          </el-form-item><br/>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary"  @click="tjshmethod()" v-bind:style="{display:tjsh}">提交审核</el-button>
-          <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
-          <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser()">保存</el-button>
-          <el-button type="primary"  @click="tgmethod()" v-bind:style="{display:tg}">通过</el-button>
-          <el-button type="primary"  @click="tgmethod()"v-bind:style="{display:btg}">不通过</el-button>
-          <el-button type="primary" class="el-icon-back" @click="deselect()">返回</el-button>
-        </div>
-      </el-dialog>
-    </el-form>
+          </el-form-item>
+      </div>
+    </el-form></el-main>
+  </div>
   </div>
 </template>
 
@@ -124,6 +130,13 @@
       this.initList()
     },
     methods:{
+  //设置表格内容居中
+  cellStyle({row, column, rowIndex, columnIndex}){
+    return 'text-align:center';
+  },
+  rowClass({row, rowIndex}){//设置表头居中
+    return 'text-align:center';
+  },
       onrest(){
         this.search=''
       },//判断状态给提示
@@ -144,29 +157,81 @@
           content:this.userInfo.content
         });
         updatecontent(postData).then((responese)=>{
-          this.iconFormVisible = false;
+          this.ad='none'//新增页面隐藏
+          this.tf=''//表格页面显示
           this.initList()
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
         })
         console.log('gx'+this.userInfo.id)
       },
       tjshmethod(){
+        if (this.dialogTitle === '增加') {
+          let postData = qs.stringify({
+            title: this.userInfo.title,
+            content: this.userInfo.content,
+            staus:0,
+            createtime:this.userInfo.createtime,
+            createid:this.userId
+          });
+
+          //新增
+          add(postData).then((response) => {
+            let postData = qs.stringify({
+              id:response.id
+            });
+            console.log('tjsh'+response.id)
+            subaudit(postData).then((response)=>{
+              this.ad='none'//新增页面隐藏
+              this.tf=''//表格页面
+              this.initList()
+              this.$notify({
+                title: '成功',
+                message: '提交成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          })
+
+        }
+        else {
         let postData = qs.stringify({
           id:this.userInfo.id
         });
         console.log('tjsh'+this.userInfo.id)
         subaudit(postData).then((response)=>{
-          this.iconFormVisible = false;
+          this.ad='none'//新增页面出现
+          this.tf=''//表格页面隐藏
           this.initList()
+          this.$notify({
+            title: '成功',
+            message: '提交成功',
+            type: 'success',
+            duration: 2000
+          })
         })
-      },
-      tgmethod(){
+        }},
+      tgmethod(val){
         let postData = qs.stringify({
-          id:this.userInfo.id
+          id:this.userInfo.id,
+          auditresult:val
         });
         console.log('tg'+this.userInfo.id)
         passaudit(postData).then((response)=>{
-          this.iconFormVisible = false;
+          this.ad='none'//编辑页面隐藏
+          this.tf=''//表格页面出现
           this.initList()
+          this.$notify({
+            title: '成功',
+            message: '处理成功',
+            type: 'success',
+            duration: 2000
+          })
         })
       },
       //初始化页面
@@ -188,12 +253,10 @@
         this.userInfo={};
         this.userInfo.createname =this.nickname
         this.userInfo.staus='创建'
-       // console.debug('id='+this.id)
         /* 动态赋值实时设置当前时间*/
         this.$set(this.userInfo,'createtime',new Date())
-        //this.timer= setInterval(this.time, 1000 );
-
-        this.iconFormVisible = true;
+        this.ad=''//新增页面出现
+        this.tf='none'//表格页面隐藏
       },
       // 编辑
       handleEdit(index, row) {
@@ -235,7 +298,8 @@
             this.gx='none',//更新按钮不显示
             this.tjsh='none'//提交审核按钮显示
         }
-        this.iconFormVisible = true;
+        this.ad=''//编辑页面出现
+        this.tf='none'//表格页面隐藏
         this.rowIndex = index;
       },
       dele(){
@@ -250,6 +314,24 @@
           })
         }
         else {
+          var ids = data.map(item => { return { staus: item.staus } })
+          var ids1 =true
+          for(var i = 0; i < ids.length; i++) {
+            console.log('ids[i].staus'+ids[i].staus)
+            if(ids[i].staus=='1'){
+              ids1=false
+            }
+          }
+          console.log(ids1)
+          if(!ids1){//判断处于审核中的不能删除
+
+            this.$notify({
+              title: '温馨提示',
+              message: '该记录处于审核中不能删除',
+              type: 'warning',
+              duration: 2000
+            })
+          }else {
           let postData = qs.stringify({
             test:JSON.stringify(data)
           });
@@ -264,7 +346,7 @@
               duration: 2000
             })
           })
-        }
+        }}
       },
       //按标题查询
       onSearch() {
@@ -279,13 +361,14 @@
           this.total=response.list.length
           this.listLoading=false
         })
-      },//弹窗取消
+      },//返回
       deselect(){
-        this.iconFormVisible = false
+        this.ad='none'//默认新增页面隐藏
+        this.tf=''//表格页面显示
         this.initList()
         //  clearInterval(this.timer)
       },
-      // 弹窗确定
+      // 新增
       submitUser() {
         let postData = qs.stringify({
           title: this.userInfo.title,
@@ -294,11 +377,11 @@
           createtime:this.userInfo.createtime,
           createid:this.userId
         });
-        if (this.dialogTitle === '增加') {
+
           //新增
           add(postData).then((response) => {
-            this.iconFormVisible = false;
-            clearInterval(this.timer)
+            this.ad='none'//新增页面隐藏
+            this.tf=''//表格页面出现
             this.initList();
             this.$notify({
               title: '成功',
@@ -308,7 +391,7 @@
             })
           })
 
-        }
+
 
       },
     handleSizeChange(size) {
@@ -322,6 +405,8 @@
     },
     data() {
       return {
+        ad:'none',//默认新增页面隐藏
+        tf:'',//表格页面显示
         nr:'disabled',
       bt:'disabled',
       bc:'none',//保存按钮
@@ -330,7 +415,6 @@
        gx:'none',//更新按钮不显示
         tjsh:'none',//提交审核按钮显示
         editorOption: {},
-      iconFormVisible: false,
           userInfo: {},
           dialogTitle: '增加',
           rowIndex: null,
@@ -339,27 +423,7 @@
           pageSize:10,
           total:0,
           currentPage:1,
-        tableData: [/*{
-          userId:'1',
-          userDate: '烟草行业“不忘初心，牢记使命”主题教育工作会议在北京召开',
-          userName: '名非烟草',
-          userAddress: '2010/2/2'
-        }, {
-          userId:'2',
-          userDate: '对十二届全国人大五次会议第1211号建议的答复',
-          userName: '烟草',
-          userAddress: '2010/4/2'
-        }, {
-          userId:'3',
-          userDate: '福建中烟召开2019年第六次党组中心理论学习',
-          userName: '烟草',
-          userAddress: '2010/2/22'
-        }, {
-          userId:'4',
-          userDate: '对十二届全国人大五次会议第1211号建议的答复',
-          userName: '烟草',
-          userAddress: '2010/5/2'
-        }*/]
+        tableData: []
       }
     }
   }

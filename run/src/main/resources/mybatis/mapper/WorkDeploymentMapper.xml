@@ -9,19 +9,20 @@
         <result column="content" property="content"></result>
         <result column="create_time" property="createtime"></result>
       <result column="staus" property="status"></result>
+        <result column="auditresult" property="auditresult"></result>
         <association property="users" javaType="com.xr.run.entity.SysStaff">
             <id column="sid" property="sid"></id>
             <result column="name" property="name"></result>
         </association>
     </resultMap>
     <select id="list" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
-  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid </select>
+  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid </select>
     <!--按标题查询-->
     <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
-      select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.title like CONCAT('%',#{title},'%')
+      select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.title like CONCAT('%',#{title},'%')
     </select>
     <!--新增工作计划-->
-    <insert id="addDeployment" parameterType="com.xr.run.entity.duty.WorkDeployment">
+    <insert id="addDeployment" parameterType="com.xr.run.entity.duty.WorkDeployment" useGeneratedKeys="true" keyProperty="id">
         insert into rd_work_deployment(title,content,create_time,create_id,staus) values(#{title},#{content},#{createtime},#{createid},#{status})
     </insert>
     <!--根据id更新工作计划-->
@@ -38,7 +39,7 @@
     </update>
     <!--审核通过-->
     <update id="passauditDeployment">
-        update rd_work_deployment set staus=2 where id=#{id}
+        update rd_work_deployment set staus=2,auditresult=#{auditresult} where id=#{id}
     </update>
 
 </mapper>

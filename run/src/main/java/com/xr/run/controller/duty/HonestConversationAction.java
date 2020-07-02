@@ -84,25 +84,6 @@ public class HonestConversationAction {
     /*更新工作部署*/
     @RequestMapping("updateHonestConversation")
     public ResponseResult updateHonestConversation (HonestConversation honestConversation)throws ParseException {
-        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        Date date1=null;
-        try {
-
-            date1= SDF.parse(honestConversation.getTime());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        Calendar cal1 = Calendar.getInstance();
-
-        cal1.setTime(date1);
-
-        cal1.add(Calendar.HOUR,8);
-        date1=cal1.getTime();
-        cal1=null;
-        honestConversation.setTime(format.format(date1));
         honestConversationService.updateHonestConversation(honestConversation);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","更新成功");
@@ -120,9 +101,9 @@ public class HonestConversationAction {
     }
     /*审核通过*/
     @RequestMapping("passauditHonestConversation")
-    public ResponseResult passauditHonestConversation(Integer id,Integer status){
+    public ResponseResult passauditHonestConversation(Integer id,Integer status,String auditresult){
         System.out.println("审核 id="+id+",status="+status);
-        honestConversationService.passauditHonestConversation(id,status);
+        honestConversationService.passauditHonestConversation(id,status,auditresult);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","审核通过");
         return result;
@@ -157,9 +138,9 @@ public class HonestConversationAction {
         result.getInfo().put("list",findallunit);
         return result;
     }
-    //@Value("${file.uploadFolder}")
-    private String realBasePath="E:/file/template/";
-    @Value("${file.staticAccessPath}")
+   // @Value("${files.uploadFolder}")
+    private String realBasePath="D://IDE/";
+    @Value("${file.staticAccessPaths}")
     private String accessPath;
     SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
     @RequestMapping("uploading")
@@ -179,7 +160,7 @@ public class HonestConversationAction {
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
         file.transferTo(new File(folder,newName));
       //  String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/honest/upload" + format + newName;
-        String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()+ "/honest/upload/" + newName;
+        String url = req.getScheme() + "://" + req.getServerName() + ":8080/upload/"+format  + newName;
         System.out.println(url);
         result.getInfo().put("url",url);
         result.getInfo().put("message","上传成功");

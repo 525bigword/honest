@@ -26,7 +26,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable" >
+        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'  v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="sid"
@@ -56,6 +56,9 @@
           prop="screateTime"
           label="发布时间"   >
         </el-table-column>
+        <el-table-column v-if="false" prop="punit" label="部门路径">
+
+        </el-table-column>
         <el-table-column
           prop="sstatus"
           label="状态"
@@ -77,15 +80,15 @@
     </el-form>
   <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 1000px" >
     <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
-      <div style="background-color: white;width: 100%;height: 65px" >
+      <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
         <br/>
         <div align="right" ><el-form-item >
-          <el-button type="primary" class="el-icon-edit" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
-          <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" align="right" @click="gxmethod" v-bind:style="{display:gx}">更新</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="role.includes('纪检监察员')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="role.includes('纪检监察员')" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="role.includes('纪检监察员')" align="right" @click="gxmethod" v-bind:style="{display:gx}">更新</el-button>
           <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
       <br/>
-      <div style="height:900px;background-color: white">
+      <div style="height:900px;background-color: white;margin-top: 7px;z-index:3;">
         <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
         <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
         <el-form-item label="备案编号">
@@ -103,19 +106,34 @@
           ><el-button size="small" type="primary">上传</el-button></el-upload>
         </el-form-item><br/>
         <el-form-item label="承办部门">
-          <el-input v-model="userInfo.sundertakerDeptId" placeholder="承办部门" style="width: 300px"></el-input>
+          <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
+                       :placeholder="defaUnit"
+                       :props="props"
+                       :options="options_cascader"
+                       :expandTrigger="'hover'"
+                       clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
         </el-form-item>
         <el-form-item label="承办人">
-          <el-input v-model="userInfo.sundertaker" placeholder="承办人" style="width: 300px"></el-input>
+          <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px">
+            <el-option
+              v-for="item in options"
+              :key="item.sid"
+              :label="item.name"
+              :value="item.sid">
+            </el-option>
+          </el-select>
         </el-form-item><br/>
         <el-form-item label="事项摘要">
           <el-input v-model="userInfo.spaperItems" placeholder="事项摘要" style="width: 300px"></el-input>
         </el-form-item>
         <el-form-item label="耗资">
           <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number"></el-input>
-        </el-form-item><br/><div>
+        </el-form-item><br/>
+
+        <div>
         <el-form-item label="实施方式">
-          <quill-editor id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 200px; margin-bottom: 80px" />
+          <el-card class="box-card" v-html="userInfo.senforcementMode" style="margin-bottom:30px;width: 830px;height: 450px;text-align: center" v-if="dialogTitle!='增加'"></el-card>
+          <quill-editor v-if="dialogTitle=='增加'" id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" />
         </el-form-item></div><br/><div>
         <el-form-item label="状态" v-if="false">
           <el-input v-model="userInfo.sstatus" placeholder="状态" style="width: 300px" disabled="disabled" ></el-input>
@@ -134,6 +152,7 @@
 
 <script>
   import { fileUpload,list,findbytitle,addsuper,dele,tjshme,gxme } from '@/api/daily/supervise'
+  import {getFileGroup,initpersons} from '@/api/duty/talk'
   import qs from 'qs'
   import { quillEditor } from 'vue-quill-editor'
   import 'quill/dist/quill.core.css'
@@ -150,8 +169,48 @@
     },
     created() {
       this.initList()
+
     },
-    methods:{//判断状态给提示
+    methods:{
+      handleItemChange(value){
+
+        //点击选择时初始化谈话对象和记录人
+        let checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
+
+      //  console.log('zz'+ value.join(',')); //全路径value值
+      //   console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值
+      /*  console.log(checkedNodes) // 获取当前点击的节点
+        console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
+        console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
+
+        if(checkedNodes[0]!=undefined){
+          this.userInfo.sundertakerDeptId=value
+          console.log('zz '+  this.userInfo.sundertakerDeptId); //全路径value值
+          console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
+          console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组
+          console.log('checkedNodes label'+checkedNodes[0].label)
+          let postdata=qs.stringify({
+            id:checkedNodes[0].value
+          })
+          initpersons(postdata).then((response)=>{
+
+            this.options = response.list
+          })
+        }
+        else{
+          this.options=[]
+          //this.userInfo.sundertakerDeptId=[]
+
+        }
+
+      },
+      //设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },//判断状态给提示
       cstatus: function (row, column, cellValue) {
         if (cellValue == 0){
           return '创建';
@@ -212,9 +271,9 @@
       //初始化页面
       initList() {
         list(this.listQuery).then(response =>{
-          console.log('初始化'+JSON.stringify(response))
           this.tableData = response.list
           this.total = response.list.length
+          this.listLoading=false
         })
       },//重置
       onrest(){
@@ -227,6 +286,8 @@
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
+     console.log('擦擦擦' ,this.userInfo);
+
         let posdata=qs.stringify({
           url:this.userInfo.url,
           sFilingId:this.userInfo.sfilingId,
@@ -235,7 +296,8 @@
           sAccessory:this.userInfo.saccessory,
           sCost:this.userInfo.scost,
           sUndertaker:this.userInfo.sundertaker,
-          sUndertakerDeptId:this.userInfo.sundertakerDeptId,
+          sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+          punit:this.userInfo.sundertakerDeptId.toString(),
           sCreateTime:this.userInfo.screateTime,
           sCreateName:this.nickname,
           sStatus:0,
@@ -254,12 +316,31 @@
         })
       },//点击列编辑
       handleEdit(index, row){
+        this.dialogTitle='编辑'
+        this.userInfo={
+          sundertakerDeptId:[]
+        }
 
+        this.userInfo=row
+        this.userInfo.sundertakerDeptId = row.punit.split(',').map(Number)
+
+        this.isShowAddressInfo = false;
+        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
+        setTimeout(() => {
+          this.isShowAddressInfo = true;
+        }, 10);
+        let postdata=qs.stringify({
+          id:row.punit.split(',').map(Number)[row.punit.split(',').map(Number).length-1]
+        })
+        initpersons(postdata).then((response)=>{
+          this.options = response.list
+        })
+        this.userInfo.sundertaker=Number(row.sundertaker)
+        console.log('this.userInfo',this.userInfo)
+        this.fileList=[{name:row.saccessory,url:row.url}]
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
 
-        this.userInfo=row
-        this.fileList=[{name:row.saccessory,url:row.url}]
         if(row.sstatus==0){
           this.tj=''//提交审核按钮
             this.bc='none'//保存按钮隐藏
@@ -305,7 +386,8 @@
           sAccessory:this.userInfo.saccessory,
           sCost:this.userInfo.scost,
           sUndertaker:this.userInfo.sundertaker,
-          sUndertakerDeptId:this.userInfo.sundertakerDeptId,
+          sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+          punit:this.userInfo.sundertakerDeptId.toString()
         })
         gxme(posdata).then((response)=>{
           this.initList();
@@ -336,6 +418,24 @@
         })
       }
       else {
+        var ids = data.map(item => { return { sstatus: item.sstatus } })
+        var ids1 =true
+        for(var i = 0; i < ids.length; i++) {
+          console.log('ids[i].sstatus'+ids[i].sstatus)
+          if(ids[i].sstatus=='1'){
+            ids1=false
+          }
+        }
+        console.log(ids1)
+        if(!ids1){//判断处于审核中的不能删除
+
+          this.$notify({
+            title: '温馨提示',
+            message: '该记录处于审核中不能删除',
+            type: 'warning',
+            duration: 2000
+          })
+        }else {
         let postData = qs.stringify({
           test:JSON.stringify(data)
         });
@@ -350,11 +450,12 @@
             duration: 2000
           })
         })
-      }
+      }}
     },
       add(){
         this.fileList=[]//清空upload
-        this.userInfo={}
+        this.userInfo={
+        }
         this.tf='none'//父页面隐藏
         this.ad=''//新增页面出现
         this.tj='none'
@@ -379,6 +480,40 @@
     data() {
 
       return {
+        defaUnit:'请选择谈话对象单位',
+        options_cascader:[],//级联选择器的options属性
+        options:[],
+        isShowAddressInfo:true,
+        props: {
+          checkStrictly:true,
+          lazy: true,
+          lazyLoad (node, resolve) {
+            const { level } = node;
+            const {data}=node;
+            let parentId=data?data.value:'0'
+            let postData=qs.stringify({
+              parent:parentId
+            });
+            getFileGroup(postData).then((response)=>{
+              console.log('response.list'+JSON.stringify(response.list))
+              let nodes = level ===0?[]:[]
+
+              if(response.list&&Array.isArray(response.list)){
+
+                for(let item of response.list){
+                  nodes.push({
+                    value:item.mid,
+                    label: item.mechanismName
+                  });
+                }
+              }
+              // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+              resolve(nodes);
+            })
+
+
+          }
+        },
         tj:'',//提交审核按钮
         bc:'',
         gx:'none',
@@ -393,7 +528,9 @@
         tf:'',//
         ad:'none',//新增、编辑页面
         iconFormVisible: false,
-        userInfo: {},
+        userInfo: {
+          sundertakerDeptId:['']
+        },
         dialogTitle: '增加',
         rowIndex: null,
         search:'',
@@ -401,8 +538,9 @@
         pageSize:10,
         total:0,
         currentPage:1,
-
-        tableData: []
+        listLoading:true,
+        tableData: [],
+        addorobj:2
       }
     }
   }

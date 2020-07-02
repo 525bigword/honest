@@ -34,7 +34,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable">
+        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
         <el-table-column type="selection"  width="55px"></el-table-column>
         <el-table-column prop="lid" v-if="false">
 
@@ -172,7 +172,13 @@
     created() {
       this.initList();
     },
-    methods:{
+    methods:{//设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },
     //提交审核
       tjsh(){
         let posdata=qs.stringify({

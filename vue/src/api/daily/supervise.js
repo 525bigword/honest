@@ -64,7 +64,7 @@ export function tjshme(data){
 export function gxme(data){
   return request({
     method: 'post',
-    url: '/daily/supervisionfiling/tgsh',
+    url: '/daily/supervisionfiling/updatesupervision',
     data
   });
 }

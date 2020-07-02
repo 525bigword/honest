@@ -15,13 +15,13 @@ public interface WorkDeploymentMapper {
     /*根据标题查询*/
     public List<WorkDeployment> listBytitle(String title);
     /*新增工作部署*/
-    public void addDeployment(WorkDeployment workDeployment);
+    public Integer addDeployment(WorkDeployment workDeployment);
     /*更新工作部署*/
     public void updateDeployment(WorkDeployment workDeployment);
     /*提交审核*/
     public void subauditDeployment(Integer id);
     /*审核通过*/
-    public void passauditDeployment(Integer id);
+    public void passauditDeployment(WorkDeployment workDeployment);
     /*删除工作部署*/
     public void delDeployment(Integer id);
 }

@@ -18,7 +18,7 @@ public interface HonestConversationService {
     /*提交审核*/
     public void subauditHonestConversation(Integer id);
     /*审核通过*/
-    public void passauditHonestConversation(Integer id, Integer status);
+    public void passauditHonestConversation(Integer id, Integer status,String auditresult);
     /*删除谈话*/
     public void delHonestConversationt(Integer id);
     public List<SysStaff> findallduty(Integer id);

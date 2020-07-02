@@ -40,24 +40,11 @@ public class WorkDeploymentAction {
     /*新增工作部署*/
     @RequestMapping("addDeployment")
     public ResponseResult addDeployment(WorkDeployment workDeployment){
-        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = SDF.parse(workDeployment.getCreatetime());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR, 8);// 24小时制
-        date = cal.getTime();
-        cal = null;
-        workDeployment.setCreatetime(format.format(date));
         System.out.println(workDeployment+"workDeployment");
-        workDeploymentService.addDeployment(workDeployment);
+        Integer integer = workDeploymentService.addDeployment(workDeployment);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","新增成功");
+        result.getInfo().put("id",integer);
         return result;
     }
     /*更新工作部署*/
@@ -78,8 +65,8 @@ public class WorkDeploymentAction {
     }
     /*审核通过*/
     @RequestMapping("passauditDeployment")
-    public ResponseResult passauditDeployment(Integer id){
-        workDeploymentService.passauditDeployment(id);
+    public ResponseResult passauditDeployment(WorkDeployment workDeployment){
+        workDeploymentService.passauditDeployment(workDeployment);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","审核通过");
         return result;

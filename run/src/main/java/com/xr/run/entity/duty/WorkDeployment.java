@@ -17,4 +17,5 @@ public class WorkDeployment {
     private List<SysStaff> users=new ArrayList<>();
     private Integer createid;
     private Integer status;
+    private String auditresult;
 }
