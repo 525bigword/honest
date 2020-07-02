@@ -488,7 +488,7 @@ import { mapGetters } from 'vuex'
       if(this.temp.wstatus===1){
         this.btnShowTj=true;
       }
-      if(this.temp.wstatus===2&&this.userId!==4){
+      if(this.temp.wstatus===2&&this.hasPerm('wind:update')){
         this.btnShowTs=true;
       }
     },
