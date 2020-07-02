@@ -23,8 +23,9 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     }
 
     @Override
-    public void addWorkPlan(WorkPlan workPlan) {
-        workPlanMapper.addWorkPlan(workPlan);
+    public Integer addWorkPlan(WorkPlan workPlan) {
+         workPlanMapper.addWorkPlan(workPlan);
+         return workPlan.getId();
     }
 
     @Override
@@ -43,8 +44,8 @@ workPlanMapper.del(id);
     }
 
     @Override
-    public void passaudit(Integer id) {
-        workPlanMapper.passaudit(id);
+    public void passaudit(WorkPlan workPlan) {
+        workPlanMapper.passaudit(workPlan);
 
     }
 }

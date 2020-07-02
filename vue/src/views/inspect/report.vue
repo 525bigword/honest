@@ -40,12 +40,12 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable">
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
           label="序号"
-          width="180">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="reportType"
@@ -60,7 +60,12 @@
         <el-table-column
           prop="report"
           label="文件名"
-          width="180">
+          width="260">
+          <template slot-scope="scope">
+            <a  @click="to(scope.$index, scope.row)"
+                target="_blank"
+                class="buttonText" style="color: #1890ff">{{scope.row.report}}</a>
+          </template>
         </el-table-column>
         <el-table-column
           prop="url"
@@ -90,14 +95,14 @@
     </el-form>
       <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
         <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
-          <div style="background-color: white;width: 100%;height: 65px" >
+          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
             <br/>
             <div align="right" ><el-form-item >
               <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
               <el-button type="primary" class="el-icon-edit" align="right" @click="gxMethod" v-bind:style="{display:gx}">更新</el-button>
               <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
           <br/>
-          <div style="background-color: white">
+          <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
             <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
 
@@ -130,11 +135,11 @@
             </el-select>
           </el-form-item><br/>
 
-            <el-form-item label="报表类型详情">
+            <el-form-item :label="placeholders">
               <el-select
                 v-model="userInfo.xg"
                 class="bbxq"
-                placeholder="报表类型详情">
+                :placeholder="placeholders">
                 <el-option
                   v-for="item in options"
                   :key="item.id"
@@ -173,23 +178,38 @@ import { fileUpload } from '@/api/daily/supervise'
       this.initList()
     },
     methods:{
+      to(index,row){
+        window.open(row.url)
+},
+      //设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },
       //el-选择框选中值变化
       changes(val){
         console.log('val'+val)
         if(val==='季报'){
+          this.placeholders='请选择季度'
           this.options=[{id:1,name:'第一季度'},{id:2,name:'第二季度'},{id:3,name:'第三季度'},{id:4,name:'第四季度'}]
 
         }
         else if(val==='月报'){
+          this.placeholders='请选择月份'
           this.options=[{id:1,name:'一月'},{id:2,name:'二月'},{id:3,name:'三月'},{id:4,name:'四月'},{id:5,name:'五月'},{id:6,name:'六月'},{id:7,name:'七月'},{id:8,name:'八月'},{id:9,name:'九月'},{id:10,name:'十月'},{id:11,name:'十一月'},{id:12,name:'十二月'}]
         }
         else if(val==='半年报'){
+          this.placeholders='请选择半年'
           this.options=[{id:1,name:'上半年'},{id:2,name:'下半年'}]
         }
         else if(val==='重要节点报'){
+          this.placeholders='请选择重要节点'
           this.options=[{id:1,name:'春节'},{id:2,name:'端午节'},{id:3,name:'中秋节'},{id:4,name:'国庆节'},{id:5,name:'元旦节'}]
         }
         else if(val==='及时报'){
+          this.placeholders='请选择重要时间'
           this.options=[{id:1,name:'1点'},{id:2,name:'两点'},{id:3,name:'三点'},{id:4,name:'四点'},{id:5,name:'五点'}]
         }
       },
@@ -371,6 +391,7 @@ import { fileUpload } from '@/api/daily/supervise'
     },
     data() {
       return {
+        placeholders:'请选择',
         fileList:[],
         tf:'',//父页面
         ad:'none',//新增、审核页面

@@ -23,7 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/datacollection")
 public class DatacollectionController {
-    @Value("${file.uploadFolder}")
+/*    @Value("${file.uploadFolder}")
     private String realBasePath;
     @Value("${file.uploadVideo}")
     private String videoBasePath;
@@ -124,5 +124,5 @@ public class DatacollectionController {
             return url;
         }
         return null;
-    }
+    }*/
 }

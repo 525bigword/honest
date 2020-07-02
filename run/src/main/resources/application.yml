@@ -8,12 +8,13 @@ spring:
   mvc:
     static-path-pattern: /**
   resources:
-    static-locations:
+    static-locations: classpath:static/,file:${file.uploadFolders}
       - /META-INF/resources/
       - /resources/
       - /public/
       - /static/
       - /uploadimg/
+      - /upload/
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -49,9 +50,6 @@ file:
   uploadDuty: C://File_rec/duty/
   #uploadVideo: D:/IDE/tomcat/apache-tomcat-9.0.36/webapps/hoonest/vido
   uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
-
-files:
-  accessPath: /uploadimg/
-  staticAccessPath: /uploadimg/**
-  uploadFolder: D://IDE/
-  uploadDuty: D://IDE
+  accessPaths: /static/upload
+  staticAccessPaths: /upload/**
+  uploadFolders: D://IDE/

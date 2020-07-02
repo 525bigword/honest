@@ -20,4 +20,5 @@ public class WorkPlan {
     private Integer createid;
     private String createname;
     private Integer staus;
+    private String auditresult;
 }

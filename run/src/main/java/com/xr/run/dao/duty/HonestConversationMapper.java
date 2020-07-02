@@ -21,7 +21,7 @@ public interface HonestConversationMapper {
     /*提交审核*/
     public void subauditHonestConversation(Integer id);
     /*审核通过*/
-    public void passauditHonestConversation(@Param(value = "id") Integer id, @Param(value = "staus") Integer status);
+    public void passauditHonestConversation(@Param(value = "id") Integer id, @Param(value = "staus") Integer status,@Param(value = "auditresult") String auditresult);
     /*删除谈话*/
     public void delHonestConversationt(Integer id);
     /*根据单位查用户*/

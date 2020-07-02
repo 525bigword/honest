@@ -24,8 +24,9 @@ public class WorkDeploymentServiceImpl implements WorkDeploymentService {
     }
 
     @Override
-    public void addDeployment(WorkDeployment workDeployment) {
+    public Integer addDeployment(WorkDeployment workDeployment) {
 workDeploymentMapper.addDeployment(workDeployment);
+return workDeployment.getId();
     }
 
     @Override
@@ -39,8 +40,8 @@ workDeploymentMapper.subauditDeployment(id);
     }
 
     @Override
-    public void passauditDeployment(Integer id) {
-workDeploymentMapper.passauditDeployment(id);
+    public void passauditDeployment(WorkDeployment workDeployment) {
+workDeploymentMapper.passauditDeployment(workDeployment);
     }
 
     @Override

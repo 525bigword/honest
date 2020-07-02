@@ -41,8 +41,8 @@ honestConversationMapper.subauditHonestConversation(id);
     }
 
     @Override
-    public void passauditHonestConversation(Integer id,Integer status) {
-honestConversationMapper.passauditHonestConversation(id,status);
+    public void passauditHonestConversation(Integer id,Integer status,String auditresult) {
+honestConversationMapper.passauditHonestConversation(id,status,auditresult);
     }
 
     @Override

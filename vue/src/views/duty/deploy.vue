@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :inline="true" class="demo-form-inline">
+    <el-form :inline="true" class="demo-form-inline" v-bind:style="{display:tf}">
       <div align="center" style="margin-top: 30px">
         <el-form-item>
           <el-input
@@ -26,12 +26,12 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable">
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
           label="序号"
-          width="180">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="title"
@@ -57,6 +57,7 @@
           prop="status"
           label="状态"  :formatter="cstatus">
         </el-table-column>
+        <el-table-column prop="auditresult" label="审核结果"></el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -68,18 +69,32 @@
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
         </el-pagination>
-      </div>
+      </div></el-form>
 
-      <!--弹窗-->
-      <el-dialog :title="dialogTitle" width="50%" :visible.sync="iconFormVisible">
-        <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="120px">
+      <!--隐藏窗-->
+      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
+        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px">
+          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
+            <br/>
+            <div align="right">
+              <el-button type="primary"  @click="tjshmethod()" v-bind:style="{display:tjsh}">提交审核</el-button>
+              <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+              <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser()">保存</el-button>
+              <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
+              <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
+              <el-button type="primary" class="el-icon-back" @click="deselect()">返回</el-button>
+            </div></div>
+          <br/>
+          <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="序号" type="hidden"></el-input>
           <el-form-item label="工作部署标题">
 
             <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
           <el-form-item label="文章内容">
-            <quill-editor id="editer"  v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 400px;" />
+            <el-card class="box-card" v-html="userInfo.content" style="margin-bottom:30px;width: 830px;height: 350px;text-align: center" v-if="dialogTitle!='增加'"></el-card>
+
+            <quill-editor id="editer"   v-if="dialogTitle=='增加'" v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
      </el-form-item><br/>
 
           <el-form-item label="创建者姓名">
@@ -88,20 +103,13 @@
           <el-form-item label="创建时间">
             <el-date-picker v-model="userInfo.createtime" placeholder="创建时间" type="datetime"  style="width: 400px"  disabled="disabled"></el-date-picker>
           </el-form-item><br/>
-          <el-form-item label="审核状态">
+          <el-form-item label="审核状态"  v-if="false">
             <el-input v-model="userInfo.status" placeholder="状态"  disabled="disabled"  style="width: 400px" ></el-input>
-          </el-form-item><br/>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary"  @click="tjshmethod()" v-bind:style="{display:tjsh}">提交审核</el-button>
-          <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
-          <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser()">保存</el-button>
-          <el-button type="primary"  @click="tgmethod()" v-bind:style="{display:tg}">通过</el-button>
-          <el-button type="primary"  @click="tgmethod()"v-bind:style="{display:btg}">不通过</el-button>
-          <el-button type="primary" class="el-icon-back" @click="deselect()">返回</el-button>
-        </div>
-      </el-dialog>
-    </el-form>
+          </el-form-item>
+
+      </div>
+    </el-form></el-main>
+  </div>
   </div>
 </template>
 
@@ -125,6 +133,13 @@
       this.initList()
     },
     methods:{
+  //设置表格内容居中
+  cellStyle({row, column, rowIndex, columnIndex}){
+    return 'text-align:center';
+  },
+  rowClass({row, rowIndex}){//设置表头居中
+    return 'text-align:center';
+  },
       //重置
       onrest(){
 this.search=''
@@ -146,7 +161,8 @@ this.search=''
         content:this.userInfo.content
       });
       updatecontent(postData).then((responese)=>{
-        this.iconFormVisible = false;
+        this.ad='none'//编辑页面隐藏
+        this.tf=''//表格页面显示
         this.initList()
         this.$notify({
           title: '成功',
@@ -158,24 +174,74 @@ this.search=''
       console.log('gx'+this.userInfo.id)
     },
     tjshmethod(){
+      if(this.dialogTitle=="增加"){
+        let endtime = new Date(this.userInfo.createtime).toJSON();
+        this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
+        let postData = qs.stringify({
+          title: this.userInfo.title,
+          content: this.userInfo.content,
+          status:0,
+          createtime:this.userInfo.createtime,
+          createid:this.userId
+        });
+        //新增的方法
+        add(postData).then((response) => {
+          let postData = qs.stringify({
+            id:response.id
+          });
+          console.log('tjsh'+response.id)
+          subaudit(postData).then((response)=>{
+            this.ad='none'//编辑页面隐藏
+            this.tf=''//表格页面显示
+            this.initList()
+            this.$notify({
+              title: '成功',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+
+        })
+      }else{
       let postData = qs.stringify({
         id:this.userInfo.id
       });
       console.log('tjsh'+this.userInfo.id)
       subaudit(postData).then((response)=>{
-        this.iconFormVisible = false;
+        this.ad='none'//编辑页面隐藏
+        this.tf=''//表格页面显示
         this.initList()
-      })
-    },
-    tgmethod(){
+        this.$notify({
+          title: '成功',
+          message: '提交成功',
+          type: 'success',
+          duration: 2000
+        })
+      })}
+    },//提交审核的方法
+    tgmethod(val){
+
       let postData = qs.stringify({
-        id:this.userInfo.id
+        id:this.userInfo.id,
+        auditresult:val
       });
       console.log('tg'+this.userInfo.id)
       passaudit(postData).then((response)=>{
-        this.iconFormVisible = false;
+        this.ad='none'//编辑页面隐藏
+        this.tf=''//表格页面显示
         this.initList()
+        this.$notify({
+          title: '成功',
+          message: '提交成功',
+          type: 'success',
+          duration: 2000
+        })
       })
+
     },
       //初始化页面
       initList() {
@@ -187,7 +253,6 @@ this.search=''
       },//删除
       dele(){
         var data = this.$refs.multipleTable.selection;
-        console.debug("11"+data)
         if(JSON.stringify(data)=='[]'){
           this.$notify({
             title: '温馨提示',
@@ -197,11 +262,28 @@ this.search=''
           })
         }
         else {
+          var ids = data.map(item => { return { status: item.status } })
+          var ids1 =true
+          for(var i = 0; i < ids.length; i++) {
+            console.log('ids[i].status'+ids[i].status)
+            if(ids[i].status=='1'){
+              ids1=false
+            }
+          }
+          console.log(ids1)
+          if(!ids1){//判断处于审核中的不能删除
+
+            this.$notify({
+              title: '温馨提示',
+              message: '该记录处于审核中不能删除',
+              type: 'warning',
+              duration: 2000
+            })
+          }else {
           let postData = qs.stringify({
             test:JSON.stringify(data)
           });
-
-          console.debug('选中行数据'+JSON.stringify(data))
+          //删除的方法
           del(postData).then((response) =>{
             this.initList();
             this.$notify({
@@ -211,8 +293,8 @@ this.search=''
               duration: 2000
             })
           })
-        }
-      },
+        }}
+      },//打开新增页面
       add() {
         this.nr=false
         this.bt=false
@@ -222,19 +304,22 @@ this.search=''
           this.gx='none'//更新按钮不显示
           this.tjsh=''//提交审核按钮显示
         this.dialogTitle = '增加';
-        this.userInfo={};
+        this.userInfo={title:''};
         this.userInfo.title='定期研究'
         this.userInfo.status='创建'
         this.userInfo.createname =this.nickname
-      //  console.debug('id='+this.id)
         /* 动态赋值实时设置当前时间*/
         this.$set(this.userInfo,'createtime',new Date())
-        //this.timer= setInterval(this.time, 1000 );
-
-        this.iconFormVisible = true;
+        this.ad=''//新增页面出现
+        this.tf='none'//表格页面隐藏
       },
-      // 弹窗确定
+      //新增工作计划
       submitUser() {
+        let endtime = new Date(this.userInfo.createtime).toJSON();
+        this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
         let postData = qs.stringify({
           title: this.userInfo.title,
           content: this.userInfo.content,
@@ -242,11 +327,10 @@ this.search=''
           createtime:this.userInfo.createtime,
           createid:this.userId
         });
-        if (this.dialogTitle === '增加') {
-          //新增
+          //新增的方法
           add(postData).then((response) => {
-            this.iconFormVisible = false;
-           // clearInterval(this.timer)
+            this.ad='none'//新增页面隐藏
+            this.tf=''//表格页面显示
             this.initList();
             this.$notify({
               title: '成功',
@@ -255,37 +339,32 @@ this.search=''
               duration: 2000
             })
           })
-
-        }
-
       },
       // 编辑
       handleEdit(index, row) {
-        this.dialogTitle = '编辑';
+    this.dialogTitle='编辑'
         this.userInfo = row;
         this.userInfo.createname=row.users[0].name
         if(row.status==0){
-
           this.nr=false
           this.bt=false
           this.bc='none' //保存按钮
-            this.tg = 'none' //通过按钮不显示
-              this.btg = 'none' //不通过按钮不显示
+          this.tg = 'none' //通过按钮不显示
+          this.btg = 'none' //不通过按钮不显示
           if(this.role.includes('单位/部门负责人')) {
             this.gx=''//更新按钮显示
             this.tjsh=''//提交审核按钮显示}
-        }
+           }
         }
         else if(row.status==1){
-          this.nr='disabled'
-          this.bt='disabled'
-
+          this.nr='disabled'//内容禁用
+          this.bt='disabled'//标题禁用
           this.bc='none'//保存按钮
           if(this.role.includes('纪检监察科科长')){
             this.tg=''//通过按钮显示
             this.btg=''//不通过按钮显示
           }
-            this.gx='none',//更新按钮不显示
+            this.gx='none'//更新按钮不显示
             this.tjsh='none'//提交审核按钮不显示
         }
         else{
@@ -298,7 +377,8 @@ this.search=''
             this.gx='none',//更新按钮不显示
             this.tjsh='none'//提交审核按钮显示
         }
-        this.iconFormVisible = true;
+        this.ad=''//默认编辑页面显示
+        this.tf='none'//表格页面隐藏
         this.rowIndex = index;
       },
       //按标题查询
@@ -309,16 +389,17 @@ this.search=''
         this.listLoading = true
         findbytitle(postData).then((response) =>{
           this.currentPage = 1
-          this.tableData = response.data.list
+          this.tableData = response.list
           console.debug(this.tableData)
-          this.total=response.data.list.length
-          this.listLoading=false
+          this.total=response.list.length
+          this.ad='none'//默认新增页面隐藏
+          this.tf=''//表格页面显示
         })
-      }, //弹窗取消
+      }, //返回
       deselect(){
-        this.iconFormVisible = false
+        this.ad='none'//默认新增页面隐藏
+        this.tf=''//表格页面显示
         this.initList()
-        //  clearInterval(this.timer)
       },
       handleSizeChange(size) {
         this.pageSize = size;
@@ -331,6 +412,8 @@ this.search=''
     },
     data() {
       return {
+        ad:'none',//默认新增页面隐藏
+        tf:'',//表格页面显示
         editorOption: {},
         nr:false,
         bt:false,
@@ -349,27 +432,7 @@ this.search=''
         total:0,
         currentPage:1,
 
-        tableData: [/*{
-          id:'1',
-          title: '对十二届全国人大五次会议第1211号建议的答复',
-          userName: '系统管理员',
-          createtime: '2010/2/2'
-        }, {
-          id:'2',
-          title: '对十二届全国人大五次会议第1211号建议的答复',
-          userName: '纪检监察科科长',
-          createtime: '2010/4/2'
-        }, {
-          id:'3',
-          title: '对十二届全国人大五次会议第1211号建议的答复',
-          userName: '系统管理员',
-          createtime: '2010/2/22'
-        }, {
-          id:'4',
-          title: '对十二届全国人大五次会议第1211号建议的答复',
-          userName: '系统管理员',
-          createtime: '2010/5/2'
-        }*/]
+        tableData: []
       }
     }
   }

@@ -27,12 +27,12 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable">
+        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
           label="编号"
-          width="180">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="type"
@@ -40,10 +40,11 @@
           width="180">
         </el-table-column>
         <el-table-column
-          prop="punits"
+          prop="punit"
           label="谈话对象单位"
           width="180"   v-if="false">
         </el-table-column>
+        <el-table-column v-if="false" prop="dept" label="部门路径"></el-table-column>
         <el-table-column  label="谈话类型"
                           width="180"
         prop="users[0].mechanisms[0].mechanismName" v-if="false"
@@ -61,7 +62,7 @@
         <el-table-column
           prop="time"
           label="谈话时间"
-          width="180">
+          width="200">
         </el-table-column>
         <el-table-column
           prop="users[0].politicalAppearance"
@@ -88,8 +89,9 @@
         </el-table-column>
         <el-table-column
           prop="staus"
-          label="状态"  :formatter="cstatus">
+          label="状态"  :formatter="cstatus" width="100px">
         </el-table-column>
+        <el-table-column prop="auditresult" label="审核结果"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)" v-if="scope.row.staus==0&&role.includes('单位/部门负责人')">编辑</el-button>
@@ -112,26 +114,29 @@
 <!--隐藏窗-->
       <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
         <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px">
-          <div style="background-color: white;width: 100%;height: 65px" >
+          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
             <br/>
             <div align="right" ><el-form-item >
               <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser()"  >提交</el-button>
               <el-button type="primary" class="el-icon-edit" @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+              <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
+              <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>
+
               <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
           <br/>
-          <div style="background-color: white">
+          <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
 
           <el-form-item label="谈话对象单位" >
-            <el-cascader ref='cascaderUnit' :show-all-levels="false"
+            <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
                          :placeholder="defaUnit"
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                                clearable v-model="userInfo.deptname" @change="handleItemChange"  style="width: 400px"></el-cascader>
+                         clearable v-model="userInfo.punit" @change="handleItemChange"  style="width: 300px"></el-cascader>
           </el-form-item>
           <el-form-item label="谈话对象姓名">
-            <el-select v-model="userInfo.pid" placeholder="谈话对象姓名" style="width: 400px">
+            <el-select v-model="userInfo.pid" placeholder="请选择谈话对象姓名" style="width: 400px">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -141,7 +146,7 @@
             </el-select>
           </el-form-item><br/>
           <el-form-item label="记录人">
-            <el-select v-model="userInfo.personid" placeholder="记录人" style="width: 400px">
+            <el-select v-model="userInfo.personid" placeholder="请选择记录人" style="width: 400px">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -151,17 +156,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="谈话时间">
-            <el-date-picker v-model="userInfo.time" placeholder="谈话时间" type="datetime"  style="width: 400px" ></el-date-picker>
+            <el-date-picker v-model="userInfo.time" placeholder="请选择谈话时间" type="datetime"  style="width: 400px" ></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="谈话对象政治面貌">
-            <el-select v-model="userInfo.zzmm" placeholder="谈话对象政治面貌" style="width: 400px">
+            <el-select v-model="userInfo.zzmm" placeholder="请选择谈话对象政治面貌" style="width: 400px">
               <el-option label="党员" value="党员"></el-option>
               <el-option label="团员" value="团员"></el-option>
               <el-option label="群众" value="群众"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="谈话对象职务">
-            <el-input v-model="userInfo.duty" placeholder="谈话对象职务" style="width: 400px"></el-input>
+            <el-input v-model="userInfo.duty" placeholder="请输入谈话对象职务" style="width: 400px"></el-input>
           </el-form-item><br/>
           <el-form-item label="谈话类型">
             <el-select v-model="userInfo.type" placeholder="谈话类型" style="width: 400px">
@@ -171,20 +176,20 @@
             </el-select>
           </el-form-item>
           <el-form-item label="谈话地点">
-            <el-input v-model="userInfo.site" placeholder="谈话地点" style="width: 400px"></el-input>
+            <el-input v-model="userInfo.site" placeholder="请输入谈话地点" style="width: 400px"></el-input>
           </el-form-item>
             <br/>
             <el-form-item label="谈话提纲">
-          <el-input v-model="userInfo.syllabus" placeholder="谈话提纲" style="width: 1000px"></el-input>
+          <el-input v-model="userInfo.syllabus"  type="textarea" placeholder="请输入400字符以内的谈话提纲" style="width: 1000px;" :rows="6"></el-input>
         </el-form-item>
             <br/>
             <el-form-item label="谈话内容">
-              <el-input v-model="userInfo.content" placeholder="谈话内容" style="width: 1000px"></el-input>
+              <el-input v-model="userInfo.content" type="textarea" placeholder="请输入2000字符以内的谈话内容" style="width: 1000px" :rows="16"></el-input>
             </el-form-item><br/>
-          <el-form-item label="创建人">
-            <el-input v-model="userInfo.createname" placeholder="创建人" disabled="disabled" style="width: 400px"></el-input>
+          <el-form-item label="创建人" v-if="false">
+            <el-input v-model="userInfo.createname" placeholder="创建人" disabled="disabled" style="width: 400px" v-if="false"></el-input>
           </el-form-item>
-          <el-form-item label="创建时间">
+          <el-form-item label="创建时间" v-if="false">
             <el-date-picker v-model="userInfo.createtime" placeholder="创建时间" type="datetime"  style="width: 400px" disabled="disabled" ></el-date-picker>
           </el-form-item>
           </div>
@@ -209,13 +214,20 @@
       this.initList()
     },
     methods:{
+
+  //设置表格内容居中
+  cellStyle({row, column, rowIndex, columnIndex}){
+    return 'text-align:center';
+  },
+  rowClass({row, rowIndex}){//设置表头居中
+    return 'text-align:center';
+  },
       submitUser(){
-        console.log('puni'+this.$refs.cascaderUnit.getCheckedNodes()[0].value)
-        var puni='';
-        puni=this.$refs.cascaderUnit.getCheckedNodes()[0].value;
+
 
         let postData = qs.stringify({
-         punit:puni,//谈话对象单位
+         punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
+          dept:this.userInfo.punit.toString(),
           pid:this.userInfo.pid,//谈话对象姓名
           personid:this.userInfo.personid,//记录人
           time:this.userInfo.time,
@@ -251,6 +263,7 @@
        console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值*/
 
        if(checkedNodes[0]!=undefined){
+         this.userInfo.punit=value
          console.log('checkedNodes label'+checkedNodes[0].label)
          let postdata=qs.stringify({
            id:checkedNodes[0].value
@@ -285,17 +298,22 @@
         }
       },
       back(){this.ad='none',//隐藏窗
-        this.tf='' },
+        this.tf=''
+        this.tg='none'//通过按钮
+          this.bh='none'//驳回按钮
+           },
       gxmethod(){//更新
-        var puni='';
-        if(this.$refs.cascaderUnit.getCheckedNodes()[0]!=undefined){
-        puni=this.$refs.cascaderUnit.getCheckedNodes()[0].value;}
-        else {
-          puni=this.userInfo.punit
-        }
+
+        let endtime = new Date(this.userInfo.time).toJSON();
+        this.userInfo.time = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
+
         let postData = qs.stringify({
           id:this.userInfo.id,
-          punit:puni,//谈话对象单位
+          punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
+          dept:this.userInfo.punit.toString(),
           pid:this.userInfo.pid,//谈话对象姓名
           personid:this.userInfo.personid,//记录人
           time:this.userInfo.time,
@@ -345,42 +363,95 @@
             message: '已取消提交审核'
           });
         })
-      },//通过审核
-      sh(index,row){
-        this.$confirm(`请选择审核通过或撤回！`, '提示', {
-          confirmButtonText: '审核通过',
-          cancelButtonText: '撤回',
-         distinguishCancelAndClose:true,
-          type: 'warning',
-        }).then(() => {
-          let postData = qs.stringify({
-            id:row.id,
-            status:2,
-          });
-          passaudit(postData).then((response)=>{
-            this.$notify({
-              type: 'success',
-              message: '审核成功'
-            });
-            this.initList()
-          })
+      },
+      //通过还是驳回
+      passtg(val){
+    if(val=='通过'){
+      let postData = qs.stringify({
+        id:this.userInfo.id,
+        status:2,
+        auditresult:val
+      });
+      passaudit(postData).then((response)=>{
+        this.$notify({
+          type: 'success',
+          message: '处理成功'
+        });})
+      this.ad='none'
+      this.tf=''
+        this.initList()
+    }else{
 
-        }).catch((action) => {
-          let postData = qs.stringify({
-            id:row.id,
-            status:0,
-          });
-          if(action==='cancel'){
-          passaudit(postData).then((response)=> {
-            this.$notify({
-              type: action==='cancel'?'success':'info',
-              message: action === 'cancel' ? '撤回成功' : '已取消审核'
-            });
-            this.initList()
-          })}
+      this.$confirm(`确定驳回吗?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        this.$notify({
+          type: 'success',
+          message: '驳回成功'
+        });
 
+       let postData = qs.stringify({
+          id:this.userInfo.id,
+          status:0,
+          auditresult:val
+        });
+        passaudit(postData).then((response)=>{
+          this.$notify({
+            type: 'success',
+            message: '驳回成功'
+          });
+ this.ad='none'
+        this.tf=''
+          this.initList()
         })
 
+      }).catch(() => {
+        this.$notify({
+          type: 'info',
+          message: '已取消驳回'
+        });
+      })
+    }
+      },//审核
+      sh(index,row){
+       this.tg='',//通过按钮
+        this.bh='',//驳回按钮
+
+         this.userInfo={
+           punit:[]
+         }
+
+        this.userInfo=row
+        this.userInfo.punit = row.dept.split(',').map(Number)
+
+        this.isShowAddressInfo = false;
+        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
+        setTimeout(() => {
+          this.isShowAddressInfo = true;
+        }, 10);
+        let postdata=qs.stringify({
+          id:row.dept.split(',').map(Number)[row.dept.split(',').map(Number).length-1]
+        })
+        initpersons(postdata).then((response)=>{
+          this.options = response.list
+        })
+        this.userInfo.name=Number(row.pid)
+        this.userInfo.personname=Number(row.personid)
+        this.userInfo.zzmm=row.users[0].politicalAppearance
+        this.userInfo.duty=row.users[0].posts[0].pname
+        this.bc='none'
+        this.gx='none'
+    /*    this.userInfo.punit=[],
+          this.userInfo.punit.push(row.punits)
+        this.userInfo.name=[]
+        this.userInfo.name.push(row.pid)
+        this.userInfo.personname=[],
+          this.userInfo.personname.push(row.personid)
+*/
+        this.ad='',//隐藏窗
+          this.tf='none'
       }
 ,
       //按标题查询
@@ -399,7 +470,6 @@
         },
       //删除
       del(){ var data = this.$refs.multipleTable.selection;
-        console.debug("11"+data)
         if(JSON.stringify(data)=='[]'){
           this.$notify({
             title: '温馨提示',
@@ -409,6 +479,24 @@
           })
         }
         else {
+          var ids = data.map(item => { return { staus: item.staus } })
+          var ids1 =true
+          for(var i = 0; i < ids.length; i++) {
+            console.log('ids[i].staus'+ids[i].staus)
+            if(ids[i].staus=='1'){
+              ids1=false
+            }
+          }
+          console.log(ids1)
+          if(!ids1){//判断处于审核中的不能删除
+
+            this.$notify({
+              title: '温馨提示',
+              message: '该记录处于审核中不能删除',
+              type: 'warning',
+              duration: 2000
+            })
+          }else {
           let postData = qs.stringify({
             test:JSON.stringify(data)
           });
@@ -423,21 +511,37 @@
               duration: 2000
             })
           })
-        }},   handleEdit(index, row) {
+        }}},   handleEdit(index, row) {
+        this.userInfo={
+          punit:[]
+        }
+
+        this.userInfo=row
+        this.userInfo.punit = row.dept.split(',').map(Number)
+
+        this.isShowAddressInfo = false;
+        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
+        setTimeout(() => {
+          this.isShowAddressInfo = true;
+        }, 10);
+        let postdata=qs.stringify({
+          id:row.dept.split(',').map(Number)[row.dept.split(',').map(Number).length-1]
+        })
+        initpersons(postdata).then((response)=>{
+          this.options = response.list
+        })
+        this.userInfo.name=Number(row.pid)
+        this.userInfo.personname=Number(row.personid)
         this.tf='none';//表格父页面隐藏
         this.ad=''//编辑/审核页面出来,
         this.bc='none'
         this.gx=''
-        this.userInfo = row;
-       this.userInfo.deptname=[],
-         this.userInfo.deptname.push(row.punits)
-        this.defaUnit=row.users[0].mechanisms[0].mechanismName
         this.userInfo.zzmm=row.users[0].politicalAppearance
         this.userInfo.duty=row.users[0].posts[0].pname
-        this.userInfo.name=[]
+    /*    this.userInfo.name=[]
         this.userInfo.name.push(row.pid)
         this.userInfo.personname=[],
-          this.userInfo.personname.push(row.personid)
+          this.userInfo.personname.push(row.personid)*/
         console.log('测试状态'+row.staus)
 
       },
@@ -508,6 +612,9 @@
 
           }
         },
+        isShowAddressInfo:true,
+        tg:'none',//通过按钮
+        bh:'none',//驳回按钮
         gx:'none',
         bc:'',
         tf:false,

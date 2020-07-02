@@ -20,6 +20,8 @@ public class Supervisionfiling {
     private String sCreateName;
     private Integer sStatus;
     private String auditorrole;
+    private String punit;
     //功能需求
     private String url;
+
 }

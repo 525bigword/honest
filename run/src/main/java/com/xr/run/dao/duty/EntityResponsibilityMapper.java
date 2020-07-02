@@ -13,7 +13,7 @@ public interface EntityResponsibilityMapper {
     /*根据标题模糊查询*/
     public List<EntityResponsibility> findbytitle(String title);
     /*新增数据*/
-    public void addEntityResponsibility(EntityResponsibility entityResponsibility);
+    public Integer addEntityResponsibility(EntityResponsibility entityResponsibility);
     /*更新工作计划*/
     public void updateEntityResponsibility(EntityResponsibility entityResponsibility);
     /*删除*/
@@ -21,5 +21,5 @@ public interface EntityResponsibilityMapper {
     /*提交审核*/
     public void subaudit(Integer id);
     /*审核通过*/
-    public void passaudit(Integer id);
+    public void passaudit(EntityResponsibility entityResponsibility);
 }

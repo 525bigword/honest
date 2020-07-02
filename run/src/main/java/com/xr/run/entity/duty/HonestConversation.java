@@ -27,4 +27,6 @@ public class HonestConversation {
     private String pduty;//职务
     private Integer pid;//谈话对象
     private String politcs;//谈话对象政治面貌
+    private String auditresult;
+    private String dept;
 }

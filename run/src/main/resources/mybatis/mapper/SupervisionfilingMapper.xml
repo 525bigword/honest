@@ -3,19 +3,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.SupervisionfilingMapper">
     <select id="list" resultType="com.xr.run.entity.daily.Supervisionfiling">
-select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole from daily_supervisionFiling
+select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
     </select>
     <select id="findbytitle" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-    select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole from daily_supervisionFiling
+    select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
    where  sPaperItems like CONCAT('%',#{sPaperItems},'%')
     </select>
     <select id="findbysFilingId" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-     select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole from daily_supervisionFiling
+     select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
    where  sFilingId like CONCAT('%',#{sFilingId},'%')
     </select>
     <insert id="addsupervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-        insert into daily_supervisionFiling(sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sCreateTime,sCreateName,sCreateId,sStatus,url)
-        values(#{sFilingId},#{sPaperItems},#{sAccessory},#{sEnforcementMode},#{sCost},#{sUndertaker},#{sUndertakerDeptId},#{sCreateTime},#{sCreateName},#{sCreateId},#{sStatus},#{url})
+        insert into daily_supervisionFiling(sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sCreateTime,sCreateName,sCreateId,sStatus,url,punit)
+        values(#{sFilingId},#{sPaperItems},#{sAccessory},#{sEnforcementMode},#{sCost},#{sUndertaker},#{sUndertakerDeptId},#{sCreateTime},#{sCreateName},#{sCreateId},#{sStatus},#{url},#{punit})
     </insert>
     <delete id="delesupervision" parameterType="Integer">
         delete from daily_supervisionFiling where sid=#{sid}

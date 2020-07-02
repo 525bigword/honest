@@ -17,4 +17,5 @@ public class EntityResponsibility {
     private List<SysStaff> users=new ArrayList<>();
     private Integer createid;
     private Integer staus;
+    private String auditresult;
 }

@@ -28,13 +28,13 @@
             class="el-icon-refresh"  plain @click="onrest" >重置
           </el-button>
         </el-form-item></div><br/>
-      <div><el-form-item>
+      <div ><el-form-item>
        <!-- <el-button type="primary" class="el-icon-plus" @click="add">新增</el-button>
         <el-button type="primary" class="el-icon-delete" @click="del">删除</el-button>--></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%" ref="multipleTable">
+        style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
         <el-table-column type="selection"  width="55px"></el-table-column>
         <el-table-column prop="lid" v-if="false">
 
@@ -55,7 +55,7 @@
         <el-table-column
           prop="ldeptId"
           label="来访人单位/部门"
-          width="130">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="lpostId"
@@ -99,8 +99,8 @@
         <el-table-column prop="lstatus" label="状态" :formatter="cstatus" width="80">
 
         </el-table-column>
-        <el-table-column label="操作" fixed="right" align="center"  prop="lstatus" >
-          <template slot-scope="scope">
+        <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
+          <template slot-scope="scope" >
             <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(role.includes('纪检监察员')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
             <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(role.includes('纪检监察科科长')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
             <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
@@ -123,17 +123,18 @@
     </el-form>
     <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
-        <div style="background-color: white;width: 100%;height: 65px" >
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
 <br/>
         <div align="right" ><el-form-item >
           <el-button type="primary" class="el-icon-edit" @click="turn" v-if="role.includes('纪检监察科科长')"  v-bind:style="{display:zb}">转办</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="role.includes('纪检监察员')" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="role.includes('纪检监察科科长')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="role.includes('单位/部门负责人')" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="role.includes('局领导')" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="role.includes('纪检组长')" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
         <br/>
-        <div style="background-color: white">
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
         <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
           <el-form-item label="状态"  v-if="false">
             <el-input v-model="userInfo.lstatus" placeholder="状态" style="width: 300px" v-if="false"></el-input>
@@ -237,7 +238,13 @@
     created() {
         this.initList();
     },
-    methods:{
+    methods:{//设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },
     //监察科自办
       kezhangbc(){
         let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
@@ -428,7 +435,7 @@ else {
       shbc(){
         let postData = qs.stringify({
           lid:this.userInfo.lid,
-          lSynopsis:this.userInfo.lSynopsis
+          lSynopsis:this.userInfo.lsynopsis
         });
         shbc(postData).then((response)=>{
           this.initList();
