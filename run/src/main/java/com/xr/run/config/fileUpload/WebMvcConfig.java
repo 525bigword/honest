@@ -10,9 +10,12 @@ public class WebMvcConfig implements WebMvcConfigurer{
     private String staticAccessPath;
     @Value("${file.uploadFolder}")
     private String uploadFolder;
+    @Value("${file.uploadDuty}")
+    private String uploadDuty;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + uploadFolder);
+        registry.addResourceHandler(staticAccessPath).addResourceLocations("file:"+uploadDuty);
     }
 
 }

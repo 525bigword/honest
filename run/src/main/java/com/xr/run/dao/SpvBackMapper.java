@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface SpvBackMapper extends BaseMapper<SpvBack> {
-    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back  where bid=#{bid} order by sid desc")
+    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName,bPdf from spv_back  where bid=#{bid} order by sid desc")
     @Results({
             @Result(column = "bid",property = "sysMechanism",
             one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismMid",fetchType = FetchType.DEFAULT)),
@@ -28,7 +28,7 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
     @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent} where sid=#{sid}")
     void updateSpvBackBySid(SpvBack spvBack);
 
-    @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent},BackAccessory=#{backAccessory},backAccessoryName=#{backAccessoryName} where sid=#{sid}")
+    @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent},BackAccessory=#{backAccessory},backAccessoryName=#{backAccessoryName},bPdf=#{bPdf} where sid=#{sid}")
     void updateSpvBackFileBySid(SpvBack spvBack);
 
     @Insert("insert into spv_back(sid,BackType,bid,NewTime,bCreateId,did,`status`) VALUES (NULL,#{backType},#{bid},NOW(),#{bCreateId},#{did},#{status})")
@@ -44,7 +44,7 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
     @Update("update spv_back set `status`=#{status} where sid=#{sid}")
     void updateStatusBySid(SpvBack spvBack);
 
-    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName from spv_back  where did=#{did} order by sid desc")
+    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName,bPdf from spv_back  where did=#{did} order by sid desc")
     @Results({
             @Result(column = "bid",property = "sysMechanism",
                     one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismMid",fetchType = FetchType.DEFAULT)),

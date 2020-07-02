@@ -360,9 +360,9 @@ export default {
       }else{
         this.temp.dstatus='已结束'
       }
+        
+        if(row.backAccessory!==''&&row.backAccessory!==null){
         this.fileList = [{ name: row.backAccessoryName, url: row.backAccessory }];
-        if(row.backAccessory===''||row.backAccessory===null){
-        this.fileList=[]
       }
       // 将对话框里的确定点击时，改为执行修改操作
       this.dialogStatus = "update";

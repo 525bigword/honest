@@ -348,23 +348,7 @@
           </el-col>
           <el-col style="width:44%">
             <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
-              <el-upload
-                style="width:100%"
-                class="upload-demo"
-                v-model="back.backAccessoryName"
-                ref="upload"
-                action="https://localhost:8080/imp/importDuty"
-                :on-remove="fileRemove"
-                :on-change="handleImgChange1"
-                accept=".doc, .docx, .pdf, .txt, .xlsx"
-                :file-list="fileList"
-                :limit="2"
-                :auto-upload="false"
-                disabled="disabled"
-              >
-                <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
-              </el-upload>
+              <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -502,7 +486,8 @@ export default {
         dstatus: "",
         dutyContent:'',
         gettop:'',
-        cid:0
+        cid:0,
+        bpdf:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -709,7 +694,7 @@ export default {
         big.push(sz)
       });
       this.value=big;
-      this.fileList = [{ name: row.dutyAccessoryName, url: row.dutyAccessory }];
+      
       this.temp = row;
       this.xianshi();
       if(this.temp.status===1){
@@ -727,8 +712,8 @@ export default {
       }else{
           this.temp.dstatus='结束'
       }
-      if(row.dutyAccessory===''){
-        this.fileList=[];
+      if(row.dutyAccessory!==''&&row.dutyAccessory!==null){
+        this.fileList = [{ name: row.dutyAccessoryName, url: row.dutyAccessory }];
       }
       // 将对话框里的确定点击时，改为执行修改操作
       this.dialogStatus = "update";
@@ -972,6 +957,7 @@ export default {
       }
       this.temp=row
       this.getbList(row.did)
+
     },
     getbList(did){
       this.listLoading = true;
@@ -982,7 +968,7 @@ export default {
       blist(this.bpageNum, this.bpageRow,did).then(response => {
         this.blist = response.records;
         this.btotal = response.total;
-        console.debug(this.list);
+        console.debug(this.blist);
         // 转圈圈结束
         this.listLoading = false;
       });
@@ -1068,6 +1054,12 @@ export default {
           }) 
         })
         }
+        },
+        handleImgChan(){
+          var path=this.virtualIp+this.back.bpdf
+          if(this.back.backAccessoryName!==null&&this.back.backAccessoryName!==''){
+            window.open(path)
+          }
         },
         fabutongbao(){
           this.dis='none'
