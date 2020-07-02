@@ -110,7 +110,7 @@
           <el-input placeholder="请输入资料锦集标题" v-model="temp.dtitle" style="width:80%" />
         </el-form-item>
         <el-form-item label="文件名" prop="dfileName"  >
-          <el-upload  style="width:80%"
+          <el-upload  style="width:90%"
   class="upload-demo"
   v-model="temp.dfileName"
   ref="upload"
@@ -126,7 +126,7 @@
   </el-upload>
         </el-form-item>
         <el-form-item label="视频文件" prop="dvideoName">
-          <el-upload  style="width:80%"
+          <el-upload  style="width:90%"
   class="upload-demo"
   v-model="temp.dvideoName"
   ref="upload"
@@ -168,7 +168,7 @@
         <el-button type="primary" :disabled="isShow" v-show="btnShowTs" @click="updateData(3)">
           通过审核
         </el-button>
-        <el-button type="primary" :disabled="isShow"  @click="dialogStatus==='update'?updateData(0):createData(0)">
+        <el-button type="primary" :disabled="isShow" v-show="btnGX"  @click="dialogStatus==='update'?updateData(0):createData(0)">
           更新
         </el-button>
          <el-button @click="resetTemp">
@@ -224,6 +224,7 @@ import { mapGetters } from 'vuex'
         isShow:false,
         btnShowTs:false,
         btnShowTj:false,
+        btnGX:true,
         fileList: null,
         viList:null,
         file:{},
@@ -375,7 +376,7 @@ import { mapGetters } from 'vuex'
               this.isShow=false
               this.yincang()
               this.i=0;
-          
+              this.resetTemp()
           })
           })
           })
@@ -404,6 +405,7 @@ import { mapGetters } from 'vuex'
         
         this.temp.dCreateTime=row.dcreateTime
         this.xianshi()
+        
         // 将对话框里的确定点击时，改为执行修改操作
         this.dialogStatus = 'update'
         // 修改标题
@@ -420,6 +422,7 @@ import { mapGetters } from 'vuex'
         /* if (!this.hasPerm('datacollection:update')) {
           return
         } */
+        this.$refs['dataForm'].validate((valid) => {})
         console.debug(this.fileList)
         console.debug(this.viList)
           if(this.fileList!==null&&this.viList!==null&&this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
@@ -429,8 +432,6 @@ import { mapGetters } from 'vuex'
         }else if(this.viList!==null&&this.vfileAgin!==this.viList[0].name){//换视频
           this.i=2
         }
-        console.debug(this.temp)
-        console.debug(this.i)
       if(val!==0){//判断状态
             this.temp.dstatus=val;
             }
@@ -520,6 +521,7 @@ import { mapGetters } from 'vuex'
          
         })
          }
+         
           })
         }else if(this.i===0){
           this.temp.dFile='1'
@@ -549,7 +551,7 @@ import { mapGetters } from 'vuex'
         })
         }
         this.i=0;
-        
+        /* this.resetTemp() */
       },
       handleOutFile(){
         if (!this.hasPerm('datacollection:out')) {
@@ -593,7 +595,12 @@ import { mapGetters } from 'vuex'
       ,
       handleDelete() {
         if (!this.hasPerm('datacollection:delete')) {
-          return
+          this.$message({
+          showClose: true,
+          message: '权限不足',
+          type: 'warning'
+        });
+        return
         }
         // 先弹确认取消框
         let title='';
@@ -696,11 +703,18 @@ import { mapGetters } from 'vuex'
       if(this.temp.dstatus===2&&this.hasPerm('datacollection:update')){
         this.btnShowTs=true;
       }
+      console.debug(this.temp.dstatus)
+      if((this.temp.dstatus===2||this.temp.dstatus===3)&&!this.hasPerm('datacollection:update')){
+        this.btnGX=false
+      }
     },
     yincang(){
         this.btnShowTj=false;
         this.btnShowTs=false;
+        this.btnGX=true
         this.temp.dstatus=1;
+        this.viList=[]
+        this.fileList=[]
     },
     handleSizeChange(size) {
        this.deleteid=[];
