@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container"  align="center" style="margin-top: 20px">
+    <div class="filter-container"  align="center" style="margin-top: -30px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
       <el-input v-model="dtitle" placeholder="请输入资料锦集标题" style="width: 200px;" class="filter-item"/>
@@ -42,7 +42,7 @@
           <span>{{ scope.row.did }}</span>
         </template> -->
       </el-table-column>
-        <el-table-column label="标题" prop="dtitle"  align="center" width="270px">
+        <el-table-column label="标题" prop="dtitle"  align="center" width="250px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
@@ -53,7 +53,7 @@
           <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName }}</a>
         </template>
       </el-table-column>
-      <el-table-column label="视频" prop="sysStaff"   align="center" width="180px">
+      <el-table-column label="视频" prop="sysStaff"   align="center" width="160px">
         <template slot-scope="scope">
           <a style="color:#1890ff" :href="he" @click="shipin(scope.row)">{{ scope.row.dvideo===null||scope.row.dvideo===''?'未上传视频':'查看视频' }}</a>
         </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div :style="{'display':dis}" style="width:100%">
+    <div :style="{'display':dis}" style="width:100%;margin-top:-30px">
       <el-table
         :key="tableKey"
         v-loading="listLoading"
@@ -19,7 +19,7 @@
           :index="indexMethod"
         >
         </el-table-column>
-        <el-table-column width="700px">
+        <el-table-column width="660px">
           <template slot-scope="scope">
             <span>{{ scope.row.gettop | getContent }}</span>
           </template>
@@ -68,7 +68,7 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
     @change="onEditorChange($event)"-->
-    <div :style="{'display':dis2}" style="width:100%">
+    <div :style="{'display':dis2}" style="width:100%;margin-top:-30px">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -178,7 +178,7 @@
         </el-row>
       </el-form>
     </div>
-    <div :style="{'display':dis5}" style="width:100%">
+    <div :style="{'display':dis5}" style="width:100%;margin-top:-30px">
       <el-form
         ref="dataForm"
         :rules="rules"

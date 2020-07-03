@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div :style="{'display':dis}" style="width:100%">
-    <div class="filter-container"  style="margin-top: 20px;margin-left:60px">
+    <div class="filter-container"  style="margin-top: -30px;margin-left:60px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
       <el-input v-model="sysTitle" placeholder="请输入制度流程标题" style="width: 200px;" class="filter-item"/>
@@ -66,7 +66,7 @@
     </el-table>
     <!-- 分页工具条  page当前页 total总记录数 limit每页显示多少条 pagination触发自定义事件，查询数据 @size-change="handleSizeChange"
           @current-change="handleCurrentChange"-->
-     <div class="block" align="center" style="margin-top: 20px">
+     <div class="block" align="center" >
         <el-pagination
         v-show="total>0"
           @size-change="handleSizeChange"
@@ -82,12 +82,12 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
       @change="onEditorChange($event)" -->
-    <div :style="{'display':dis2}">
+    <div :style="{'display':dis2}" style="margin-top: -30px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
         <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData():createData()">
-          更新
+          保存
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
           返回

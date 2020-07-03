@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div :style="{'display':dis}" style="width:100%">
-    <div class="filter-container"  style="margin-top: 20px;margin-left:60px">
+    <div class="filter-container"  style="margin-top: -30px;margin-left:60px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
       <el-input v-model="wtitle" placeholder="请输入风险点预警标题" style="width: 200px;" class="filter-item"/>
@@ -23,7 +23,7 @@
           </el-button>
        <!--  </el-form-item> -->
     </div>
-    <div style="margin-top:15px">
+    <div style="margin-top:20px">
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">增加监控</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
     </div>
@@ -46,18 +46,18 @@
         </template> -->
         
       </el-table-column>
-      <el-table-column label="编号" prop="numId"   align="center" width="210px">
-        <template slot-scope="scope">
-          <span>{{ scope.row.numId }}</span>
-        </template>
-      </el-table-column>
-        <el-table-column label="标题" prop="wtitle"  align="center" width="390px">
+      
+        <el-table-column label="标题" prop="wtitle"  align="center" width="300px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
         </el-table-column>
-        
+        <el-table-column label="风险点内容" prop="wcontent"   align="center" width="260px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.wcontent | getContent}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="180px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
@@ -87,20 +87,20 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
       @change="onEditorChange($event)" -->
-    <div :style="{'display':dis2}">
+    <div :style="{'display':dis2}" style="margin-top:-30px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
         <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData():createData()">
-          更新
+         保存
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
           返回
         </el-button>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="风险点编号" prop="numId" >
+        <!-- <el-form-item style="font-weight: bold;" label="风险点编号" prop="numId" >
           <el-input v-model="temp.numId" placeholder="请输入风险点编号" style="width:50%" disabled="disabled" />
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item style="font-weight: bold;" label="所属部门" prop="dTitle" >
           <el-input placeholder="请输入清风文苑标题" style="width:30%" />
         </el-form-item> -->
@@ -410,6 +410,14 @@ import { mapGetters } from 'vuex'
         this.sid=null
     }
     
+    },
+    filters:{
+    getContent(val){
+      /* val.replace(/<\/?[^>]*>/g, ""); */
+      return val.replace(/<\/?[^>]*>/g, "").slice(0,20) +'......'
     }
+  }
+    
+
   }
 </script>

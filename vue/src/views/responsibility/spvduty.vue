@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div :style="{'display':dis}" style="width:100%">
-      <div class="filter-container" align="center" style="margin-top: 20px;">
+      <div class="filter-container" align="center" style="margin-top: -30px;">
         <!-- v-waves -->
         <label>责任监督标题</label>&nbsp;&nbsp;
         <el-input
@@ -106,7 +106,7 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
     @change="onEditorChange($event)"-->
-    <div :style="{'display':dis2}">
+    <div :style="{'display':dis2}" style="margin-top:-30px">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -226,7 +226,7 @@
       </el-form>
     </div>
     <div :style="{'display':dis3}" style="width:100%">
-      <div class="filter-container" align="right" style="margin-top: 20px;">
+      <div class="filter-container" align="right" style="margin-top: -30px;">
         <el-button type="primary" :style="{'display':checkShow}" @click="agincheck(3,4)">再检查</el-button>
         <el-button type="primary" @click="agincheck(4,0)">结束任务</el-button>
         <el-button type="primary" :style="{'display':tongShow}" @click="fabutongbao()">发布通报</el-button>
@@ -305,7 +305,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div :style="{'display':dis4}" style="width:100%">
+    <div :style="{'display':dis4}" style="width:100%;margin-top:-30px">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -369,7 +369,7 @@
         
       </el-form>
     </div>
-    <div :style="{'display':dis5}">
+    <div :style="{'display':dis5}" style="margin-top:-30px">
       <el-form
         ref="dataForm"
         :rules="rules"

@@ -30,6 +30,7 @@ public class WindController {
         System.out.println("findWind");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
+
         Page<Wind> page=new Page(pageNum,pageRow);
         IPage<Wind> wind = windService.findWind(page, wTitle);
         List<SysStaff> sysStaff = sysStaffService.findSysStaff();

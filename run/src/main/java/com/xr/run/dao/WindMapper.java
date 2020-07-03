@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WindMapper extends BaseMapper<Wind> {
-    @Select("select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind  order by wid desc")
+    @Select("select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wTitle like CONCAT('%',#{wTitle},'%') order by wid desc")
     @Results({
             @Result(column = "wContributor",property = "wnew",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
             @Result(column = "wCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<Wind> findWind(Page page);
+    IPage<Wind> findWind(Page page,@Param("wTitle") String wTitle);
 
     @Update("update Wind set wTitle=#{wTitle},wContent=#{wContent},wContributor=#{wContributor},wStatus=#{wStatus} where wid=#{wid}")
     void updateWindByWid(Wind wind);

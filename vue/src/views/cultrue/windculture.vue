@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div :style="{'display':dis}" style="width:100%">
-    <div class="filter-container" align="center" style="margin-top: 20px;">
+    <div class="filter-container" align="center" style="margin-top: -30px;">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
       <el-input v-model="wtitle" placeholder="请输入清风文苑标题" style="width: 200px;" class="filter-item"/>
@@ -40,7 +40,7 @@
         </template> -->
       </el-table-column>
       
-        <el-table-column label="标题" prop="wtitle"  align="center" width="390px">
+        <el-table-column label="标题" prop="wtitle"  align="center" width="300px">
         <template slot-scope="scope">
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
@@ -53,6 +53,11 @@
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="180px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" prop="wstatus"   align="center" width="160px">
+        <template slot-scope="scope">
+          <span>{{ (scope.row.wstatus===1?'创建':(scope.row.wstatus===2?'待审核':'已审核'))}}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" sortable prop="wcreateTime" align="center">
@@ -79,7 +84,7 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
       @change="onEditorChange($event)" -->
-    <div :style="{'display':dis2}" style="width:100%">
+    <div :style="{'display':dis2}" style="width:100%;margin-top:-30px">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
@@ -89,7 +94,7 @@
         <el-button type="success" :disabled="isShow" class="el-icon-top" v-show="btnShowTs" @click="updateData(3)">
           通过审核
         </el-button>
-        <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData(0):createData(0)">
+        <el-button type="success" :disabled="isShow" class="el-icon-top"   @click="dialogStatus==='update'?updateData(0):createData(0)">
           更新
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
@@ -360,6 +365,11 @@ import { mapGetters } from 'vuex'
       handleUpdate(row) {
         this.temp = row;
         this.xianshi()
+        if((this.temp.wstatus===2||this.temp.wstatus===3)&&!this.hasPerm('wind:update')){
+          this.dis='inline-block'
+        this.dis2='none'
+          return
+      }
         this.getMeList()
       this.getStaffList()
         if(this.temp.wstatus===1){
@@ -420,6 +430,14 @@ import { mapGetters } from 'vuex'
         this.yincang()
       },
       handleDelete() {
+        if (!this.hasPerm('wind:delete')) {
+          this.$message({
+          showClose: true,
+          message: '权限不足',
+          type: 'warning'
+        });
+        return
+        }
         // 先弹确认取消框
         let title='';
         if(this.multipleSelection.length<1){
@@ -491,6 +509,7 @@ import { mapGetters } from 'vuex'
       if(this.temp.wstatus===2&&this.hasPerm('wind:update')){
         this.btnShowTs=true;
       }
+      
     },
     yincang(){
       this.dis='inline-block'

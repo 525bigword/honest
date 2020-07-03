@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class WindServiceImpl extends ServiceImpl<WindMapper, Wind> implements WindService {
     @Override
     public IPage<Wind> findWind(Page page, String wTitle) {
-        return baseMapper.findWind(page);
+        return baseMapper.findWind(page,wTitle);
     }
 
     @Override
