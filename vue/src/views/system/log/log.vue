@@ -39,7 +39,9 @@
       <el-table-column align="center" prop="url" label="访问接口"></el-table-column>
       <el-table-column align="center" prop="method" label="请求方式"></el-table-column>
       <el-table-column align="center" prop="ip" label="ip"></el-table-column>
-      <el-table-column align="center" prop="data" label="参数"></el-table-column>
+      <!-- <el-table-column align="center" prop="data" label="参数">
+        
+      </el-table-column> -->
       <el-table-column align="center" prop="terminal" label="终端"></el-table-column>
       <el-table-column align="center" prop="type" label="浏览器"></el-table-column>
       <el-table-column align="center" prop="time" label="执行时间"></el-table-column>
@@ -103,6 +105,10 @@
         <el-col :span="4">创建时间：</el-col>
         <el-col :span="4">{{dialogobj.createTime}}</el-col>
     </el-row>
+    <el-row>
+        <el-col :span="4">请求参数：</el-col>
+        <el-col :span="20">{{dialogobj.data}}</el-col>
+    </el-row>
     </el-dialog>
   </div>
 </template>
@@ -155,6 +161,7 @@ export default {
         username: "",
         password: "",
         phone: "",
+        data:[],
         createId: store.getters.userId,
         pid: undefined,
         mid: undefined
@@ -195,7 +202,9 @@ export default {
             method:'get'
         }).then(res=>{
             console.log(res)
+            
             this.dialogobj=res
+            this.dialogobj.data=row.data
             this.dialogobj.staus=this.staus(res.staus);
         })
     },
@@ -285,6 +294,8 @@ export default {
         this.totalCount = data.total;
         this.logs = [];
         data.records.filter(item => {
+          
+          
           this.logs.push(item);
         });
         this.listLoading = false;

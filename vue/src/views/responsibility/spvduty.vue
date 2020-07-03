@@ -840,10 +840,8 @@ export default {
                 duration: 2000
               });
             });
+            this.deleteid=[]
           })
-          .catch(() => {
-            this.deleteid = [];
-          });
       }
     },
     handleImgChange1(file, fileList, name) {

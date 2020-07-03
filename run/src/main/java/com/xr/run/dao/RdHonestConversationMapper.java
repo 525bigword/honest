@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RdHonestConversationMapper extends BaseMapper<RdHonestConversation> {
     //根据谈话对象和记录人查询创建状态和待审状态的数量
-    @Select("select count(id) from rd_honest_conversation where (pid = #{pid} or personid=#{pid}) and staus='0' or staus='1'")
+    @Select("select count(id) from rd_honest_conversation where pid = #{pid} or personid=#{pid}")
     Integer findRdHonestConversationCount(@Param("pid")Integer pid);
 }

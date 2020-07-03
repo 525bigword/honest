@@ -351,9 +351,8 @@ import { mapGetters } from 'vuex'
             })
             
           })
-        }).catch(() => {
-          this.deleteid=[];
-        });
+          this.deleteid=[]
+        })
         }
       },
     handleSizeChange(size) {

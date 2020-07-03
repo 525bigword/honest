@@ -54,10 +54,11 @@ public class StaticHtmlService implements com.xr.run.service.StaticHtmlService {
     @Override
     public void deleteHtmlPage(String fileName) {
         try {
-            fileName = "C:\\Users\\83771\\Desktop\\abc.html";//config.getHtmlPath() + fileName;
+            fileName = "D:\\IDE\\tomcat\\apache-tomcat-9.0.36\\webapps\\hoonest\\"+fileName+".html";//config.getHtmlPath() + fileName;
             File file = new File(fileName);
             //删除文件或目录
-            FileUtils.deleteDirectory(file);
+//           FileUtils.deleteDirectory(file);
+            file.delete();
             log.info("已删除静态文件：" + fileName);
         }catch(Exception e) {
             e.printStackTrace();

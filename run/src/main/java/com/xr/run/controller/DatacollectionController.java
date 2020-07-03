@@ -4,15 +4,21 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.Datacollection;
+import com.xr.run.entity.SysStaff;
 import com.xr.run.service.DatacollectionService;
+import com.xr.run.service.StaticHtmlService;
+import com.xr.run.service.SysStaffService;
 import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
+import com.xr.run.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,9 +33,12 @@ public class DatacollectionController {
     private String realBasePath;
     @Value("${file.uploadVideo}")
     private String videoBasePath;
-
+    @Autowired
+    private StaticHtmlService staticHtmlService;
     @Autowired
     private DatacollectionService datacollectionService;
+    @Autowired
+    private SysStaffService sysStaffService;
     @GetMapping("/get/{pageNum}/{pageRow}")
     public JSONObject findDataConllection(@PathVariable Integer pageNum,String dTitle, @PathVariable Integer pageRow){
         if(dTitle==null){
@@ -43,8 +52,10 @@ public class DatacollectionController {
         return CommonUtil.successJson(sysStaffAll);
     }
     @RequestMapping("update")
-    public JSONObject updateDatacollection(Datacollection datacollection)  {
+    public JSONObject updateDatacollection(Datacollection datacollection,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         System.out.println(datacollection.getDFile());
+        Datacollection data= datacollectionService.findDatacollectionById(datacollection.getDid());
+        staticHtmlService.deleteHtmlPage(data.getDTitle());
         if(datacollection.getDFile().equals("1")){
             datacollectionService.updateDataConllectionByFile(datacollection);
         }else if(datacollection.getDVideo().equals("1")){
@@ -95,24 +106,52 @@ public class DatacollectionController {
             }
             datacollectionService.updateDataConllectionByVideoAndFile(datacollection);
         }
+        Datacollection datacollectionById = datacollectionService.findDatacollectionById(datacollection.getDid());
+        String name = sysStaffService.findSysStaffByIdToName(datacollectionById.getdCreateId());
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("dFileName",datacollectionById.getDFileName());
+        modelAndView.addObject("dPdf",datacollectionById.getDPdf());
+        modelAndView.addObject("dFile",datacollectionById.getDFile());
+        modelAndView.addObject("title",datacollectionById.getDTitle());
+        modelAndView.addObject("time", datacollectionById.getDCreateTime());
+        modelAndView.addObject("name", name);
+        modelAndView.setViewName("index1");
+        staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,datacollection.getDTitle());
+
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
     public JSONObject deleteDatacollectionByDid(@RequestBody int[] did)  {
         if (did.length==1){
+            Datacollection data= datacollectionService.findDatacollectionById(did[0]);
+            staticHtmlService.deleteHtmlPage(data.getDTitle());
             datacollectionService.deleteDataConllectionByDid(did[0]);
+
         }else{
             for (int i = 0; i < did.length; i++) {
+                Datacollection data= datacollectionService.findDatacollectionById(did[i]);
+                staticHtmlService.deleteHtmlPage(data.getDTitle());
                 datacollectionService.deleteDataConllectionByDid(did[i]);
+
             }
         }
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
-    public JSONObject insertDatacollection(Datacollection datacollection)  {
+    public JSONObject insertDatacollection(Datacollection datacollection, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         String pdf = getPdf(datacollection.getDFile());
         datacollection.setDPdf(pdf);
         datacollectionService.insertDataConllection(datacollection);
+        String name = sysStaffService.findSysStaffByIdToName(datacollection.getdCreateId());
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("dFileName",datacollection.getDFileName());
+        modelAndView.addObject("dPdf",datacollection.getDPdf());
+        modelAndView.addObject("dFile",datacollection.getDFile());
+        modelAndView.addObject("title",datacollection.getDTitle());
+        modelAndView.addObject("time", DateUtil.getDate());
+        modelAndView.addObject("name", name);
+        modelAndView.setViewName("index1");
+        staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,datacollection.getDTitle());
         return CommonUtil.successJson("新增成功!");
     }
 

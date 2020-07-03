@@ -47,13 +47,13 @@
         
       </el-table-column>
       
-        <el-table-column label="标题" prop="wtitle"  align="center" width="300px">
+        <el-table-column label="标题" prop="wtitle"  align="center" width="280px">
         <template slot-scope="scope">
 
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="风险点内容" prop="wcontent"   align="center" width="260px">
+        <el-table-column label="风险点内容" prop="wcontent"   align="center" width="280px">
         <template slot-scope="scope">
           <span>{{ scope.row.wcontent | getContent}}</span>
         </template>
@@ -375,9 +375,8 @@ import { mapGetters } from 'vuex'
               duration: 2000
             })
           })
-        }).catch(() => {
-          this.deleteid=[];
-        });
+        this.deleteid=[]
+        })
         }
       },
     handleSizeChange(size) {

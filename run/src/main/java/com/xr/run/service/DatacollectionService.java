@@ -70,4 +70,11 @@ public interface DatacollectionService extends IService<Datacollection> {
      * @return
      */
     String findDatacollectionBydVideo(int did);
+
+    /**
+     * 根据id查询
+     * @param did
+     * @return
+     */
+    Datacollection findDatacollectionById(int did);
 }
