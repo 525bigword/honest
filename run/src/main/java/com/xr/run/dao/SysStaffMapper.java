@@ -21,7 +21,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             " sys_staff u WHERE u.username = #{username} AND u.password = #{password} AND u.staus = '1'")
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
-            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid}")
+            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid} order by sid desc")
     @Results({
             @Result(id = true,property = "sid",column = "sid"),
             @Result(property = "name",column = "name"),
@@ -39,7 +39,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     })
     IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus,@Param("mid")Integer mid);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
-            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus}")
+            "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} order by sid desc")
     @Results({
             @Result(id = true,property = "sid",column = "sid"),
             @Result(property = "name",column = "name"),

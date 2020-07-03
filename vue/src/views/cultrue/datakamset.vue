@@ -639,9 +639,8 @@ import { mapGetters } from 'vuex'
               duration: 2000
             })
           })
-        }).catch(() => {
-          this.deleteid=[];
-        });
+          this.deleteid=[]
+        })
         }
       },
       handleImgChange1(file, fileList, name) {

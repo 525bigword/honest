@@ -7,7 +7,11 @@ import com.xr.run.dao.DatacollectionMapper;
 import com.xr.run.entity.Datacollection;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.service.DatacollectionService;
+import com.xr.run.service.StaticHtmlService;
+import com.xr.run.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 @Service
 public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper, Datacollection> implements DatacollectionService {
@@ -25,6 +29,7 @@ public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper,
     @Override
     public void insertDataConllection(Datacollection datacollection) {
         baseMapper.insertDataConllection(datacollection);
+
     }
 
     @Override
@@ -55,6 +60,11 @@ public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper,
     @Override
     public String findDatacollectionBydVideo(int did) {
         return baseMapper.findDatacollectionBydVideo(did);
+    }
+
+    @Override
+    public Datacollection findDatacollectionById(int did) {
+        return baseMapper.findDatacollectionById(did);
     }
 
 }

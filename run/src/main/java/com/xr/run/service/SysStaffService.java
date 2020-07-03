@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SysStaff;
 import lombok.Data;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Date;
@@ -57,4 +58,5 @@ public interface SysStaffService extends IService<SysStaff> {
      * @return
      */
     List<SysStaff> findSysStaffByMid(int mid);
+    String findSysStaffByIdToName(@Param("sid")Integer sid);
 }

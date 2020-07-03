@@ -172,6 +172,11 @@
         console.log('gx'+this.userInfo.id)
       },
       tjshmethod(){
+        let endtime = new Date(this.userInfo.createtime).toJSON();
+        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
         if (this.dialogTitle === '增加') {
           let postData = qs.stringify({
             title: this.userInfo.title,

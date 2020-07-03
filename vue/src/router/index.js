@@ -96,7 +96,7 @@ export const asyncRouterMap = [
             name: '廉政教育',
             component: _import('user/user'),
             meta: { title: '廉政教育', icon: 'user' },
-            menu: 'staff'
+            menu: 'educationpolitics'
         }]
     },
     {
@@ -144,32 +144,32 @@ export const asyncRouterMap = [
             name: '风险防控',
             component: _import('user/user'),
             meta: { title: '风险防控', icon: 'user' },
-            menu: 'staff'
+            menu: 'aa'
         }, {
             path: '',
             name: '日常管理',
             component: _import('user/user'),
             meta: { title: '日常管理', icon: 'user' },
-            menu: 'staff'
+            menu: 'aa'
             
         }, {
             path: '',
             name: '动态管理',
             component: _import('user/user'),
             meta: { title: '动态管理', icon: 'user' },
-            menu: 'staff'
+            menu: 'aa'
         }, {
             path: '',
             name: '风险处置',
             component: _import('user/user'),
             meta: { title: '风险处置', icon: 'user' },
-            menu: 'staff'
+            menu: 'aa'
         }, {
             path: '',
             name: '风险评价',
             component: _import('user/user'),
             meta: { title: '风险评价', icon: 'user' },
-            menu: 'staff'
+            menu: 'aa'
         }]
     }, {
         path: '/responsibility',
@@ -182,7 +182,7 @@ export const asyncRouterMap = [
             name: '监督责任',
             component: _import('responsibility/spvduty'),
             meta: { title: '监督责任', icon: 'user' },
-            menu: 'staff'
+            menu: 'spvduty'
         }]
     }, {
         path: '/inspect',

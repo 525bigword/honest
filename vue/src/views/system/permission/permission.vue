@@ -387,11 +387,13 @@ export default {
               type: "error",
               message: "已存在该权限"
             });
+            
           } else {
             this.$message({
               type: "success",
               message: "添加成功"
             });
+            this.dialogFormVisible = false;
           }
         });
       }

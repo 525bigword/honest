@@ -445,7 +445,7 @@ export default {
         url:'syspost/get/'+scope.row.mid,
         method:'get'
       }).then(res=>{
-        console.log(res)
+        console.log("res",res)
         this.postList=[];
         res.filter(item=>{
           this.postList.push(item)

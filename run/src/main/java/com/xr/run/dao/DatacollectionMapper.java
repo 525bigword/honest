@@ -44,6 +44,9 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Select("select dVideo from datacollection where did=#{did}")
     String findDatacollectionBydVideo(int did);
     //按创建者查询状态为创建、待审
-    @Select("select count(did) from datacollection where dCreateId=#{sid} and dStatus=1 or dStatus=2")
+    @Select("select count(did) from datacollection where dCreateId=#{sid} and dStatus=1 ")
     Integer findDatacollectionByStatusAndSidToCount(@Param("sid")Integer sid);
+    //根据ID查询
+    @Select("select did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName from datacollection where did=#{did}")
+    Datacollection findDatacollectionById(@Param("did") int did);
 }

@@ -68,7 +68,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
     @Results({
             @Result(column = "create_id",property = "createname",one=@One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
             @Result(column = "mid",property = "mname",one=@One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName")),
-            @Result(column = "create_id",property = "createId",one=@One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
+            @Result(column = "create_id",property = "createname",one=@One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
     })
     List<SysPost> getSysPostAll();
     //根绝部门查询岗位
