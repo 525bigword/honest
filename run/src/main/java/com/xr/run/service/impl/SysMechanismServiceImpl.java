@@ -111,4 +111,24 @@ public class SysMechanismServiceImpl extends ServiceImpl<SysMechanismMapper,SysM
 //        String date = df.format(time);// new Date()为获取当前系统时间，也可使用当前时间戳
 //        System.out.println(date);
 //    }
+
+    @Override
+    public List<SysMechanism> findSysMechanismByParentAll(Integer parent) {
+        List<SysMechanism> sysMechanismList = baseMapper.findSysMechanismByParentAll(parent);
+        List<SysMechanism> sysMechanismAllchrlen = findSysMechanismAllchrlen(sysMechanismList);
+        SysMechanism sysMechanism = findByMid(parent);
+        sysMechanism.setChilrenMechanism(new ArrayList<>());
+        sysMechanismList.add(sysMechanism);
+        return sysMechanismList;
+    }
+
+    @Override
+    public SysMechanism findByMid(int mid) {
+        return baseMapper.findByMid(mid);
+    }
+
+    @Override
+    public List<SysMechanism> getAll() {
+        return baseMapper.getAll();
+    }
 }

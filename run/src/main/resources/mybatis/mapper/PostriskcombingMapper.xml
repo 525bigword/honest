@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xr.run.dao.PostriskcombingMapper">
+
+    <select id="getListBy" resultType="com.xr.run.entity.Postriskcombing">
+        select
+        pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,pStatus
+        from postriskcombing
+        <where>
+            <if test="pInfomationId != null and pInfomationId >0">
+                pInfomationId=#{pInfomationId}
+            </if>
+            <if test="pDeptId != null and pDeptId >0">
+                and pDeptId=#{pDeptId}
+            </if>
+            <if test="pGrade != null and pGrade!=''">
+                and pGrade=#{pGrade}
+            </if>
+
+        </where>
+    </select>
+</mapper>

@@ -15,4 +15,42 @@ import java.util.List;
 
 public interface ProcessrickService extends IService<Processrick> {
     List<Processrick> findProcessrickIndex(Page page, String proName);
+
+    /**
+     * 查询列表
+     *
+     * @return
+     */
+    List<Processrick> getList();
+
+    /**
+     * 新增
+     *
+     * @param processrick
+     */
+    void addProcessrick(Processrick processrick);
+
+
+    /**
+     * 根据ID删除
+     *
+     * @param proid
+     */
+    void deleteByProid(Integer proid);
+
+    /**
+     * 更新
+     *
+     * @param processrick
+     */
+    void updateByProid(Processrick processrick);
+
+    /**
+     * 根据条件筛选查询
+     *
+     * @param proName
+     * @param proYear
+     * @return
+     */
+    List<Processrick> getListBy(String proName, String proYear);
 }

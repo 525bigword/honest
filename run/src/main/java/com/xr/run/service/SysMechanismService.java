@@ -27,4 +27,13 @@ public interface SysMechanismService extends IService<SysMechanism> {
      * 查询所有的部门
      */
     public List<SysMechanism> findSysMechanisms();
+
+    /**
+     * 根据parent查询旗下部门
+     */
+    List<SysMechanism> findSysMechanismByParentAll(Integer parent);
+
+    SysMechanism findByMid(int mid);
+
+    List<SysMechanism> getAll();
 }

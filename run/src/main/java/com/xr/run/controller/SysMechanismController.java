@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SysMechanism;
 import com.xr.run.service.SysMechanismService;
 import com.xr.run.util.CommonUtil;
+import com.xr.run.util.ResponseResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,50 +23,63 @@ public class SysMechanismController {
 
 
     @GetMapping("get/{pageNum}/{pageRow}")
-    @ApiOperation(value = "部门查询",notes = "查询部门")
-    public JSONObject getSysmechanismPage(@PathVariable Integer pageNum, @PathVariable Integer pageRow, String mechanism,String principal,String staus){
-        pageNum=pageNum<0?0:pageNum;
-        pageRow=pageRow<5?5:pageRow;
+    @ApiOperation(value = "部门查询", notes = "查询部门")
+    public JSONObject getSysmechanismPage(@PathVariable Integer pageNum, @PathVariable Integer pageRow, String mechanism, String principal, String staus) {
+        pageNum = pageNum < 0 ? 0 : pageNum;
+        pageRow = pageRow < 5 ? 5 : pageRow;
 
         Map<String, Object> sysMechanismPage = sysMechanismService.findSysMechanismPage(pageNum, pageRow, mechanism, principal, staus);
         return CommonUtil.successJson(sysMechanismPage);
     }
 
     @GetMapping("get")
-    public JSONObject getSysmechanismAll(){
+    public JSONObject getSysmechanismAll() {
         List<SysMechanism> sysMechanismAll = sysMechanismService.findSysMechanismAll();
         return CommonUtil.successJson(sysMechanismAll);
     }
 
     @RequestMapping("/findSysMechanisms")
-    public JSONObject findSysMechanisms(){
+    public JSONObject findSysMechanisms() {
         List<SysMechanism> sysMechanisms = sysMechanismService.findSysMechanisms();
         return CommonUtil.successJson(sysMechanisms);
     }
+
     @PostMapping("add")
-    public JSONObject addSysmechanism(SysMechanism sysMechanism){
+    public JSONObject addSysmechanism(SysMechanism sysMechanism) {
         sysMechanismService.addSysMechanism(sysMechanism);
         return CommonUtil.successJson();
     }
+
     @DeleteMapping("del/{mid}")
-    public JSONObject delSysmechanism(@PathVariable Integer mid){
+    public JSONObject delSysmechanism(@PathVariable Integer mid) {
         System.out.println(mid);
         Integer i = sysMechanismService.delSysMechanism(mid);
-        if(i==0){
+        if (i == 0) {
             return CommonUtil.successJson(1);
         }
         return CommonUtil.successJson(0);
     }
+
     @PutMapping("update/{mid}")
-    public JSONObject upSysmechanismStaus(@PathVariable Integer mid){
+    public JSONObject upSysmechanismStaus(@PathVariable Integer mid) {
         sysMechanismService.unDelSysMechanism(mid);
         return CommonUtil.successJson(1);
     }
+
     @PutMapping("update")
-    public JSONObject upSysmechanism(SysMechanism sysMechanism){
+    public JSONObject upSysmechanism(SysMechanism sysMechanism) {
         System.out.println(sysMechanism);
         sysMechanismService.upSysmechanism(sysMechanism);
         return CommonUtil.successJson(1);
+    }
+
+    @GetMapping("getAll")
+    public ResponseResult getAll() {
+        List<SysMechanism> list = sysMechanismService.getAll();
+        ResponseResult result = new ResponseResult();
+        result.getInfo().put("list", list);
+        result.getInfo().put("total", list.size());
+        return result;
     }
 
 }

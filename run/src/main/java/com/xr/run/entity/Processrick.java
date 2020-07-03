@@ -21,5 +21,5 @@ public class Processrick {
   private SysStaff sysStaff;
   private String proCreateName;
   private int proStatus;
-
+  private String proAccessoryName;
 }

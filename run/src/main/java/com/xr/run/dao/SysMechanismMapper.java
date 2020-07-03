@@ -99,4 +99,15 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
             @Result(column = "mechanism_name",property = "mechanismName")
     })
     public List<SysMechanism> findSysMechanisms();
+
+    @Select("select *  from sys_mechanism where mid=#{mid}")
+    SysMechanism findByMid(@Param("mid") int mid);
+
+    /**
+     * 查询所有状态正常的部门
+     * @return
+     */
+    @Select("select *  from sys_mechanism where staus='正常'")
+    List<SysMechanism> getAll();
+
 }

@@ -10,10 +10,10 @@ import java.util.Date;
 public class Riskpointassessment {
 
   private int riskid;
-  private String riskImfomation;
-  private String numberOneRisks;
-  private String numberTwoRisks;
-  private String numberThreeRisks;
+  private int riskImfomation;
+  private int numberOneRisks;
+  private int numberTwoRisks;
+  private int numberThreeRisks;
   @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")//页面写入数据库时格式化
   @JSONField(format="yyyy-MM-dd HH:mm:ss")//数据库导出页面时json格式化
   private Date riskCreateTime;

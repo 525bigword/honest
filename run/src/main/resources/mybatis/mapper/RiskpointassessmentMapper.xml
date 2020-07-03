@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xr.run.dao.RiskpointassessmentMapper">
+    <update id="updateByRiskImfomation1">
+        update riskpointassessment set numberOneRisks=#{num} where riskImfomation=#{riskImfomation}
+
+    </update>
+    <update id="updateByRiskImfomation2">
+        update riskpointassessment set numberTwoRisks=#{num} where riskImfomation=#{riskImfomation}
+
+    </update>
+    <update id="updateByRiskImfomation3">
+        update riskpointassessment set numberThreeRisks=#{num} where riskImfomation=#{riskImfomation}
+    </update>
+</mapper>
