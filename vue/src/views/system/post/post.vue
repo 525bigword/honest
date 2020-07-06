@@ -10,13 +10,13 @@
       />
       <!-- <el-form-item label="部门"> -->
       <!-- //temp.parent -->
-      <el-cascader
+      <!-- <el-cascader
         placeholder="部门"
         :props="props"
         @change="Change"
         :show-all-levels="false"
         :options="bm"
-      ></el-cascader>
+      ></el-cascader> -->
       <!-- </el-form-item> -->
       <el-input
         v-model="listQuery.message"
@@ -77,7 +77,7 @@
       </el-table-column>
       <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
 
-      <el-table-column align="center" prop="mname" label="部门名称"></el-table-column>
+      <!-- <el-table-column align="center" prop="mname" label="部门名称"></el-table-column> -->
 
       <el-table-column align="center" prop="message" label="岗位描述"></el-table-column>
 
@@ -127,7 +127,7 @@
         <el-form-item label="岗位名称" class="link-type" prop="pname">
           <el-input v-model="temp.pname" placeholder="岗位名称" />
         </el-form-item>
-        <el-form-item label="所属部门">
+        <!-- <el-form-item label="所属部门">
           <!-- //temp.parent -->
           <el-cascader
             :placeholder="placeholder"
@@ -136,7 +136,7 @@
             @change="Change"
             :show-all-levels="false"
             :options="bm"
-          ></el-cascader>
+          ></el-cascader> -->
         </el-form-item>
         <el-form-item label="岗位描述" prop="message">
           <el-input v-model="temp.message" placeholder="栏目码" />
@@ -160,11 +160,11 @@
               label-width="70px"
               style="width: 400px; margin-left:50px;"
             >
-              <el-form-item label="岗位名称" class="link-type" prop="pname">
-                <el-input v-model="temp.pname" placeholder="岗位名称" />
+              <el-form-item label="角色名" class="link-type" prop="pname">
+                <el-input v-model="temp.pname" placeholder="角色名" />
               </el-form-item>
-              <el-form-item label="所属部门">
-                <!-- //temp.parent -->
+              <!-- <el-form-item label="所属部门">
+               
                 <el-cascader
                   style="width:100%"
                   :placeholder="placeholder"
@@ -174,9 +174,9 @@
                   :show-all-levels="false"
                   :options="bm"
                 ></el-cascader>
-              </el-form-item>
-              <el-form-item label="岗位描述" prop="message">
-                <el-input v-model="temp.message" placeholder="岗位描述" />
+              </el-form-item> -->
+              <el-form-item label="角色描述" prop="message">
+                <el-input v-model="temp.message" placeholder="角色描述" />
               </el-form-item>
 
               <!-- <div slot="footer" class="dialog-footer"> -->

@@ -58,9 +58,9 @@ export const asyncRouterMap = [
             },
             {
                 path: 'post',
-                name: '岗位管理',
+                name: '角色管理',
                 component: _import('system/post/post'),
-                meta: { title: '岗位管理', icon: 'user' },
+                meta: { title: '角色管理', icon: 'user' },
                 menu: 'post'
             },
             {
@@ -96,7 +96,7 @@ export const asyncRouterMap = [
             name: '廉政教育',
             component: _import('user/user'),
             meta: { title: '廉政教育', icon: 'user' },
-            menu: 'staff'
+            menu: 'aa'
         }]
     },
     {
@@ -144,19 +144,19 @@ export const asyncRouterMap = [
       name: '岗位风险梳理',
       component: _import('risk/postRiskCombing'),
       meta: {title: '岗位风险梳理', icon: 'user'},
-      menu: 'staff'
+      menu: 'postRiskCombing'
     }, {
       path: 'processRick',
       name: '流程风险梳理',
       component: _import('risk/processRick'),
       meta: {title: '流程风险梳理', icon: 'user'},
-      menu: 'staff'
+      menu: 'processRick'
     }, {
       path: 'riskPointAssessment',
       name: '风险指数评定',
       component: _import('risk/riskpointassessment'),
       meta: {title: '风险指数评定', icon: 'user'},
-      menu: 'staff'
+      menu: 'riskpointassessment'
     }
     ]
   }, {
@@ -170,7 +170,7 @@ export const asyncRouterMap = [
       name: '风险占比分析',
       component: _import('evaluate/riskEvaluate'),
       meta: {title: '风险占比分析', icon: 'user'},
-      menu: 'staff'
+      menu: 'riskEvaluate'
     }]
   },
   {
@@ -184,7 +184,7 @@ export const asyncRouterMap = [
       name: '监督责任',
       component: _import('responsibility/spvduty'),
       meta: {title: '监督责任', icon: 'user'},
-      menu: 'staff'
+      menu: 'spvduty'
     }]
   }, {
     path: '/inspect',

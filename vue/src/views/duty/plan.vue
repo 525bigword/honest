@@ -21,8 +21,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div><el-form-item>
-      <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(role.includes('单位/部门负责人')||role.includes('纪检监察科科长')?'':'none')}">新增</el-button>
-      <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(role.includes('单位/部门负责人')||role.includes('纪检监察科科长')?'':'none')}">删除</el-button></el-form-item></div>
+      <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}">新增</el-button>
+      <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border

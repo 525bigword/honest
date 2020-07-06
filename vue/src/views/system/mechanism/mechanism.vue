@@ -401,7 +401,7 @@ export default {
       row.status = status;
     },
     indexMethod(val) {
-      return val++;
+      return ++val;
     },
     sortChange(data) {
       console.log(data);
