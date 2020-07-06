@@ -1,5 +1,6 @@
 package com.xr.run.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -130,5 +131,27 @@ public class SysMechanismServiceImpl extends ServiceImpl<SysMechanismMapper,SysM
     @Override
     public List<SysMechanism> getAll() {
         return baseMapper.getAll();
+    }
+
+    @Override
+    public List<Object> findSysMechanismNameByMid(String[] mids,Integer type) {
+        List<Object> names=new ArrayList<>();
+        String str="";
+        switch (type) {
+            case 0:
+                str+="numberOneRisks";
+                break;
+            case 1:
+                str+="numberTwoRisks";
+                break;
+            case 2:
+                str+="numberThreeRisks";
+                break;
+        }
+        for (String mid : mids) {
+            JSONObject riskpointassessmentByMids = baseMapper.findRiskpointassessmentByMids(str, Integer.parseInt(mid));
+            names.add(riskpointassessmentByMids);
+        }
+        return names;
     }
 }

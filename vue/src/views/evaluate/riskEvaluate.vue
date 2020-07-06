@@ -29,7 +29,16 @@
   import {getAll, getAllMechanismByParent, getSysPostByMid} from '@/api/risk/postRiskCombing'
   import echarts from "echarts";
   import qs from 'qs'
-
+// function eConsole(param) {
+ 
+// 　　//alert(option.series[0].data.length);
+// 　　//alert(option.series[0].data[i]);
+// 　　//param.dataIndex 获取当前点击索引，
+// 　　//alert(param.dataIndex);
+// 　　clickFunc(param.dataIndex);//执行点击效果
+// }
+ 
+// myChart.on("click", eConsole);
 
   export default {
     //先要导入依赖的实例
@@ -47,6 +56,7 @@
       echarts1_option: {
         handler(newVal, oldVal) {
           if (this.myChart) {
+            this.myChart.on("click", this.eConsole);
             if (newVal) {
               this.myChart.setOption(newVal);
             } else {
@@ -54,6 +64,7 @@
             }
           } else {
             this.init();
+            this.myChart.on("click", this.eConsole);
           }
         },
         deep: true //对象内部属性的监听，关键。
@@ -63,6 +74,23 @@
       this.getSysmechanismAll();
     },
     methods: {
+      eConsole(param) {
+        console.log(param)
+        console.log(this.mids)
+        this.$router.push({  
+            path: '/echartInfo',   
+            name: '风险图表',  
+            params: {    
+                mids: this.mids,
+                type:param.dataIndex
+            }  
+        })  
+// 　　alert(option.series[0].data.length);
+// 　　alert(option.series[0].data[i]);
+// 　　//param.dataIndex 获取当前点击索引，
+// 　　alert(param.dataIndex);
+// 　　clickFunc(param.dataIndex);//执行点击效果
+},
       //按条件查询
       onSearch() {
         let postData = qs.stringify({
@@ -74,6 +102,7 @@
           this.num1 = 0;
           this.num2 = 0;
           this.num3 = 0;
+          console.log('response.list',response.list)
           this.getPostByMid(response.list);
         })
         let that = this;
@@ -96,7 +125,9 @@
           let postData = qs.stringify({
             riskImfomation: mechanism.mid
           });
-
+          // console.log("postData",postData)
+          // console.log("postData",postData.substring(postData.indexOf('=')+1,postData.indexOf('=').length))
+          this.mids.push(postData.substring(postData.indexOf('=')+1,postData.indexOf('=').length))
           getOne(postData).then((response) => {
             this.num1 += response.riskpointassessment.numberOneRisks;
             this.num2 += response.riskpointassessment.numberTwoRisks;
@@ -132,6 +163,7 @@
     },
     data() {
       return {
+        mids:[],
         myChart: null,
         search: {
           pDeptId: undefined

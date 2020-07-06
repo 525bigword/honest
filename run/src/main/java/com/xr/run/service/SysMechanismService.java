@@ -36,4 +36,8 @@ public interface SysMechanismService extends IService<SysMechanism> {
     SysMechanism findByMid(int mid);
 
     List<SysMechanism> getAll();
+    /**
+     * 查询部门名称
+     */
+    List<Object> findSysMechanismNameByMid(String[] mids,Integer type);
 }

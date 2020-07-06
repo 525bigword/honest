@@ -1,5 +1,6 @@
 package com.xr.run.dao;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -109,5 +110,10 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
      */
     @Select("select *  from sys_mechanism where staus='正常'")
     List<SysMechanism> getAll();
+    /**
+     * 根据需求查询对应风险数据
+     */
+    @Select("select riskid,(select mechanism_name from sys_mechanism where sys_mechanism.mid=riskpointassessment.riskImfomation) name,${type} value from riskpointassessment where riskImfomation=#{riskImfomation}")
 
+    JSONObject findRiskpointassessmentByMids(@Param("type")String type,@Param("riskImfomation") Integer riskImfomation);
 }

@@ -1,10 +1,14 @@
 package com.xr.run.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xr.run.entity.Processrick;
 import com.xr.run.entity.Riskpointassessment;
 import com.xr.run.service.RiskpointassessmentService;
+import com.xr.run.service.SysMechanismService;
+import com.xr.run.util.CommonUtil;
 import com.xr.run.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +25,8 @@ public class RiskPointAssessmentController {
 
     @Autowired
     private RiskpointassessmentService riskpointassessmentService;
-
+    @Autowired
+    private SysMechanismService sysMechanismService;
     @RequestMapping("getList")
     public ResponseResult list() {
         List<Riskpointassessment> list = riskpointassessmentService.getList();
@@ -58,5 +63,12 @@ public class RiskPointAssessmentController {
         result.getInfo().put("total", list.size());
         return result;
     }
-
+    @GetMapping("echatsInfo")
+    public JSONObject getEchatsInfo(String mids,Integer type){
+        System.out.println(mids);
+        System.out.println(type);
+        String[] midList = mids.split(",");
+        List<Object> sysMechanismNameByMid = sysMechanismService.findSysMechanismNameByMid(midList, type);
+        return CommonUtil.successJson(sysMechanismNameByMid);
+    }
 }

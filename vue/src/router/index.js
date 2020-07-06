@@ -288,11 +288,24 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/workorders/',
         name: '工单',
+        hidden: true,
         children: [{
             path: '',
             name: '工单',
             component: _import('workorders/workorder'),
             menu: 'spvback'
         }]
-    }, { path: '*', redirect: '/404', hidden: true }
+    },{
+      path: '/echartInfo',
+      component: Layout,
+      redirect: '/echartInfo/',
+      name: '风险图表',
+      hidden: false,
+      children: [{
+          path: '',
+          name: '风险图表',
+          component: _import('evaluate/echatInfo'),
+          menu: 'riskpointwarning'
+      }]
+  }, { path: '*', redirect: '/404', hidden: true }
 ]
