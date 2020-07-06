@@ -57,11 +57,11 @@ export const asyncRouterMap = [
                 menu: 'mechanism'
             },
             {
-                path: 'post',
-                name: '角色管理',
-                component: _import('system/post/post'),
-                meta: { title: '角色管理', icon: 'user' },
-                menu: 'post'
+                path: 'ppost',
+                name: '岗位管理',
+                component: _import('system/ppost/ppost'),
+                meta: { title: '岗位管理', icon: 'user' },
+                menu: 'ppost'
             },
             {
                 path: 'staff',
@@ -76,7 +76,14 @@ export const asyncRouterMap = [
                 component: _import('system/permission/permission'),
                 meta: { title: '权限管理', icon: 'password' },
                 menu: 'permission'
-            }, {
+            },
+            {
+              path: 'post',
+              name: '角色管理',
+              component: _import('system/post/post'),
+              meta: { title: '角色管理', icon: 'user' },
+              menu: 'post'
+          }, {
                 path: 'log',
                 name: '日志管理',
                 component: _import('system/log/log'),

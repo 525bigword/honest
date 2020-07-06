@@ -10,13 +10,13 @@
       />
       <!-- <el-form-item label="部门"> -->
       <!-- //temp.parent -->
-      <!-- <el-cascader
+      <el-cascader
         placeholder="部门"
         :props="props"
         @change="Change"
         :show-all-levels="false"
         :options="bm"
-      ></el-cascader> -->
+      ></el-cascader>
       <!-- </el-form-item> -->
       <el-input
         v-model="listQuery.message"
@@ -27,7 +27,7 @@
       />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button
-      v-if="hasPerm('post:add')"
+        v-if="hasPerm('post:add')"
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
@@ -35,7 +35,7 @@
         @click="handleCreate"
       >添加</el-button>
       <el-button
-      v-if="hasPerm('post:delete')"
+        v-if="hasPerm('post:delete')"
         class="filter-item"
         style="margin-left: 10px;"
         type="danger"
@@ -72,12 +72,10 @@
         prop="index"
         align="center"
         :class-name="getSortClass('id')"
-      >
-
-      </el-table-column>
+      ></el-table-column>
       <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
 
-      <!-- <el-table-column align="center" prop="mname" label="部门名称"></el-table-column> -->
+      <el-table-column align="center" prop="mname" label="部门名称"></el-table-column>
 
       <el-table-column align="center" prop="message" label="岗位描述"></el-table-column>
 
@@ -100,7 +98,6 @@
             type="primary"
             @click="tree(row,$index)"
           >修改</el-button>
-
         </template>
       </el-table-column>
     </el-table>
@@ -127,8 +124,7 @@
         <el-form-item label="岗位名称" class="link-type" prop="pname">
           <el-input v-model="temp.pname" placeholder="岗位名称" />
         </el-form-item>
-        <!-- <el-form-item label="所属部门">
-          <!-- //temp.parent -->
+        <el-form-item label="所属部门">
           <el-cascader
             :placeholder="placeholder"
             v-model="temp.defaultvalue"
@@ -136,7 +132,7 @@
             @change="Change"
             :show-all-levels="false"
             :options="bm"
-          ></el-cascader> -->
+          ></el-cascader>
         </el-form-item>
         <el-form-item label="岗位描述" prop="message">
           <el-input v-model="temp.message" placeholder="栏目码" />
@@ -148,7 +144,12 @@
       </div>
     </el-dialog>
     <!-- 树形层 -->
-    <el-dialog @closed="treeClose" :title="dialogStatus==='create'?'添加':'修改'" :fullscreen="true" :visible.sync="treeDisable">
+    <el-dialog
+      @closed="treeClose"
+      :title="dialogStatus==='create'?'添加':'修改'"
+      :fullscreen="true"
+      :visible.sync="treeDisable"
+    >
       <div align="left">
         <el-row>
           <el-col :span="10">
@@ -174,19 +175,22 @@
                   :show-all-levels="false"
                   :options="bm"
                 ></el-cascader>
-              </el-form-item> -->
+              </el-form-item>-->
               <el-form-item label="角色描述" prop="message">
                 <el-input v-model="temp.message" placeholder="角色描述" />
               </el-form-item>
 
               <!-- <div slot="footer" class="dialog-footer"> -->
-              <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
+              <el-button
+                type="primary"
+                @click="dialogStatus==='create'?createData():updateData()"
+              >提交</el-button>
               <el-button @click="treeDisable = false">取消</el-button>
               <!-- </div> -->
             </el-form>
           </el-col>
           <el-col :span="10">
-            <el-tree 
+            <el-tree
               width="50%"
               :data="treedata"
               show-checkbox
@@ -301,10 +305,10 @@ export default {
     submit() {},
     treeClose() {
       console.log(this.default_checked);
-      this.default_checked=[]
-      
+      this.default_checked = [];
+
       // setCheckedKeys
-      this.placeholder = '所属部门'
+      this.placeholder = "所属部门";
       this.default_checked.filter(value => {
         this.$refs.tree.setChecked(value, false, true); //利用这个方法就可以获取到父节点
       });
@@ -314,13 +318,13 @@ export default {
     treecheck(leafOnly, includeHalfChecked) {
       let res = this.$refs.tree.getCheckedNodes(true); //利用这个方法就可以获取到父节点
       console.log(res);
-      this.default_checked=[]
-      res.filter(i=>{
-        this.default_checked.push(i.id)
-      })
+      this.default_checked = [];
+      res.filter(i => {
+        this.default_checked.push(i.id);
+      });
     },
     tree(row) {
-      this.dialogStatus="update"
+      this.dialogStatus = "update";
       console.log(row);
       this.placeholder = row.mname;
       console.log(row);
@@ -395,8 +399,8 @@ export default {
       // if (!this.hasPerm('staff:list')) {
       //   return
       // }
-      console.log(this.listQuery.bm)
-      console.log("this.temp.defaultvalue",this.temp.defaultvalue)
+      console.log(this.listQuery.bm);
+      console.log("this.temp.defaultvalue", this.temp.defaultvalue);
       // let mids = this.listQuery.bm.join(",");
       // console.log(mids);
       this.listLoading = true;
@@ -406,7 +410,10 @@ export default {
         data: {
           pname: this.listQuery.name,
           message: this.listQuery.message,
-          mids: this.temp.defaultvalue.length===0?this.temp.defaultvalue[0]:this.temp.defaultvalue
+          mids:
+            this.temp.defaultvalue.length === 0
+              ? this.temp.defaultvalue[0]
+              : this.temp.defaultvalue
         }
       }).then(response => {
         console.log("getlist", response);
@@ -495,7 +502,7 @@ export default {
           message: "请将信息填写完整"
         });
       } else {
-        let arr=this.default_checked.join(',')
+        let arr = this.default_checked.join(",");
         this.api({
           url: "syspost/add",
           method: "post",
@@ -504,7 +511,7 @@ export default {
             mid: this.temp.defaultvalue,
             message: this.temp.message,
             createId: this.temp.id,
-            arr:arr
+            arr: arr
           }
         }).then(respone => {
           console.log(respone);
@@ -518,7 +525,7 @@ export default {
               type: "success",
               message: "添加成功"
             });
-            this.temp.defaultvalue=[]
+            this.temp.defaultvalue = [];
             this.getList();
             this.treeDisable = false;
           }
@@ -541,7 +548,7 @@ export default {
     },
     updateData() {
       console.log("temp", this.temp);
-      console.log("this.default_checked",this.default_checked);
+      console.log("this.default_checked", this.default_checked);
       this.$alert("是否确定修改", "提示", {
         showCancelButton: true,
         showConfirmButton: true,
@@ -554,9 +561,8 @@ export default {
                 message: "请将信息填写完整"
               });
             } else {
-
-              let arr=this.default_checked.join(",")
-              console.log(arr)
+              let arr = this.default_checked.join(",");
+              console.log(arr);
               this.api({
                 url: "syspost/update",
                 method: "post",
@@ -565,9 +571,9 @@ export default {
                   mid: this.temp.mid,
                   pname: this.temp.pname,
                   message: this.temp.message,
-                  createId:store.getters.userId,
-                  createTime:this.temp.createTime,
-                  arr:arr
+                  createId: store.getters.userId,
+                  createTime: this.temp.createTime,
+                  arr: arr
                 }
               }).then(res => {
                 this.temp.defaultvalue = [];
@@ -580,7 +586,7 @@ export default {
       });
     },
     handleDelete(row, index) {
-      console.log(row,index)
+      console.log(row, index);
       console.log(this.deletelist);
       if (this.deletelist.length < 1) {
         this.$message({
@@ -595,7 +601,7 @@ export default {
           closeOnPressEscape: false,
           callback: action => {
             let arr = this.deletelist.join(",");
-            console.log(arr)
+            console.log(arr);
             this.api({
               url: "syspost/del",
               method: "post",
@@ -604,14 +610,14 @@ export default {
               }
             }).then(res => {
               console.log(res);
-              if(res===0){
+              if (res === 0) {
                 this.$message({
-                  type:'error',
-                  message:'请保证该岗位没有员工'
-                })
-                return
+                  type: "error",
+                  message: "请保证该岗位没有员工"
+                });
+                return;
               }
-              this.getList()
+              this.getList();
               // this.getList();
             });
           }
@@ -625,7 +631,7 @@ export default {
       //   });
     },
     handleDownload() {
-      window.location.href="http://localhost:8080/export/post";
+      window.location.href = "http://localhost:8080/export/post";
     },
     formatJson(filterVal) {
       return this.list.map(v =>
