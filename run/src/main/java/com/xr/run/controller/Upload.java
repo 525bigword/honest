@@ -5,7 +5,6 @@ import com.xr.run.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/imp")
@@ -32,6 +30,8 @@ public class Upload {
     private String dutyPath;
     @Value("${file.uploadVideo}")
     private String vidoPath;
+    @Value("${file.uploadImage}")
+    private String imagePth;
     @PostMapping("/import")
     public JSONObject importData(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, realBasePath);
@@ -40,6 +40,12 @@ public class Upload {
     @RequestMapping("/importDuty")
     public JSONObject importDuty(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, dutyPath);
+        return CommonUtil.successJson(filePath);
+    }
+
+    @RequestMapping("/image")
+    public JSONObject importImage(MultipartFile file, HttpServletRequest req) throws IOException {
+        Map filePath = getFilePath(file, req, accessPath, imagePth);
         return CommonUtil.successJson(filePath);
     }
 
