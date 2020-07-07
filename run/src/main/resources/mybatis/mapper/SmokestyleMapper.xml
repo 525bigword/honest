@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.tam.SmokestyleMapper">
+    <!--查询潭烟风貌-->
+    <resultMap id="base" type="com.xr.run.entity.tam.Smokestyle">
+        <result column="smoid" property="smoid"></result>
+        <result column="smotitle" property="smotitle"></result>
+        <result column="smoproperty" property="smoproperty"></result>
+        <result column="smoimage" property="smoimage"></result>
+        <result column="smosource" property="smosource"></result>
+        <result column="smoauthor" property="smoauthor"></result>
+        <result column="smocreatetime" property="smocreatetime"></result>
+        <result column="smodescrion" property="smodescrion"></result>
+        <result column="smocontent" property="smocontent"></result>
+        <result column="smocreatename" property="smocreatename"></result>
+        <result column="surl" property="surl"></result>
+        <association property="smocreateid" javaType="com.xr.run.entity.SysStaff">
+            <result column="sid" property="sid"></result>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+    <select id="findAllSmokestyle" resultMap="base">
+        select tms.smoid,tms.smotitle,tms.smoproperty,tms.smoimage,tms.smosource,tms.smoauthor,tms.smocreatetime,tms.smodescrion,tms.smocontent,tms.smocreateid,tms.smocreatename,tms.surl,ss.sid,ss.name from tam_smoke_style tms,sys_staff ss where tms.smocreateid=ss.sid and tms.sstatus!=-1
+    </select>
+
+    <!--新增-->
+    <insert id="addSmokestyle" parameterType="com.xr.run.entity.tam.Smokestyle">
+       insert into tam_smoke_style(smotitle,smoproperty,smoimage,smosource,smoauthor,smocreatetime,smodescrion,smocontent,smocreateid,smocreatename,surl,sstatus) values(#{smotitle},#{smoproperty},#{smoimage},#{smosource},#{smoauthor},#{smocreatetime},#{smodescrion},#{smocontent},#{smocreateids},#{smocreatename},#{surl},0)
+    </insert>
+
+    <!--按标题查询-->
+    <select id="findSmokestyle" parameterType="com.xr.run.entity.tam.Smokestyle" resultMap="base">
+          select tms.smoid,tms.smotitle,tms.smoproperty,tms.smoimage,tms.smosource,tms.smoauthor,tms.smocreatetime,tms.smodescrion,tms.smocontent,tms.smocreateid,tms.smocreatename,tms.surl,ss.sid,ss.name from tam_smoke_style tms,sys_staff ss where tms.smocreateid=ss.sid and tms.sstatus!=-1 and tms.smotitle  like CONCAT('%',#{smotitle},'%')
+
+    </select>
+    <!--删除-->
+    <update id="delSmokestyle" parameterType="Integer">
+      update tam_smoke_style set sstatus=-1 where smoid=#{smoid}
+    </update>
+    <!--更新-->
+    <update id="gxSmokestyle" parameterType="com.xr.run.entity.tam.Smokestyle">
+        update tam_smoke_style set smotitle=#{smotitle},smoproperty=#{smoproperty},smoimage=#{smoimage},smosource=#{smosource},smoauthor=#{smoauthor},surl=#{surl},smodescrion=#{smodescrion},smocontent =#{smocontent} where smoid=#{smoid}
+    </update>
+</mapper>
