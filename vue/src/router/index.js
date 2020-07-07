@@ -207,6 +207,19 @@ export const asyncRouterMap = [
       menu: 'report'
     }]
   }, {
+    path: '/smokestyle',
+    component: Layout,
+    redirect: '/user/',
+    name: '潭烟风貌',
+    meta: {title: '潭烟风貌', icon: 'table'},
+    children: [{
+      path: '',
+      name: '潭烟风貌',
+      component: _import('smokestyle/smokestyle'),
+      meta: {title: '潭烟风貌', icon: 'user'},
+      menu: 'smokestyle'
+    }]
+  }, {
     path: '/culture',
     component: Layout,
     redirect: '/culture/',
