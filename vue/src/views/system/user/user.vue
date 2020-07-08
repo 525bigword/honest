@@ -14,24 +14,24 @@
           </el-select>
         </el-form-item>
         <el-form-item label="部门">
-        <el-cascader
-        placeholder="部门"
-        v-model="formInline.bm"
-        :props="props"
-        @change="Change"
-        :show-all-levels="false"
-        :options="bm"
-      ></el-cascader>
+          <el-cascader
+            placeholder="部门"
+            v-model="formInline.bm"
+            :props="props"
+            @change="Change"
+            :show-all-levels="false"
+            :options="bm"
+          ></el-cascader>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="get">查询</el-button>
-          <el-button type="primary"  v-if="hasPerm('staff:add')" @click="addOrUpdateHandle()">添加</el-button>
-          <el-button type="primary"  v-if="hasPerm('staff:delete')" @click="deleteHandle()">删除</el-button>
+          <el-button type="primary" v-if="hasPerm('staff:add')" @click="addOrUpdateHandle()">添加</el-button>
+          <el-button type="primary" v-if="hasPerm('staff:delete')" @click="deleteHandle()">删除</el-button>
         </el-form-item>
       </el-form>
     </div>
     <el-table
-     @selection-change="toggleRowExpansion"
+      @selection-change="toggleRowExpansion"
       :data="users"
       v-loading.body="listLoading"
       element-loading-text="拼命加载中"
@@ -39,10 +39,8 @@
       fit
       highlight-current-row
     >
-    <el-table-column prop="pid" type="selection" width="55"></el-table-column>
-      <el-table-column type="index" :index="indexMethod" align="center" label="序号">
-        
-      </el-table-column>
+      <el-table-column prop="pid" type="selection" width="55"></el-table-column>
+      <el-table-column type="index" :index="indexMethod" align="center" label="序号"></el-table-column>
       <el-table-column align="center" prop="name" label="员工名"></el-table-column>
       <el-table-column align="center" prop="sex" label="性别"></el-table-column>
       <el-table-column align="center" prop="age" label="年龄"></el-table-column>
@@ -50,7 +48,8 @@
       <el-table-column align="center" prop="politicalAppearance" label="政治面貌"></el-table-column>
       <el-table-column align="center" prop="phone" label="手机"></el-table-column>
       <el-table-column align="center" prop="mechanismname" label="部门"></el-table-column>
-      <el-table-column align="center" prop="postname" label="岗位"></el-table-column>
+      <el-table-column align="center" prop="postname" label="角色"></el-table-column>
+      <el-table-column align="center" prop="ppname" label="岗位"></el-table-column>
       <el-table-column align="center" label="管理" width="200" v-if="hasPerm('staff:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope)">修改</el-button>
@@ -75,7 +74,11 @@
           </el-col>
           <el-col class="right" :span="2">年龄</el-col>
           <el-col :span="8">
-            <el-input  onkeyup="value=value.replace(/[^\d]/g,'')" placeholder="年龄" v-model="form.age"></el-input>
+            <el-input
+              onkeyup="value=value.replace(/[^\d]/g,'')"
+              placeholder="年龄"
+              v-model="form.age"
+            ></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="学历" :line="true">
@@ -119,7 +122,11 @@
         </el-form-item>
         <el-form-item label="登录名">
           <el-col :span="8">
-            <el-input v-model="form.username" :disabled="dialogStatus==='create'?false:true" placeholder="登录名"></el-input>
+            <el-input
+              v-model="form.username"
+              :disabled="dialogStatus==='create'?false:true"
+              placeholder="登录名"
+            ></el-input>
           </el-col>
           <el-col :span="4" class="line right" style="width: 15%;">登录密码</el-col>
           <el-col :span="8">
@@ -127,14 +134,27 @@
           </el-col>
         </el-form-item>
         <el-form-item label="岗位">
-          <el-select style="width: 80%;" v-model="form.pid" placeholder="岗位">
-            <el-option
-              v-for="(post) in postList"
-              :key="post.pid"
-              :label="post.pname"
-              :value="post.pid"
-            ></el-option>
-          </el-select>
+          <el-col :span="8">
+            <el-select style="width: 80%;" v-model="form.ppid" placeholder="岗位">
+              <el-option
+                v-for="(post) in postList"
+                :key="post.pid"
+                :label="post.pname"
+                :value="post.pid"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="4" class="line right" style="width: 15%;">角色</el-col>
+          <el-col :span="8">
+            <el-select style="width: 80%;" v-model="form.pid" placeholder="角色">
+              <el-option
+                v-for="(post) in ppostList"
+                :key="post.pid"
+                :label="post.pname"
+                :value="post.pid"
+              ></el-option>
+            </el-select>
+          </el-col>
         </el-form-item>
         <el-form-item label="状态" v-if="dialogStatus==='update'">
           <el-radio v-model="form.staus" label="1">正常</el-radio>
@@ -143,17 +163,18 @@
           <el-radio v-model="form.staus" label="4">借调</el-radio>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="dialogStatus==='create'?add():update()">{{dialogStatus==='create'?'添加':'修改'}}</el-button>
+          <el-button
+            type="primary"
+            @click="dialogStatus==='create'?add():update()"
+          >{{dialogStatus==='create'?'添加':'修改'}}</el-button>
           <el-button type="primary" @click="dialogTableVisible = false;">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
-
-   
   </div>
 </template>
 <script>
-import store from '../../../store';
+import store from "../../../store";
 // import add from './add'
 export default {
   data() {
@@ -171,7 +192,7 @@ export default {
       },
       formInline: {
         name: "",
-        staus: "1",
+        staus: "1"
       },
       totalCount: 0, //分页组件--数据总条数
       users: [], //表格的数据
@@ -187,15 +208,16 @@ export default {
         update: "编辑员工信息",
         create: "添加员工"
       },
+      ppostList: [],
       postList: [],
       tempArticle: {
         id: "",
         content: ""
       },
       form: {
-        staus:"",
+        staus: "",
         name: "",
-        sex:'男',
+        sex: "男",
         age: "",
         educationalBackground: "",
         politicalAppearance: "",
@@ -203,11 +225,13 @@ export default {
         username: "",
         password: "",
         phone: "",
-        createId:store.getters.userId,
+        pname:"",
+        createId: store.getters.userId,
         pid: undefined,
+        ppid:undefined,
         mid: undefined
       },
-      deleteList:[]
+      deleteList: []
     };
   },
   components: {
@@ -216,7 +240,7 @@ export default {
   created() {
     this.getList();
     this.getSysmechanismAll();
-    // this.getPost();
+    this.getppost();
   },
   computed: {
     staus(val) {
@@ -235,80 +259,84 @@ export default {
     }
   },
   methods: {
-    getPost() {
+    getppost() {
       this.api({
         url: "syspost/get",
         method: "get"
       }).then(res => {
-        console.log(res);
-        this.postList = [];
+        console.log(res,"res1");
+        this.ppostList = [];
         res.filter(item => {
-          this.postList.push(item);
+          this.ppostList.push(item);
         });
       });
     },
     Change(val) {
       console.log(this.form.mid);
       console.log(val);
+      this.form.pname = "";
+      this.form.pid = undefined;
       this.api({
-        url:'syspost/get/'+val,
-        method:'get'
-      }).then(res=>{
-        console.log(res)
-        this.postList=[];
-        res.filter(item=>{
-          this.postList.push(item)
-        })
-      })
+        url: "SysPostPermission/getPpost/" + val,
+        method: "get"
+      }).then(res => {
+        console.log(res, "res");
+        this.postList = [];
+        res.filter(item => {
+          this.postList.push(item);
+        });
+      });
       // this.temp.defaultvalue = val;
     },
-    toggleRowExpansion(val){
-      console.log(val)
-      this.deleteList=[];
-      val.filter(item=>{
-        this.deleteList.push(item)
-      })
+    toggleRowExpansion(val) {
+      console.log(val);
+      this.deleteList = [];
+      val.filter(item => {
+        this.deleteList.push(item);
+      });
     },
-    deleteHandle(){
-      if(this.deleteList.length<1){
+    deleteHandle() {
+      if (this.deleteList.length < 1) {
         this.$message({
-          type:'error',
-          message:'请先勾选需要删除的用户'
-        })
-      }else{
-        let arr=[];
-        this.deleteList.filter(item=>{
-          arr.push(item.sid)
-        })
-        let str=arr.join(",");
-        console.log(str)
+          type: "error",
+          message: "请先勾选需要删除的用户"
+        });
+      } else {
+        let arr = [];
+        this.deleteList.filter(item => {
+          arr.push(item.sid);
+        });
+        let str = arr.join(",");
+        console.log(str);
         this.api({
-          url:'SysStaff/delete',
-          method:'post',
-          params:{
-            str:str
+          url: "SysStaff/delete",
+          method: "post",
+          params: {
+            str: str
           }
-        }).then(res=>{
-
-          if(res==2){
+        }).then(res => {
+          if (res == 2) {
             this.$message({
-              type:'error',
-              message:'请确保该员工当前没有进行中的任务'
-            })
-          }else{{
-            this.$message({
-              type:'suucess',
-              message:'删除成功'
-            })
-            this.getList();
-          }}
-        })
+              type: "error",
+              message: "请确保该员工当前没有进行中的任务"
+            });
+          } else {
+            {
+              this.$message({
+                type: "suucess",
+                message: "删除成功"
+              });
+              this.getList();
+            }
+          }
+        });
       }
     },
     add() {
       console.log(this.form);
       if (
         !this.form.name ||
+        !this.form.ppid ||
         !this.form.sex ||
         !this.form.age ||
         !this.form.educationalBackground ||
@@ -330,18 +358,18 @@ export default {
           data: this.form
         }).then(res => {
           console.log(res);
-          if(res===1){
+          if (res === 1) {
             this.$message({
               type: "success",
               message: "添加成功"
-            })
+            });
             this.getList();
             this.dialogTableVisible = false;
-          }else{
+          } else {
             this.$message({
               type: "error",
               message: "添加失败，该登录名重复"
-            })
+            });
           }
         });
       }
@@ -368,7 +396,7 @@ export default {
     },
     addOrUpdateHandle(id) {
       this.dialogTableVisible = true;
-      this.dialogStatus='create';
+      this.dialogStatus = "create";
       // this.addOrUpdateVisible=true
       // this.$nextTick(()=>{
       //   this.$refs.add.init(id)
@@ -384,7 +412,7 @@ export default {
         return;
       }
       this.listLoading = true;
-      console.log(this.formInline)
+      console.log(this.formInline);
       this.api({
         url:
           "SysStaff/get/" +
@@ -396,8 +424,7 @@ export default {
         method: "get",
         params: {
           name: this.formInline.name,
-          mid:this.formInline.bm
-          
+          mid: this.formInline.bm
         }
       }).then(data => {
         console.log(data);
@@ -434,32 +461,46 @@ export default {
       this.dialogStatus = "create";
       this.dialogFormVisible = true;
     },
-    Close(){
-      this.form={}
-      this.postList=[]
+    Close() {
+      // this.form = {};
+      // this.postList = [];
+      this.getList()
     },
-    showUpdate(scope,$index) {
-      console.log(scope)
-      console.log($index)
+    showUpdate(scope, $index) {
+      console.log(scope);
       this.api({
-        url:'syspost/get/'+scope.row.mid,
-        method:'get'
-      }).then(res=>{
-        console.log("res",res)
-        this.postList=[];
-        res.filter(item=>{
-          this.postList.push(item)
-        })
-      })
-      // //显示修改对话框
-      this.form=scope.row
-      this.form.pid=scope.row.postname
+        url: "SysPostPermission/getPpost/" + scope.row.mid,
+        method: "get"
+      }).then(res => {
+        console.log(res, "res");
+        this.postList = [];
+        res.filter(item => {
+          this.postList.push(item);
+        });
+        console.log(this.postList)
+      });
+      // this.api({
+      //   url: "SysPostPermission/getPpost/"+ scope.row.mid,
+      //   method: "get"
+      // }).then(res => {
+      //   console.log(res);
+      //   this.ppostList = [];
+      //   res.filter(item => {
+      //     this.ppostList.push(item);
+      //   });
+      // });
+    
+      //显示修改对话框
+      this.form = scope.row;
+      this.form.pid=parseInt(scope.row.pid)
       this.dialogStatus = "update";
       this.dialogTableVisible = true;
     },
-    update(){
+    update() {
+      console.log(this.form)
       if (
         !this.form.sid ||
+        !this.form.ppid ||
         !this.form.name ||
         !this.form.sex ||
         !this.form.age ||
@@ -470,28 +511,27 @@ export default {
         !this.form.phone ||
         !this.form.pid ||
         !this.form.politicalAppearance
-      ){
+      ) {
         this.$message({
-          type:'error',
-          message:'请先完善信息'
-        })
-      }else{
-        console.log(this.form.staus)
+          type: "error",
+          message: "请先完善信息"
+        });
+      } else {
+        console.log(this.form.staus);
         this.api({
-          url:'SysStaff/update',
-          method:'put',
-          data:this.form
-        }).then(res=>{
-          console.log(res)
-          if(res===1){
+          url: "SysStaff/update",
+          method: "put",
+          data: this.form
+        }).then(res => {
+          console.log(res);
+          if (res === 1) {
             this.$message({
-              type:'success',
-              message:'添加成功'
-            })
-            this.getList()
-            this.dialogTableVisible=false
+              type: "success",
+              message: "添加成功"
+            });
+            this.dialogTableVisible = false;
           }
-        })
+        });
       }
     },
     createArticle() {
@@ -516,7 +556,7 @@ export default {
         this.dialogFormVisible = false;
       });
     },
-    indexMethod(val){
+    indexMethod(val) {
       return ++val;
     }
   }

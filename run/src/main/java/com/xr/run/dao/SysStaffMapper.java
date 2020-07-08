@@ -20,7 +20,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             ".username,u.password,u.pid,u.create_time,u.create_id,u.staus FROM " +
             " sys_staff u WHERE u.username = #{username} AND u.password = #{password} AND u.staus = '1'")
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
-    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
+    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,ppid" +
             "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid} order by sid desc")
     @Results({
             @Result(id = true,property = "sid",column = "sid"),
@@ -36,9 +36,12 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(property = "educationalBackground",column = "educational_background"),
             @Result(property = "politicalAppearance",column = "political_appearance"),
             @Result(property = "phone",column = "phone"),
+            @Result(property = "ppid",column = "ppid"),
+            @Result(property = "ppname",column = "ppid", one=@One(select = "com.xr.run.dao.SysPostPermissionMapper.findSysPpostToPnameByPid",fetchType = FetchType.DEFAULT)),
+
     })
     IPage<SysStaff> findSysStaffAll(Page page,@Param("name") String name, @Param("staus")Integer staus,@Param("mid")Integer mid);
-    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid," +
+    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,ppid," +
             "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} order by sid desc")
     @Results({
             @Result(id = true,property = "sid",column = "sid"),
@@ -54,6 +57,8 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(property = "educationalBackground",column = "educational_background"),
             @Result(property = "politicalAppearance",column = "political_appearance"),
             @Result(property = "phone",column = "phone"),
+            @Result(property = "ppid",column = "ppid"),
+            @Result(property = "ppname",column = "ppid", one=@One(select = "com.xr.run.dao.SysPostPermissionMapper.findSysPpostToPnameByPid",fetchType = FetchType.DEFAULT)),
     })
     IPage<SysStaff> findSysStaffAllNoMid(Page page,@Param("name") String name, @Param("staus")Integer staus);
 
@@ -103,7 +108,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     @Select("select count(sid) from sys_staff where pid=#{pid} and staus <>1")
     Integer findSysStaffByPidToCount(@Param("pid") Integer pid);
     //新增
-    @Insert("insert into sys_staff value(null,#{name},#{sex},#{age},#{educationalBackground},#{politicalAppearance},#{phone},#{mid},#{username},#{password},#{pid},#{createTime},#{createId},'1')")
+    @Insert("insert into sys_staff value(null,#{name},#{sex},#{age},#{educationalBackground},#{politicalAppearance},#{phone},#{mid},#{username},#{password},#{pid},#{createTime},#{createId},'1',#{ppid})")
     void addSysStaff(SysStaff sysStaff);
     //根据username查询
     @Select("select count(sid) from sys_staff where username=#{username}")

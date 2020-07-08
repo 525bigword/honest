@@ -27,6 +27,7 @@ public class SysStaff {
   private String username;
   private String password;
   private String pid;
+  private Integer ppid;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "zh", timezone = "GMT+8")
   private Date createTime;
   private int createId;
@@ -34,6 +35,7 @@ public class SysStaff {
   //TODO 业务属性
   private String mechanismname;
   private String postname;
+  private String ppname;
   private List<SysMechanism> mechanisms=new ArrayList<>();
   private List<Post> posts=new ArrayList<>();
 }

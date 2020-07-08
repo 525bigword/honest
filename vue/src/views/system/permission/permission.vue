@@ -26,13 +26,13 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >添加</el-button>
-      <el-button
+      <!-- <el-button
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button>
+      >导出</el-button> -->
       <!-- <el-checkbox
         v-model="showReviewer"
         class="filter-item"

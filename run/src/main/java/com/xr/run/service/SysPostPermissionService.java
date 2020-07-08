@@ -31,4 +31,6 @@ public interface SysPostPermissionService extends IService<SysPostPermission> {
     void add(SysPpost sysPpost);
     void upSysPost(SysPpost sysPpost);
     void delSysPost(String[] splice);
+    //根据Mid查询岗位
+    List<SysPpost> findSysPpostByMid(Integer mid);
 }

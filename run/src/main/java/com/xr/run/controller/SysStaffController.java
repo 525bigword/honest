@@ -29,7 +29,7 @@ public class SysStaffController {
 
 
     @GetMapping("get/{sid}")
-    @RequiresPermissions("staff:delete")
+
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
         return CommonUtil.successJson(sysStaffBySid);

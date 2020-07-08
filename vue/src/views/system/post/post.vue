@@ -3,28 +3,28 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.name"
-        placeholder="岗位名称"
+        placeholder="角色名称"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <!-- <el-form-item label="部门"> -->
       <!-- //temp.parent -->
-      <el-cascader
+      <!-- <el-cascader
         placeholder="部门"
         :props="props"
         @change="Change"
         :show-all-levels="false"
         :options="bm"
       ></el-cascader>
-      <!-- </el-form-item> -->
+      <!-- </el-form-item> 
       <el-input
         v-model="listQuery.message"
         placeholder="部门描述"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
-      />
+      /> -->
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button
         v-if="hasPerm('post:add')"
@@ -74,8 +74,6 @@
         :class-name="getSortClass('id')"
       ></el-table-column>
       <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
-
-      <el-table-column align="center" prop="mname" label="部门名称"></el-table-column>
 
       <el-table-column align="center" prop="message" label="岗位描述"></el-table-column>
 
@@ -496,7 +494,7 @@ export default {
       this.temp.id = store.getters.userId;
       console.log(this.temp);
       console.log(this.default_checked);
-      if (!this.temp.pname || !this.temp.defaultvalue) {
+      if (!this.temp.pname ) {
         this.$message({
           type: "error",
           message: "请将信息填写完整"

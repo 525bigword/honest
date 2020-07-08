@@ -83,4 +83,9 @@ public class SysPostPermissionController {
             return CommonUtil.successJson(1);
         }
     }
+    @GetMapping("getPpost/{mid}")
+    public JSONObject getSysPpost(@PathVariable Integer mid){
+        List<SysPpost> sysPpostByMid = sysPostPermissionService.findSysPpostByMid(mid);
+        return CommonUtil.successJson(sysPpostByMid);
+    }
 }
