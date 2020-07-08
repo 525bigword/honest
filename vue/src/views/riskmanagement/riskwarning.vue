@@ -411,9 +411,14 @@ import { mapGetters } from 'vuex'
     
     },
     filters:{
-    getContent(val){
+    getContent(val) {
       /* val.replace(/<\/?[^>]*>/g, ""); */
-      return val.replace(/<\/?[^>]*>/g, "").slice(0,20) +'......'
+      if(val.length>20){
+          return val.replace(/<\/?[^>]*>/g, "").slice(0, 20) + "......";
+      }else{
+          return val.replace(/<\/?[^>]*>/g, "");
+      }
+      
     }
   }
     

@@ -58,4 +58,9 @@ public class SpvDutySericeImpl extends ServiceImpl<SpvDutyMapper,SpvDuty> implem
     public void updateTongBaoByDid(SpvDuty spvDuty) {
         baseMapper.updateTongBaoByDid(spvDuty);
     }
+
+    @Override
+    public SpvDuty findSpvDutyByDid(int did) {
+        return baseMapper.findSpvDutyByDid(did);
+    }
 }

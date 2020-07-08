@@ -29,4 +29,9 @@ public class WindServiceImpl extends ServiceImpl<WindMapper, Wind> implements Wi
     public void deleteWindByWid(int wid) {
         baseMapper.deleteWindByWid(wid);
     }
+
+    @Override
+    public Wind findWindByWid(int wid) {
+        return baseMapper.findWindByWid(wid);
+    }
 }

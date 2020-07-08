@@ -8,11 +8,17 @@ import com.xr.run.entity.SpvDuty;
 import com.xr.run.entity.SysMechanism;
 import com.xr.run.service.SpvBackService;
 import com.xr.run.service.SpvDutyService;
+import com.xr.run.service.StaticHtmlService;
+import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
+import com.xr.run.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +32,10 @@ public class SpvDutyController {
     private SpvDutyService spvDutyService;
     @Autowired
     private SpvBackService spvBackService;
+    @Autowired
+    private SysStaffService sysStaffService;
+    @Autowired
+    private StaticHtmlService staticHtmlService;
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
@@ -118,5 +128,24 @@ public class SpvDutyController {
     public JSONObject updateTongBaoByDid(SpvDuty spvDuty){
         spvDutyService.updateTongBaoByDid(spvDuty);
         return CommonUtil.successJson("发布成功!");
+    }
+
+    public void thymeleafSpvDuty(SpvDuty spvDuty, HttpServletRequest req, HttpServletResponse resp){
+        ModelAndView modelAndView=new ModelAndView();
+        if(spvDuty.getDid()!=0){
+            SpvDuty spvDutyByDid = spvDutyService.findSpvDutyByDid(spvDuty.getDid());
+            modelAndView.addObject("content",spvDutyByDid.getDutyContent());
+            modelAndView.addObject("dutyDutyType",spvDutyByDid.getDutyTitle());
+            modelAndView.addObject("time", DateUtil.upDate(spvDutyByDid.getNewTime()));
+            modelAndView.addObject("name", spvDutyByDid.getSysStaff().getName());
+        }else{
+            String name = sysStaffService.findSysStaffByIdToName(spvDuty.getdCreateId());
+            modelAndView.addObject("content",spvDuty.getDutyContent());
+            modelAndView.addObject("dutyDutyType",spvDuty.getDutyTitle());
+            modelAndView.addObject("time", DateUtil.getDate());
+            modelAndView.addObject("name",name);
+        }
+        modelAndView.setViewName("jdzr/index1");
+        staticHtmlService.genHtmlPage(modelAndView,req,resp,spvDuty.getDutyTitle());
     }
 }

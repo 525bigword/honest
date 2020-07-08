@@ -31,4 +31,11 @@ public interface WindService extends IService<Wind> {
      * @param wid
      */
     void deleteWindByWid(int wid);
+
+    /**
+     * 查找单个清风文苑
+     * @param wid
+     * @return
+     */
+    Wind findWindByWid(int wid);
 }

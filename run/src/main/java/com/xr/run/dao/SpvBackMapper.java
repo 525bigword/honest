@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface SpvBackMapper extends BaseMapper<SpvBack> {
-    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName,bPdf from spv_back  where bid=#{bid} order by sid desc")
+    @Select("select sid,BackType,BackTitle,BackContent,bid,BackAccessory,NewTime,bCreateId,did,`status`,backAccessoryName,bPdf from spv_back  where bid=#{bid} and `status`<>-1 order by sid desc")
     @Results({
             @Result(column = "bid",property = "sysMechanism",
             one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismMid",fetchType = FetchType.DEFAULT)),
@@ -34,7 +34,7 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
     @Insert("insert into spv_back(sid,BackType,bid,NewTime,bCreateId,did,`status`) VALUES (NULL,#{backType},#{bid},NOW(),#{bCreateId},#{did},#{status})")
     void insertSpvBack(SpvBack spvBack);
 
-    @Delete("delete from  spv_back where sid=#{sid}")
+    @Update("update spv_back set `status`=-1  where sid=#{sid}")
     void deleteSpvBackBySid(int sid);
 
     @Select("select BackAccessory from spv_back where sid=#{sid}")

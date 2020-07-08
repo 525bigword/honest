@@ -101,7 +101,7 @@
         :model="temp"
         label-position="center"
         label-width="130px"
-        style="width: 95%; margin-left:40px;"
+        style="width: 100%; margin-left:40px;"
       >
         <!--        数据校验要求prop值和temp.属性名一致-->
         <el-form-item style="width:100%;height:30px;margin-left: -80px" align="right">
@@ -114,19 +114,19 @@
           <el-button class="el-icon-back" plain @click="out()">返回</el-button>
         </el-form-item>
         <el-row>
-          <el-col style="width:43%;margin-top:10px">
+          <el-col style="width:45%;margin-top:10px">
             <el-form-item style="font-weight: bold;" label="文章标题" prop="articletitle">
               <el-input v-model="temp.articletitle" placeholder="请输入文章标题" />
             </el-form-item>
           </el-col>
-          <el-col style="width:43%;margin-top:10px">
+          <el-col style="width:45%;margin-top:10px">
             <el-form-item style="font-weight: bold;" label="文章来源" prop="articlesource">
               <el-input v-model="temp.articlesource" placeholder="请输入文章来源" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row style="margin-top:10px">
-          <el-col style="width:43%;">
+          <el-col style="width:45%;">
             <el-form-item style="font-weight: bold;" label="文章属性" prop="attribute">
                 <el-checkbox-group v-model="checkList"
                 @change="getValue">
@@ -137,7 +137,7 @@
                 </el-checkbox-group>
             </el-form-item>
           </el-col>
-          <el-col style="width:43%">
+          <el-col style="width:45%">
             <el-form-item style="font-weight: bold;" label="文章缩略图" prop="picturename">
               <el-upload
                 style="width:100%"
@@ -160,12 +160,12 @@
           </el-col>
         </el-row>
         <el-form-item style="font-weight: bold;" label="描述" prop="describe">
-          <textarea rows="8" cols="107" v-model="temp.describe"></textarea>
+          <textarea style="width:88%" rows="8" cols="107" v-model="temp.describe"></textarea>
         </el-form-item>
         <el-form-item style="font-weight: bold;" label="内容" prop="content">
           <quill-editor
             class="editor"
-            style="height:400px;width:85%;"
+            style="height:400px;width:88%;"
             ref="myQuillEditor"
             v-model="temp.content"
           ></quill-editor>

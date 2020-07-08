@@ -30,4 +30,13 @@ public interface WindMapper extends BaseMapper<Wind> {
 
     @Select("select count(wid) from wind where wCreateId=#{sid} and wStatus=1")
     Integer findWindByWstatusToCount(@Param("sid")Integer sid);
+
+    @Select("select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wid=#{wid}")
+    @Results({
+            @Result(column = "wContributor",property = "wnew",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "wCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
+    })
+    Wind findWindByWid(int wid);
 }

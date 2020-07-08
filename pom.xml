@@ -141,20 +141,6 @@
         </dependency>
 
     </dependencies>
-    <!--<repositories>
-        <repository>
-            <id>aspose-words-jdk16</id>
-            <url>https://maven.atlassian.com/3rdparty</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
-        </repository>
-    </repositories>-->
     <build>
         <finalName>honest</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->

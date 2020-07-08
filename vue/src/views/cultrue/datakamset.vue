@@ -22,7 +22,7 @@
     <div style="margin-top:15px">
       <el-button type="primary" class="el-icon-plus" @click="handleCreate">新增</el-button>
       <el-button type="primary" class="el-icon-delete" @click="handleDelete">删除</el-button>
-      <el-button type="primary" class="el-icon-download"  @click="handleOutFile">导出文件</el-button></div>
+      <!-- <el-button type="primary" class="el-icon-download"  @click="handleOutFile">导出文件</el-button>--></div> 
     <!--  数据表格  :data="list.slice((listQuery.pageNum-1)*listQuery.pageRow,listQuery.pageNum*listQuery.pageRow)"-->
     <el-table
       :key="tableKey"

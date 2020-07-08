@@ -106,18 +106,7 @@ public class DatacollectionController {
             }
             datacollectionService.updateDataConllectionByVideoAndFile(datacollection);
         }
-        Datacollection datacollectionById = datacollectionService.findDatacollectionById(datacollection.getDid());
-        String name = sysStaffService.findSysStaffByIdToName(datacollectionById.getdCreateId());
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("dFileName",datacollectionById.getDFileName());
-        modelAndView.addObject("dPdf",datacollectionById.getDPdf());
-        modelAndView.addObject("dFile",datacollectionById.getDFile());
-        modelAndView.addObject("title",datacollectionById.getDTitle());
-        modelAndView.addObject("time", datacollectionById.getDCreateTime());
-        modelAndView.addObject("name", name);
-        modelAndView.setViewName("index1");
-        staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,datacollection.getDTitle());
-
+        thymeleaftest(datacollection,httpServletRequest,httpServletResponse);
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
@@ -126,13 +115,11 @@ public class DatacollectionController {
             Datacollection data= datacollectionService.findDatacollectionById(did[0]);
             staticHtmlService.deleteHtmlPage(data.getDTitle());
             datacollectionService.deleteDataConllectionByDid(did[0]);
-
         }else{
             for (int i = 0; i < did.length; i++) {
                 Datacollection data= datacollectionService.findDatacollectionById(did[i]);
                 staticHtmlService.deleteHtmlPage(data.getDTitle());
                 datacollectionService.deleteDataConllectionByDid(did[i]);
-
             }
         }
         return CommonUtil.successJson("删除成功!");
@@ -142,16 +129,7 @@ public class DatacollectionController {
         String pdf = getPdf(datacollection.getDFile());
         datacollection.setDPdf(pdf);
         datacollectionService.insertDataConllection(datacollection);
-        String name = sysStaffService.findSysStaffByIdToName(datacollection.getdCreateId());
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.addObject("dFileName",datacollection.getDFileName());
-        modelAndView.addObject("dPdf",datacollection.getDPdf());
-        modelAndView.addObject("dFile",datacollection.getDFile());
-        modelAndView.addObject("title",datacollection.getDTitle());
-        modelAndView.addObject("time", DateUtil.getDate());
-        modelAndView.addObject("name", name);
-        modelAndView.setViewName("index1");
-        staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,datacollection.getDTitle());
+        thymeleaftest(datacollection,httpServletRequest,httpServletResponse);
         return CommonUtil.successJson("新增成功!");
     }
 
@@ -163,5 +141,29 @@ public class DatacollectionController {
             return url;
         }
         return null;
+    }
+
+    public void thymeleaftest(Datacollection datacollection,HttpServletRequest req,HttpServletResponse resp){
+        ModelAndView modelAndView=new ModelAndView();
+        if(datacollection.getDid()!=0){
+            Datacollection datacollectionById = datacollectionService.findDatacollectionById(datacollection.getDid());
+            String name = sysStaffService.findSysStaffByIdToName(datacollectionById.getdCreateId());
+            modelAndView.addObject("dFileName",datacollectionById.getDFileName());
+            modelAndView.addObject("dPdf",datacollectionById.getDPdf());
+            modelAndView.addObject("dFile",datacollectionById.getDFile());
+            modelAndView.addObject("title",datacollectionById.getDTitle());
+            modelAndView.addObject("time", datacollectionById.getDCreateTime());
+            modelAndView.addObject("name", name);
+        }else{
+            String name = sysStaffService.findSysStaffByIdToName(datacollection.getdCreateId());
+            modelAndView.addObject("dFileName",datacollection.getDFileName());
+            modelAndView.addObject("dPdf",datacollection.getDPdf());
+            modelAndView.addObject("dFile",datacollection.getDFile());
+            modelAndView.addObject("title",datacollection.getDTitle());
+            modelAndView.addObject("time", DateUtil.getDate());
+            modelAndView.addObject("name", name);
+        }
+        modelAndView.setViewName("index1");
+        staticHtmlService.genHtmlPage(modelAndView,req,resp,datacollection.getDTitle());
     }
 }
