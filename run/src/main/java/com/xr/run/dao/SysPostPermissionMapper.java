@@ -61,4 +61,10 @@ public interface SysPostPermissionMapper extends BaseMapper<SysPostPermission> {
     void upSysPpost(@Param("p")SysPpost sysPpost);
     @Update("update sys_ppost set staus=1 where pid=#{pid}")
     void delSysPpost(@Param("pid")int pid);
+    //根绝Mid查询
+    @Select("select pid,pname,mid,message,create_time,create_id,staus from sys_ppost where mid=#{mid}")
+    List<SysPpost> findSysPpostByMid(@Param("mid") Integer mid);
+    //根据pid查询岗位名
+    @Select("select pname from sys_ppost where pid=#{pid}")
+    String findSysPpostToPnameByPid(@Param("pid") Integer pid);
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="chartLineBox" style="margin-left:-5%;width: 100%;height: 70vh;"></div>
+  <div id="chartLineBox" style="width: 100%;height: 70vh;"></div>
 </template>
 
 <script>

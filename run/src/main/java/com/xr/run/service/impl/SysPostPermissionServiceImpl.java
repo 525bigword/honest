@@ -89,6 +89,11 @@ public class SysPostPermissionServiceImpl extends ServiceImpl<SysPostPermissionM
         }
     }
 
+    @Override
+    public List<SysPpost> findSysPpostByMid(Integer mid) {
+        return baseMapper.findSysPpostByMid(mid);
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
         System.out.println(random.nextInt());

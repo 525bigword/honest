@@ -92,20 +92,20 @@ export const asyncRouterMap = [
             },
         ]
     },
-    {
-        path: '/politics',
-        component: Layout,
-        redirect: '/politics/',
-        name: '廉政教育',
-        meta: { title: '廉政教育', icon: 'table' },
-        children: [{
-            path: '',
-            name: '廉政教育',
-            component: _import('user/user'),
-            meta: { title: '廉政教育', icon: 'user' },
-            menu: 'aa'
-        }]
-    },
+    // {
+    //     path: '/politics',
+    //     component: Layout,
+    //     redirect: '/politics/',
+    //     name: '廉政教育',
+    //     meta: { title: '廉政教育', icon: 'table' },
+    //     children: [{
+    //         path: '',
+    //         name: '廉政教育',
+    //         component: _import('user/user'),
+    //         meta: { title: '廉政教育', icon: 'user' },
+    //         menu: 'aa'
+    //     }]
+    // },
     {
         path: '/duty',
         component: Layout,
@@ -308,19 +308,19 @@ export const asyncRouterMap = [
             menu: 'spvback'
         }]
     },
-    {
-        path: '/systemnotice',
-        component: Layout,
-        redirect: '/systemnotice/',
-        name: '通知公告',
-        children: [{
-            path: '',
-            name: '通知公告',
-            component: _import('systemnotice/systemmessage'),
-            meta: { title: '通知公告', icon: 'user' },
-            menu: 'systemnotice'
-        }]
-    }, {
+    // {
+    //     path: '/systemnotice',
+    //     component: Layout,
+    //     redirect: '/systemnotice/',
+    //     name: '通知公告',
+    //     children: [{
+    //         path: '',
+    //         name: '通知公告',
+    //         component: _import('systemnotice/systemmessage'),
+    //         meta: { title: '通知公告', icon: 'user' },
+    //         menu: 'systemnotice'
+    //     }]},
+     {
         path: '/echartInfo',
         component: Layout,
         redirect: '/echartInfo/',
