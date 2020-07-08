@@ -51,7 +51,7 @@ public class SpvDutyController {
         return CommonUtil.successJson(sysStaffAll);
     }
     @RequestMapping("update")
-    public JSONObject updateSpvDuty(SpvDuty spvDuty)  {
+    public JSONObject updateSpvDuty(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
         System.out.println(spvDuty.getDutyAccessory());
         if(spvDuty.getDutyAccessoryName().equals("1")){
             spvDutyService.updateSpvDutyByDid(spvDuty);
@@ -68,22 +68,28 @@ public class SpvDutyController {
             spvDutyService.updateSpvDutyFileByDid(spvDuty);
             System.out.println("hgh");
         }
+        thymeleafSpvDuty(spvDuty,req,resp);
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
     public JSONObject deleteSpvDutyByDid(@RequestBody int[] did)  {
         if (did.length==1){
+            SpvDuty spvDutyByDid = spvDutyService.findSpvDutyByDid(did[0]);
+            staticHtmlService.deleteHtmlPage(spvDutyByDid.getDutyTitle());
             spvDutyService.deleteSpvDutyByDid(did[0]);
         }else{
             for (int i = 0; i < did.length; i++) {
+                SpvDuty spvDutyByDid = spvDutyService.findSpvDutyByDid(did[i]);
+                staticHtmlService.deleteHtmlPage(spvDutyByDid.getDutyTitle());
                 spvDutyService.deleteSpvDutyByDid(did[i]);
             }
         }
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
-    public JSONObject insertSpvDuty(SpvDuty spvDuty)  {
+    public JSONObject insertSpvDuty(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
         spvDutyService.insertSpvDuty(spvDuty);
+        thymeleafSpvDuty(spvDuty,req,resp);
         return CommonUtil.successJson("新增成功!");
     }
 
@@ -109,7 +115,7 @@ public class SpvDutyController {
     }
 
     @RequestMapping("updatestatus")
-    public JSONObject updateStatus(SpvDuty spvDuty)  {
+    public JSONObject updateStatus(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
         SpvBack spvBack = new SpvBack();
         spvBack.setBackType(spvDuty.getDutyType());
         spvBack.setBCreateId(spvDuty.getdCreateId());
@@ -121,12 +127,14 @@ public class SpvDutyController {
             spvBackService.insertSpvBack(spvBack);
         }
         spvDutyService.updateStatusByDid(spvDuty);
+        thymeleafSpvDuty(spvDuty,req,resp);
         return CommonUtil.successJson("修改成功!");
     }
 
     @RequestMapping("updatetong")
-    public JSONObject updateTongBaoByDid(SpvDuty spvDuty){
+    public JSONObject updateTongBaoByDid(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp){
         spvDutyService.updateTongBaoByDid(spvDuty);
+        thymeleafSpvDuty(spvDuty,req,resp);
         return CommonUtil.successJson("发布成功!");
     }
 
