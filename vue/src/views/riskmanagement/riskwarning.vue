@@ -267,6 +267,9 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData() {
+        if (!this.hasPerm('riskpointwarning:add')) {
+          return
+        }
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
@@ -310,6 +313,9 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData() {
+        if (!this.hasPerm('riskpointwarning:update')) {
+          return
+        }
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
@@ -338,6 +344,9 @@ import { mapGetters } from 'vuex'
         this.yincang()
       },
       handleDelete() {
+        if (!this.hasPerm('riskpointwarning:delete')) {
+          return
+        }
         // 先弹确认取消框
         let title='';
         if(this.multipleSelection.length<1){

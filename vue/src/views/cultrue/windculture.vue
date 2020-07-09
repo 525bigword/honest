@@ -329,6 +329,9 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData(val) {
+        if (!this.hasPerm('wind:add')) {
+          return
+        }
         if(val!==0){
             this.temp.wstatus=val;
         }
@@ -397,6 +400,9 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
+        if (!this.hasPerm('wind:update')) {
+          return
+        }
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {

@@ -51,7 +51,9 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
             @Result(column = "bCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
             @Result(column = "did",property = "gettop",
-                    one = @One(select = "com.xr.run.dao.SpvDutyMapper.getSpvDuty",fetchType = FetchType.DEFAULT))
+                    one = @One(select = "com.xr.run.dao.SpvDutyMapper.getSpvDuty",fetchType = FetchType.DEFAULT)),
+            @Result(column = "did",property = "tongzhi",
+                    one = @One(select = "com.xr.run.dao.SpvDutyMapper.getTongzhi",fetchType = FetchType.DEFAULT))
     })
     IPage<SpvBack> findSpvBackByDid(Page page, int did);
 
