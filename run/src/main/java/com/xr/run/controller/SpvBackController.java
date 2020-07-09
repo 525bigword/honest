@@ -42,7 +42,7 @@ public class SpvBackController {
     @RequestMapping("update")
     public JSONObject updateSpvBack(SpvBack spvBack)  {
         System.out.println(spvBack);
-        if(spvBack.getBackAccessoryName().equals("1")){
+        if(spvBack.getBackAccessoryName().equals("1")|| spvBack.getBackAccessory()==null){
             spvBackService.updateSpvBackBySid(spvBack);
         }else {
             String filePath = spvBackService.findSpvBackByFile(spvBack.getSid());

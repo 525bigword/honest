@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
-    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status` from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
+    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`,tongbao from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
