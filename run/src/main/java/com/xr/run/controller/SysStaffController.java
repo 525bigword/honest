@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SysStaff;
+import com.xr.run.service.HomePageSevice;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.Constants;
@@ -25,6 +26,9 @@ import java.util.List;
 public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
+
+    @Autowired
+    private HomePageSevice homePageSevice;
 
 
 
@@ -75,7 +79,8 @@ public class SysStaffController {
         CommonUtil.hasAllRequired(requestJson, "username,password");
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
 
-
+        //创建首页
+        homePageSevice.loading();
         return jsonObject;
     }
     /**

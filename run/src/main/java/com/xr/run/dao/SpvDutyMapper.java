@@ -58,4 +58,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Update("update spv_duty set tongbao=#{tongbao} where did=#{did}")
     void updateTongBaoByDid(SpvDuty spvDuty);
 
+    @Select("select * from spv_duty ORDER BY NewTime desc limit 0,5")
+    List<SpvDuty> findSpvDutyTopFive();
+
 }
