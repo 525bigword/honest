@@ -64,4 +64,9 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
     SpvDuty findSpvDutyByDid(int did);
+
+    @Select("select * from spv_duty ORDER BY NewTime desc limit 0,5")
+    List<SpvDuty> findSpvDutyTopFive();
+
+
 }
