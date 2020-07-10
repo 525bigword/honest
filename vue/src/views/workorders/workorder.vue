@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div :style="{'display':dis}" style="width:100%;margin-top:-30px">
+  <div >
+    <div class="app-container" :style="{'display':dis}" style="width:100%;margin-top:-30px">
       <el-table
         :key="tableKey"
         v-loading="listLoading"
@@ -68,17 +68,18 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
     @change="onEditorChange($event)"-->
-    <div :style="{'display':dis2}" style="width:100%;margin-top:-30px">
+    <div :style="{'display':dis2}" style="background-color: lightgray;width:100%;margin-top:-9px">
+      <el-main>
       <el-form
         ref="dataForm"
         :rules="rules"
         :model="temp"
         label-position="center"
         label-width="130px"
-        style="width: 95%; margin-left:40px;"
-      >
+        style="width: 100%;">
+         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
         <!--        数据校验要求prop值和temp.属性名一致-->
-        <el-form-item style="width:100%;height:30px;margin-left: -80px" align="right">
+        <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
           <el-button
             type="success"
             :disabled="isShow"
@@ -86,7 +87,9 @@
             @click="updateData()"
           >更新</el-button>
           <el-button class="el-icon-back" plain @click="out()">返回</el-button>
-        </el-form-item>
+        </el-form-item></div>
+        <div style="background-color: white;margin-top: 25px;z-index:3;">
+           <div style="height:20px"></div>
         <el-row>
           <el-col style="width:43%">
             <el-form-item style="font-weight: bold;" label="责任反馈标题" prop="backTitle">
@@ -142,6 +145,7 @@
                 disabled="disabled"
               />
             </el-form-item>
+            <el-form-item style="margin-top:10px"></el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -176,29 +180,37 @@
             </el-form-item>
           </el-col>
         </el-row>
+        </div>
       </el-form>
+      </el-main>
     </div>
-    <div :style="{'display':dis5}" style="width:100%;margin-top:-30px">
+    <div :style="{'display':dis5}" style="background-color: lightgray;width:100%;margin-top:-9px">
+      <el-main>
       <el-form
         ref="dataForm"
         :rules="rules"
         :model="temp"
         label-position="center"
         label-width="130px"
-        style="width: 95%; margin-left:40px;"
-      >
-      <div class="filter-container" align="right" style="margin-top: 20px;margin-right:40px">
-        <el-button type="primary" class="el-icon-back" @click="back2()">返回</el-button>
+        style="width: 100%;">
+      <div style="background-color: white;height:65px;width: 100%;position:fixed; top:50px; left:-1px;z-index:2 ;">
+        <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
+        <el-button type="primary" class="el-icon-back" @click="back2()">返回</el-button></el-form-item>
         <!--  </el-form-item> -->
       </div>
+      <div style="background-color: white;margin-top: 25px;z-index:3;">
+        <div style="height:20px"></div>
       <el-form-item style="font-weight: bold;" label="通报内容" prop="tongzhi">
           <el-card class="box-card"
-          style="width:85%;"
+          style="width:90%;"
             ref="myQuillEditor"
             v-html="temp.tongzhi">
         </el-card>
         </el-form-item>
+        <el-form-item style="margin-top:10px"></el-form-item>
+      </div>
       </el-form>
+      </el-main>
     </div>
   </div>
 </template>
