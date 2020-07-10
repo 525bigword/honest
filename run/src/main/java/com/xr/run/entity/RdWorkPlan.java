@@ -10,6 +10,7 @@ import java.util.Date;
 public class RdWorkPlan {
 
   private int id;
+  private Integer rdid;
   private String title;
   private String content;
   @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")//页面写入数据库时格式化
