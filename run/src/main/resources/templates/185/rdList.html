@@ -154,7 +154,7 @@
                 <label th:text="${rdWorkVo.title}"></label>
             </div>
             <div>
-                 <span>上传者：<label >铭飞-烟草</label></span>&nbsp;&nbsp;&nbsp;
+                 <span>上传者：<label th:text="${rdWorkVo.name}"></label></span>&nbsp;&nbsp;&nbsp;
                 <span>来源：<label ></label></span>&nbsp;&nbsp;&nbsp;
                 <span>时间：<label th:text="${#dates.format(rdWorkVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
                 <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>

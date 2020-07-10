@@ -20,8 +20,7 @@ public interface RdWorkDeploymentMapper extends BaseMapper<RdWorkDeployment> {
             @Result(column = "create_id",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<RdWorkDeployment> findRdWorkDeploymentIndex(@Param("page") Page page, @Param("title") String title);
+    IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, @Param("title") String title);
 
-    @Select("select * from rd_work_deployment order by create_time desc")
-    List<RdWorkDeployment> findRdWorkDeploymentAll();
+    List<RdWorkDeployment> findRdWorkDeploymentAll(@Param("title") String title);
 }

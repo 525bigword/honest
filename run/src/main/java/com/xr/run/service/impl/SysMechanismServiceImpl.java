@@ -105,7 +105,7 @@ public class SysMechanismServiceImpl extends ServiceImpl<SysMechanismMapper,SysM
         }
         return sysMechanisms;
     }
-//    public static void main(String[] args) {
+//    public frontPage void main(String[] args) {
 //        long time = new Date().getTime();
 //        System.out.println(time);
 //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式

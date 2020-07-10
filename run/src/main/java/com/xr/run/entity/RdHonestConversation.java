@@ -24,5 +24,6 @@ public class RdHonestConversation {
   private Date createTime;
   private int createId;
   private String staus;
+  private String name;
 
 }

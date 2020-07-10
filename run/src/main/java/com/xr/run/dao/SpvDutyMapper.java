@@ -20,7 +20,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
             @Result(column = "dCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<SpvDuty> findSpvDuty(Page page, String dutyTitle);
+    IPage<SpvDuty> findSpvDuty(Page page, @Param("dutyTitle") String dutyTitle);
 
     @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},`status`=#{status} where did=#{did}")
     void updateSpvDutyByDid(SpvDuty spvDuty);

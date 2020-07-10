@@ -20,5 +20,6 @@ public class RdWorkPlan {
   private  SysStaff sysStaff;
   private String createName;
   private String staus;
+  private String name;
 
 }

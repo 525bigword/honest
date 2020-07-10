@@ -20,6 +20,5 @@ public interface RdWorkPlanMapper extends BaseMapper<RdWorkPlan> {
     })
     IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, @Param("title") String title);
 
-    @Select("select * from rd_work_plan order by create_time desc ")
-    List<RdWorkPlan> findRdWorkPlanAll();
+    List<RdWorkPlan> findRdWorkPlanAll(@Param("title") String title);
 }

@@ -20,8 +20,7 @@ public interface RdEntityResponsibilityMapper extends BaseMapper<RdEntityRespons
             @Result(column = "create_id",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(@Param("page") Page page, @Param("title") String title);
+    IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, @Param("title") String title);
 
-    @Select("select * from rd_entity_responsibility where staus<>2 order by create_time desc")
-    List<RdEntityResponsibility> findRdEntityResponsibilityAll();
+    List<RdEntityResponsibility> findRdEntityResponsibilityAll(@Param("title") String title);
 }

@@ -4,9 +4,9 @@ public interface HomePageSevice {
 
     void loading();
 
-    void getmoreHtml();
+   /* void getmoreHtml();
 
     void  createDetailHtml();
-
+*/
 
 }

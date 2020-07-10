@@ -92,13 +92,14 @@ public class HomePageSeviceImpl implements HomePageSevice {
    //责任纪实
    public void loadRdWork(Map map){
        //工作计划
-       List<RdWorkPlan> rdWorkPlans = rdWorkPlanMapper.findRdWorkPlanAll();
+       List<RdWorkPlan> rdWorkPlans = rdWorkPlanMapper.findRdWorkPlanAll("");
+       System.out.println("========="+rdWorkPlans);
        //工作部署
-       List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentAll();
+       List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentAll("");
        //廉政谈话
-       List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll();
+       List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll("");
        //主体责任
-       List<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityMapper.findRdEntityResponsibilityAll();
+       List<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityMapper.findRdEntityResponsibilityAll("");
 
        List<RdWorkVo> list1 = new ArrayList<>();
 
@@ -115,6 +116,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
            rdWorkVo.setCreateTime(rdWorkPlan.getCreateTime());
            rdWorkVo.setType(0);
            rdWorkVo.setId(rdWorkPlan.getRdid());
+           rdWorkVo.setName(rdWorkPlan.getName());
 
            Map map1 = new HashMap();
            for (int i = 0; i < rdWorkPlans.size(); i++) {
@@ -149,7 +151,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
            rdWorkVo.setCreateTime(rdWorkDeployment.getCreateTime());
            rdWorkVo.setType(1);
            rdWorkVo.setId(rdWorkDeployment.getId());
-
+           rdWorkVo.setName(rdWorkDeployment.getName());
            Map map1 = new HashMap();
            for (int i = 0; i < rdWorkDeployments.size(); i++) {
                if(rdWorkDeployment.getId()==rdWorkDeployments.get(i).getId()){
@@ -181,7 +183,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
            rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
            rdWorkVo.setType(2);
            rdWorkVo.setId(rdHonestConversation.getId());
-
+           rdWorkVo.setName(rdHonestConversation.getName());
            Map map1 = new HashMap();
            for (int i = 0; i < rdHonestConversations.size(); i++) {
                if(rdHonestConversation.getId()==rdHonestConversations.get(i).getId()){
@@ -214,7 +216,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
            rdWorkVo.setCreateTime(rdEntityResponsibility.getCreateTime());
            rdWorkVo.setType(3);
            rdWorkVo.setId(rdEntityResponsibility.getId());
-
+           rdWorkVo.setName(rdEntityResponsibility.getName());
            Map map1 = new HashMap();
            //分页问题
            for (int i = 0; i < rdEntityResponsibilities.size(); i++) {
@@ -242,14 +244,28 @@ public class HomePageSeviceImpl implements HomePageSevice {
    }
 
 
+    //获得更多责任监督
+    private void getMoreDuty(){
+       createIndexHtml(destPath+"/207/", "207/index", "index.html", null);
+    }
+
+    private void getMoreRdWork() {
+        createIndexHtml(destPath+"/185/", "185/index", "index.html", null);
+    }
+
     public void loading() {
         Map<String, Object> map = new HashMap<>();
 
         //责任监督
         loadDuty(map);
+        //责任监督更多
+        getMoreDuty();
 
         //查询前五的责任纪实
         loadRdWork(map);
+        //责任纪实更多
+        getMoreRdWork();
+
 
 
         //风险防控
@@ -283,7 +299,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
         createIndexHtml(destPath, "HomePage", "index.html", map);
     }
-
 
 
 
@@ -338,15 +353,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         }
     }
 
-    @Override
-    public void getmoreHtml() {
 
-    }
-
-    @Override
-    public void createDetailHtml() {
-
-    }
 
 
 }

@@ -18,5 +18,6 @@ public class RdWorkDeployment {
   private int createId;
   private SysStaff sysStaff;
   private String staus;
+  private String name;
 
 }

@@ -46,5 +46,7 @@ public class RdWorkVo implements Serializable {
 
     private Integer prev;
 
+    private String name;
+
 
 }
