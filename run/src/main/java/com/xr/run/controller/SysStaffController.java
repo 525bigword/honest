@@ -8,6 +8,7 @@ import com.xr.run.service.HomePageSevice;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.Constants;
+import com.xr.run.util.constants.ErrorEnum;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -70,6 +71,18 @@ public class SysStaffController {
         Page<SysStaff> page=new Page(pageNum,pageRow);
         IPage<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll(page,name,staus,mid);
         return CommonUtil.successJson(sysStaffAll);
+    }
+    /**
+     * 生成前台首页
+     */
+    @GetMapping("/createIndex")
+    public JSONObject createIndex(){
+        try {
+            homePageSevice.loading();
+            return CommonUtil.successJson();
+        }catch (Exception e){
+            return CommonUtil.errorJson(ErrorEnum.E_500);
+        }
     }
     /**
      * 登录

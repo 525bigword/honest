@@ -9,6 +9,9 @@
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/workorders">
+        <el-dropdown-item>
+            <span @click="createIndex" style="display:block;">生成首页</span>
+          </el-dropdown-item>
           <el-dropdown-item>
             <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>
@@ -38,6 +41,14 @@ export default {
     ])
   },
   methods: {
+    createIndex(){
+      this.api({
+        url:'SysStaff/createIndex',
+        method:'get'
+      }).then(res=>{
+        console.log(res)
+      })
+    },
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
     },

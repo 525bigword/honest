@@ -326,7 +326,7 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/echartInfo/',
         name: '风险图表',
-        hidden: false,
+        hidden: true,
         children: [{
             path: '',
             name: '风险图表',

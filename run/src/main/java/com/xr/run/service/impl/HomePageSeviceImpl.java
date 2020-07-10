@@ -18,6 +18,7 @@ import com.xr.run.service.HomePageSevice;
 import com.xr.run.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -36,8 +37,12 @@ import java.util.*;
 public class HomePageSeviceImpl implements HomePageSevice {
 
     //静态页面生成地址
-    private String destPath = "F:/tobacco/ms-mcms/html/2";
+    @Value("${html.destPath}")
+    private String destPath = "";
 
+    public void a(){
+        System.out.println(destPath);
+    }
     @Autowired
     private TemplateEngine templateEngine;
 
