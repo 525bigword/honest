@@ -105,7 +105,7 @@ public class SpvBackController {
             String path1 = path.substring(0, path.lastIndexOf("."));
             String url=path1+".pdf";
             System.out.println(url);
-            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+//            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
             return url;
         }
         return null;
