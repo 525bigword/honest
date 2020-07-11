@@ -8,13 +8,13 @@
                   <el-form :model="loginForm"  :rules="loginRules" ref="loginForm" label-width="100px"  class="ms-admin-login-form">
                      <h1>
                         <span style="color: #529076">用户登录 / </span>User login</h1>
-                     <el-form-item class="ms-admin-form-item" prop="username">
+                     <el-form-item style="margin-top:35px" class="ms-admin-form-item" prop="username">
                         <el-input  type="text" placeholder='用户名' v-model="loginForm.username" autocomplete="off"></el-input>
                      </el-form-item>
-                     <el-form-item class="ms-admin-form-item" prop="password">
+                     <el-form-item style="margin-top:25px" class="ms-admin-form-item" prop="password">
                         <el-input type="password" placeholder='密码' v-model="loginForm.password" autocomplete="off"></el-input>
                      </el-form-item>
-                     <el-form-item class="ms-admin-form-item">
+                     <el-form-item style="margin-top:30px" class="ms-admin-form-item">
                         <el-button type="primary" :loading="loading" @click.native.prevent="handleLogin" class="ms-admin-login-btn">登录</el-button>
                      </el-form-item>
                   </el-form>
@@ -29,14 +29,14 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", message: "请输入用户名" }
+          { required: true, trigger:['blur','change'], message: "请输入用户名" }
         ],
-        password: [{ required: true, trigger: "blur", message: "请输入密码" }]
+        password: [{ required: true, trigger: ['blur','change'], message: "请输入密码" }]
       },
       loading: false
     };
