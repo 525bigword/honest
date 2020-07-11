@@ -1,6 +1,7 @@
 package com.xr.run.service.duty.impl;
 
 import com.xr.run.dao.duty.HonestConversationMapper;
+import com.xr.run.entity.SysPpost;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
@@ -53,6 +54,16 @@ honestConversationMapper.delHonestConversationt(id);
     @Override
     public List<SysStaff> findallduty(Integer id) {
         return honestConversationMapper.findallduty(id);
+    }
+
+    @Override
+    public List<SysPpost> findalldept(Integer id) {
+        return honestConversationMapper.findalldept(id);
+    }
+
+    @Override
+    public List<SysStaff> findallperson(Integer ppid) {
+        return honestConversationMapper.findallperson(ppid);
     }
 
     @Override

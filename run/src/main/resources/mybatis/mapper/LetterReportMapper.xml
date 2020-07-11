@@ -3,16 +3,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.LetterReportMapper">
     <select id="list" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime from daily_letterreport lr where lr.lStatus!=0
+select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported)  lpersonbereported, (select s.mechanism_name from sys_mechanism s where s.mid=lr.lPbrDeptId) lPbrDeptId,(select s.pname from sys_ppost s where s.pid=lr.lPbrPostId) lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime,lr.puni from daily_letterreport lr where lr.lStatus!=0 and lr.lStatus!=-1
     </select>
     <insert id="addletter">
-        insert into daily_letterreport(letterid,ltime,lComplainantName,lDeptId,lPostId,lpersonbereported,lPbrDeptId,lPbrPostId,lcontent,lCreateTime,lCreateName,lCreateid,lStatus) values(#{letterId},#{lTime},#{lComplainantName},#{lDeptId},#{lPostId},#{lPersonBeReported},#{lPbrDeptId},#{lPbrPostId},#{lContent},#{lCreateTime},#{lCreateName},#{lCreateId},#{lStatus})
+        insert into daily_letterreport(letterid,ltime,lComplainantName,lDeptId,lPostId,lpersonbereported,lPbrDeptId,lPbrPostId,lcontent,lCreateTime,lCreateName,lCreateid,lStatus,puni) values(#{letterId},#{lTime},#{lComplainantName},#{lDeptId},#{lPostId},#{lPersonBeReported},#{lPbrDeptId},#{lPbrPostId},#{lContent},#{lCreateTime},#{lCreateName},#{lCreateId},#{lStatus},#{puni})
     </insert>
     <delete id="deletter" parameterType="Integer">
-        delete from daily_letterreport where lid=#{lid}
+        update  daily_letterreport set lStatus=-1 where lid=#{lid}
     </delete>
     <select id="findbyName" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,lpersonbereported,lr.lPbrDeptId,lr.lPbrPostId,lr.lcontent,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lsynopsis,lr.lCreateTime,lr.lCreateName,lr.lStatus ,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime from daily_letterreport lr where 1=1
+        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported)  lpersonbereported, (select s.mechanism_name from sys_mechanism s where s.mid=lr.lPbrDeptId) lPbrDeptId,(select s.pname from sys_ppost s where s.pid=lr.lPbrPostId) lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime,lr.puni from daily_letterreport lr where lr.lStatus!=0 and lr.lStatus!=-1
         <if test="lCreateId != null and !lCreateId.equals('')">
             AND lr.lCreateId=#{lCreateId}</if>
         <if test="lStatus != 1">
@@ -20,7 +20,7 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
         <if test="lComplainantName != null and !lComplainantName.equals('')">
         AND lComplainantName like #{lComplainantName}</if>
         <if test="lPersonBeReported != null and !lPersonBeReported.equals('')">
-            AND lpersonbereported like #{lPersonBeReported}
+            AND (select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported) like #{lPersonBeReported}
     </if>
     </select>
     <!--纪检监察员编写内容摘要提交审核-->
@@ -58,4 +58,12 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
     <update id="bjbcmethod" parameterType="com.xr.run.entity.daily.LetterReport">
           update daily_letterreport set lcontent=#{lContent} where lid=#{lid}
     </update>
+    <!--根据用户真实姓名查询部门和单位-->
+    <resultMap id="dp" type="com.xr.run.entity.daily.DeptUnit">
+        <result column="mechanism_name" property="mname"></result>
+        <result column="pname" property="pname"></result>
+    </resultMap>
+    <select id="finddp" parameterType="String" resultMap="dp"  >
+        select DISTINCT s.`name`, sme.mechanism_name,p.pname from sys_staff s,sys_ppost p,sys_mechanism sme where sme.mid=s.mid and s.ppid= p.pid and s.`name`=#{nickname}
+    </select>
 </mapper>

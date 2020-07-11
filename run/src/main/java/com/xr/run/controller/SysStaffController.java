@@ -31,10 +31,7 @@ public class SysStaffController {
     @Autowired
     private HomePageSevice homePageSevice;
 
-
-
     @GetMapping("get/{sid}")
-
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
         return CommonUtil.successJson(sysStaffBySid);

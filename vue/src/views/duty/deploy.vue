@@ -21,8 +21,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div><el-form-item>
-        <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}">删除</el-button></el-form-item></div>
+        <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(this.hasPerm('workdeployment:add')?'':'none')}">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(this.hasPerm('workdeployment:delete')?'':'none')}">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -73,25 +73,25 @@
 
       <!--隐藏窗-->
       <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px">
+        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
           <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
             <br/>
             <div align="right">
-              <el-button type="primary"  @click="tjshmethod()" v-bind:style="{display:tjsh}">提交审核</el-button>
+              <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
               <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
-              <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser()">保存</el-button>
+              <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
               <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
               <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
-              <el-button type="primary" class="el-icon-back" @click="deselect()">返回</el-button>
+              <el-button type="primary" class="el-icon-back" @click="deselect('ruleForm')">返回</el-button>
             </div></div>
           <br/>
           <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="序号" type="hidden"></el-input>
-          <el-form-item label="工作部署标题">
+          <el-form-item label="工作部署标题" prop="title">
 
             <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
-          <el-form-item label="文章内容">
+          <el-form-item label="文章内容" prop="content">
             <el-card class="box-card"  style="margin-bottom:30px;width: 830px;height: 350px;text-align: left" v-if="userInfo.status!=0&&dialogTitle!='增加'">
               <div  class="clearfix" v-html="userInfo.content"></div>
             </el-card>
@@ -175,28 +175,30 @@ this.search=''
       })
       console.log('gx'+this.userInfo.id)
     },
-    tjshmethod(){
+    tjshmethod(formName){
       if(this.dialogTitle=="增加"){
-        let endtime = new Date(this.userInfo.createtime).toJSON();
-        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-        let postData = qs.stringify({
-          title: this.userInfo.title,
-          content: this.userInfo.content,
-          status:0,
-          createtime:this.userInfo.createtime,
-          createid:this.userId
-        });
-        //新增的方法
-        add(postData).then((response) => {
-          let postData = qs.stringify({
-            id:response.id
-          });
-          console.log('tjsh'+response.id)
-          subaudit(postData).then((response)=>{
-            this.ad='none'//编辑页面隐藏
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.createtime).toJSON();
+            this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let postData = qs.stringify({
+              title: this.userInfo.title,
+              content: this.userInfo.content,
+              status:0,
+              createtime:this.userInfo.createtime,
+              createid:this.userId
+            });
+            //新增的方法
+            add(postData).then((response) => {
+              let postData = qs.stringify({
+                id:response.id
+              });
+            console.log('tjsh'+response.id)
+            subaudit(postData).then((response)=>{
+              this.ad='none'//编辑页面隐藏
             this.tf=''//表格页面显示
             this.initList()
             this.$notify({
@@ -207,7 +209,13 @@ this.search=''
             })
           })
 
-        })
+          })
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
+
       }else{
       let postData = qs.stringify({
         id:this.userInfo.id
@@ -317,23 +325,25 @@ this.search=''
         this.ad=''//新增页面出现
         this.tf='none'//表格页面隐藏
       },
-      //新增工作计划
-      submitUser() {
-        let endtime = new Date(this.userInfo.createtime).toJSON();
-        this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-        let postData = qs.stringify({
-          title: this.userInfo.title,
-          content: this.userInfo.content,
-          status:0,
-          createtime:this.userInfo.createtime,
-          createid:this.userId
-        });
-          //新增的方法
-          add(postData).then((response) => {
-            this.ad='none'//新增页面隐藏
+      //新增工作部署
+      submitUser(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.createtime).toJSON();
+            this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let postData = qs.stringify({
+              title: this.userInfo.title,
+              content: this.userInfo.content,
+              status:0,
+              createtime:this.userInfo.createtime,
+              createid:this.userId
+            });
+            //新增的方法
+            add(postData).then((response) => {
+              this.ad='none'//新增页面隐藏
             this.tf=''//表格页面显示
             this.initList();
             this.$notify({
@@ -343,6 +353,12 @@ this.search=''
               duration: 2000
             })
           })
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
+
       },
       // 编辑
       handleEdit(index, row) {
@@ -355,16 +371,21 @@ this.search=''
           this.bc='none' //保存按钮
           this.tg = 'none' //通过按钮不显示
           this.btg = 'none' //不通过按钮不显示
-          if(this.role.includes('单位/部门负责人')) {
+          if(this.hasPerm('workdeployment:update')) {
             this.gx=''//更新按钮显示
             this.tjsh=''//提交审核按钮显示}
            }
+           else {
+            this.gx='none'//更新按钮显示
+            this.tjsh='none'//提交审核按钮显示}
+          }
+
         }
         else if(row.status==1){
           this.nr='disabled'//内容禁用
           this.bt='disabled'//标题禁用
           this.bc='none'//保存按钮
-          if(this.role.includes('纪检监察科科长')){
+          if(this.hasPerm('workdeployment:audit')){
             this.tg=''//通过按钮显示
             this.btg=''//不通过按钮显示
           }
@@ -401,9 +422,10 @@ this.search=''
           this.listLoading=false
         })
       }, //返回
-      deselect(){
+      deselect(formName){
         this.ad='none'//默认新增页面隐藏
         this.tf=''//表格页面显示
+          ,this.$refs[formName].resetFields()
         this.initList()
       },
       handleSizeChange(size) {
@@ -416,7 +438,14 @@ this.search=''
       }
     },
     data() {
-      return {
+      return {rules: {
+          title: [
+            {  required: true, message: '请输入工作标题', trigger: 'blur' }
+          ],content: [
+            {  required: true, message: '请输入工作内容', trigger: 'blur' }
+          ]
+
+        },
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
         editorOption: {},

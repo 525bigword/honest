@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class AsposeUtil {
-
 //
 //    public static boolean getLicense() {
 //        boolean result = false;

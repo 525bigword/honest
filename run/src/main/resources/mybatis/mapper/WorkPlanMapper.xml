@@ -21,11 +21,11 @@
     </resultMap>
     <!--初始化查询-->
     <select id="list" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkPlan">
-   select rwp.rdid,rwp.title,rwp.content,rwp.create_time,rwp.create_id,rwp.create_name,rwp.staus,rwp.auditresult,h.name,sm.mid,sm.mechanism_name from rd_work_plan rwp,Sys_Staff h,sys_mechanism sm where rwp.create_id=h.sid and h.mid=sm.mid
+   select rwp.rdid,rwp.title,rwp.content,rwp.create_time,rwp.create_id,rwp.create_name,rwp.staus,rwp.auditresult,h.name,sm.mid,sm.mechanism_name from rd_work_plan rwp,Sys_Staff h,sys_mechanism sm where rwp.create_id=h.sid and h.mid=sm.mid and rwp.staus!=-1
 </select>
     <!--按标题查询-->
     <select id="findbytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkPlan">
-      select rwp.rdid,rwp.title,rwp.content,rwp.create_time,rwp.create_id,rwp.create_name,rwp.staus,rwp.auditresult,h.name,sm.mid,sm.mechanism_name from rd_work_plan rwp,Sys_Staff h,sys_mechanism sm where rwp.create_id=h.sid and h.mid=sm.mid and rwp.title like CONCAT('%',#{title},'%')
+      select rwp.rdid,rwp.title,rwp.content,rwp.create_time,rwp.create_id,rwp.create_name,rwp.staus,rwp.auditresult,h.name,sm.mid,sm.mechanism_name from rd_work_plan rwp,Sys_Staff h,sys_mechanism sm where rwp.create_id=h.sid and h.mid=sm.mid and rwp.staus!=-1 and rwp.title like CONCAT('%',#{title},'%')
     </select>
     <!--新增工作计划-->
     <insert id="addWorkPlan" parameterType="com.xr.run.entity.duty.WorkPlan" keyProperty="id" useGeneratedKeys="true">
@@ -37,7 +37,7 @@
     </update>
     <!--按序号删除工作计划-->
     <delete id="del" parameterType="Integer">
-        delete from rd_work_plan where rdid=#{id}
+        update rd_work_plan set staus=-1 where rdid=#{id}
     </delete>
     <!--提交审核-->
     <update id="subaudit">

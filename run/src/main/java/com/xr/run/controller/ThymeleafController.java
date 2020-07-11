@@ -7,8 +7,10 @@ import com.xr.run.entity.*;
 import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.*;
 import com.xr.run.service.daily.LetterReportService;
+import com.xr.run.service.duty.HonestConversationService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import com.xr.run.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,8 +49,7 @@ public class ThymeleafController {
     private RdEntityResponsibilityService rdEntityResponsibilityService;
     @Autowired
     private PostriskcombingService postriskcombingService;
-    @Autowired
-    private LetterReportService letterreportService;
+
     @RequestMapping("/produce")
     public void index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         Page page=new Page(1,10);
@@ -271,12 +272,5 @@ public class ThymeleafController {
         return modelAndView;
 
     }
-    @RequestMapping("addletter")
-    public ModelAndView addletter(LetterReport letterReport){
-        letterreportService.addletter(letterReport);
-        ModelAndView modelAndView=new ModelAndView();
-      //  modelAndView.addObject("message", "举报成功");
-        modelAndView.setViewName("xfjb/letterRepoter");
-      return modelAndView;
-    }
+
 }

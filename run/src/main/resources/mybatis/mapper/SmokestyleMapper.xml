@@ -31,7 +31,17 @@
 
     <!--按标题查询-->
     <select id="findSmokestyle" parameterType="com.xr.run.entity.tam.Smokestyle" resultMap="base">
-          select tms.smoid,tms.smotitle,tms.smoproperty,tms.smoimage,tms.smosource,tms.smoauthor,tms.smocreatetime,tms.smodescrion,tms.smocontent,tms.smocreateid,tms.smocreatename,tms.surl,ss.sid,ss.name from tam_smoke_style tms,sys_staff ss where tms.smocreateid=ss.sid and tms.sstatus!=-1 and tms.smotitle  like CONCAT('%',#{smotitle},'%')
+          select tms.smoid,tms.smotitle,tms.smoproperty,tms.smoimage,tms.smosource,tms.smoauthor,tms.smocreatetime,tms.smodescrion,tms.smocontent,tms.smocreateid,tms.smocreatename,tms.surl,ss.sid,ss.name from tam_smoke_style tms,sys_staff ss where tms.smocreateid=ss.sid and tms.sstatus!=-1
+
+        <if test="smotitle != null and !smotitle.equals('')">
+            and tms.smotitle  like CONCAT('%',#{smotitle},'%')
+        </if>
+        <if test="starttime != null and !starttime.equals('')">
+            and tms.smocreatetime  &gt;= #{starttime}
+        </if>
+        <if test="endtime != null and !endtime.equals('')">
+            and tms.smocreatetime  &lt;= #{endtime}
+        </if>
 
     </select>
     <!--删除-->

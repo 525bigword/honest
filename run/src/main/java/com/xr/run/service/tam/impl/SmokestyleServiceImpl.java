@@ -22,7 +22,7 @@ smokestyleMapper.addSmokestyle(smokestyle);
     }
 
     @Override
-    public List<Smokestyle> findSmokestyle(String title) {
+    public List<Smokestyle> findSmokestyle(Smokestyle title) {
         return smokestyleMapper.findSmokestyle(title);
     }
 

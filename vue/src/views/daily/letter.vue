@@ -29,8 +29,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-       <!-- <el-button type="primary" class="el-icon-plus" @click="add">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="del">删除</el-button>--></el-form-item></div>
+       <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -45,7 +45,7 @@
         <el-table-column
           prop="ltime"
           label="信访时间"
-          width="180">
+          width="160">
         </el-table-column>
         <el-table-column
           prop="lcomplainantName"
@@ -81,6 +81,8 @@
           prop="lsynopsis"
           label="信访内容摘要"  width="80">
         </el-table-column>
+        <el-table-column prop="puni" label="单位路径" v-if="false" >
+        </el-table-column>
         <el-table-column prop="lcreateName" label="创建人姓名" v-if="false" >
         </el-table-column>
         <el-table-column prop="lresult" label="转办处理结果" v-if="false" >
@@ -109,9 +111,9 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
           <template slot-scope="scope" >
-            <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(role.includes('纪检监察员')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(role.includes('纪检监察科科长')||role.includes('纪检组长')||role.includes('局领导')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(role.includes('单位/部门负责人')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(hasPerm('letter:firstaudit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:zbaudit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
             <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
 
           </template>
@@ -130,17 +132,18 @@
       </div>
     </el-form>
     <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
-      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px"  :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
 <br/>
         <div align="right" ><el-form-item >
-          <el-button type="primary" class="el-icon-edit" @click="turn" v-if="role.includes('纪检监察科科长')"  v-bind:style="{display:zb}">转办</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="role.includes('纪检监察员')" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="role.includes('纪检监察科科长')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="role.includes('单位/部门负责人')" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="role.includes('局领导')" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="role.includes('纪检组长')" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
+          <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')"  v-bind:style="{display:tj}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="turn" v-if="hasPerm('letter:sencondadudit')"  v-bind:style="{display:zb}">转办</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="hasPerm('letter:firstaudit')" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="hasPerm('letter:sencondadudit')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="hasPerm('letter:zbaudit')" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="hasPerm('letter:leadersign')" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="hasPerm('letter:groupsign')" v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
         <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
@@ -151,37 +154,55 @@
 
           <el-input v-model="userInfo.letterId" placeholder="信访编号" style="width: 300px" disabled="disabled"></el-input>
         </el-form-item>
-        <el-form-item label="转办部门"  v-bind:style="{display:zhuanban}" v-if="role.includes('纪检监察科科长')">
-          <el-cascader ref='cascaderUnit' :show-all-levels="false"
+        <el-form-item label="转办部门"  v-bind:style="{display:hasPerm('letter:sencondaudit')}">
+         <el-cascader ref='cascaderUnit' :show-all-levels="false"
                        :placeholder="defaUnit"
                        :props="props"
                        :options="options_cascader"
                        :expandTrigger="'hover'"
-                       clearable v-model="userInfo.deptname" @change="handleItemChange"  style="width: 300px" v-bind:disabled="zhuanbanjy"></el-cascader>
+                       clearable v-model="userInfo.deptname"   style="width: 300px" v-bind:disabled="zhuanbanjy"></el-cascader>
         </el-form-item>
           <br />
         <el-form-item label="来访人姓名">
           <el-input v-model="userInfo.lcomplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
         </el-form-item>
-          <el-form-item label="被反映人姓名">
-            <el-input v-model="userInfo.lpersonBeReported" v-bind:disabled='bename' placeholder="被反映人姓名" style="width: 300px" ></el-input>
-          </el-form-item>
+          <el-form-item label="被反映人姓名" prop="lpersonBeReported">
+            <el-select v-model="userInfo.lpersonBeReported"  placeholder="请选择被反映人姓名" style="width: 300px">
+              <el-option
+                v-for="item in optionss"
+                :key="item.sid"
+                :label="item.name"
+                :value="item.sid">
+              </el-option>
+            </el-select></el-form-item>
           <br/>
           <el-form-item label="来访人部门/单位">
             <el-input v-model="userInfo.ldeptId" placeholder="来访人部门/单位" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
-          <el-form-item label="被反映人部门/单位">
-            <el-input v-model="userInfo.lpbrDeptId"  v-bind:disabled='beunit'  placeholder="被反映人部门/单位" style="width: 300px" ></el-input>
+          <el-form-item label="被反映人部门/单位" prop="lpbrDeptId">
+            <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
+                         placeholder="请选择被反映人部门/单位"
+                         :props="props"
+                         :options="options_cascader"
+                         :expandTrigger="'hover'"
+                         clearable v-model="userInfo.lpbrDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
           </el-form-item>
           <br/>
           <el-form-item label="来访人岗位/职务">
             <el-input v-model="userInfo.lpostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
-          <el-form-item label="被反映人岗位/职务">
-            <el-input v-model="userInfo.lpbrPostId" v-bind:disabled='beduty' placeholder="被反映人岗位/职务" style="width: 300px" ></el-input>
+          <el-form-item label="被反映人岗位/职务" prop="lpbrPostId">
+            <el-select v-model="userInfo.lpbrPostId"  placeholder="请选择被反映人岗位/职务" style="width: 300px" @change="change" >
+              <el-option
+                v-for="item in options"
+                :key="item.pid"
+                :label="item.pname"
+                :value="item.pid">
+              </el-option>
+            </el-select>
           </el-form-item>
           <br/>
-          <el-form-item label="原始信访内容">
+          <el-form-item label="原始信访内容" prop="lcontent">
             <el-input type="textarea" v-model="userInfo.lcontent" placeholder="原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
           </el-form-item>
           <br/>
@@ -189,43 +210,43 @@
             <el-input type="textarea" v-bind:disabled="sfjc" v-model="userInfo.lsynopsis" placeholder="信访内容摘要" style="width: 840px;"  ></el-input>
           </el-form-item>
           <br/>
-          <el-form-item label="监察科部门意见" v-if="role.includes('纪检监察科科长')" >
-            <el-input v-model="userInfo.lsupervisionComments" placeholder="监察科部门意见" style="width: 300px" ></el-input>
-          </el-form-item>
-          <el-form-item label="监察科部门意见签署时间" v-if="role.includes('纪检监察科科长')" >
-            <el-date-picker v-model="userInfo.lsupervisionCommentsTime" placeholder="监察科部门意见签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-          </el-form-item><br/>
-          <el-form-item label="纪检组长意见" v-if="role.includes('纪检组长')" >
-            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="纪检组长意见" style="width: 300px" ></el-input>
-          </el-form-item>
-          <el-form-item label="纪检组长签署时间" v-if="role.includes('纪检组长')" >
-            <el-date-picker v-model="userInfo.ldisciplinaryTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-          </el-form-item><br/>
-          <el-form-item label="局领导意见" v-if="role.includes('局领导')" >
-            <el-input v-model="userInfo.lleadersComments" placeholder="局领导意见" style="width: 300px" ></el-input>
-          </el-form-item>
-          <el-form-item label="局领导签署时间" v-if="role.includes('局领导')" >
-            <el-date-picker v-model="userInfo.lleadersTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-          </el-form-item><br/>
-          <el-form-item label="转办部门处理结果" v-if="role.includes('单位/部门负责人')" >
-            <el-input v-model="userInfo.lresult" placeholder="转办部门处理结果" style="width: 300px" ></el-input>
-          </el-form-item>
-          <el-form-item label="转办部门处理时间"  v-if="role.includes('单位/部门负责人')" >
-            <el-date-picker v-model="userInfo.lresultTime" placeholder="转办部门处理时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-          </el-form-item><br/>
-          <el-form-item label="监察科自办结果"  v-if="role.includes('纪检监察科科长')" >
-            <el-input v-model="userInfo.lsupervisionResutl" placeholder="监察科自办结果" style="width: 300px" ></el-input>
-          </el-form-item>
-          <el-form-item label="监察科自办时间"  v-if="role.includes('纪检监察科科长')" >
-            <el-date-picker v-model="userInfo.lsupervisionResultTime" placeholder="监察科自办时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-          </el-form-item><br/>
-          <el-form-item label="创建者"  v-if="false">
+          <el-form-item label="创建者"  >
             <el-input v-model="userInfo.lcreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
-          <el-form-item label="创建时间"  v-if="false">
-            <el-date-picker v-model="userInfo.lcreateTime" v-if="false" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          <el-form-item label="创建时间"  >
+            <el-date-picker v-model="userInfo.lcreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item><br/>
+          <el-form-item label="监察科部门意见" v-if="hasPerm('letter:sencondadudit')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             " >
+            <el-input v-model="userInfo.lsupervisionComments" placeholder="监察科部门意见" style="width: 300px" ></el-input>
           </el-form-item>
-          <br/>
+          <el-form-item label="监察科部门意见签署时间" v-if="hasPerm('letter:sencondadudit')" >
+            <el-date-picker v-model="userInfo.lsupervisionCommentsTime" placeholder="监察科部门意见签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item><br/>
+          <el-form-item label="纪检组长意见" v-if="hasPerm('letter:groupsign')" >
+            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="纪检组长意见" style="width: 300px" ></el-input>
+          </el-form-item>
+          <el-form-item label="纪检组长签署时间" v-if="hasPerm('letter:groupsign')" >
+            <el-date-picker v-model="userInfo.ldisciplinaryTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item><br/>
+          <el-form-item label="局领导意见" v-if="hasPerm('letter:leadersign')" >
+            <el-input v-model="userInfo.lleadersComments" placeholder="局领导意见" style="width: 300px" ></el-input>
+          </el-form-item>
+          <el-form-item label="局领导签署时间" v-if="hasPerm('letter:leadersign')" >
+            <el-date-picker v-model="userInfo.lleadersTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item><br/>
+          <el-form-item label="转办部门处理结果" v-if="hasPerm('letter:zbtaudit')" >
+            <el-input v-model="userInfo.lresult" placeholder="转办部门处理结果" style="width: 300px" ></el-input>
+          </el-form-item>
+          <el-form-item label="转办部门处理时间"  v-if="hasPerm('letter:zbaudit')" >
+            <el-date-picker v-model="userInfo.lresultTime" placeholder="转办部门处理时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item><br/>
+          <el-form-item label="监察科自办结果"  v-if="hasPerm('letter:sencondadudit')" >
+            <el-input v-model="userInfo.lsupervisionResutl" placeholder="监察科自办结果" style="width: 300px" ></el-input>
+          </el-form-item>
+          <el-form-item label="监察科自办时间"  v-if="hasPerm('letter:sencondadudit')" >
+            <el-date-picker v-model="userInfo.lsupervisionResultTime" placeholder="监察科自办时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item><br/>
+
         </div>
       </el-form></el-main>
     </div>
@@ -235,7 +256,8 @@
 <script>
   import { mapGetters } from 'vuex'
   import qs from 'qs'
-  import {xfbh,list,add,del,findbyName,shbc,turndept,kezhangbc,deptbc,leaderbc,zzbc} from '@/api/daily/letter'
+  import {list,add,del,findbyName,shbc,turndept,kezhangbc,deptbc,leaderbc,zzbc,finddb} from '@/api/daily/letter'
+  import {initdept,initemploy,letterreporter} from '@/api/nologin/nologin'
   import {getFileGroup} from '@/api/duty/talk'
   export default {  computed: {
       ...mapGetters([
@@ -244,6 +266,7 @@
       ])
     },
     created() {
+
         this.initList();
     },
     methods:{//设置表格内容居中
@@ -252,16 +275,58 @@
       },
       rowClass({row, rowIndex}){//设置表头居中
         return 'text-align:center';
+      },//提交审核
+      tjsh(){
+        let posdata=qs.stringify({
+          lid:this.userInfo.lid})
+        tjshme(posdata).then((response)=>{
+          this.tf='';
+        this.ad='none'
+        this.initList();
+        this.$notify({
+          title: '成功',
+          message: response.message,
+          type: 'success',
+          duration: 2000
+        })
+      })
+      },//新增
+      add(){
+        let posdata=qs.stringify({nickname:this.nickname})
+this.userInfo={}
+
+        letterreporter().then((response)=>{
+          this.userInfo.letterId=response.letterid
+        this.userInfo.lcreateName =this.nickname
+        this.userInfo.lcomplainantName=this.nickname
+        finddb(posdata).then((response)=>{
+         // console.log('测试',response.list.mname)
+        this.userInfo.lpostId=response.list.pname
+        this.userInfo.ldeptId=response.list.mname
+        this.$set(this.userInfo,'lcreateTime',new Date())
+        this.tf='none';
+        this.ad=''
+        this.tj='',//提交按钮
+          this.bjbc='none'//编辑保存按钮隐藏
+        this.ysnr=false//原始信访内容
+        this.beunit=false//被反映人单位
+        this.beduty=false//被反映人职务
+        this.bename=false//被反映人姓名
+      })
+
+      })
+
+
       },
     //监察科自办
       kezhangbc(){
         let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
-        this.userInfo.lsupervisionCommentsTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
         let stime = new Date(this.userInfo.lsupervisionResultTime).toJSON();
-        this.userInfo.lsupervisionResultTime = new Date(new Date(stime) + 8 * 3600 * 1000)
+        this.userInfo.lsupervisionResultTime = new Date(+new Date(stime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -288,7 +353,7 @@
       //转办部门处理
       deptbc(){
         let endtime = new Date(this.userInfo.lresultTime).toJSON();
-        this.userInfo.lresultTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -312,7 +377,7 @@
       },//局领导签署意见
       leaderbc(){
         let endtime = new Date(this.userInfo.lleadersTime).toJSON();
-        this.userInfo.lleadersTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.lleadersTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -405,19 +470,85 @@ else {
      onrest(){
         this.search=''
        this.besearch=''
-      },  handleItemChange(value){//点击选择时初始化谈话对象和记录人
-        var checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//
+      } ,handleItemChange(value){//点击选择时初始化谈话对象和记录人
+        var checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
+
+        if(checkedNodes[0]!=undefined){
+          this.userInfo.lpbrDeptId=value
+        //  console.log('checkedNodes label'+checkedNodes[0].label)
+          let postdata=qs.stringify({
+            mid:checkedNodes[0].value
+          })
+          initdept(postdata).then((response)=>{
+
+            this.options = response.list
+
+        //  console.log('职务'+JSON.stringify(response))
+
+        })
+        }
+        else{
+          this.options=[]
+        }
+        //
+        /*       console.log(checkedNodes) // 获取当前点击的节点
+                 console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
+                 console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
+      },//新增提交
+      submitUser(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+
+            this.userInfo.lcreateTime = new Date(+new Date() + 8 * 3600 * 1000)
+
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let posdata=qs.stringify({
+              letterId:this.userInfo.letterId,
+              userName:this.userInfo.userName,
+              lComplainantName:this.userInfo.lcomplainantName,
+              lPersonBeReported:this.userInfo.lpersonBeReported,
+              lDeptId:this.userInfo.ldeptId,
+              lPostId:this.userInfo.lpostId,
+              lPbrDeptId:this.userInfo.lpbrDeptId[this.userInfo.lpbrDeptId.length-1].toString(),
+              puni:this.userInfo.lpbrDeptId.toString(),
+              lPbrPostId:this.userInfo.lpbrPostId,
+              lContent:this.userInfo.lcontent,
+              lCreateName:this.nickname,
+              lTime: this.userInfo.lcreateTime,
+              lCreateTime:this.userInfo.lcreateTime,
+              lCreateId:0,
+              lStatus:1
+            })
+            add(posdata).then((response)=>{
+            this.ad='none'
+            this.tf=''
+            this.$refs[formName].resetFields();
+            this.initList()
+              this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
+            })
+          })
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
       },
       //初始化页面
       initList() {
         let status;
-        if(this.role.includes('纪检监察科科长')){
+        if(this.hasPerm('letter:sencondaudit')){
           status=2
         }
-        else if(this.role.includes('纪检监察员')){
+        else if(this.hasPerm('letter:firstaudit')){
           status=1
         }
-        else if(this.role.includes('单位/部门负责人')){
+        else if(this.hasPerm('letter:zbaudit')){
           status=3
         }
         let posdata=qs.stringify({
@@ -425,13 +556,16 @@ else {
         })
         this.listLoading=true
         list(posdata).then(response =>{
-          console.log(JSON.stringify(response))
+        //  console.log(JSON.stringify(response))
           this.tableData = response.list
           this.total = response.list.length
           this.listLoading=false
         })
       },//审核
       handleEdit(index, row) {
+        this.userInfo={
+          lpbrDeptId:[]
+        }
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
         this.nrzy=''
@@ -447,19 +581,58 @@ else {
           this.beduty='disabled',//被反映人职务
           this.bename='disabled'//被反映人姓名
         this.userInfo=row
-
-        console.debug('测试状态'+row.lStatus)
-       // console.debug('id='+this.id)
+        this.userInfo.lpbrDeptId = row.puni.split(',').map(Number)
+        this.isShowAddressInfo = false;
+        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
+        setTimeout(() => {
+          this.isShowAddressInfo = true;
+      }, 10);
       },//详情
       details(index, row) {
-        this.tf='none';
-        this.ad=''//编辑/审核页面出来,
         this.nrzy=''//内容摘要显示
         this.tj='none',//提交按钮
-          this.zb='none',//转办按钮默认隐藏
+          this.tjshButton='none'//提交审核按钮隐藏
+        this.zb='none',//转办按钮默认隐藏
           this.bc='none'//保存按钮默认隐藏
         this.xqbc='none'//点击详情时保存都隐藏
+        this.userInfo={
+          lpbrDeptId:[]
+        }
+
         this.userInfo=row
+       // console.log('测试',row.puni.split(',').map(Number))
+        this.userInfo.lpbrDeptId = row.puni.split(',').map(Number)
+        this.isShowAddressInfo = false;
+        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
+        setTimeout(() => {
+          this.isShowAddressInfo = true;
+      }, 10);
+
+
+          let postdata=qs.stringify({
+            id:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
+          })
+        initdept(postdata).then((response)=>{
+
+          this.options = response.list
+
+       // console.log('职务'+JSON.stringify(response))
+
+      })
+        let postsdata=qs.stringify({
+          ppid:this.userInfo.lpbrPostId
+        })
+        initemploy(postsdata).then((response)=>{
+
+          this.optionss = response.list
+
+       // console.log('职务'+JSON.stringify(response))
+
+      })
+
+        this.tf='none';
+        this.ad=''//编辑/审核页面出来,
+
       },
       //编辑
       bj(index, row) {
@@ -479,6 +652,13 @@ else {
           this.bename='disabled'//被反映人姓名
         this.sfjc='disabled'
         this.userInfo=row
+        this.userInfo.lpbrDeptId = row.puni.split(',').map(Number)
+        this.isShowAddressInfo = false;
+        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
+        setTimeout(() => {
+          this.isShowAddressInfo = true;
+      }, 10);
+
         this.$set(this.userInfo,'lresultTime',new Date())
         this.$set(this.userInfo,'lsupervisionCommentsTime',new Date())
         this.$set(this.userInfo,'lsupervisionResultTime',new Date())
@@ -505,7 +685,7 @@ else {
       },// 删除
       del(){
         var data = this.$refs.multipleTable.selection;
-        console.log("11"+data)
+       // console.log("11"+data)
         if(JSON.stringify(data)=='[]'){
           this.$notify({
             title: '温馨提示',
@@ -515,11 +695,29 @@ else {
           })
         }
         else {
+          var ids = data.map(item => { return { lstatus: item.lstatus } })
+          var ids1 =true
+          for(var i = 0; i < ids.length; i++) {
+           // console.log('ids[i].lstatus'+ids[i].lstatus)
+            if(ids[i].lstatus!='4'){
+              ids1=false
+            }
+          }
+         // console.log(ids1)
+          if(!ids1){//判断处于审核中的不能删除
+
+            this.$notify({
+              title: '温馨提示',
+              message: '该记录处于审核中不能删除',
+              type: 'warning',
+              duration: 2000
+            })
+          }else {
           let postData = qs.stringify({
             test:JSON.stringify(data)
           });
 
-          console.debug('选中行数据'+JSON.stringify(data))
+        //  console.debug('选中行数据'+JSON.stringify(data))
           del(postData).then((response) =>{
             this.initList();
             this.$notify({
@@ -528,7 +726,7 @@ else {
               type: 'success',
               duration: 2000
             })
-          })
+          })}
         }
       },//多条件查询
         //按标题查询
@@ -541,26 +739,53 @@ else {
         findbyName(postData).then((response) =>{
           this.currentPage = 1
           this.tableData = response.list
-          console.debug(this.tableData)
+       //   console.debug(this.tableData)
           this.total=response.list.length
           this.listLoading=false
         })
       },
       //返回
-      back(){this.ad='none',this.tf='' ,this.nrzy='none'//内容摘要文本框
+      back(formName){this.ad='none',this.tf='' ,this.nrzy='none'//内容摘要文本框
+         this.$refs[formName].resetFields();
+        this.initList()
          this.xqbc=''//点击返回是保存都隐藏
          },
       handleSizeChange(size) {
         this.pageSize = size;
-        console.log(this.pageSize)
+      //  console.log(this.pageSize)
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
-        console.log(this.currentPage)  //点击第几页
+       // console.log(this.currentPage)  //点击第几页
+      },   change(){
+        let postdata=qs.stringify({
+          ppid:this.userInfo.lpbrPostId
+        })
+        initemploy(postdata).then((response)=>{
+
+          this.optionss = response.list
+
+      //  console.log('职务'+JSON.stringify(response))
+
+      })
       }
     },
     data() {
-      return {
+      return {rules: {
+          lpersonBeReported: [
+            { required: true, message: '请选择被反映人姓名', trigger: 'blur' }
+          ],
+          lpbrDeptId: [
+            { required: true, message: '请选择被反映人部门/单位', trigger: 'blur' },
+          ],
+          lpbrPostId: [
+            { required: true, message: '请选择被反映人岗位/职务', trigger: 'blur' }
+
+          ],
+          lcontent: [
+            { required: true, message: '请输入原始信访内容', trigger: 'blur' }
+          ]
+        },
         xqbc:'',//点击详情时保存隐藏
         defaUnit:'请选择转办部门',
         options_cascader:[],//级联选择器的options属性
@@ -576,7 +801,7 @@ else {
               parent:parentId
             });
             getFileGroup(postData).then((response)=>{
-              console.log('response.list'+JSON.stringify(response.list))
+             // console.log('response.list'+JSON.stringify(response.list))
               let nodes = level ===0?[]:[]
 
               if(response.list&&Array.isArray(response.list)){
@@ -598,11 +823,13 @@ else {
         listLoading:true,
         zhuanbanjy:'disabled',
         zhuanban:'none',
+        optionss:[],
         ysnr:false,//原始信访内容
         beunit:false,//被反映人单位
         beduty:false,//被反映人职务
         bename:false,//被反映人姓名
         tj:'',//提交按钮
+        tjshButton:'',//提交审核按钮
         zb:'none',//转办按钮默认隐藏
         bc:'none',//审核时的保存按钮默认隐藏
         bjbc:'none',//编辑时的保存按钮
@@ -611,7 +838,7 @@ else {
         tf:false,
         ad:'none',
         iconFormVisible: false,
-        userInfo: {},
+        userInfo: {lpbrDeptId:['']},
         dialogTitle: '增加',
         rowIndex: null,
         search:'',
@@ -620,7 +847,7 @@ else {
         pageSize:10,
         total:0,
         currentPage:1,
-
+        isShowAddressInfo:true,
         tableData: [/*{
           userId:'2019/2/2 19:09',
           userDate: '黎智英',

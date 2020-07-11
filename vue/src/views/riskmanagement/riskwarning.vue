@@ -18,7 +18,7 @@
           </el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-button
             type="primary"
-            class="el-icon-refresh" 
+            class="el-icon-refresh"
             @click="resetSou">重置
           </el-button>
        <!--  </el-form-item> -->
@@ -44,9 +44,9 @@
         <!-- <template slot-scope="scope">
           <span>{{ scope.row.did }}</span>
         </template> -->
-        
+
       </el-table-column>
-      
+
         <el-table-column label="标题" prop="wtitle"  align="center" width="280px">
         <template slot-scope="scope">
 
@@ -109,19 +109,22 @@
         <el-form-item style="font-weight: bold;" label="风险预警标题" prop="wtitle" >
           <el-input v-model="temp.wtitle" placeholder="请输入风险预警标题" style="width:50%" />
         </el-form-item>
-        
+
         <el-form-item style="font-weight: bold;" label="内容" prop="wcontent" >
-          <quill-editor class="editor"  style="height:400px;width:85%;"
+          <quill-editor class="editor"  style="height:500px;width:90%;"
         ref="myQuillEditor"
         v-model="temp.wcontent"
+        @change="onEditorChange($event)"
        >
         </quill-editor>
+<div style="font-weight: normal;margin-top:60px;margin-right:12%;float: right">
+        <span >{{TiLength}}/1000</span></div>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者姓名" prop="sysStaff" >
+        <el-form-item style="font-weight: bold;margin-top:10px;" label="创建者姓名" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
         </el-form-item>
         <el-form-item style="font-weight: bold;" label="创建时间" prop="wCreateTime" >
-          <el-date-picker disabled="disabled" 
+          <el-date-picker disabled="disabled"
     style="width: 50%"
     type="date"
     v-model="temp.wCreateTime"
@@ -194,7 +197,8 @@ import { mapGetters } from 'vuex'
         isShow:false,
           wew:{},
         multipleSelection:[],
-        deleteid:[]
+        deleteid:[],
+        TiLength:0
       }
     },
     // 创建实例时的钩子函数
@@ -277,7 +281,7 @@ import { mapGetters } from 'vuex'
             this.isShow=true
             // 调用api里的sys里的user.js的ajax方法
             add(this.temp).then((response) => {
-              
+
               // 关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格里的数据
@@ -294,7 +298,7 @@ import { mapGetters } from 'vuex'
             })
           }
         })
-        
+
       },
       // 显示修改对话框
       handleUpdate(row) {
@@ -309,7 +313,7 @@ import { mapGetters } from 'vuex'
           // 清除校验
           this.$refs['dataForm'].clearValidate()
         })
-        
+
       },
       // 执行修改操作
       updateData() {
@@ -335,7 +339,7 @@ import { mapGetters } from 'vuex'
             })
           }
         })
-         
+
       },
       out(){
         this.yincang()
@@ -407,11 +411,21 @@ import { mapGetters } from 'vuex'
       this.dis2='inline-block'
     },
     yincang(){
+       this.isShow=false
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null
-    }
-    
+       
+    },
+    onEditorChange(event){
+      event.quill.deleteText(1000,4)
+      if(this.temp.wcontent===''){
+        this.TiLength=0
+      }else{
+        this.TiLength=event.quill.getLength()-1
+      }
+    },
+
     },
     filters:{
     getContent(val){
@@ -421,10 +435,9 @@ import { mapGetters } from 'vuex'
       }else{
           return val.replace(/<\/?[^>]*>/g, "");
       }
-      
+
     }
     }
   }
-    
+
 </script>getContent(val) {
-      
