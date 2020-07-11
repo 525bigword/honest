@@ -38,7 +38,7 @@ public class LogAspect {
      * ..表示包及子包 该方法代表controller层的所有方法
      * TODO 路径需要根据自己项目定义
      */
-    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))&& !execution(* com.xr.run.controller.ThymeleafController.*(..))")
+    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))&& !execution(* com.xr.run.controller.ThymeleafController.*(..))&&!execution(* com.xr.run.controller.frontPage.*.*(..)) ")
     public void controllerMethod() {
         log.info("切了");
     }
@@ -61,6 +61,7 @@ public class LogAspect {
         //TODO 获取当前访问用户因为结合了shiro所以直接从session取
         Session session = SecurityUtils.getSubject().getSession();
         SysStaff userInfo = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
+
         sysLog.setSid(userInfo.getSid());
 //        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 //        ServletRequestAttributes sra = (ServletRequestAttributes) requestAttributes;

@@ -8,6 +8,8 @@ import com.xr.run.util.constants.ErrorEnum;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author: hxy
@@ -176,4 +178,34 @@ public class CommonUtil {
 	public static void fillPageParam(final JSONObject paramObject) {
 		fillPageParam(paramObject, 10);
 	}
+
+	//去除html标签
+	public static String delHTMLTag(String htmlStr) {
+		String script = "<script[^>]*?>[\\s\\S]*?<\\/script>";
+		String style = "<style[^>]*?>[\\s\\S]*?<\\/style>";
+		String html = "<[^>]+>";
+		String space = "(\r?\n(\\s*\r?\n)+)";
+		String white = "&nbsp;";
+		Pattern pScript = Pattern.compile(script, 2);
+		Matcher mScript = pScript.matcher(htmlStr);
+		htmlStr = mScript.replaceAll("");
+		Pattern pStyle = Pattern.compile(style, 2);
+		Matcher mStyle = pStyle.matcher(htmlStr);
+		htmlStr = mStyle.replaceAll("");
+		Pattern pHtml = Pattern.compile(html, 2);
+		Matcher mHtml = pHtml.matcher(htmlStr);
+		htmlStr = mHtml.replaceAll("");
+		Pattern pSpace = Pattern.compile(space, 2);
+		Matcher mSpace = pSpace.matcher(htmlStr);
+		htmlStr = mSpace.replaceAll("");
+		htmlStr = htmlStr.replaceAll(white, "");
+		return htmlStr.trim();
+	}
+
+
+
+
+
+
+
 }

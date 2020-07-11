@@ -15,12 +15,12 @@ import java.util.List;
 
 @Repository
 public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
-    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status` from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
+    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`,tongbao from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<SpvDuty> findSpvDuty(Page page, String dutyTitle);
+    IPage<SpvDuty> findSpvDuty(Page page, @Param("dutyTitle") String dutyTitle);
 
     @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},`status`=#{status} where did=#{did}")
     void updateSpvDutyByDid(SpvDuty spvDuty);
@@ -64,4 +64,9 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
     SpvDuty findSpvDutyByDid(int did);
+
+    @Select("select * from spv_duty ORDER BY NewTime desc limit 0,5")
+    List<SpvDuty> findSpvDutyTopFive();
+
+
 }

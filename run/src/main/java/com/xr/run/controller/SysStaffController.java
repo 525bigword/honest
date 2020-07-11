@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SysStaff;
+import com.xr.run.service.HomePageSevice;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.Constants;
+import com.xr.run.util.constants.ErrorEnum;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -26,10 +28,10 @@ public class SysStaffController {
     @Autowired
     private SysStaffService  sysStaffService;
 
-
+    @Autowired
+    private HomePageSevice homePageSevice;
 
     @GetMapping("get/{sid}")
-
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
         return CommonUtil.successJson(sysStaffBySid);
@@ -68,6 +70,18 @@ public class SysStaffController {
         return CommonUtil.successJson(sysStaffAll);
     }
     /**
+     * 生成前台首页
+     */
+    @GetMapping("/createIndex")
+    public JSONObject createIndex(){
+        try {
+            homePageSevice.loading();
+            return CommonUtil.successJson();
+        }catch (Exception e){
+            return CommonUtil.errorJson(ErrorEnum.E_500);
+        }
+    }
+    /**
      * 登录
      */
     @PostMapping("/auth")
@@ -75,7 +89,8 @@ public class SysStaffController {
         CommonUtil.hasAllRequired(requestJson, "username,password");
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
 
-
+        //创建首页
+        homePageSevice.loading();
         return jsonObject;
     }
     /**

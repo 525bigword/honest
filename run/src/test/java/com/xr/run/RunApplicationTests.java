@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.SpvBackMapper;
 import com.xr.run.entity.SpvBack;
 import com.xr.run.entity.SysMechanism;
+import com.xr.run.service.HomePageSevice;
 import com.xr.run.service.SysPostPermissionService;
+import com.xr.run.service.impl.HomePageSeviceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +30,12 @@ class RunApplicationTests {
     private SpvBackMapper spvBackMapper;
     @Autowired
     private SysPostPermissionService sysPostPermissionService;
+    @Autowired
+    private HomePageSeviceImpl homePageSevice;
+    @Test
+    public void htmlDestTest(){
+        homePageSevice.a();
+    }
     @Test
     void contextLoads() {
         System.out.println(dataSource.getClass());

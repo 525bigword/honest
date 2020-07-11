@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.RdWorkDeploymentMapper">
+
+    <select id="findRdWorkDeploymentAll" resultType="com.xr.run.entity.RdWorkDeployment">
+        select rd.*,ss.name from rd_work_deployment rd inner join sys_staff ss
+        on rd.create_id = ss.sid where rd.staus = 2
+        <if test="title != null and title!=''">
+            and rd.title like "%"#{title}"%"
+        </if>
+        order by rd.create_time desc
+    </select>
+</mapper>

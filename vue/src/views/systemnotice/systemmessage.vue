@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div :style="{'display':dis}" style="width:100%">
+  <div >
+    <div class="app-container" :style="{'display':dis}" style="width:100%">
       <div class="filter-container" style="margin-top: -30px;margin-left:60px">
         <!-- v-waves -->
         <label>标题</label>&nbsp;&nbsp;
@@ -94,17 +94,18 @@
         ></el-pagination>
       </div>
     </div>
-    <div :style="{'display':dis2}" style="margin-top:-30px">
+    <div :style="{'display':dis2}" style="background-color: lightgray;width:100%;margin-top:-9px">
+      <el-main>
       <el-form
         ref="dataForm"
         :rules="rules"
         :model="temp"
         label-position="center"
         label-width="130px"
-        style="width: 100%; margin-left:40px;"
-      >
+        style="width: 100%;">
         <!--        数据校验要求prop值和temp.属性名一致-->
-        <el-form-item style="width:100%;height:30px;margin-left: -80px" align="right">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
+        <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
           <el-button
             type="success"
             :disabled="isShow"
@@ -112,7 +113,9 @@
             @click="dialogStatus==='update'?updateData():createData()"
           >保存</el-button>
           <el-button class="el-icon-back" plain @click="out()">返回</el-button>
-        </el-form-item>
+        </el-form-item></div>
+        <div style="background-color: white;margin-top: 25px;z-index:3;">
+          <div style="height:20px"></div>
         <el-row>
           <el-col style="width:45%;margin-top:10px">
             <el-form-item style="font-weight: bold;" label="文章标题" prop="articletitle">
@@ -182,7 +185,10 @@
             :format="'yyyy-MM-dd HH:mm:ss'"
           ></el-date-picker>
         </el-form-item>
+        <el-form-item style="margin-top:10px"></el-form-item>
+        </div>
       </el-form>
+      </el-main>
     </div>
   </div>
 </template>
