@@ -33,6 +33,7 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     void updateDataConllectionByVideoAndFile(Datacollection datacollection);
 
     @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus},#{dPdf},#{dVideo},#{dVideoName})")
+    @Options(useGeneratedKeys = true,keyProperty = "did")
     void insertDataConllection(Datacollection datacollection);
 
     @Delete("delete from  datacollection where did=#{did}")

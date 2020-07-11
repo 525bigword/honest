@@ -27,6 +27,9 @@ import java.util.Map;
 public class WindController {
     @Value("${html.destPath}")
     private String destPath="";
+    public void a(){
+        System.out.println(destPath);
+    }
     @Autowired
     private HomePageSevice homePageSevice;
     @Autowired

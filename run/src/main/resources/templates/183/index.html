@@ -332,10 +332,10 @@
                 <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
+                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
                     </li>
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -383,8 +383,8 @@
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/182/183/"+data.wid+".html";//a链接地址
-                var title = data.wTitle;		//标题
+                var url = "http://localhost:4031/ms-mcms/html/2/182/184/"+data.did+".html";//a链接地址
+                var title = data.dTitle;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
             $(".content-list ul").html(htmlContent);
@@ -401,7 +401,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "http://localhost:8080/qt/qtwind/get";
+            var URL = "http://localhost:8080/qt/datacollection/get";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

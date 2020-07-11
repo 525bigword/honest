@@ -131,10 +131,10 @@
                 <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
+                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
                     </li>
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -154,18 +154,21 @@
                 <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
             </div>
         </div>
+        <hr style="background: #F7F7F7"/>
         <div>
-             <span style="color: #000000"><span style="font-size: 14px">
-                <span style="font-family: 宋体" th:utext="${content}">&nbsp;&nbsp;&nbsp;
-            </span>
-            </span>
-            </span>
+            <span th:text="'[文件名]：'+${dFileName}" style="color: #000000">
+            </span>&nbsp;&nbsp;&nbsp;
+            <span th:if="${dPdf}==null"><a th:href="'http://localhost:8080/uploadimg/'+${dFile}">预览</a></span>
+            <span style="border:none;background-color: white;height: 2px" th:if="${dPdf}!=null"><a th:href="'http://localhost:8080/uploadimg/'+${dPdf}">预览</a></span>
+        </div>
+        <div>
+            <label class="ms-relative" style="top:-3px;"></label>
         </div>
         <div>
 			  <span >
-                  <a  th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVo.type}+'/'+${rdWorkVo.prev}+'.html'">上一篇</a>&nbsp;&nbsp;
+                  <a  >上一篇</a>&nbsp;&nbsp;
 			  <label   class="ms-relative" style="top:-3px;">|</label>
-			  &nbsp;&nbsp;<a  th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVo.type}+'/'+${rdWorkVo.next}+'.html'">下一篇</a>
+			  &nbsp;&nbsp;<a  >下一篇</a>
               </span>
 
             <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
