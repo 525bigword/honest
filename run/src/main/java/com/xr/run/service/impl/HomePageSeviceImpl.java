@@ -271,7 +271,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         getMoreRdWork();
         //廉政文化更多
         loadDatacollection();
-
+        //查询前五廉政文化
         //风险防控
 
         //岗位风险
