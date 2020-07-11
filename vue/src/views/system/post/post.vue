@@ -17,7 +17,7 @@
         :show-all-levels="false"
         :options="bm"
       ></el-cascader>
-      <!-- </el-form-item> 
+      </el-form-item> 
       <el-input
         v-model="listQuery.message"
         placeholder="部门描述"
@@ -179,11 +179,11 @@
               </el-form-item>
 
               <!-- <div slot="footer" class="dialog-footer"> -->
-              <el-button
+              <el-button style="margin-left:59%"
                 type="primary"
                 @click="dialogStatus==='create'?createData():updateData()"
               >提交</el-button>
-              <el-button @click="treeDisable = false">取消</el-button>
+              <el-button style="margin-left:20px" @click="treeDisable = false">取消</el-button>
               <!-- </div> -->
             </el-form>
           </el-col>

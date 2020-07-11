@@ -110,17 +110,17 @@
           <el-input v-model="temp.wtitle" placeholder="请输入风险预警标题" style="width:50%" />
         </el-form-item>
 
-        <el-form-item style="font-weight: bold;" label="内容" prop="wcontent" >
+        <el-form-item style="font-weight: bold;height:500px;" label="内容" prop="wcontent" >
           <quill-editor class="editor"  style="height:500px;width:90%;"
         ref="myQuillEditor"
         v-model="temp.wcontent"
         @change="onEditorChange($event)"
        >
         </quill-editor>
-<div style="font-weight: normal;margin-top:60px;margin-right:12%;float: right">
+<div style="font-weight: normal;margin-top:60px;margin-right:12%;float:right">
         <span >{{TiLength}}/1000</span></div>
         </el-form-item>
-        <el-form-item style="font-weight: bold;margin-top:10px;" label="创建者姓名" prop="sysStaff" >
+        <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者姓名" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
         </el-form-item>
         <el-form-item style="font-weight: bold;" label="创建时间" prop="wCreateTime" >
