@@ -63,7 +63,7 @@
         </el-table-column>
         <el-table-column
           prop="lpersonBeReported"
-          label="被反映人姓名">
+          label="被反映人姓名"  width="100">
         </el-table-column>
         <el-table-column
           prop="lpbrDeptId"
@@ -131,7 +131,7 @@
         </el-pagination>
       </div>
     </el-form>
-    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px"  :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
 <br/>
@@ -160,7 +160,7 @@
                        :props="props"
                        :options="options_cascader"
                        :expandTrigger="'hover'"
-                       clearable v-model="userInfo.deptname"   style="width: 300px" v-bind:disabled="zhuanbanjy"></el-cascader>
+                       clearable v-model="userInfo.deptname"   style="width: 300px" v-bind:disabled=" hasPerm('letter:sencondaudit')?false:'disabled'"></el-cascader>
         </el-form-item>
           <br />
         <el-form-item label="来访人姓名">
@@ -217,24 +217,24 @@
             <el-date-picker v-model="userInfo.lcreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="监察科部门意见" v-if="hasPerm('letter:sencondadudit')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             " >
-            <el-input v-model="userInfo.lsupervisionComments" placeholder="监察科部门意见" style="width: 300px" ></el-input>
+            <el-input v-model="userInfo.lsupervisionComments" placeholder="请输入监察科部门意见" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="监察科部门意见签署时间" v-if="hasPerm('letter:sencondadudit')" >
             <el-date-picker v-model="userInfo.lsupervisionCommentsTime" placeholder="监察科部门意见签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
-          <el-form-item label="纪检组长意见" v-if="hasPerm('letter:groupsign')" >
-            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="纪检组长意见" style="width: 300px" ></el-input>
+          <el-form-item label="纪检组长意见" >
+            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="请输入纪检组长意见" style="width: 300px"  v-bind:disabled=" hasPerm('letter:groupsign')?false:'disabled'"></el-input>
           </el-form-item>
-          <el-form-item label="纪检组长签署时间" v-if="hasPerm('letter:groupsign')" >
+          <el-form-item label="纪检组长签署时间" >
             <el-date-picker v-model="userInfo.ldisciplinaryTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
-          <el-form-item label="局领导意见" v-if="hasPerm('letter:leadersign')" >
-            <el-input v-model="userInfo.lleadersComments" placeholder="局领导意见" style="width: 300px" ></el-input>
+          <el-form-item label="局领导意见"  >
+            <el-input v-model="userInfo.lleadersComments" placeholder="请输入局领导意见" style="width: 300px" v-bind:disabled=" hasPerm('letter:leadersign')?false:'disabled'" ></el-input>
           </el-form-item>
-          <el-form-item label="局领导签署时间" v-if="hasPerm('letter:leadersign')" >
+          <el-form-item label="局领导签署时间" >
             <el-date-picker v-model="userInfo.lleadersTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
-          <el-form-item label="转办部门处理结果" v-if="hasPerm('letter:zbtaudit')" >
+          <el-form-item label="转办部门处理结果" v-if="hasPerm('letter:zbaudit')" >
             <el-input v-model="userInfo.lresult" placeholder="转办部门处理结果" style="width: 300px" ></el-input>
           </el-form-item>
           <el-form-item label="转办部门处理时间"  v-if="hasPerm('letter:zbaudit')" >

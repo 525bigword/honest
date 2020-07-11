@@ -80,14 +80,14 @@
       </div>
 
     </el-form>
-    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 1000px" >
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
         <div  style="z-index:2;background-color: white;width: 100%;height: 65px;background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;" >
           <br/>
           <div align="right" ><el-form-item >
             <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
         <br/>
-        <div style="height:900px;background-color: white;margin-top: 10px;z-index:3;">
+        <div style="background-color: white;margin-top: 10px;z-index:3;">
           <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
           <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
           <el-form-item label="备案编号">
@@ -130,7 +130,7 @@
             <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number"></el-input>
           </el-form-item><br/><div>
           <el-form-item label="实施方式">
-            <el-card class="box-card" style="margin-bottom:30px;width: 830px;height: 450px;text-align: left">
+            <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left">
 <div  v-html="userInfo.senforcementMode"></div>
             </el-card>
            <!-- <div v-html="userInfo.senforcementMode" style="margin-bottom: 120px"></div>-->
