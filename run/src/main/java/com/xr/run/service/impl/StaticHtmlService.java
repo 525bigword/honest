@@ -4,16 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.util.IOUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -23,9 +27,10 @@ public class StaticHtmlService implements com.xr.run.service.StaticHtmlService {
 
     @Autowired
     private ApplicationContext appContext;//这是Spring容器上下文
-
+    @Value("${html.destPath}")
+    private String destpath="";
     @Override
-    public void genHtmlPage(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response,String filename) {
+    public void genHtmlPage(String destpath,ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response,String filename) {
         FileWriter fileWriter = null;
         try {
 //            String fileName = request.getRequestURI();
@@ -34,7 +39,8 @@ public class StaticHtmlService implements com.xr.run.service.StaticHtmlService {
 //                return;
 //            }'
 //            fileName=fileName.substring(0,fileName.lastIndexOf("."));
-            String fileName = "D:\\IDE\\tomcat\\apache-tomcat-9.0.36\\webapps\\hoonest\\"+filename+".html";//config.getHtmlPath() + fileName;//构造静态html文件完整路径
+            String fileName = destpath+filename+".html";//config.getHtmlPath() + fileName;//构造静态html文件完整路径
+            System.out.println(fileName);
             File file = new File(fileName);
             if(!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
@@ -54,7 +60,7 @@ public class StaticHtmlService implements com.xr.run.service.StaticHtmlService {
     @Override
     public void deleteHtmlPage(String fileName) {
         try {
-            fileName = "D:\\IDE\\tomcat\\apache-tomcat-9.0.36\\webapps\\hoonest\\"+fileName+".html";//config.getHtmlPath() + fileName;
+           // fileName = "D:\\IDE\\tomcat\\apache-tomcat-9.0.36\\webapps\\hoonest\\"+fileName+".html";//config.getHtmlPath() + fileName;
             File file = new File(fileName);
             //删除文件或目录
 //           FileUtils.deleteDirectory(file);

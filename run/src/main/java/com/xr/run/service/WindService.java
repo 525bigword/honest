@@ -38,4 +38,6 @@ public interface WindService extends IService<Wind> {
      * @return
      */
     Wind findWindByWid(int wid);
+
+
 }

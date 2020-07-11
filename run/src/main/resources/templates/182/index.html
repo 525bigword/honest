@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>廉政文化</title>
+    <link rel="stylesheet" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css">
+    <link rel="stylesheet"  href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
+    <!--jq引用-->
+    <!-- <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script> -->
+    <script type="text/javascript" src="http://localhost:4031/ms-mcms/templets/1/yancao/js/Paging/jquery.min.js"></script>
+    <!--分页插件  -->
+    <script type="text/javascript" src="http://localhost:4031/ms-mcms/templets/1/yancao/js/Paging/pageMe.js"></script>
+    <style type="text/css">
+        .ms-menue-content-model p{
+            font-weight:500;
+            color:rgba(153,153,153,1);
+            padding-bottom: 13px;
+        }
+        .ms-menue-content-model  p >label >a{
+            color:rgba(153,153,153,1);
+            line-height: 12px;
+            display: inline;
+        }
+
+        .content-list{
+            border:1px solid rgba(238,238,238,1);
+        }
+        .content-list>div:first-child>span {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: rgba(51, 51, 51, 1);
+            padding: 19px 0 16px;
+            border-bottom: 1px solid rgba(238, 238, 238, 1);
+        }
+        .content-list>div:first-child {
+            padding-left: 56px;
+        }
+
+        .content-list>div:first-child>ul {
+            padding: 0 0 28px 21px;
+        }
+
+        .content-list>div:first-child>ul>li {
+            height: 13px;
+            line-height: 13px;
+            padding: 15px 0;
+            border-bottom: 1px rgb(173, 173, 173) dashed;
+            color: #3D7D53;
+        }
+
+        .content-list>div:first-child>ul>li:last-child {
+            margin: 0;
+        }
+
+        .content-list>div:first-child>ul>li>label {
+            line-height: 30px;
+            font-weight: 500;
+            font-weight: bold;
+        }
+
+        .content-list>div:first-child>ul>li>select,
+        .content-list>div:first-child>ul>li>input {
+            border-radius: 4px;
+            width: 116px;
+            height: 30px;
+            border: 1px solid lightgray;
+        }
+
+        .content-list>div:first-child>ul>li>input {
+            padding: 0;
+            width: 114px;
+        }
+
+        .content-list>div:first-child>ul>li>button {
+            padding: 6px 20px;
+            font-weight: 600;
+            border: 1px solid lightgray;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 4px;
+        }
+        /*表格样式*/
+
+        .content-list>div:last-child {
+            width: 841px;
+            min-height: 300px;
+            padding: 19px 16px 42px 16px;
+        }
+
+        .content-list>div:last-child>table {
+            border-collapse: collapse;
+            border: none;
+        }
+
+        table>tbody>tr {
+            margin: 10px 0;
+        }
+
+        table>tbody>tr>th:first-child,
+        table>tbody>tr>td:first-child {
+            width: 50px;
+            height: 36px;
+        }
+
+        .cut-page {
+            padding: 23px 0 38px 0;
+            margin-left: 510px;
+            margin-bottom: 40px;
+        }
+
+        .cut-page>li {
+            float: left;
+            padding: 3px 10px;
+            border: 1px solid rgba(238, 238, 238, 1);
+            margin-left: 6px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            font-size: 13px;
+            margin-top: -5px;
+        }
+
+        .gs_lieb {
+            width: 657px;
+            margin-left: 36px;
+            overflow: hidden;
+            padding-left: 5px;
+            margin-bottom: 20px;
+        }
+
+        .gs_lieb span {
+            width: auto;
+        }
+
+        .gs_lieb a {
+            width: 425px;
+        }
+
+        .gs_lieb>li {
+            width: 657px;
+            height: 25px;
+            padding-top: 15px;
+            border-bottom: 1px #dbdbdb dashed;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .gs_lieb>li:first-child {
+            font-weight: bold;
+        }
+
+        .gs_lieb>li>.time {
+            color: #0a3b76;
+            margin-right: 30px;
+        }
+
+        .left {
+            float: left;
+        }
+        #box{
+            width: 380px;
+            float: right;
+            font-family: 'Microsoft YaHei';
+            font-size: 14px;
+        }
+        #box input{
+            width: 260px;
+            border: 1px solid #e2e2e2;
+            height: 30px;
+            float: left;
+            background-image: url(http://localhost:4031/ms-mcms/templets/1/yancao/images/search.png);
+            background-repeat: no-repeat;
+            background-size: 25px;
+            background-position:5px center;
+            padding:0 0 0 40px;
+        }
+        #search{
+            width: 78px;
+            height: 32px;
+            float: right;
+            background: #3d7d53;
+            color: white;
+            text-align: center;
+            line-height: 32px;
+            cursor: pointer;
+        }
+        #search:hover{
+            background: #285e3a;
+        }
+    </style>
+    <style>
+        /*分页样式  */
+        /* 外面盒子样式---自己定义 */
+        .page_div {
+            color: #666
+        }
+        /* 页数按钮样式 */
+        .page_div button {
+            display: inline-block;
+            min-width: 30px;
+            height: 28px;
+            cursor: pointer;
+            color: #666;
+            font-size: 13px;
+            line-height: 28px;
+            background-color: #f9f9f9;
+            border: 1px solid #dce0e0;
+            text-align: center;
+            margin: 0 4px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        #firstPage, #lastPage, #nextPage, #prePage {
+            width: 50px;
+            color: black;
+            border: 1px solid rgba(238, 238, 238, 1)
+        }
+
+        #nextPage, #prePage {
+            width: 70px
+        }
+
+        .page_div .current {
+            background-color: #0073A9;
+            border-color: #0073A9;
+            color: #FFF
+        }
+        /* 页面数量 */
+        .totalPages {
+            margin: 0 10px
+        }
+
+        .totalPages span, .totalSize span {
+            color: #0073A9;
+            margin: 0 5px
+        }
+        /*button禁用*/
+        .page_div button:disabled {
+            opacity: .5;
+            cursor: no-drop
+        }
+    </style>
+</head>
+<script type="text/javascript">
+    function submit() {
+        var title = $("input[name='basic_title']").val();
+        listData(title);
+    }
+</script>
+
+<body>
+<style type="text/css">
+    /*背景图片*/
+    .head-banner{
+        background-size: cover;
+        background-image: url("http://localhost:4031/ms-mcms/templets/1/yancao/images/banner.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    /*背景图片End*/
+</style>
+<script>
+    //加入收藏
+    function AddFavorite(sURL, sTitle) {
+        sURL = encodeURI(sURL);
+        try {
+            window.external.addFavorite(sURL, sTitle);
+        } catch (e) {
+            try {
+                window.sidebar.addPanel(sTitle, sURL, "");
+            } catch (e) {
+                alert("加入收藏失败，请使用Ctrl+D进行添加,或手动在浏览器里进行设置.");
+            }
+        }
+    }
+
+    //设为首页
+
+    function SetHome(url) {
+        if (document.all) {
+            document.body.style.behavior = 'url(#default#homepage)';
+            document.body.setHomePage(url);
+        } else {
+            alert("您好,您的浏览器不支持自动设置页面为首页功能,请您手动在浏览器里设置该页面为首页!");
+        }
+    }
+</script>
+<!--顶部信息栏 -->
+<div class="body-content margin-center top-nav ms-relative">
+    <div class="ms-absolute"><span>今天是：</span><span class="today"></span></div>
+    <div class="ms-absolute">
+        <label class="ms-pointer" onclick="SetHome(window.location)">设为首页</label>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <label class="ms-pointer" onclick="AddFavorite(window.location,document.title)">加入收藏夹</label>
+    </div>
+</div>
+<script type="text/javascript">
+    var today = new Date();
+    var week = new Array("日", "一", "二", "三", "四", "五", "六");
+    var todayStr = today.getFullYear()+"年"+(today.getMonth()+1)+"月"+today.getDate()+"日";
+    $(".top-nav > .ms-absolute >span.today").html(todayStr+"&nbsp;&nbsp;&nbsp;星期"+week[today.getDay()]);
+</script>
+<!--头部背景图片-->
+<div class="head-banner max-width margin-center"></div>
+<!--菜单导航栏-->
+<div class="menu-nav margin-center max-width">
+    <ul class="body-content list-style-none margin-center">
+        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    var url = window.location.href;
+    if(url == 'http://localhost:4031/ms-mcms/html/2/index.html'){
+        $("#home").attr("class","active-li");
+    }
+</script>
+<div class="margin-center ms-menue-content-model">
+    <div class="menue-list">
+        <ul class="list-style-none">
+            <li class="ms-relative">
+                <!--圆形-->
+                <div class="shape-circular ms-absolute">
+                    <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
+                </div>
+                <span><label>廉政文化</label></span>
+                <ul class="list-style-none">
+                    <li>
+                        <span class="active-span-title" onclick="window.open('http://192.168.43.43:8080/ms-mcms/html/1//182/183/index.html','_self')"><label><a>清风文苑</a></label></span>
+                    </li>
+                    <li>
+                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/187/index.html','_self')"><label><a>资料集锦</a></label></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="search" style="width: 888px;">
+        <p style="width: 50%;float: left;">
+            <span>当前位置：</span>
+            <label>
+                <a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
+                &gt;
+                <a href="http://localhost:4031/ms-mcms/html/2/185/index.html">责任纪实</a>
+            </label>
+        </p>
+        <div id="box">
+            <form id="searchDataForm" action="http://localhost:4031/ms-mcms/cms/9/search.do" method="post">
+                <input type="hidden" name="categoryId" value="185" label="栏目编号"/>
+                <input type="hidden" name="categoryIds" value="185" label="栏目编号"/>
+                <input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
+                <div id="search" onclick="submit();">搜索</div>
+            </form>
+        </div>
+    </div>
+
+    <div class="content-list">
+        <div>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div class="cut-page margin-center page_div" id="page">
+
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            listData();
+        });
+
+        /*请求成功时调用
+            getData: 返回的数据
+        */
+        function insertContent(getData){
+            console.log("getData",getData)
+            var htmlContent = "";	//插入的列表内容
+            for(var i = 0; i < getData.length; i++){
+                var data = getData[i];		//获取一条数据
+                var url = "http://localhost:4031/ms-mcms/html/2/182/183/"+data.wid+".html";//a链接地址
+                var title = data.wTitle;		//标题
+                htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
+            }
+            $(".content-list ul").html(htmlContent);
+        }
+
+        /*请求失败时调用 */
+        function insertError(){
+            $(".content-list ul").html("<center style='margin-top: 140px;'>暂无数据内容，请添加！</center>");
+        }
+        function listData(title,pageNo){
+            if(!title){
+                title = "";
+            }
+            if(!pageNo){
+                pageNo = 1;
+            }
+            var URL = "http://localhost:8080/qt/qtwind/get";
+            var getData = [];	//请求返回的数据
+            $.ajax({
+                async: true,
+                url: URL,
+                type: "get",
+                data: {title:title,pageNo: pageNo,pageSize: 10},
+                success: function(da) {
+                    console.log(eval("(" + da + ")"))
+                    if(da!=="null") {
+                        var data=eval("(" + da + ")")
+                        if (data.total === 0) {
+                            //没有数据的时候
+                            insertError();
+                        } else {
+                            insertContent(data.records);
+                        }
+                        $("#page").paging({
+                            pageNum: pageNo, // 当前页面
+                            totalNum: data.pages, // 总页码
+                            totalList: data.total, // 记录总数量
+                            callback: function (num) { //回调函数
+                                listData(title, num);
+                            }
+                        });
+                    }else{
+                        //没有数据的时候
+                        insertError();
+                    }
+                },
+                error: function(da) {
+                    insertError();
+                }
+            });
+        }
+    </script>
+
+</div>
+﻿<!--底部内容-->
+<div class="footer max-width margin-center">
+    主 管：湘潭市烟草专卖局 主 办：湘潭市烟草专卖局纪检监察科<br/>
+    版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
+</div>	</body>
+</html>
