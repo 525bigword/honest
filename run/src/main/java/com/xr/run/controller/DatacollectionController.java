@@ -137,7 +137,7 @@ public class DatacollectionController {
         if(path.contains(".doc")||path.contains(".docx")){
             String path1 = path.substring(0, path.lastIndexOf("."));
             String url=path1+".pdf";
-//           AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+         AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
             return url;
         }
         return null;
