@@ -1,6 +1,7 @@
 package com.xr.run.service.daily.impl;
 
 import com.xr.run.dao.daily.LetterReportMapper;
+import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.daily.LetterReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,10 @@ letterReportMapper.deptbc(letterReport);
     @Override
     public void zzbc(LetterReport letterReport) {
 letterReportMapper.zzbc(letterReport);
+    }
+
+    @Override
+    public DeptUnit finddp(String nickname) {
+        return letterReportMapper.finddp(nickname);
     }
 }

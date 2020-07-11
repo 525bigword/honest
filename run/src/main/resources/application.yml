@@ -1,6 +1,5 @@
 server:
   port: 8080
-  max-http-header-size: 8KB
 logging:
   level:
     root: debug
@@ -21,8 +20,8 @@ spring:
     time-zone: GMT+8
   datasource:
     username: root
-    password: 123456
-    url: jdbc:mysql://139.129.118.147:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    password: 1234
+    url: jdbc:mysql://127.0.0.1:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     #url: jdbc:mysql://139.129.118.147:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -56,3 +55,5 @@ file:
   accessPaths: /frontPage/upload
   staticAccessPaths: /upload/**
   uploadFolders: D://IDE/
+html:
+  destPath: D:\IDE\nginx-1.8.1\html\ms-mcms\html\2

@@ -16,10 +16,10 @@
         </association>
     </resultMap>
     <select id="list" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
-  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid </select>
+  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1 </select>
     <!--按标题查询-->
     <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
-      select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.title like CONCAT('%',#{title},'%')
+      select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1 and rwd.title like CONCAT('%',#{title},'%')
     </select>
     <!--新增工作计划-->
     <insert id="addDeployment" parameterType="com.xr.run.entity.duty.WorkDeployment" useGeneratedKeys="true" keyProperty="id">
@@ -31,7 +31,7 @@
     </update>
     <!--按序号删除工作计划-->
     <delete id="delDeployment" parameterType="Integer">
-        delete from rd_work_deployment where id=#{id}
+        update  rd_work_deployment set staus=-1 where id=#{id}
     </delete>
     <!--提交审核-->
     <update id="subauditDeployment">

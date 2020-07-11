@@ -475,6 +475,7 @@ export default {
       // this.form = {};
       // this.postList = [];
       this.getList()
+      this.form={}
     },
     showUpdate(scope, $index) {
       console.log(scope);

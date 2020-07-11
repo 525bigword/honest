@@ -194,13 +194,13 @@
 </template>
 
 <script>
-import {
+/*import {
   add,
   update,
   list,
   deletesystemmessage,
     imageFile
-} from "@/api/systemnotice/systemmessage";
+} from "@/api/systemnotice/systemmessage";*/
 import qs from "qs";
 import { mapGetters } from "vuex";
 export default {

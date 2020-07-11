@@ -22,8 +22,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div><el-form-item>
-        <el-button type="primary" class="el-icon-plus" @click="add" v-if="role.includes('单位/部门负责人')">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="del" v-if="role.includes('单位/部门负责人')">删除</el-button></el-form-item></div>
+        <el-button type="primary" class="el-icon-plus" @click="add" v-if="this.hasPerm('honestconversation:add')">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="del" v-if="this.hasPerm('honestconversation:delete')">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -94,9 +94,9 @@
         <el-table-column prop="auditresult" label="审核结果"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)" v-if="scope.row.staus==0&&role.includes('单位/部门负责人')">编辑</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.staus==0 &&role.includes('单位/部门负责人')" @click="tjsh(scope.$index, scope.row)">提交审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.staus==1&&role.includes('纪检监察科科长')" @click="sh(scope.$index, scope.row)">审核</el-button>
+            <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)" v-if="scope.row.staus==0&& hasPerm('honestconversation:update')">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.staus==0 && hasPerm('honestconversation:add')|| hasPerm('honestconversation:update')&&scope.row.staus==0" @click="tjsh(scope.$index, scope.row)">提交审核</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.staus==1&& hasPerm('honestconversation:audit')" @click="sh(scope.$index, scope.row)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -113,21 +113,21 @@
       </div> </el-form>
 <!--隐藏窗-->
       <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px">
+        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
           <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
             <br/>
             <div align="right" ><el-form-item >
-              <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser()"  >提交</el-button>
+              <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')"  >提交</el-button>
               <el-button type="primary" class="el-icon-edit" @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
               <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
               <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>
 
-              <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
+              <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
           <br/>
           <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
 
-          <el-form-item label="谈话对象单位" >
+          <el-form-item label="谈话对象单位" prop="punit">
             <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
                          :placeholder="defaUnit"
                          :props="props"
@@ -135,7 +135,7 @@
                          :expandTrigger="'hover'"
                          clearable v-model="userInfo.punit" @change="handleItemChange"  style="width: 400px"></el-cascader>
           </el-form-item>
-          <el-form-item label="谈话对象姓名">
+          <el-form-item label="谈话对象姓名" prop="pid">
             <el-select v-model="userInfo.pid" placeholder="请选择谈话对象姓名" style="width: 400px">
               <el-option
                 v-for="item in options"
@@ -145,7 +145,7 @@
               </el-option>
             </el-select>
           </el-form-item><br/>
-          <el-form-item label="记录人">
+          <el-form-item label="记录人" prop="personid">
             <el-select v-model="userInfo.personid" placeholder="请选择记录人" style="width: 400px">
               <el-option
                 v-for="item in options"
@@ -155,35 +155,35 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="谈话时间">
+          <el-form-item label="谈话时间" prop="time">
             <el-date-picker v-model="userInfo.time" placeholder="请选择谈话时间" type="datetime"  style="width: 400px" ></el-date-picker>
           </el-form-item><br/>
-          <el-form-item label="谈话对象政治面貌">
+          <el-form-item label="谈话对象政治面貌" prop="zzmm">
             <el-select v-model="userInfo.zzmm" placeholder="请选择谈话对象政治面貌" style="width: 400px">
               <el-option label="党员" value="党员"></el-option>
               <el-option label="团员" value="团员"></el-option>
               <el-option label="群众" value="群众"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="谈话对象职务">
+          <el-form-item label="谈话对象职务" prop="duty">
             <el-input v-model="userInfo.duty" placeholder="请输入谈话对象职务" style="width: 400px"></el-input>
           </el-form-item><br/>
-          <el-form-item label="谈话类型">
+          <el-form-item label="谈话类型" prop="type">
             <el-select v-model="userInfo.type" placeholder="谈话类型" style="width: 400px">
               <el-option label="例行廉政谈话" value="例行廉政谈话"></el-option>
               <el-option label="任前廉政谈话" value="任前廉政谈话"></el-option>
               <el-option label="提醒谈话" value="提醒谈话"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="谈话地点">
+          <el-form-item label="谈话地点" prop="site">
             <el-input v-model="userInfo.site" placeholder="请输入谈话地点" style="width: 400px"></el-input>
           </el-form-item>
             <br/>
-            <el-form-item label="谈话提纲">
+            <el-form-item label="谈话提纲" prop="syllabus">
           <el-input v-model="userInfo.syllabus"  type="textarea" placeholder="请输入400字符以内的谈话提纲" style="width: 1000px;" :rows="6"></el-input>
         </el-form-item>
             <br/>
-            <el-form-item label="谈话内容">
+            <el-form-item label="谈话内容" prop="content">
               <el-input v-model="userInfo.content" type="textarea" placeholder="请输入2000字符以内的谈话内容" style="width: 1000px" :rows="16"></el-input>
             </el-form-item><br/>
           <el-form-item label="创建人" v-if="false">
@@ -222,39 +222,56 @@
   rowClass({row, rowIndex}){//设置表头居中
     return 'text-align:center';
   },
-      submitUser(){
+      submitUser(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.createtime).toJSON();
+            this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let endtime1 = new Date(this.userInfo.time).toJSON();
+            this.userInfo.time = new Date(+new Date(endtime1) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
 
-
-        let postData = qs.stringify({
-         punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
-          dept:this.userInfo.punit.toString(),
-          pid:this.userInfo.pid,//谈话对象姓名
-          personid:this.userInfo.personid,//记录人
-          time:this.userInfo.time,
-          politcs:this.userInfo.zzmm,
-          pduty:this.userInfo.duty,//谈话对象职务
-          type:this.userInfo.type,//谈话类型
-          site:this.userInfo.site,
-          syllabus:this.userInfo.syllabus,
-          content:this.userInfo.content,
-          createid:this.userId,
-          createname:this.userInfo.createname,
-          createtime:this.userInfo.createtime,
-          staus:0
-        });
-        console.log("postdata"+postData)
-      add(postData).then((response)=>{
-        this.ad='none',
-          this.tf=''
-        this.defaUnit='请选择谈话对象单位'
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
+            let postData = qs.stringify({
+              punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
+              dept:this.userInfo.punit.toString(),
+              pid:this.userInfo.pid,//谈话对象姓名
+              personid:this.userInfo.personid,//记录人
+              time:this.userInfo.time,
+              politcs:this.userInfo.zzmm,
+              pduty:this.userInfo.duty,//谈话对象职务
+              type:this.userInfo.type,//谈话类型
+              site:this.userInfo.site,
+              syllabus:this.userInfo.syllabus,
+              content:this.userInfo.content,
+              createid:this.userId,
+              createname:this.userInfo.createname,
+              createtime:this.userInfo.createtime,
+              staus:0
+            });
+            console.log("postdata"+postData)
+            add(postData).then((response)=>{
+              this.ad='none',
+              this.tf=''
+            this.defaUnit='请选择谈话对象单位'
+            this.initList();
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
+            })
           })
-        })
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
+
       },
       handleItemChange(value){//点击选择时初始化谈话对象和记录人
         var checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
@@ -297,8 +314,10 @@
           return '已审核'
         }
       },
-      back(){this.ad='none',//隐藏窗
+      back(formName){this.ad='none',//隐藏窗
         this.tf=''
+        ,this.$refs[formName].resetFields()
+        this.initList()
         this.tg='none'//通过按钮
           this.bh='none'//驳回按钮
            },
@@ -420,6 +439,7 @@
          }
 
         this.userInfo=row
+
         this.userInfo.punit = row.dept.split(',').map(Number)
 
         this.isShowAddressInfo = false;
@@ -439,13 +459,6 @@
         this.userInfo.duty=row.users[0].posts[0].pname
         this.bc='none'
         this.gx='none'
-    /*    this.userInfo.punit=[],
-          this.userInfo.punit.push(row.punits)
-        this.userInfo.name=[]
-        this.userInfo.name.push(row.pid)
-        this.userInfo.personname=[],
-          this.userInfo.personname.push(row.personid)
-*/
         this.ad='',//隐藏窗
           this.tf='none'
       }
@@ -576,7 +589,42 @@
       }
     },
     data() {
-      return {
+      return {rules: {
+          punit: [
+            {  required: true, message: '请选择谈话对象单位', trigger: 'blur' }
+          ],pid: [
+            {  required: true, message: '请选择谈话对象姓名', trigger: 'blur' }
+          ],
+          personid:[
+            {  required: true, message: '请选择记录人', trigger: 'blur' }
+          ],
+          time:[
+            {  required: true, message: '请选择谈话时间', trigger: 'blur' }
+          ],
+          zzmm:[
+            {  required: true, message: '请输入谈话对象政治面貌', trigger: 'blur' }
+          ],
+          duty:[
+            {  required: true, message: '请输入谈话对象职务', trigger: 'blur' }
+          ],
+          type:[
+            {  required: true, message: '请选择谈话类型', trigger: 'blur' }
+
+          ],
+          site:[
+            {  required: true, message: '请输入谈话地点', trigger: 'blur' }
+
+          ],
+          content:[
+            {  required: true, message: '请输入谈话内容', trigger: 'blur' }
+
+          ],
+          syllabus:[
+            {  required: true, message: '请输入谈话提纲', trigger: 'blur' }
+
+          ]
+
+        },
         listLoading:true,
         defaUnit:'请选择谈话对象单位',
         options_cascader:[],//级联选择器的options属性
