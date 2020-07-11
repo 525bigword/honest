@@ -37,7 +37,7 @@ import java.util.*;
 public class HomePageSeviceImpl implements HomePageSevice {
 
     //静态页面生成地址
-    @Value("${html.destPath}")
+    /*@Value("${html.destPath}")*/
     private String destPath = "";
 
     public void a(){
