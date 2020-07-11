@@ -77,4 +77,12 @@ public interface DatacollectionService extends IService<Datacollection> {
      * @return
      */
     Datacollection findDatacollectionById(int did);
+
+//    /**
+//     * 用于前台资料锦鸡
+//     * @param page
+//     * @param title
+//     * @return
+//     */
+//    IPage<Datacollection> qtFindDatacollectionPage(Page page,String title);
 }

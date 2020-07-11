@@ -252,6 +252,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
     private void getMoreRdWork() {
         createIndexHtml(destPath+"/185/", "185/index", "index.html", null);
     }
+    //廉政文化更多
+    private void loadDatacollection(){
+        createIndexHtml(destPath+"/182/", "182/index", "index.html", null);
+    }
 
     public void loading() {
         Map<String, Object> map = new HashMap<>();
@@ -265,8 +269,8 @@ public class HomePageSeviceImpl implements HomePageSevice {
         loadRdWork(map);
         //责任纪实更多
         getMoreRdWork();
-
-
+        //廉政文化更多
+        loadDatacollection();
 
         //风险防控
 

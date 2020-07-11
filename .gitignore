@@ -24,6 +24,8 @@ hs_err_pid*
 
 
 /.idea
+/vue/.vscode
+/vue/node_modules
 target/
 *.iml
 logs

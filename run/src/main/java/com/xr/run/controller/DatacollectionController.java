@@ -164,6 +164,6 @@ public class DatacollectionController {
             modelAndView.addObject("name", name);
         }
         modelAndView.setViewName("index1");
-        staticHtmlService.genHtmlPage(modelAndView,req,resp,datacollection.getDTitle());
+//        staticHtmlService.genHtmlPage(modelAndView,req,resp,datacollection.getDTitle());
     }
 }

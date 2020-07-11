@@ -23,6 +23,7 @@ public interface WindMapper extends BaseMapper<Wind> {
     void updateWindByWid(Wind wind);
 
     @Insert("insert into Wind(wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus) VALUES(null,#{wTitle},#{wContent},#{wContributor},NOW(),#{wCreateId},#{wStatus})")
+    @Options(useGeneratedKeys = true,keyProperty = "wid")
     void insertWind(Wind wind);
 
     @Delete("delete from  Wind where wid=#{wid}")

@@ -46,9 +46,11 @@ public class ShiroConfiguration {
 		filterChainDefinitionMap.put("/export","anon");
 		filterChainDefinitionMap.put("/uploadimg/**","anon");
 		filterChainDefinitionMap.put("/upload/**","anon");
-		filterChainDefinitionMap.put("//th/**","anon");
+		filterChainDefinitionMap.put("/ms-mcms/**","anon");
+		filterChainDefinitionMap.put("/th/**","anon");
 		filterChainDefinitionMap.put("/SysStaff/auth", "anon");
 		filterChainDefinitionMap.put("/login/logout", "anon");
+		filterChainDefinitionMap.put("/qt/**", "anon");
 		filterChainDefinitionMap.put("/error", "anon");
 		filterChainDefinitionMap.put("/demo", "anon");
 		filterChainDefinitionMap.put("/duty/**", "anon"); //责任监督、责任纪实
