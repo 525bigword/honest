@@ -72,42 +72,42 @@
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
 
-    <el-dialog @closed="Close"  :visible.sync="dialogVisible">
+    <el-dialog @closed="Close" style="margin-top:4%" :visible.sync="dialogVisible">
       <el-row>
-        <el-col :span="4">姓名：</el-col>
-         <el-col :span="4">{{dialogobj.name}}</el-col>
-        <el-col :span="4">性别：</el-col>
-        <el-col :span="4" >{{dialogobj.sex}}</el-col>
-         <el-col :span="4">年龄：</el-col>
-        <el-col :span="4">{{dialogobj.age}}</el-col>
+        <el-col style="width:12%" align="right" >姓名：</el-col>
+         <el-col style="width:20%" align="left">{{dialogobj.name}}</el-col>
+        <el-col style="width:13%" align="right">性别：</el-col>
+        <el-col style="width:20%" align="left">{{dialogobj.sex}}</el-col>
+         <el-col style="width:12%" align="right">年龄：</el-col>
+        <el-col style="width:22%" align="left">{{dialogobj.age}}</el-col>
     </el-row>
     <el-row>
-        <el-col :span="4">学历：</el-col>
-         <el-col :span="4">{{dialogobj.educationalBackground}}</el-col>
-        <el-col :span="4">政治面貌：</el-col>
-        <el-col :span="4" >{{dialogobj.politicalAppearance}}</el-col>
-         <el-col :span="4">手机号码：</el-col>
-        <el-col :span="4">{{dialogobj.phone}}</el-col>
+        <el-col style="width:12%" align="right">学历：</el-col>
+         <el-col style="width:20%" align="left">{{dialogobj.educationalBackground}}</el-col>
+        <el-col style="width:13%" align="right">政治面貌：</el-col>
+        <el-col style="width:20%" align="left" >{{dialogobj.politicalAppearance}}</el-col>
+         <el-col style="width:12%" align="right">手机号码：</el-col>
+        <el-col style="width:22%" align="left">{{dialogobj.phone}}</el-col>
     </el-row>
     <el-row>
-        <el-col :span="4">部门名称：</el-col>
-         <el-col :span="4">{{dialogobj.mechanismname}}</el-col>
-        <el-col :span="4">岗位名称：</el-col>
-        <el-col :span="4" >{{dialogobj.postname}}</el-col>
-        <el-col :span="4">用户状态：</el-col>
-        <el-col :span="4">{{dialogobj.staus}}</el-col>
+        <el-col style="width:12%" align="right">部门名称：</el-col>
+         <el-col style="width:20%" align="left">{{dialogobj.mechanismname}}</el-col>
+        <el-col style="width:13%" align="right">岗位名称：</el-col>
+        <el-col style="width:20%" align="left" >{{dialogobj.postname}}</el-col>
+        <el-col style="width:12%" align="right">用户状态：</el-col>
+        <el-col style="width:22%" align="left">{{dialogobj.staus}}</el-col>
     </el-row>
     <el-row>
-        <el-col :span="4">登录名：</el-col>
-         <el-col :span="4">{{dialogobj.username}}</el-col>
-        <el-col :span="4">登录密码：</el-col>
-        <el-col :span="4" >{{dialogobj.password}}</el-col>
-        <el-col :span="4">创建时间：</el-col>
-        <el-col :span="4">{{dialogobj.createTime}}</el-col>
+        <el-col style="width:12%" align="right">登录名：</el-col>
+         <el-col style="width:20%" align="left">{{dialogobj.username}}</el-col>
+        <el-col style="width:13%" align="right">登录密码：</el-col>
+        <el-col style="width:20%" align="left" >{{dialogobj.password}}</el-col>
+        <el-col style="width:12%" align="right">创建时间：</el-col>
+        <el-col style="width:22%" align="left">{{dialogobj.createTime}}</el-col>
     </el-row>
     <el-row>
-        <el-col :span="4">请求参数：</el-col>
-        <el-col :span="20">{{dialogobj.data}}</el-col>
+        <el-col style="width:12%" align="right">请求参数：</el-col>
+        <el-col  style="width:40%" align="left">{{dialogobj.data}}</el-col>
     </el-row>
     </el-dialog>
   </div>

@@ -68,43 +68,50 @@
 
     <el-dialog @closed="Close" :title="textMap[dialogStatus]" :visible.sync="dialogTableVisible">
       <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="员工名">
-          <el-col :span="8">
+        <el-row>
+          <el-col style="width:45%">
+            <el-form-item label="员工名">
             <el-input placeholder="员工名" v-model="form.name"></el-input>
+            </el-form-item>
           </el-col>
-          <el-col class="right" :span="2">年龄</el-col>
-          <el-col :span="8">
+          <el-col style="margin-left:10px;width:45%">
+            <el-form-item label="年龄">
             <el-input
               onkeyup="value=value.replace(/[^\d]/g,'')"
               placeholder="年龄"
               v-model="form.age"
             ></el-input>
+            </el-form-item>
           </el-col>
-        </el-form-item>
-        <el-form-item label="学历" :line="true">
-          <el-col :span="8">
-            <el-select style="width: 80%;" v-model="form.educationalBackground" placeholder="学历">
+        </el-row>
+       <el-row>
+          <el-col style="width:45%">
+             <el-form-item label="学历" :line="true">
+            <el-select style="width: 100%;" v-model="form.educationalBackground" placeholder="学历">
               <el-option label="初中" value="初中"></el-option>
               <el-option label="高中" value="高中"></el-option>
               <el-option label="专科" value="专科"></el-option>
               <el-option label="本科" value="本科"></el-option>
               <el-option label="本科以上" value="本科以上"></el-option>
             </el-select>
+             </el-form-item>
           </el-col>
-          <el-col class="line right" style="width: 20%;" :span="1">政治面貌</el-col>
-          <el-col :span="8">
-            <el-select v-model="form.politicalAppearance" placeholder="政治面貌">
+          <el-col style="margin-left:10px;width:45%">
+             <el-form-item label="政治面貌" >
+            <el-select style="width:100%" v-model="form.politicalAppearance" placeholder="政治面貌">
               <el-option label="团员" value="团员"></el-option>
               <el-option label="党员" value="党员"></el-option>
               <el-option label="其他" value="其他"></el-option>
             </el-select>
+             </el-form-item>
           </el-col>
-        </el-form-item>
-        <el-form-item label="电话号码" :line="true">
+          </el-row>
+        <el-form-item label="电话号码" style="width:91.5%">
           <el-input v-model="form.phone" placeholder="电话号码"></el-input>
         </el-form-item>
-        <el-form-item label="所属部门">
-          <el-col :span="8">
+        <el-row>
+          <el-col style="width:45%">
+            <el-form-item label="所属部门">
             <el-cascader
               placeholder="部门"
               :props="props"
@@ -112,58 +119,61 @@
               @change="Change"
               :show-all-levels="false"
               :options="bm"
-            ></el-cascader>
+              style="width:100%"
+            ></el-cascader></el-form-item>
           </el-col>
-          <el-col :span="2">性别</el-col>
-          <el-col :span="8">
-            <el-radio v-model="form.sex" label="男">男</el-radio>
-            <el-radio v-model="form.sex" label="女">女</el-radio>
+          <el-col style="margin-left:10px;width:45%">
+             <el-form-item label="性别">
+            <el-radio style="margin-left:3%" v-model="form.sex" label="男">男</el-radio>
+            <el-radio style="margin-left:10%" v-model="form.sex" label="女">女</el-radio></el-form-item>
           </el-col>
-        </el-form-item>
-        <el-form-item label="登录名">
-          <el-col :span="8">
-            <el-input
+       </el-row>
+        <el-row>
+          <el-col style="width:45%">
+            <el-form-item label="登录名">
+            <el-input style="width:100%"
               v-model="form.username"
               :disabled="dialogStatus==='create'?false:true"
               placeholder="登录名"
-            ></el-input>
+            ></el-input></el-form-item>
           </el-col>
-          <el-col :span="4" class="line right" style="width: 15%;">登录密码</el-col>
-          <el-col :span="8">
-            <el-input type="password" v-model="form.password" placeholder="登录密码"></el-input>
+          <el-col style="margin-left:10px;width:45%">
+            <el-form-item label="登录密码">
+            <el-input type="password" style="width:100%" v-model="form.password" placeholder="登录密码"></el-input></el-form-item>
           </el-col>
-        </el-form-item>
-        <el-form-item label="岗位">
-          <el-col :span="8">
-            <el-select style="width: 80%;" v-model="form.ppid" placeholder="岗位">
+          </el-row>
+        <el-row>
+          <el-col style="width:45%">
+             <el-form-item label="岗位">
+            <el-select style="width: 100%;" v-model="form.ppid" placeholder="岗位">
               <el-option
                 v-for="(post) in postList"
                 :key="post.pid"
                 :label="post.pname"
                 :value="post.pid"
               ></el-option>
-            </el-select>
+            </el-select></el-form-item>
           </el-col>
-          <el-col :span="4" class="line right" style="width: 15%;">角色</el-col>
-          <el-col :span="8">
-            <el-select style="width: 80%;" v-model="form.pid" placeholder="角色">
+          <el-col style="margin-left:10px;width:45%">
+             <el-form-item label="角色">
+            <el-select style="width: 100%;" v-model="form.pid" placeholder="角色">
               <el-option
                 v-for="(post) in ppostList"
                 :key="post.pid"
                 :label="post.pname"
                 :value="post.pid"
               ></el-option>
-            </el-select>
+            </el-select></el-form-item>
           </el-col>
-        </el-form-item>
+          </el-row>
         <el-form-item label="状态" v-if="dialogStatus==='update'">
           <el-radio v-model="form.staus" label="1">正常</el-radio>
           <el-radio v-model="form.staus" label="2">删除</el-radio>
           <el-radio v-model="form.staus" label="3">离退</el-radio>
           <el-radio v-model="form.staus" label="4">借调</el-radio>
         </el-form-item>
-        <el-form-item>
-          <el-button
+        <el-form-item style="margin-top:15px">
+          <el-button style="margin-left:63%"
             type="primary"
             @click="dialogStatus==='create'?add():update()"
           >{{dialogStatus==='create'?'添加':'修改'}}</el-button>

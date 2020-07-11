@@ -185,26 +185,26 @@
       :page-size="listQuery.limit"
       :total="total"
     ></el-pagination>
-
+<!-- style="width:75%" -->
     <el-dialog
       @close="closefase"
-      style="width:75%"
       :title="textMap[dialogStatus]"
       :visible.sync="dialogFormVisible"
     >
+    <!-- style="width: 400px; margin-left:50px;" -->
       <el-form
         ref="dataForm"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="70px"
-        style="width: 400px; margin-left:50px;"
+        label-position="right"
+        label-width="20%"
+        
       >
-        <el-form-item label="部门名称" prop="menuName">
-          <el-input v-model="temp.menuName" placeholder="栏目名" />
+        <el-form-item  label="部门名称" prop="menuName">
+          <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="栏目名" />
         </el-form-item>
         <el-form-item label="负责人">
-          <el-select v-model="temp.region"  placeholder="负责人">
+          <el-select style="width:45%;margin-left:10px" v-model="temp.region"  placeholder="负责人">
             <el-option
               v-for="(item,index) in staff"
               :label="item.name"
@@ -215,7 +215,7 @@
         </el-form-item>
         <el-form-item label="父级部门">
           <!-- //temp.parent -->
-          <el-cascader 
+          <el-cascader  style="width:45%;margin-left:10px"
             :placeholder="placeholder"
             v-model="defaultvalue"
             :props="props"
@@ -225,14 +225,14 @@
           ></el-cascader>
         </el-form-item>
         <el-form-item label="分管领导">
-          <el-select v-model="temp.ld" @change="ldchange" placeholder="分管领导">
-            <el-option v-for="(item,index) in ld" :label="item.name" :value="item.sid" :key="index"></el-option>
+          <el-select style="width:45%;margin-left:10px" v-model="temp.ld" @change="ldchange" placeholder="分管领导">
+            <el-option  v-for="(item,index) in ld" :label="item.name" :value="item.sid" :key="index"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
-        <el-button @click="clicen">取消</el-button>
+      <div slot="footer" class="dialog-footer" >
+        <el-button  type="primary" style="margin-right:1%" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
+        <el-button style="margin-right:5%" @click="clicen">取消</el-button>
       </div>
     </el-dialog>
   </div>
