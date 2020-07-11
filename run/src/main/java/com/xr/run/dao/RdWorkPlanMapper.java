@@ -12,13 +12,16 @@ import java.util.List;
 
 @Repository
 public interface RdWorkPlanMapper extends BaseMapper<RdWorkPlan> {
-    @Select("select rdid,title,content,create_time,create_id,create_name,staus from rd_work_plan where staus<>-1 and  title like CONCAT('%',#{title},'%') order by rdid desc")
+    @Select("select rdid,title,content,create_time,create_id,create_name,staus from " +
+            " rd_work_plan where staus <> -1 and staus = CONCAT(#{staus}) and  title like CONCAT('%',#{title},'%') order by rdid desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, @Param("title") String title);
+    IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, @Param("title") String title,@Param("staus") Integer staus);
+
+
 
     List<RdWorkPlan> findRdWorkPlanAll(@Param("title") String title);
 }

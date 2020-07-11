@@ -13,5 +13,5 @@ import java.util.Date;
 
 
 public interface RdWorkDeploymentService extends IService<RdWorkDeployment> {
-    IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, String title);
+    IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, String title,Integer staus);
 }

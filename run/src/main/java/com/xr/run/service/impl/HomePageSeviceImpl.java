@@ -10,10 +10,13 @@
  */
 package com.xr.run.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.*;
 import com.xr.run.entity.*;
 import com.xr.run.entity.vo.RdWorkVo;
 import com.xr.run.entity.vo.RiskVo;
+import com.xr.run.service.DcpReportService;
 import com.xr.run.service.HomePageSevice;
 import com.xr.run.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +44,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
     private String destPath = "";
 
     public void a(){
-        System.out.println(destPath);
+        System.out.println("路径是============================="+destPath);
     }
     @Autowired
     private TemplateEngine templateEngine;
@@ -66,7 +69,16 @@ public class HomePageSeviceImpl implements HomePageSevice {
     private PostriskcombingMapper postriskcombingMapper;
 
     //流程风险
+    @Autowired
     private ProcessrickMapper processrickMapper;
+
+    //廉政教育
+    @Autowired
+    private EducationPoliticsMapper  educationPoliticsMapper;
+
+    //纪检报表
+    @Autowired
+    private DcpReportMapper dcpReportMapper;
 
 
    //查询前五的责任监督
@@ -93,8 +105,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
    public void loadRdWork(Map map){
        //工作计划
        List<RdWorkPlan> rdWorkPlans = rdWorkPlanMapper.findRdWorkPlanAll("");
-       System.out.println("========="+rdWorkPlans);
-       //工作部署
+        //工作部署
        List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentAll("");
        //廉政谈话
        List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll("");
@@ -239,7 +250,11 @@ public class HomePageSeviceImpl implements HomePageSevice {
        }
 
        listSort(list1);
-       list1 = list1.subList(0, 5);
+       if(list1.size()<5) {
+           list1 = list1.subList(0, list1.size());
+       }else{
+           list1 = list1.subList(0, 5);
+       }
        map.put("rdWorkVos", list1);
    }
 
@@ -253,9 +268,41 @@ public class HomePageSeviceImpl implements HomePageSevice {
         createIndexHtml(destPath+"/185/", "185/index", "index.html", null);
     }
 
+    //生成不同的RdWork
+    private void getDifferentRdWord() {
+        //工作计划
+        Map map0 = new HashMap();
+        map0.put("type",0);
+        createIndexHtml(destPath+"/185/0/", "185/indexIn", "index.html", map0);
+        //工作部署
+        Map map1 = new HashMap();
+        map1.put("type",1);
+        createIndexHtml(destPath+"/185/1/", "185/indexIn", "index.html", map1);
+        //廉政谈话
+        Map map2 = new HashMap();
+        map2.put("type",2);
+        createIndexHtml(destPath+"/185/2/", "185/indexIn", "index.html", map2);
+        //主体责任
+        Map map3 = new HashMap();
+        map3.put("type",3);
+        createIndexHtml(destPath+"/185/3/", "185/indexIn", "index.html", map3);
+    }
+
+
+    //廉政教育
+    private void loadEducation(Map map) {
+        //查找
+        List<EducationPolitics> educationPolitics = educationPoliticsMapper.findAllEducationsTopNine();
+        for (EducationPolitics educations : educationPolitics) {
+            //去除html标签
+            String s = CommonUtil.delHTMLTag(educations.getContent());
+            educations.setContent(s);
+        }
+        map.put("educations",educationPolitics);
+    }
+
     public void loading() {
         Map<String, Object> map = new HashMap<>();
-
         //责任监督
         loadDuty(map);
         //责任监督更多
@@ -265,30 +312,20 @@ public class HomePageSeviceImpl implements HomePageSevice {
         loadRdWork(map);
         //责任纪实更多
         getMoreRdWork();
+        //生成不同的RdWork
+        getDifferentRdWord();
 
-
+        //廉政教育
+        loadEducation(map);
 
         //风险防控
+        loadRisk(map);
 
-        //岗位风险
-       /* List<Postriskcombing>  postriskCombingAll = postriskcombingMapper.findPostriskCombingAll();
-        //流程风险
-        List<Processrick>  processrickAll = processrickMapper.findProcessrickAll();
-
-        List<RiskVo> riskVos = new ArrayList<>();
-
-        for (Postriskcombing postriskcombing : postriskCombingAll) {
-            RiskVo riskVo = new RiskVo();
-            //postriskcombing.getPCreateTime();
+        //纪检报表
+        loadReport(map);
 
 
 
-        }
-
-        for (Processrick processrick : processrickAll) {
-
-
-        }*/
 
 
 
@@ -300,7 +337,86 @@ public class HomePageSeviceImpl implements HomePageSevice {
         createIndexHtml(destPath, "HomePage", "index.html", map);
     }
 
+    private void loadReport(Map  map) {
+        IPage<DcpReport> dcpReportIndex = dcpReportMapper.findDcpReportIndex(new Page(), "");
+        List<DcpReport> list = new ArrayList<>();
+        for (DcpReport record : dcpReportIndex.getRecords()) {
+            list.add(record);
+        }
+        if(list.size()<5){
+            list = list.subList(0,list.size());
+        }else{
+            list =list.subList(0,5);
+        }
+        System.out.println("list============================"+list);
+        map.put("reports",list);
+    }
 
+    //风险防控
+    private void loadRisk(Map map) {
+        //流程风险
+        IPage<Processrick>  processrickAll = processrickMapper.findProcessrickIndex(new Page(),"");
+        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(),"");
+        List<RiskVo> list = new ArrayList<>();
+        for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
+            RiskVo riskVo = new RiskVo();
+            String s = CommonUtil.delHTMLTag(postriskcombing.getPRiskPointDescription());
+            riskVo.setCreateTime(postriskcombing.getPCreateTime());
+            riskVo.setDescription(s);
+            riskVo.setProject(postriskcombing.getPProject());
+            riskVo.setId(postriskcombing.getPid());
+            riskVo.setCname(postriskcombing.getPCreateName());
+            list.add(riskVo);
+        }
+
+       for (Processrick processrick : processrickAll.getRecords()) {
+            RiskVo riskVo = new RiskVo();
+            String s = CommonUtil.delHTMLTag(processrick.getProInfomation());
+            riskVo.setCreateTime(processrick.getProCreateTime());
+            riskVo.setDescription(s);
+            riskVo.setProject(processrick.getProName());
+            riskVo.setId(processrick.getProid());
+            riskVo.setCname(processrick.getProCreateName());
+            list.add(riskVo);
+        }
+        listSortriskVos(list);
+        if(list.size()<5) {
+            list = list.subList(0, list.size());
+        }else{
+            list = list.subList(0, 5);
+        }
+        map.put("riskVos",list);
+    }
+
+
+
+
+    private void listSortriskVos(List<RiskVo> list) {
+        //Collections的sort方法默认是升序排列，如果需要降序排列时就需要重写compare方法
+        Collections.sort(list, new Comparator<RiskVo>() {
+            @Override
+            public int compare(RiskVo o1, RiskVo o2) {
+                try {
+                    //获取体检日期，并把其类型由String转成Date，便于比较。
+                    Date dt1 = o1.getCreateTime();
+                    Date dt2 = o2.getCreateTime();
+                    //以下代码决定按日期降序排序，若将return“-1”与“1”互换，即可实现升序。
+                    //getTime 方法返回一个整数值，这个整数代表了从 1970 年 1 月 1 日开始计算到 Date 对象中的时间之间的毫秒数。
+                    if (dt1.getTime() > dt2.getTime()) {
+                        return -1;
+                    } else if (dt1.getTime() < dt2.getTime()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+
+                } catch (Exception e) {
+                    log.info("日期排序出错：" + e);
+                }
+                return 0;
+            }
+        });
+    }
 
     //按日期排序（降序）
     private void listSort(List<RdWorkVo> list) {

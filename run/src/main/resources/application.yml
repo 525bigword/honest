@@ -55,3 +55,5 @@ file:
   accessPaths: /frontPage/upload
   staticAccessPaths: /upload/**
   uploadFolders: D://IDE/
+html:
+  destPath: F:/tobacco/ms-mcms/html/2

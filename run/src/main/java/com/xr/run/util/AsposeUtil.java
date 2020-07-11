@@ -1,19 +1,15 @@
 package com.xr.run.util;
-<<<<<<< HEAD
 
 //import com.aspose.words.Document;
 //import com.aspose.words.License;
 
 
-=======
->>>>>>> 9e69909127edf5771bb7cd9930a70060dec161b6
-import java.io.File;
+  import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class AsposeUtil {
-<<<<<<< HEAD
 
     public static boolean getLicense() {
         boolean result = false;
@@ -54,7 +50,7 @@ public class AsposeUtil {
             }
         }
     }
-=======
+
 //
 //    public static boolean getLicense() {
 //        boolean result = false;
@@ -95,5 +91,4 @@ public class AsposeUtil {
 //            }
 //        }
 //    }
->>>>>>> 9e69909127edf5771bb7cd9930a70060dec161b6
-}
+ }

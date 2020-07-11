@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class RdWorkDeploymentServiceImpl extends ServiceImpl<RdWorkDeploymentMapper,RdWorkDeployment> implements RdWorkDeploymentService {
 
     @Override
-    public IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, String title) {
-        return baseMapper.findRdWorkDeploymentIndex(page,title);
+    public IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, String title,Integer staus) {
+        return baseMapper.findRdWorkDeploymentIndex(page,title,staus);
     }
 }

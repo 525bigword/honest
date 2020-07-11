@@ -77,7 +77,7 @@ public class ThymeleafController {
             modelAndView=null;
         }
         //工作计划
-        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"");
+        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"",null);
         for (RdWorkPlan record : findwp.getRecords()) {
             ModelAndView modelAndView=new ModelAndView();
             modelAndView.addObject("content",record.getContent());
@@ -89,7 +89,7 @@ public class ThymeleafController {
             modelAndView=null;
         }
         //主题责任
-        IPage<RdEntityResponsibility> rdEntityResponsibilityIndex = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, "");
+        IPage<RdEntityResponsibility> rdEntityResponsibilityIndex = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, "",null);
         for (RdEntityResponsibility record : rdEntityResponsibilityIndex.getRecords()) {
             ModelAndView modelAndView=new ModelAndView();
             modelAndView.addObject("content",record.getContent());
@@ -101,7 +101,7 @@ public class ThymeleafController {
             modelAndView=null;
         }
         //工作计划
-        IPage<RdWorkDeployment> rdWorkDeploymentIndex = rdWorkDeploymentService.findRdWorkDeploymentIndex(page, "");
+        IPage<RdWorkDeployment> rdWorkDeploymentIndex = rdWorkDeploymentService.findRdWorkDeploymentIndex(page, "",null);
         for (RdWorkDeployment record : rdWorkDeploymentIndex.getRecords()) {
             ModelAndView modelAndView=new ModelAndView();
             modelAndView.addObject("content",record.getContent());
@@ -151,8 +151,8 @@ public class ThymeleafController {
             modelAndView=null;
         }
         //流程风险
-        List<Processrick> findps =processrickService.findProcessrickIndex(page,"");
-        for (Processrick record : findps) {
+        IPage<Processrick> findps =processrickService.findProcessrickIndex(page,"");
+        for (Processrick record : findps.getRecords()) {
             ModelAndView modelAndView=new ModelAndView();
             modelAndView.addObject("proName",record.getProName());
             modelAndView.addObject("proInfomation",record.getProInfomation());
@@ -190,7 +190,7 @@ public class ThymeleafController {
     public ModelAndView findRdWorkPlan(){
         ModelAndView modelAndView=new ModelAndView();
         Page<RdWorkPlan> page=new Page(1,10);
-        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"");
+        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"",null);
         modelAndView.addObject("list",findwp.getRecords());
         modelAndView.setViewName("zrjs/index");
         return modelAndView;
@@ -200,7 +200,7 @@ public class ThymeleafController {
     public ModelAndView findRdWorkDeploymentIndex(){
         ModelAndView modelAndView=new ModelAndView();
         Page<RdWorkDeployment> page=new Page(1,10);
-        IPage<RdWorkDeployment> findrdwd =rdWorkDeploymentService.findRdWorkDeploymentIndex(page,"");
+        IPage<RdWorkDeployment> findrdwd =rdWorkDeploymentService.findRdWorkDeploymentIndex(page,"",null);
         modelAndView.addObject("list",findrdwd.getRecords());
         modelAndView.setViewName("zrjs/rdworkdeployment");
         return modelAndView;
@@ -210,7 +210,7 @@ public class ThymeleafController {
     public ModelAndView findRdEntityResponsibilityIndex(){
         ModelAndView modelAndView=new ModelAndView();
         Page<RdEntityResponsibility> page=new Page(1,10);
-        IPage<RdEntityResponsibility> findwp =rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page,"");
+        IPage<RdEntityResponsibility> findwp =rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page,"",null);
         modelAndView.addObject("list",findwp.getRecords());
         modelAndView.setViewName("zrjs/rdentityresponsibility");
         return modelAndView;
@@ -245,8 +245,8 @@ public class ThymeleafController {
     public ModelAndView findProcessrick(){
         ModelAndView modelAndView=new ModelAndView();
         Page<Processrick> page=new Page(1,10);
-        List<Processrick> findwp =processrickService.findProcessrickIndex(page,"");
-        modelAndView.addObject("list",findwp);
+        IPage<Processrick> findwp =processrickService.findProcessrickIndex(page,"");
+        modelAndView.addObject("list",findwp.getRecords());
         modelAndView.setViewName("fxfk/processrick");
         return modelAndView;
     }

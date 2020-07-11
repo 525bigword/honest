@@ -13,5 +13,5 @@ import java.util.Date;
 
 
 public interface RdEntityResponsibilityService extends IService<RdEntityResponsibility> {
-    IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, String title);
+    IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, String title,Integer staus);
 }

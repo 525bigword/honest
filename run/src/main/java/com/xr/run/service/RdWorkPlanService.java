@@ -13,5 +13,5 @@ import java.util.Date;
 
 
 public interface RdWorkPlanService extends IService<RdWorkPlan> {
-    IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, String title);
+    IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, String title,Integer staus);
 }

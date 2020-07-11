@@ -24,6 +24,7 @@ import com.xr.run.util.CommonUtil;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -39,7 +40,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/duty")
+@RequestMapping("/qt/duty")
 public class DutyController {
 
     @Autowired
@@ -56,6 +57,7 @@ public class DutyController {
 
     @Autowired
     private RdEntityResponsibilityMapper rdEntityResponsibilityMapper;
+
 
 
 
@@ -78,6 +80,11 @@ public class DutyController {
         }
         return null;
     }
+
+
+    //工作计划
+
+
 
     //查询责任纪实所有的信息
     @RequestMapping("/rdWorkList")
@@ -171,6 +178,88 @@ public class DutyController {
         } else {
             //没查找到返回
             return "null";
+        }
+    }
+
+
+    @RequestMapping("/rdWorkDetailList")
+    public String rdWorkDetailList(Integer type,String title,Integer pageNo, Integer pageSize){
+        if(type==0){
+            Page page = new Page(pageNo,pageSize);
+            List<RdWorkVo> list = new ArrayList();
+            IPage<RdWorkPlan> rdWorkPlanIndex1 = rdWorkPlanMapper.findRdWorkPlanIndex(page,title,2);
+            for (RdWorkPlan rdWorkPlan : rdWorkPlanIndex1.getRecords()) {
+                //去除html标签
+                String s = CommonUtil.delHTMLTag(rdWorkPlan.getContent());
+                rdWorkPlan.setContent(s);
+                RdWorkVo rdWorkVo = new RdWorkVo();
+                rdWorkVo.setContent(rdWorkPlan.getContent());
+                rdWorkVo.setTitle(rdWorkPlan.getTitle());
+                rdWorkVo.setCreateTime(rdWorkPlan.getCreateTime());
+                rdWorkVo.setType(0);
+                rdWorkVo.setId(rdWorkPlan.getRdid());
+                list.add(rdWorkVo);
+            }
+            String jsonString = JSON.toJSONString(list);
+            String jso = "{\"total\":" + rdWorkPlanIndex1.getTotal() + ",\"pages\":" + rdWorkPlanIndex1.getPages() + ",\"rows\":" + jsonString + "}";
+            return jso;
+        }else if(type==1){
+            Page page = new Page(pageNo,pageSize);
+            IPage<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentIndex(page,title,2);
+            List<RdWorkVo> list = new ArrayList();
+            for (RdWorkDeployment rdWorkDeployment : rdWorkDeployments.getRecords()) {
+                //去除html标签
+                String s = CommonUtil.delHTMLTag(rdWorkDeployment.getContent());
+                rdWorkDeployment.setContent(s);
+                RdWorkVo rdWorkVo = new RdWorkVo();
+                rdWorkVo.setContent(rdWorkDeployment.getContent());
+                rdWorkVo.setTitle(rdWorkDeployment.getTitle());
+                rdWorkVo.setCreateTime(rdWorkDeployment.getCreateTime());
+                rdWorkVo.setType(1);
+                rdWorkVo.setId(rdWorkDeployment.getId());
+                list.add(rdWorkVo);
+            }
+            String jsonString = JSON.toJSONString(list);
+            String jso = "{\"total\":" + rdWorkDeployments.getTotal() + ",\"pages\":" + rdWorkDeployments.getPages() + ",\"rows\":" + jsonString + "}";
+            return jso;
+        }else if(type==2){
+            Page page = new Page(pageNo,pageSize);
+            IPage<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationIndex(page,title);
+            List<RdWorkVo> list = new ArrayList();
+            for (RdHonestConversation rdHonestConversation : rdHonestConversations.getRecords()) {
+                //去除html标签
+                String s = CommonUtil.delHTMLTag(rdHonestConversation.getContent());
+                rdHonestConversation.setContent(s);
+                RdWorkVo rdWorkVo = new RdWorkVo();
+                rdWorkVo.setContent(rdHonestConversation.getContent());
+                rdWorkVo.setTitle(rdHonestConversation.getSyllabus());
+                rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
+                rdWorkVo.setType(2);
+                rdWorkVo.setId(rdHonestConversation.getId());
+                list.add(rdWorkVo);
+            }
+            String jsonString = JSON.toJSONString(list);
+            String jso = "{\"total\":" + rdHonestConversations.getTotal() + ",\"pages\":" + rdHonestConversations.getPages() + ",\"rows\":" + jsonString + "}";
+            return jso;
+        }else{
+            Page page = new Page(pageNo,pageSize);
+            IPage<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityMapper.findRdEntityResponsibilityIndex(page,title,2);
+            List<RdWorkVo> list = new ArrayList();
+            for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities.getRecords()) {
+                //去除html标签
+                String s = CommonUtil.delHTMLTag(rdEntityResponsibility.getContent());
+                rdEntityResponsibility.setContent(s);
+                RdWorkVo rdWorkVo = new RdWorkVo();
+                rdWorkVo.setContent(rdEntityResponsibility.getContent());
+                rdWorkVo.setTitle(rdEntityResponsibility.getTitle());
+                rdWorkVo.setCreateTime(rdEntityResponsibility.getCreateTime());
+                rdWorkVo.setType(3);
+                rdWorkVo.setId(rdEntityResponsibility.getId());
+                list.add(rdWorkVo);
+            }
+            String jsonString = JSON.toJSONString(list);
+            String jso = "{\"total\":" + rdEntityResponsibilities.getTotal() + ",\"pages\":" + rdEntityResponsibilities.getPages() + ",\"rows\":" + jsonString + "}";
+            return jso;
         }
     }
 

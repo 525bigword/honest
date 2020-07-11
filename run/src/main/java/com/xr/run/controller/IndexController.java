@@ -109,7 +109,7 @@ public class IndexController {
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<RdWorkPlan> page=new Page(pageNum,pageRow);
-        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,title);
+        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,title,null);
         return CommonUtil.successJson(findwp);
     }
 
@@ -123,7 +123,7 @@ public class IndexController {
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<RdWorkDeployment> page=new Page(pageNum,pageRow);
-        IPage<RdWorkDeployment> findwp =rdWorkDeploymentService.findRdWorkDeploymentIndex(page,title);
+        IPage<RdWorkDeployment> findwp =rdWorkDeploymentService.findRdWorkDeploymentIndex(page,title,null);
         return CommonUtil.successJson(findwp);
     }
     /*责任纪实 主体责任 根据标题模糊查询 内容做显示详情*/
@@ -136,7 +136,7 @@ public class IndexController {
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page<RdEntityResponsibility> page=new Page(pageNum,pageRow);
-        IPage<RdEntityResponsibility> findwp =rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page,title);
+        IPage<RdEntityResponsibility> findwp =rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page,title,null);
         return CommonUtil.successJson(findwp);
     }
     /*纪检报表 根据文件名模糊查询*/
