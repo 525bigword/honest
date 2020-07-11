@@ -13,7 +13,7 @@ public interface SmokestyleMapper {
     public void addSmokestyle(Smokestyle smokestyle);
 
     /*根据标题查*/
-    public List<Smokestyle> findSmokestyle(String title);
+    public List<Smokestyle> findSmokestyle(Smokestyle smotitle);
 
     /*删除*/
     public void delSmokestyle(Integer smoid);

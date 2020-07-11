@@ -16,10 +16,18 @@
         </el-form-item>
         <el-form-item>
           <el-date-picker
-            v-model="times"
+            v-model="starttime"
             type="datetime"
             class="search_name"
-            placeholder="创建时间">
+            placeholder="请选择开始时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker
+            v-model="endtime"
+            type="datetime"
+            class="search_name"
+            placeholder="请选择结束时间">
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -39,7 +47,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="id"
@@ -79,6 +87,9 @@
           prop="eid[0].name"
           label="创建人">
         </el-table-column>
+        <el-table-column prop="typeconcrete" label="详细类型" v-if="false">
+
+        </el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -93,13 +104,13 @@
       </div>
     </el-form>
       <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
+        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
           <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
             <br/>
             <div align="right" ><el-form-item >
-              <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
+              <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
               <el-button type="primary" class="el-icon-edit" align="right" @click="gxMethod" v-bind:style="{display:gx}">更新</el-button>
-              <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
+              <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
           <br/>
           <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
@@ -120,11 +131,11 @@
             </el-upload>
           </el-form-item><br/>
 
-          <el-form-item label="报表类型">
+          <el-form-item label="报表类型" prop="reportType">
             <el-select
               v-model="userInfo.reportType"
               class="search_name"
-              placeholder="报表类型" @change="changes">
+              placeholder="请选择报表类型" @change="changes">
               <el-option label="季报" value="季报"></el-option>
               <el-option label="月报" value="月报"></el-option>
               <el-option label="半年报" value="半年报"></el-option>
@@ -135,7 +146,7 @@
 
             <el-form-item :label="placeholders">
               <el-select
-                v-model="userInfo.xg"
+                v-model="userInfo.typeconcrete"
                 class="bbxq"
                 :placeholder="placeholders">
                 <el-option
@@ -204,8 +215,7 @@ import { fileUpload } from '@/api/daily/supervise'
         }
         else if(val==='重要节点报'){
           this.placeholders='请选择重要节点'
-          this.options=[{id:1,name:'春节'},{id:2,name:'端午节'},{id:3,name:'中秋节'},{id:4,name:'国庆节'},{id:5,name:'元旦节'},,{id:6,name:'劳动节'},{id:6,name:'端午' +
-              '节'}]
+          this.options=[{id:1,name:'春节'},{id:2,name:'端午节'},{id:3,name:'中秋节'},{id:4,name:'国庆节'},{id:5,name:'元旦节'},{id:6,name:'劳动节'},{id:7,name:'端午节'}]
         }
         else if(val==='及时报'){
           this.placeholders='请选择重要时间'
@@ -246,20 +256,16 @@ import { fileUpload } from '@/api/daily/supervise'
       //重置
       onrest(){
         this.search=''
-       this.times=''
+       this.starttime=''
+        this.endtime=''
       },
       //多条件查询
       onSearch() {
-        console.log('this.times'+this.times)
-        if(this.times!==''){
-        let endtime = new Date(this.time).toJSON();
-        this.times= new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")}
+
         let postData = qs.stringify({
           reportType:this.search,
-          newTime:this.times
+          starttime:this.starttime,
+          endtime:this.endtime
         });
         this.listLoading = true
         findwhere(postData).then((response) =>{
@@ -272,10 +278,12 @@ import { fileUpload } from '@/api/daily/supervise'
       },
       //初始化页面
       initList() {
+        this.listLoading=true
         list(this.listQuery).then(response =>{
           console.debug(response.info)
           this.tableData = response.list
           this.total = response.list.length
+        this.listLoading=false
         })
       },add(){
         this.fileList=[]//清空upload
@@ -283,49 +291,61 @@ import { fileUpload } from '@/api/daily/supervise'
         this.ad=''
         this.bc=''
         this.gx='none'
-        this.userInfo={}
+       this.userInfo={}
         this.userInfo.lCreateName=this.nickname,
           this.$set(this.userInfo,'lCreateTime',new Date())
 
       },
       //返回
-      back(){this.ad='none',this.tf=''
+      back(formName){this.ad='none',this.tf='' ,this.$refs[formName].resetFields(), this.initList();
       },//新增提交
-      submitUser(){
-        let endtime = new Date(this.userInfo.lCreateTime).toJSON();
-        this.userInfo.lCreateTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-        let posdata=qs.stringify({
-          reportType:this.userInfo.reportType,
-          report:this.userInfo.report,
-          newTime:this.userInfo.lCreateTime,
-          sid:this.userId,
-          status:0,
-          url:this.userInfo.url
+      submitUser(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.lCreateTime).toJSON();
+            this.userInfo.lCreateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let posdata=qs.stringify({
+              reportType:this.userInfo.reportType,
+              report:this.userInfo.report,
+              newTime:this.userInfo.lCreateTime,
+              sid:this.userId,
+              status:0,
+              typeconcrete:this.userInfo.typeconcrete,
+              url:this.userInfo.url
 
-        })
-        addreport(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.bc='',//保存按钮显示
-            this.gx='none',//更新按钮不显示
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: '新增成功',
-            type: 'success',
-            duration: 2000
+            })
+            addreport(posdata).then((response)=>{
+              this.tf='';
+            this.ad='none'
+            this.bc='',//保存按钮显示
+              this.gx='none',//更新按钮不显示
+              this.$refs[formName].resetFields()
+              this.initList();
+            this.$notify({
+              title: '成功',
+              message: '新增成功',
+              type: 'success',
+              duration: 2000
+            })
           })
-        })
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
+
       },//点击列编辑
       handleEdit(index, row){
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
         this.bc='none'//保存按钮隐藏
         this.gx=''//更新按钮显示
+        this.changes(row.reportType)
         this.userInfo=row
+        this.userInfo.typeconcrete=Number(row.typeconcrete)
         console.log('this.ursInfo.url'+this.userInfo.url)
       this.fileList=[{name:this.userInfo.report,url:this.userInfo.url}]
         /* 赋值实时设置当前时间*/
@@ -365,7 +385,8 @@ import { fileUpload } from '@/api/daily/supervise'
           id:this.userInfo.id,
           reportType:this.userInfo.reportType,
           report:this.userInfo.report,
-          url:this.userInfo.url
+          url:this.userInfo.url,
+          typeconcrete:this.userInfo.typeconcrete
         })
         gxpost(posdata).then((response)=>{
           this.initList();
@@ -389,7 +410,12 @@ import { fileUpload } from '@/api/daily/supervise'
       }
     },
     data() {
-      return {
+      return { rules: {
+          reportType: [
+            {  required: true, message: '请选择报表类型', trigger: 'blur' }
+          ]
+
+        },
         placeholders:'请选择',
         fileList:[],
         tf:'',//父页面
@@ -405,9 +431,11 @@ import { fileUpload } from '@/api/daily/supervise'
         pageSize:10,
         total:0,
         currentPage:1,
-        times:'',
         tableData: [],
-        options:[]
+        options:[],
+        starttime:'',
+        endtime:'',
+        listLoading:true
       }
     }
   }

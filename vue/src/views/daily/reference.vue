@@ -68,7 +68,7 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus" >
           <template slot-scope="scope">
-            <el-button v-if="scope.row.sstatus==1" v-bind:style="{display:(role.includes('纪检监察科科长')||role.includes('纪检组长')||role.includes('局领导')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
+            <el-button v-if="scope.row.sstatus==1" v-bind:style="{display:( hasPerm('reference:audit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
                 </template>
         </el-table-column>
       </el-table>

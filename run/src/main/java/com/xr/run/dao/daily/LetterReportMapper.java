@@ -1,5 +1,6 @@
 package com.xr.run.dao.daily;
 
+import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -37,4 +38,5 @@ public interface LetterReportMapper {
     public void leaderbc(LetterReport letterReport);
     /*纪检组长*/
     public void zzbc(LetterReport letterReport);
+    public DeptUnit finddp(String nickname);
 }

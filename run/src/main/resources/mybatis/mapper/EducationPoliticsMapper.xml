@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xr.run.dao.educationPolitics.EducationPoliticsMapper">
+    <resultMap id="basemap" type="com.xr.run.entity.educationpolitics.EducationPolitics">
+    <result column="id" property="id"></result>
+        <result column="title" property="title"></result>
+        <result column="source" property="source"></result>
+        <result column="type" property="type"></result>
+        <result column="content" property="content"></result>
+        <result column="time" property="time"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="create_id" property="createId"></result>
+        <result column="staus" property="staus"></result>
+
+    </resultMap>
+    <!--查询廉政教育-->
+    <select id="findAllEducation" resultMap="basemap">
+select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname  from Education_politics ep where ep.staus!=-1
+    </select>
+    <!--多条件查询廉政教育-->
+    <select id="findwhereEducation" resultMap="basemap">
+select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname  from Education_politics ep
+ where ep.staus!=-1
+        <if test="title != null and !title.equals('')">
+            and ep.title like CONCAT('%',#{title},'%')</if>
+        <if test="content != null and !content.equals('')">
+            and ep.content like CONCAT('%',#{content},'%')
+        </if>
+        <if test="starttime != null and !starttime.equals('')">
+            and ep.time  &gt;= #{starttime}
+        </if>
+        <if test="endtime != null and !endtime.equals('')">
+            and ep.time  &lt;= #{endtime}
+        </if>
+    </select>
+    <!--新增廉政教育信息-->
+    <insert id="addEcucation" useGeneratedKeys="true" keyProperty="id" parameterType="com.xr.run.entity.educationpolitics.EducationPolitics">
+insert into Education_politics(title,source,`type`,content,`time`,create_time,create_id,staus,createname) values(#{title},#{source},#{type},#{content},#{time},#{createTime},#{createId},#{staus},#{createname})
+    </insert>
+    <!--修改廉政教育信息-->
+    <update id="updateEducation" parameterType="com.xr.run.entity.educationpolitics.EducationPolitics">
+        update Education_politics set title=#{title},source=#{source},`type`=#{type},content=#{content},`time`=#{time} where id=#{id}
+    </update>
+    <!--删除廉政教育信息，实际上是软删除-->
+    <update id="delEcucation" parameterType="Integer">
+        update Education_politics set staus=-1 where id=#{id}
+    </update>
+</mapper>
