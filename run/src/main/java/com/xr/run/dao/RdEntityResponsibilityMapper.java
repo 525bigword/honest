@@ -14,13 +14,16 @@ import java.util.List;
 
 @Repository
 public interface RdEntityResponsibilityMapper extends BaseMapper<RdEntityResponsibility> {
-    @Select("select id,title,content,create_time,create_id,staus from rd_entity_responsibility where staus<>-1 and  title like CONCAT('%',#{title},'%') order by id desc")
+    @Select("select id,title,content,create_time,create_id,staus from rd_entity_responsibility" +
+            " where staus <> -1 and staus = CONCAT(#{staus})  and  title like CONCAT('%',#{title},'%') order by id desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, @Param("title") String title);
+    IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, @Param("title") String title,@Param("staus") Integer staus);
 
     List<RdEntityResponsibility> findRdEntityResponsibilityAll(@Param("title") String title);
+
+
 }

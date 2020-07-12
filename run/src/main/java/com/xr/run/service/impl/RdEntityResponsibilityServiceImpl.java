@@ -14,7 +14,7 @@ public class RdEntityResponsibilityServiceImpl extends ServiceImpl<RdEntityRespo
         RdEntityResponsibility> implements RdEntityResponsibilityService {
 
     @Override
-    public IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, String title) {
-        return baseMapper.findRdEntityResponsibilityIndex(page,title);
+    public IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, String title,Integer staus) {
+        return baseMapper.findRdEntityResponsibilityIndex(page,title,staus);
     }
 }

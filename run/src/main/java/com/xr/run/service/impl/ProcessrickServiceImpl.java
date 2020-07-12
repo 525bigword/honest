@@ -16,8 +16,8 @@ import java.util.List;
 public class ProcessrickServiceImpl extends ServiceImpl<ProcessrickMapper,Processrick> implements ProcessrickService {
 
     @Override
-    public List<Processrick> findProcessrickIndex(Page page, String proName) {
-        return baseMapper.findProcessrickIndex(proName);
+    public IPage<Processrick> findProcessrickIndex(Page page, String proName) {
+        return baseMapper.findProcessrickIndex(page,proName);
     }
 
     @Autowired

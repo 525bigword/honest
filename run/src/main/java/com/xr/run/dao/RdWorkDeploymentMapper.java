@@ -14,13 +14,15 @@ import java.util.List;
 
 @Repository
 public interface RdWorkDeploymentMapper extends BaseMapper<RdWorkDeployment> {
-    @Select("select id,title,content,create_time,create_id,staus from rd_work_deployment where staus<>-1 and  title like CONCAT('%',#{title},'%') order by id desc")
+    @Select("select id,title,content,create_time,create_id,staus from rd_work_deployment where staus <> -1 and staus = CONCAT(#{staus}) and  title like CONCAT('%',#{title},'%') order by id desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, @Param("title") String title);
+    IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, @Param("title") String title,@Param("staus") Integer staus);
 
     List<RdWorkDeployment> findRdWorkDeploymentAll(@Param("title") String title);
+
+
 }

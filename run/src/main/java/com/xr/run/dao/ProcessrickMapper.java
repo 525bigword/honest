@@ -14,13 +14,14 @@ import java.util.List;
 
 @Repository
 public interface ProcessrickMapper extends BaseMapper<Processrick> {
-    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick  where  proName like CONCAT('%',#{proName},'%') order by proid desc")
+    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
+            " where  proName like CONCAT('%',#{proName},'%') order by proid desc")
     @Results({
             @Result(column = "proCreateId",property = "proCreateId"),
             @Result(column = "proCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    List<Processrick> findProcessrickIndex(String proName);
+    IPage<Processrick> findProcessrickIndex(Page page,@Param("proName") String proName);
 
     /**
      * 查询列表
@@ -62,4 +63,7 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      * @return
      */
     List<Processrick> getListBy(@Param("proName") String proName, @Param("proYear") String proYear);
+
+
+
 }

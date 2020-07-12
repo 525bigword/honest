@@ -3,11 +3,8 @@ package com.xr.run.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.xr.run.entity.RdEntityResponsibility;
 import com.xr.run.entity.RdHonestConversation;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +17,6 @@ public interface RdHonestConversationMapper extends BaseMapper<RdHonestConversat
 
     List<RdHonestConversation> findRdHonestConversationAll(@Param("title") String title);
 
+    @Select("select id,syllabus,content,create_time,create_id,staus from rd_honest_conversation where staus =2 and  syllabus like CONCAT('%',#{title},'%') order by id desc")
+    IPage<RdHonestConversation> findRdHonestConversationIndex(Page page,@Param("title") String title);
 }

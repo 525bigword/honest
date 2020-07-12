@@ -14,13 +14,15 @@ import java.util.List;
 
 @Repository
 public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
-    @Select("select pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing where pStatus=0 and  pRiskPointDescription like CONCAT('%',#{pRiskPointDescription},'%') order by pid desc")
+    @Select("select pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures," +
+            " pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing where pStatus = 0 and  pRiskPointDescription " +
+            " like CONCAT('%',#{pRiskPointDescription},'%') order by pid desc")
     @Results({
             @Result(column = "pCreateId", property = "pCreateId"),
             @Result(column = "pCreateId", property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById", fetchType = FetchType.DEFAULT))
     })
-    IPage<Postriskcombing> findPostriskCombingIndex(Page page, String pRiskPointDescription);
+    IPage<Postriskcombing> findPostriskCombingIndex(Page page,@Param("pRiskPointDescription") String pRiskPointDescription);
 
 
     /**
@@ -83,4 +85,6 @@ public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
      */
     @Select("select * from postriskcombing where pDeptId=#{pDeptId} and pGrade=#{pGrade}")
     List<Postriskcombing> findByPDeptIdAndPGrade(@Param("pDeptId") Integer pDeptId, @Param("pGrade") String pGrade);
+
+
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.Datacollection;
 import com.xr.run.entity.SysStaff;
+import com.xr.run.entity.Wind;
 import com.xr.run.service.DatacollectionService;
 import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysStaffService;
@@ -33,6 +34,8 @@ public class DatacollectionController {
     private String realBasePath;
     @Value("${file.uploadVideo}")
     private String videoBasePath;
+    @Value("${html.destPath}")
+    private String destPath;
     @Autowired
     private StaticHtmlService staticHtmlService;
     @Autowired
@@ -113,12 +116,13 @@ public class DatacollectionController {
     public JSONObject deleteDatacollectionByDid(@RequestBody int[] did)  {
         if (did.length==1){
             Datacollection data= datacollectionService.findDatacollectionById(did[0]);
-            staticHtmlService.deleteHtmlPage(data.getDTitle());
+            staticHtmlService.deleteHtmlPage(destPath+"\\182\\184\\"+data.getDid()+".html");
             datacollectionService.deleteDataConllectionByDid(did[0]);
         }else{
             for (int i = 0; i < did.length; i++) {
                 Datacollection data= datacollectionService.findDatacollectionById(did[i]);
                 staticHtmlService.deleteHtmlPage(data.getDTitle());
+                staticHtmlService.deleteHtmlPage(destPath+"\\182\\184\\"+data.getDid()+".html");
                 datacollectionService.deleteDataConllectionByDid(did[i]);
             }
         }
@@ -137,15 +141,13 @@ public class DatacollectionController {
         if(path.contains(".doc")||path.contains(".docx")){
             String path1 = path.substring(0, path.lastIndexOf("."));
             String url=path1+".pdf";
-           AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+         AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
             return url;
         }
         return null;
     }
-
     public void thymeleaftest(Datacollection datacollection,HttpServletRequest req,HttpServletResponse resp){
         ModelAndView modelAndView=new ModelAndView();
-        if(datacollection.getDid()!=0){
             Datacollection datacollectionById = datacollectionService.findDatacollectionById(datacollection.getDid());
             String name = sysStaffService.findSysStaffByIdToName(datacollectionById.getdCreateId());
             modelAndView.addObject("dFileName",datacollectionById.getDFileName());
@@ -154,16 +156,9 @@ public class DatacollectionController {
             modelAndView.addObject("title",datacollectionById.getDTitle());
             modelAndView.addObject("time", datacollectionById.getDCreateTime());
             modelAndView.addObject("name", name);
-        }else{
-            String name = sysStaffService.findSysStaffByIdToName(datacollection.getdCreateId());
-            modelAndView.addObject("dFileName",datacollection.getDFileName());
-            modelAndView.addObject("dPdf",datacollection.getDPdf());
-            modelAndView.addObject("dFile",datacollection.getDFile());
-            modelAndView.addObject("title",datacollection.getDTitle());
-            modelAndView.addObject("time", DateUtil.getDate());
-            modelAndView.addObject("name", name);
-        }
-        modelAndView.setViewName("index1");
-//        staticHtmlService.genHtmlPage(modelAndView,req,resp,datacollection.getDTitle());
+        modelAndView.setViewName("183/Info");
+
+        staticHtmlService.genHtmlPage(destPath+"\\182\\184\\",modelAndView,req,resp,datacollectionById.getDid()+"");
     }
+
 }

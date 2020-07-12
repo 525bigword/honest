@@ -65,7 +65,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     })
     SpvDuty findSpvDutyByDid(int did);
 
-    @Select("select * from spv_duty ORDER BY NewTime desc limit 0,5")
+    @Select("select * from spv_duty where status = 2 ORDER BY NewTime desc limit 0,5")
     List<SpvDuty> findSpvDutyTopFive();
 
 

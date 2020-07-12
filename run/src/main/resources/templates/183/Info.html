@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>责任纪实</title>
+    <title>廉政文化</title>
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
@@ -109,7 +109,7 @@
     <ul class="body-content list-style-none margin-center">
         <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//185/index.html','_blank')"><a>责任纪实</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//195/index.html','_blank')"><a>风险防控</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//207/index.html','_blank')"><a>监督责任</a></li>
@@ -128,19 +128,13 @@
                 <div class="shape-circular ms-absolute">
                     <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
                 </div>
-                <span><label>责任纪实</label></span>
+                <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span th:class="${rdWorkVo.type==0}?'active-span-title':''" ><label><a href="http://localhost:4031/ms-mcms/html/2/185/0/index.html" >工作计划</a></label></span>
+                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${rdWorkVo.type==1}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/185/1/index.html" >工作部署</a></label></span>
-                    </li>
-                    <li>
-                        <span th:class="${rdWorkVo.type==2}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/185/2/index.html" >廉政谈话</a></label></span>
-                    </li>
-                    <li>
-                        <span th:class="${rdWorkVo.type==3}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/185/3/index.html" >主体责任</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -151,27 +145,30 @@
 
         <div>
             <div>
-                <label th:text="${rdWorkVo.title}"></label>
+                <label th:text="${title}"></label>
             </div>
             <div>
-                 <span>上传者：<label th:text="${rdWorkVo.name}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>上传者：<label th:text="${name}"></label></span>&nbsp;&nbsp;&nbsp;
                 <span>来源：<label ></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(rdWorkVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${time}"></label></span>&nbsp;&nbsp;&nbsp;
                 <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
             </div>
         </div>
+        <hr style="background: #F7F7F7"/>
         <div>
-             <span style="color: #000000"><span style="font-size: 14px">
-                <span style="font-family: 宋体" th:text="${rdWorkVo.content}">&nbsp;&nbsp;&nbsp;
-            </span>
-            </span>
-            </span>
+            <span th:text="'[文件名]：'+${dFileName}" style="color: #000000">
+            </span>&nbsp;&nbsp;&nbsp;
+            <span th:if="${dPdf}==null"><a th:href="'http://localhost:8080/uploadimg/'+${dFile}">预览</a></span>
+            <span style="border:none;background-color: white;height: 2px" th:if="${dPdf}!=null"><a th:href="'http://localhost:8080/uploadimg/'+${dPdf}">预览</a></span>
+        </div>
+        <div>
+            <label class="ms-relative" style="top:-3px;"></label>
         </div>
         <div>
 			  <span >
-                  <a th:if="${rdWorkVo.prev != null}" th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVo.type}+'/'+${rdWorkVo.prev}+'.html'">上一篇</a>&nbsp;&nbsp;
-			  <label th:if="${rdWorkVo.prev != null&&rdWorkVo.next!= null}"  class="ms-relative" style="top:-3px;">|</label>
-			  &nbsp;&nbsp;<a th:if="${rdWorkVo.next != null}" th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVo.type}+'/'+${rdWorkVo.next}+'.html'">下一篇</a>
+                  <a  >上一篇</a>&nbsp;&nbsp;
+			  <label   class="ms-relative" style="top:-3px;">|</label>
+			  &nbsp;&nbsp;<a  >下一篇</a>
               </span>
 
             <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>

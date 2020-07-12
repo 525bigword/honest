@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public interface ProcessrickService extends IService<Processrick> {
-    List<Processrick> findProcessrickIndex(Page page, String proName);
+    IPage<Processrick> findProcessrickIndex(Page page, String proName);
 
     /**
      * 查询列表

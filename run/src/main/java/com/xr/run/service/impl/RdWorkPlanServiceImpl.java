@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class RdWorkPlanServiceImpl extends ServiceImpl<RdWorkPlanMapper,RdWorkPlan> implements RdWorkPlanService {
 
     @Override
-    public IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, String title) {
-        return baseMapper.findRdWorkPlanIndex(page,title);
+    public IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, String title,Integer staus) {
+        return baseMapper.findRdWorkPlanIndex(page,title,staus);
     }
 }
