@@ -4,17 +4,7 @@ export function add(data) {
     return request({
         url: '/spvduty/insert',
         method: 'post',
-        params: {
-            dnumId: data.dnumId,
-            dutyType: data.dutyType,
-            dutyTitle: data.dutyTitle,
-            dutyContent: data.dutyContent,
-            bid: data.bmid,
-            dutyAccessory: data.dutyAccessory,
-            dutyAccessoryName: data.dutyAccessoryName,
-            dCreateId: data.sysStaff.sid,
-            status: data.status
-        }
+        data
     })
 }
 
@@ -32,16 +22,7 @@ export function update(data) {
     return request({
         url: '/spvduty/update',
         method: 'post',
-        params: {
-            did: data.did,
-            dutyType: data.dutyType,
-            dutyTitle: data.dutyTitle,
-            dutyContent: data.dutyContent,
-            bid: data.bmid,
-            dutyAccessory: data.dutyAccessory,
-            dutyAccessoryName: data.dutyAccessoryName,
-            status: data.status
-        }
+        data
     })
 }
 export function updateStatus(data) {
@@ -96,11 +77,7 @@ export function updatetong(data) {
     return request({
         url: '/spvduty/updatetong',
         method: 'post',
-        params: {
-            did: data.did,
-            tongbao: data.tongbao,
-            bCreateId: 0
-        }
+        data
     })
 }
 

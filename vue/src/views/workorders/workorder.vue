@@ -396,7 +396,16 @@ export default {
               console.debug(this.temp);
               this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
-              update(this.temp).then(response => {
+              let posdata=qs.stringify({
+            sid: this.temp.sid,
+            backTitle: this.temp.backTitle,
+            backContent: this.temp.backContent,
+            backAccessory: this.temp.backAccessory,
+            backAccessoryName: this.temp.backAccessoryName,
+            bid: this.temp.sysMechanism.mid,
+            bCreateId: this.temp.sysStaff.sid
+          })
+              update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -416,7 +425,16 @@ export default {
             this.temp.backAccessoryName=''
             this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
-              update(this.temp).then(response => {
+              let posdata=qs.stringify({
+            sid: this.temp.sid,
+            backTitle: this.temp.backTitle,
+            backContent: this.temp.backContent,
+            backAccessory: this.temp.backAccessory,
+            backAccessoryName: this.temp.backAccessoryName,
+            bid: this.temp.sysMechanism.mid,
+            bCreateId: this.temp.sysStaff.sid
+          })
+              update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -433,7 +451,16 @@ export default {
               });
           }else{
               this.temp.backAccessoryName = "1";
-            update(this.temp).then(response => {
+               let posdata=qs.stringify({
+            sid: this.temp.sid,
+            backTitle: this.temp.backTitle,
+            backContent: this.temp.backContent,
+            backAccessory: this.temp.backAccessory,
+            backAccessoryName: this.temp.backAccessoryName,
+            bid: this.temp.sysMechanism.mid,
+            bCreateId: this.temp.sysStaff.sid
+          })
+            update(posdata).then(response => {
               // 关闭对话框
               this.dialogFormVisible = false;
               // 刷新数据表格里的数据

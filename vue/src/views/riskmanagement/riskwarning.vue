@@ -279,8 +279,14 @@ import { mapGetters } from 'vuex'
           // 所有的校验都通过
           if (valid) {
             this.isShow=true
+            let posdata=qs.stringify({
+            wTitle: this.temp.wtitle,
+            wContent: this.temp.wcontent,
+            numId: this.temp.numId,
+            wCreateId: this.temp.sysStaff.sid
+          })
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
+            add(posdata).then((response) => {
 
               // 关闭对话框
               this.dialogFormVisible = false
@@ -317,12 +323,18 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData() {
+        
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             this.isShow=true
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            let posdata=qs.stringify({
+            wTitle: this.temp.wtitle,
+            wContent: this.temp.wcontent,
+            wid: this.temp.wid
+          })
+            update(posdata).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -411,7 +423,7 @@ import { mapGetters } from 'vuex'
       this.dis2='inline-block'
     },
     yincang(){
-       this.isShow=false
+       this.isShow=true
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null

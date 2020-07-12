@@ -25,15 +25,7 @@ export function update(data) {
     return request({
         url: '/spvback/update',
         method: 'post',
-        params: {
-            sid: data.sid,
-            backTitle: data.backTitle,
-            backContent: data.backContent,
-            backAccessory: data.backAccessory,
-            backAccessoryName: data.backAccessoryName,
-            bid: data.sysMechanism.mid,
-            bCreateId: data.sysStaff.sid
-        }
+        data
     })
 }
 export function updateStatus(data) {

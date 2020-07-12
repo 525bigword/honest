@@ -4,12 +4,18 @@
     <list default="true" id="d0cfa3b2-194e-4d1c-96e3-0921432b3a28" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/run/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/config/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/vue/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/vue/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/image/ms-admin/4.7.0/images/login.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/views/login/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/login/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/culture/windculture.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/culture/windculture.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/responsibility/spvduty.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/responsibility/spvduty.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/riskmanagement/riskwarning.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/riskmanagement/riskwarning.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/riskmanagement/systemprocess.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/riskmanagement/systemprocess.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/systemnotice/systemmessage.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/systemnotice/systemmessage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/api/workorders/workorder.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/api/workorders/workorder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/cultrue/windculture.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/cultrue/windculture.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/responsibility/spvduty.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/responsibility/spvduty.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/views/riskmanagement/riskwarning.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/riskmanagement/riskwarning.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/riskmanagement/systemprocess.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/riskmanagement/systemprocess.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/systemnotice/systemmessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/systemnotice/systemmessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vue/src/views/workorders/workorder.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/views/workorders/workorder.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/vue/node_modules/" />
@@ -29,8 +35,44 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run/src/main/resources/application.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="52">
-              <caret line="2" column="30" lean-forward="true" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+            <state relative-caret-position="-1040">
+              <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/educationPolitics/EducationPoliticsController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="156">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/RiskpointwarningController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-806">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SystemMessageController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1092">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/config/shiro/UserRealm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1118">
+              <caret line="69" column="18" selection-start-line="69" selection-start-column="18" selection-end-line="69" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -113,12 +155,15 @@
     <option name="width" value="699" />
     <option name="height" value="744" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="false" id="Update" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,7 +214,28 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="run" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+              <item name="educationPolitics" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="honest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="honest" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="run" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="honest" type="b2602c69:ProjectViewProjectNode" />
@@ -184,7 +250,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -258,7 +323,8 @@
       <workItem from="1594214211490" duration="8011000" />
       <workItem from="1594226929251" duration="548000" />
       <workItem from="1594453817290" duration="5125000" />
-      <workItem from="1594521705881" duration="11349000" />
+      <workItem from="1594521705881" duration="14546000" />
+      <workItem from="1594548092003" duration="3615000" />
     </task>
     <task id="LOCAL-00001" summary="mpy systemmesage commit">
       <created>1594214747825</created>
@@ -281,17 +347,23 @@
       <option name="project" value="LOCAL" />
       <updated>1594477866322</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="mpy 7.12 commit">
+      <created>1594534662750</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1594534662750</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38712000" />
+    <option name="totallyTimeSpent" value="45524000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27231467" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27609682" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="JRebel" order="3" side_tool="true" />
@@ -302,7 +374,7 @@
       <window_info id="Web" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4977307" visible="true" weight="0.46393442" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4977307" visible="true" weight="0.8098361" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -352,30 +424,10 @@
     <MESSAGE value="mpy systemmesage commit" />
     <MESSAGE value="mpy thymeleaf commit" />
     <MESSAGE value="mpy 7.11 commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="mpy 7.11 commit" />
+    <MESSAGE value="mpy 7.12 commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="mpy 7.12 commit" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/WindMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="28" column="9" selection-start-line="28" selection-start-column="9" selection-end-line="28" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/dao/SpvBackMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="832">
-          <caret line="40" column="13" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/WindController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="57" column="12" lean-forward="true" selection-start-line="57" selection-start-column="12" selection-end-line="58" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SpvDutyController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -397,16 +449,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/test/java/com/xr/run/RunApplicationTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/test/java/com/xr/run/RunApplicationTests.java" />
     <entry file="file://$PROJECT_DIR$/run/src/main/resources/templates/xfjb/letterRepoter.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -551,16 +594,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/util/AsposeUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
-          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2912">
@@ -688,13 +721,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/config/shiro/UserRealm.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-925">
-          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/config/system/DefaultView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -716,10 +742,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/util/AsposeUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="884">
+          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/config/shiro/UserRealm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1118">
+          <caret line="69" column="18" selection-start-line="69" selection-start-column="18" selection-end-line="69" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/educationPolitics/EducationPoliticsController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/RiskpointwarningController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-806">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run/src/main/java/com/xr/run/controller/SystemMessageController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1092">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/run/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="2" column="30" lean-forward="true" selection-start-line="2" selection-start-column="30" selection-end-line="2" selection-end-column="30" />
+        <state relative-caret-position="-1040">
+          <caret line="8" column="14" lean-forward="true" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
         </state>
       </provider>
     </entry>

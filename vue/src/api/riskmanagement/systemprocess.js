@@ -4,11 +4,7 @@ export function add(data) {
     return request({
         url: '/systemprocess/insert',
         method: 'post',
-        params: {
-            sysTitle: data.sysTitle,
-            sysContent: data.sysContent,
-            sysCreateId: data.sysStaff.sid
-        }
+        data
     })
 }
 
@@ -26,11 +22,7 @@ export function update(data) {
     return request({
         url: '/systemprocess/update',
         method: 'post',
-        params: {
-            sysTitle: data.sysTitle,
-            sysContent: data.sysContent,
-            sysid: data.sysid
-        }
+        data
     })
 }
 

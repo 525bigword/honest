@@ -788,7 +788,18 @@ export default {
               console.debug(this.temp);
               this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
-              add(this.temp).then(response => {
+              let posdata=qs.stringify({
+            dnumId: this.temp.dnumId,
+            dutyType: this.temp.dutyType,
+            dutyTitle: this.temp.dutyTitle,
+            dutyContent: this.temp.dutyContent,
+            bid: this.temp.bmid,
+            dutyAccessory: this.temp.dutyAccessory,
+            dutyAccessoryName: this.temp.dutyAccessoryName,
+            dCreateId: this.temp.sysStaff.sid,
+            status: this.temp.status
+          })
+              add(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -807,7 +818,18 @@ export default {
           } else {
             this.isShow = true;
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then(response => {
+            let posdata=qs.stringify({
+            dnumId: this.temp.dnumId,
+            dutyType: this.temp.dutyType,
+            dutyTitle: this.temp.dutyTitle,
+            dutyContent: this.temp.dutyContent,
+            bid: this.temp.bmid,
+            dutyAccessory: this.temp.dutyAccessory,
+            dutyAccessoryName: this.temp.dutyAccessoryName,
+            dCreateId: this.temp.sysStaff.sid,
+            status: this.temp.status
+          })
+            add(posdata).then(response => {
               // 关闭对话框
               this.dialogFormVisible = false;
               // 刷新数据表格里的数据
@@ -911,7 +933,17 @@ export default {
               console.debug(this.temp);
               this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
-              update(this.temp).then(response => {
+              let posdata=qs.stringify({
+            did: this.temp.did,
+            dutyType: this.temp.dutyType,
+            dutyTitle: this.temp.dutyTitle,
+            dutyContent: this.temp.dutyContent,
+            bid: this.temp.bmid,
+            dutyAccessory: this.temp.dutyAccessory,
+            dutyAccessoryName: this.temp.dutyAccessoryName,
+            status: this.temp.status
+          })
+              update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -929,7 +961,17 @@ export default {
             });
           } else if(this.fileList.length!==0&&this.fileAgin === this.fileList[0].name){
             this.temp.dutyAccessoryName = "1";
-            update(this.temp).then(response => {
+            let posdata=qs.stringify({
+            did: this.temp.did,
+            dutyType: this.temp.dutyType,
+            dutyTitle: this.temp.dutyTitle,
+            dutyContent: this.temp.dutyContent,
+            bid: this.temp.bmid,
+            dutyAccessory: this.temp.dutyAccessory,
+            dutyAccessoryName: this.temp.dutyAccessoryName,
+            status: this.temp.status
+          })
+            update(posdata).then(response => {
               // 关闭对话框
               this.dialogFormVisible = false;
               // 刷新数据表格里的数据
@@ -947,7 +989,17 @@ export default {
           }else{
               this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
-              update(this.temp).then(response => {
+              let posdata=qs.stringify({
+            did: this.temp.did,
+            dutyType: this.temp.dutyType,
+            dutyTitle: this.temp.dutyTitle,
+            dutyContent: this.temp.dutyContent,
+            bid: this.temp.bmid,
+            dutyAccessory: this.temp.dutyAccessory,
+            dutyAccessoryName: this.temp.dutyAccessoryName,
+            status: this.temp.status
+          })
+              update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -1318,7 +1370,13 @@ export default {
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          updatetong(this.temp).then((response)=>{
+          let posdata=qs.stringify({
+            did: this.temp.did,
+            tongbao: this.temp.tongbao,
+            bCreateId: 0
+          })
+          
+          updatetong(posdata).then((response)=>{
             updatestatusall(this.back).then((response) => {
             // 刷新数据表格
             this.getbList(this.temp.did)

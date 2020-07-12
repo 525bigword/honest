@@ -4,16 +4,7 @@ export function add(data) {
     return request({
         url: '/systemmessage/insert',
         method: 'post',
-        params: {
-            articletitle: data.articletitle,
-            attribute: data.attribute,
-            picture: data.picture,
-            picturename: data.picturename,
-            content: data.content,
-            articlesource: data.articlesource,
-            describe: data.describe,
-            createId: data.sysStaff.sid
-        }
+        data
     })
 }
 
@@ -31,16 +22,7 @@ export function update(data) {
     return request({
         url: '/systemmessage/update',
         method: 'post',
-        params: {
-            aid: data.aid,
-            articletitle: data.articletitle,
-            attribute: data.attribute,
-            picture: data.picture,
-            picturename: data.picturename,
-            content: data.content,
-            articlesource: data.articlesource,
-            describe: data.describe
-        }
+        data
     })
 }
 
