@@ -584,6 +584,7 @@ import { mapGetters } from 'vuex'
         this.dis3='none'
         this.melist=[],
         this.stafflist=[]
+        this.getList()
     },
     bmChange(){
       this.temp.wnew.mid=this.$refs["bbb"].getCheckedNodes()[0].value

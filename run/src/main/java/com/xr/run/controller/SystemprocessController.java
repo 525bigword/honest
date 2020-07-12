@@ -8,6 +8,7 @@ import com.xr.run.entity.Systemprocess;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.service.SystemprocessService;
 import com.xr.run.util.CommonUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class SystemprocessController {
     @Autowired
     private SystemprocessService systemprocessService;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("systemprocess:list")
     public JSONObject findSystemprocessService(@PathVariable Integer pageNum, String sysTitle, String sysContent, @PathVariable Integer pageRow){
         System.out.println(sysTitle+"=========="+sysContent);
         if(sysTitle==null||sysContent==null){
@@ -37,11 +39,13 @@ public class SystemprocessController {
         return CommonUtil.successJson(map);
     }
     @RequestMapping("update")
+    @RequiresPermissions("riskpointwarning:update")
     public JSONObject updateSystemprocess(Systemprocess systemprocess)  {
         systemprocessService.updateSystemprocessBySysId(systemprocess);
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
+    @RequiresPermissions("riskpointwarning:delete")
     public JSONObject deleteSystemprocessBySysid(@RequestBody int[] sysid)  {
         if (sysid.length==1){
            systemprocessService.deleteSystemprocessBySysId(sysid[0]);
@@ -53,6 +57,7 @@ public class SystemprocessController {
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("riskpointwarning:add")
     public JSONObject insertSystemprocess(Systemprocess systemprocess)  {
         systemprocessService.insertSystemprocess(systemprocess);
         return CommonUtil.successJson("新增成功!");

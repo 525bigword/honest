@@ -408,6 +408,7 @@ import { mapGetters } from 'vuex'
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null
+        this.getList();
     }
     
     }

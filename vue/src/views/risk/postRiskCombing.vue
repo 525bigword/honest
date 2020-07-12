@@ -140,11 +140,13 @@
       </div>
 
       <!--弹窗-->
-      <el-dialog :title="dialogTitle" width="55%" :visible.sync="iconFormVisible">
-        <el-form :inline="true" :model="userInfo" label-width="120px" width="240px">
+      <el-dialog :title="dialogTitle" width="65%" :visible.sync="iconFormVisible">
+        <el-form :inline="true" :model="userInfo" label-width="140px" width="100%">
           <el-input v-model="userInfo.pid" placeholder="编号" type="hidden"></el-input>
-          <el-form-item label="父级部门">
-            <el-cascader
+          <el-row>
+          <el-col style="width:43%">
+           <el-form-item label="父级部门" >
+            <el-cascader style="width:100%;"
               :placeholder="placeholder2"
               v-model="defaultvalue2"
               :props="props2"
@@ -153,8 +155,10 @@
               :options="bm"
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="岗位">
-            <el-select @change="selectSystemChanged" style="width: 80%;" v-model="userInfo.pinfomationId"
+          </el-col>
+          <el-col style="width:43%">
+            <el-form-item  label="岗位">
+            <el-select @change="selectSystemChanged" style="width:100%"  v-model="userInfo.pinfomationId"
                        placeholder="岗位">
               <el-option
                 v-for="(post) in postList3"
@@ -164,25 +168,28 @@
               ></el-option>
             </el-select>
           </el-form-item>
+          </el-col>
+        </el-row>
+          
           <el-form-item label="风险项目名称">
-            <el-input style="width: 400px" v-model="userInfo.pproject" placeholder="请输入风险项目名称" width="220px"></el-input>
+            <el-input style="width: 560px" v-model="userInfo.pproject" placeholder="请输入风险项目名称" ></el-input>
           </el-form-item>
           <el-form-item label="廉政风险点描述">
-            <el-input v-model="userInfo.priskPointDescription" :rows="4" placeholder="请输入廉政风险点描述" type="textarea"
-                      style="width: 400px;"></el-input>
+            <el-input v-model="userInfo.priskPointDescription" :rows="5" :cols="73" placeholder="请输入廉政风险点描述" type="textarea"
+                      ></el-input>
           </el-form-item>
           <el-form-item label="风险发生可能性L值" :line="true">
-            <el-col :span="9">
-              <el-select style="width: 80%;" v-model="userInfo.pprobableLValue" placeholder="风险发生可能性L值">
+            <el-col style="width:37%">
+              <el-select style="width: 100%;" v-model="userInfo.pprobableLValue" placeholder="风险发生可能性L值">
                 <el-option label="可能性极小" value="可能性极小"></el-option>
                 <el-option label="可能性较小" value="可能性较小"></el-option>
                 <el-option label="可能性较大" value="可能性较大"></el-option>
                 <el-option label="可能性极大" value="可能性极大"></el-option>
               </el-select>
             </el-col>
-            <el-col class="line right" style="width: 25%;" :span="1">风险产生的严重性C值</el-col>
-            <el-col :span="8">
-              <el-select v-model="userInfo.pcvalue" placeholder="风险产生的严重性C值">
+            <el-col   style="margin-left:10px;width:132px" align="right">风险产生严重性C值</el-col>
+            <el-col style="width:37%" >
+              <el-select style="width: 100%;margin-left:10px" v-model="userInfo.pcvalue" placeholder="风险产生严重性C值">
                 <el-option label="极小" value="极小"></el-option>
                 <el-option label="较小" value="较小"></el-option>
                 <el-option label="较大" value="较大"></el-option>
@@ -191,13 +198,13 @@
             </el-col>
           </el-form-item>
           <el-form-item label="预防和控制措施">
-            <el-input v-model="userInfo.pmeasures" :rows="4" placeholder="请输入预防和控制措施" type="textarea"
-                      style="width: 400px"></el-input>
+            <el-input v-model="userInfo.pmeasures" :rows="5" :cols="73" placeholder="请输入预防和控制措施" type="textarea"
+                      ></el-input>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
+        <div slot="footer" style="margin-top:-27px" class="dialog-footer">
           <el-button @click="deselect()">取消</el-button>
-          <el-button type="primary" @click="submitUser()">确 定</el-button>
+          <el-button style="margin-right:9%" type="primary" @click="submitUser()">确 定</el-button>
         </div>
       </el-dialog>
     </el-form>

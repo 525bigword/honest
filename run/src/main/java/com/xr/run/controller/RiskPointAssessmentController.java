@@ -7,6 +7,7 @@ import com.xr.run.service.RiskpointassessmentService;
 import com.xr.run.service.SysMechanismService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class RiskPointAssessmentController {
     @Autowired
     private SysMechanismService sysMechanismService;
     @RequestMapping("getList")
+    @RequiresPermissions("riskpointassessment:list")
     public ResponseResult list() {
         List<Riskpointassessment> list = riskpointassessmentService.getList();
         ResponseResult result = new ResponseResult();

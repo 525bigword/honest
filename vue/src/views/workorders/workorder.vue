@@ -554,6 +554,7 @@ export default {
       this.sid = null;
       this.resetTemp();
       this.fileList=[]
+      this.getList();
     },
     fileRemove(file, fileList) {
       this.file = {};
@@ -584,8 +585,10 @@ export default {
       this.dis5='none'
     },
     tongbaoshow(row){
-      console.debug(this.temp)
       this.temp=row
+      if(row.tongzhi===''||row.tongzhi===null){
+        this.temp.tongzhi="(未反馈通报内容)"
+      }
       this.dis= "none"
       this.dis2= "none"
       this.dis5='inline-block'

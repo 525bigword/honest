@@ -12,6 +12,7 @@ import com.xr.run.service.SysStaffService;
 import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class DatacollectionController {
     @Autowired
     private SysStaffService sysStaffService;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("datacollection:list")
     public JSONObject findDataConllection(@PathVariable Integer pageNum,String dTitle, @PathVariable Integer pageRow){
         if(dTitle==null){
             dTitle="";
@@ -55,6 +57,7 @@ public class DatacollectionController {
         return CommonUtil.successJson(sysStaffAll);
     }
     @RequestMapping("update")
+    @RequiresPermissions("datacollection:update")
     public JSONObject updateDatacollection(Datacollection datacollection,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         System.out.println(datacollection.getDFile());
         Datacollection data= datacollectionService.findDatacollectionById(datacollection.getDid());
@@ -113,6 +116,7 @@ public class DatacollectionController {
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
+    @RequiresPermissions("datacollection:delete")
     public JSONObject deleteDatacollectionByDid(@RequestBody int[] did)  {
         if (did.length==1){
             Datacollection data= datacollectionService.findDatacollectionById(did[0]);
@@ -129,6 +133,7 @@ public class DatacollectionController {
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("datacollection:add")
     public JSONObject insertDatacollection(Datacollection datacollection, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         String pdf = getPdf(datacollection.getDFile());
         datacollection.setDPdf(pdf);

@@ -8,6 +8,7 @@ import com.xr.run.entity.SysStaff;
 import com.xr.run.service.RiskpointwarningService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class RiskpointwarningController {
     @Autowired
     private RiskpointwarningService riskpointwarningService;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("riskpointwarning:list")
     public JSONObject findRiskpointwarning(@PathVariable Integer pageNum, String wTitle,String wContent, @PathVariable Integer pageRow){
         if(wTitle==null||wContent==null){
             wTitle="";
@@ -35,11 +37,13 @@ public class RiskpointwarningController {
         return CommonUtil.successJson(map);
     }
     @RequestMapping("update")
+    @RequiresPermissions("riskpointwarning:update")
     public JSONObject updateRiskpointwarning(Riskpointwarning riskpointwarning)  {
         riskpointwarningService.updateRiskpointwarningByWid(riskpointwarning);
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
+    @RequiresPermissions("riskpointwarning:delete")
     public JSONObject deleteRiskpointwarningByWid(@RequestBody int[] wid)  {
         if (wid.length==1){
             riskpointwarningService.deleteRiskpointwarningByWid(wid[0]);
@@ -51,6 +55,7 @@ public class RiskpointwarningController {
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("riskpointwarning:add")
     public JSONObject insertRiskpointwarning(Riskpointwarning riskpointwarning)  {
         riskpointwarningService.insertRiskpointwarning(riskpointwarning);
         return CommonUtil.successJson("新增成功!");

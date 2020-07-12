@@ -11,6 +11,7 @@ import com.xr.run.service.*;
 import com.xr.run.util.ResponseResult;
 import com.xr.run.util.constants.Constants;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,7 @@ public class PostRiskCombingController {
 
 
     @RequestMapping("getList")
+    @RequiresPermissions("postRiskCombing:list")
     public ResponseResult list() {
         List<Postriskcombing> list = postriskcombingService.getList();
         ResponseResult result = new ResponseResult();
@@ -57,6 +59,7 @@ public class PostRiskCombingController {
     }
 
     @RequestMapping("delete")
+    @RequiresPermissions("postRiskCombing:delete")
     public ResponseResult deletePostRiskCombing(String test) {
         List<Postriskcombing> postriskcombingList = JSON.parseArray(test, Postriskcombing.class);
         for (Postriskcombing postriskcombing : postriskcombingList) {
@@ -68,6 +71,7 @@ public class PostRiskCombingController {
     }
 
     @RequestMapping("update")
+    @RequiresPermissions("postRiskCombing:update")
     public ResponseResult updatePostRiskCombing(Postriskcombing postriskcombing) {
         ResponseResult result = new ResponseResult();
         if (postriskcombing != null) {
@@ -80,6 +84,7 @@ public class PostRiskCombingController {
     }
 
     @RequestMapping("add")
+    @RequiresPermissions("postRiskCombing:add")
     public ResponseResult addPostRiskCombing(Postriskcombing postriskcombing,HttpServletRequest req, HttpServletResponse resp) {
         ResponseResult result = new ResponseResult();
         if (postriskcombing == null) {

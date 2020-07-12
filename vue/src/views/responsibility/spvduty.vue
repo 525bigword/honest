@@ -752,6 +752,7 @@ export default {
     },
     // 显示添加的对话框
     handleCreate() {
+      this.$refs['dataForm'].clearValidate()
       // 重置表单数据
       this.resetTemp();
       this.xianshi();

@@ -643,6 +643,7 @@ export default {
       this.dis = "inline-block";
       this.dis2 = "none";
       this.sid = null;
+      this.getList();
     },
     handleImgChange1(file, fileList, name) {
       const isLt2M = file.size / 1024/1024  < 10;

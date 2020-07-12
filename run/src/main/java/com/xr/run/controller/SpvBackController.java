@@ -10,6 +10,7 @@ import com.xr.run.service.SpvDutyService;
 import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import io.swagger.models.auth.In;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class SpvBackController {
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("back:list")
     public JSONObject findSpvBack(@PathVariable Integer pageNum, Integer bid, Integer did, @PathVariable Integer pageRow){
         System.out.println("findSpvBack");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
@@ -40,6 +42,7 @@ public class SpvBackController {
         return CommonUtil.successJson(spvBack);
     }
     @RequestMapping("update")
+    @RequiresPermissions("back:update")
     public JSONObject updateSpvBack(SpvBack spvBack)  {
         System.out.println(spvBack);
         if(spvBack.getBackAccessoryName().equals("1")|| spvBack.getBackAccessory()==null){
@@ -61,17 +64,20 @@ public class SpvBackController {
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("back:add")
     public JSONObject insertSpvBack(SpvBack spvBack)  {
         spvBackService.insertSpvBack(spvBack);
         return CommonUtil.successJson("新增成功!");
     }
 
     @RequestMapping("updatestatus")
+    @RequiresPermissions("back:update")
     public JSONObject updateStatus(SpvBack spvBack)  {
         spvBackService.updateStatusBySid(spvBack);
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("updatestatusall")
+    @RequiresPermissions("back:update")
     public JSONObject updateStatusall(SpvBack spvBack)  {
         System.out.println(spvBack);
         String[] split = spvBack.getBackType().split(",");
@@ -95,6 +101,7 @@ public class SpvBackController {
     }
 
     @RequestMapping("delete")
+    @RequiresPermissions("back:delete")
     public JSONObject deleteSpvBackBySid(int sid){
         spvBackService.deleteSpvBackBySid(sid);
         return CommonUtil.successJson("删除成功!");

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SystemMessage;
 import com.xr.run.service.SystemMessageService;
 import com.xr.run.util.CommonUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class SystemMessageController {
     @Value("${file.uploadImage}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("systemnotice:list")
     public JSONObject findSystemMessage(@PathVariable Integer pageNum, String articletitle,String describe, @PathVariable Integer pageRow){
         if(articletitle==null){
             articletitle="";
@@ -35,6 +37,7 @@ public class SystemMessageController {
     }
 
     @RequestMapping("update")
+    @RequiresPermissions("systemnotice:update")
     public JSONObject updateSystemMessage(SystemMessage systemMessage)  {
         if(systemMessage.getPicturename().equals("1")){
             systemMessageService.updateSystemMessageByAidNoFile(systemMessage);
@@ -54,6 +57,7 @@ public class SystemMessageController {
     }
 
     @RequestMapping("delete")
+    @RequiresPermissions("systemnotice:delete")
     public JSONObject deleteSystemMessageByAid(@RequestBody int[] aid)  {
         if (aid.length==1){
             systemMessageService.deleteSystemMessageByAid(aid[0]);
@@ -65,6 +69,7 @@ public class SystemMessageController {
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("systemnotice:add")
     public JSONObject insertSystemMessage(SystemMessage systemMessage)  {
         systemMessageService.insertSystemMessage(systemMessage);
         return CommonUtil.successJson("新增成功!");

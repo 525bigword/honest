@@ -423,10 +423,11 @@ import { mapGetters } from 'vuex'
       this.dis2='inline-block'
     },
     yincang(){
-       this.isShow=true
+       this.isShow=false
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null
+        this.getList();
        
     },
     onEditorChange(event){

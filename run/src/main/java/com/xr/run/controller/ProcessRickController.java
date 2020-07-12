@@ -9,6 +9,7 @@ import com.xr.run.service.ProcessrickService;
 import com.xr.run.util.ResponseResult;
 import com.xr.run.util.constants.Constants;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class ProcessRickController {
 
 
     @RequestMapping("getList")
+    @RequiresPermissions("processRick:list")
     public ResponseResult list() {
         List<Processrick> list = processrickService.getList();
         ResponseResult result = new ResponseResult();
@@ -39,6 +41,7 @@ public class ProcessRickController {
     }
 
     @RequestMapping("add")
+    @RequiresPermissions("processRick:add")
     public ResponseResult add(Processrick processrick) {
         System.out.println(processrick);
         ResponseResult result = new ResponseResult();
@@ -63,6 +66,7 @@ public class ProcessRickController {
     }
 
     @RequestMapping("delete")
+    @RequiresPermissions("processRick:delete")
     public ResponseResult deletePostRiskCombing(String test) {
         List<Processrick> processrickList = JSON.parseArray(test, Processrick.class);
         for (Processrick processrick : processrickList) {
@@ -74,6 +78,7 @@ public class ProcessRickController {
     }
 
     @RequestMapping("update")
+    @RequiresPermissions("processRick:update")
     public ResponseResult updatePostRiskCombing(Processrick processrick) {
         System.out.println(processrick);
         ResponseResult result = new ResponseResult();

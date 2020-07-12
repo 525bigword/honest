@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="app-container" :style="{'display':dis}" style="width:100%">
     <el-form :inline="true" class="demo-form-inline">
       <div align="center" style="margin-top: 30px">
         <el-form-item label="名称">
@@ -84,17 +85,29 @@
           :total="total">
         </el-pagination>
       </div>
-
-      <!--弹窗-->
-      <el-dialog :title="dialogTitle" width="55%" :visible.sync="iconFormVisible">
-        <el-form :inline="true" :model="rickInfo" label-width="120px" width="240px">
-          <el-input v-model="rickInfo.proid" placeholder="序号" type="hidden"></el-input>
-          <el-form-item label="风险流程名称">
-            <el-input style="width: 400px" v-model="rickInfo.proName" placeholder="请输入风险流程名称" width="220px"></el-input>
+    </el-form>
+    </div>
+    <div :style="{'display':dis2}"  style="background-color: lightgray;width:100%;margin-top:-9px">
+      <el-main><!--  margin-left:40px; -->
+      <el-form ref="dataForm" :rules="rules" :model="rickInfo" label-position="center" label-width="130px" style="width: 100%;">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
+        <!--        数据校验要求prop值和temp.属性名一致-->
+        <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
+         
+        <el-button type="success"  class="el-icon-top"  @click="submitUser()">
+         保存
+        </el-button>
+         <el-button class="el-icon-back" @click="deselect()">返回</el-button>
+        </el-form-item></div>
+        <div style="background-color: white;margin-top: 25px;z-index:3;">
+        <div style="height:20px"></div>
+        <el-input v-model="rickInfo.proid" placeholder="序号" type="hidden"></el-input>
+          <el-form-item style="font-weight: bold;" label="风险流程名称" prop="proName">
+            <el-input style="width:50%"  v-model="rickInfo.proName" placeholder="请输入风险流程名称" ></el-input>
           </el-form-item>
-          <el-form-item label="附件相关" prop="proAccessoryName">
+          <el-form-item style="font-weight: bold;" label="附件相关" prop="proAccessoryName">
             <el-upload
-              style="width:100%"
+              style="width:50%"
               class="upload-demo"
               v-model="rickInfo.proAccessoryName"
               ref="upload"
@@ -111,28 +124,22 @@
               </div>
             </el-upload>
           </el-form-item>
-          <el-form-item label="风险流程时间">
+           <el-form-item style="font-weight: bold;" label="风险流程时间" prop="proYear">
             <el-date-picker v-model="rickInfo.proYear" placeholder="风险流程年份" type="date"
-                            style="width: 400px"></el-date-picker>
+                            style="width: 50%"></el-date-picker>
           </el-form-item>
-          <!--<el-form-item label="风险流程编号">-->
-          <!--<el-input style="width: 300px" v-model="rickInfo.processId" placeholder="请输入风险流程编号"></el-input>-->
-          <!--</el-form-item>-->
-          <el-form-item style="margin-bottom:70px" label="风险流程信息">
-            <quill-editor
-              class="editor"
+        <el-form-item style="font-weight: bold;height:500px;" label="风险流程信息">
+            <quill-editor class="editor"  style="height:500px;width:90%;"
               ref="myQuillEditor"
-              style="height:200px"
               v-model="rickInfo.proInfomation"
             ></quill-editor>
           </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="deselect()">返回</el-button>
-          <el-button type="primary" @click="submitUser()">保存</el-button>
+        <el-form-item style="margin-top:130px"></el-form-item>
         </div>
-      </el-dialog>
-    </el-form>
+      </el-form>
+      </el-main>
+      
+    </div>
   </div>
 </template>
 
@@ -183,6 +190,7 @@
         this.formData = new FormData();
         this.formData.append("file", this.file);
         this.rickInfo.proAccessoryName = this.file.name;
+        this.$refs['dataForm'].validate((valid) => {})
       },
       getAllMechanism() {
         getAllMechanism().then(response => {
@@ -239,7 +247,8 @@
       },
       // 修改
       handleEdit(index, row) {
-        this.fileList=[];
+        this.$refs['dataForm'].clearValidate()
+        this.fileList=[{name:row.proAccessoryName,url:row.proAccessory}];
         this.dialogTitle = '修改';
         this.rickInfo = row;
         /*if (row.pstatus === 1) {
@@ -250,6 +259,8 @@
         }*/
         this.iconFormVisible = true;
         this.rowIndex = index;
+        this.dis='none'
+        this.dis2='inline-block'
       },
       //按条件查询
       onSearch() {
@@ -325,19 +336,24 @@
       },
       //新增
       add() {
+        this.$refs['dataForm'].clearValidate()
         this.fileList=[];
         this.dialogTitle = '增加';
         this.rickInfo = {};
         this.iconFormVisible = true;
+        this.dis='none'
+        this.dis2='inline-block'
       },
       //弹窗取消
       deselect() {
-        this.iconFormVisible = false
-        clearInterval(this.timer)
+        this.dis='inline-block'
+        this.dis2='none'
       },
       // 弹窗确定
       submitUser() {
-
+        this.$refs['dataForm'].validate((valid) => {
+          // 所有的校验都通过
+          if (valid) {
         if (this.dialogTitle === '增加') {
           impFile(this.formData).then(response => {
             this.rickInfo.proAccessory = response.dFile;
@@ -369,6 +385,7 @@
                 type: 'success',
                 duration: 2000
               })
+              this.deselect()
             })
           })
 
@@ -403,9 +420,12 @@
                 type: 'success',
                 duration: 2000
               })
+              this.deselect()
             })
           })
         }
+          }
+        })
       }
     },
     data() {
@@ -491,7 +511,17 @@
           value: [],
           tongbao: ''
         },
-        fileList: []
+        dis:'inline-block',
+        dis2:'none',
+        fileList: [],
+        rules: {
+          // 校验规则
+          //dTitle:  [{ required: true, message: '标题必填', trigger: 'blur' }],
+          //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
+          proName: [{required:true,message:'流程名称不能为空',trigger:['blur','change']}],
+          proYear:[{required:true,message:'时间不能为空',trigger:['blur','change']}],
+          proAccessoryName:[{required:true,message:'附件必须上传',trigger:'change'}]
+        },
       }
     }
   }
