@@ -714,6 +714,7 @@ import { mapGetters } from 'vuex'
         this.temp.dstatus=1;
         this.viList=[]
         this.fileList=[]
+        this.getList()
     },
     handleSizeChange(size) {
        this.deleteid=[];

@@ -256,8 +256,13 @@ import { mapGetters } from 'vuex'
           // 所有的校验都通过
           if (valid) {
             this.isShow=true
+            let posdata=qs.stringify({
+              sysTitle: this.temp.sysTitle,
+            sysContent: this.temp.sysContent,
+            sysCreateId: this.temp.sysStaff.sid
+          })
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
+            add(posdata).then((response) => {
               
               // 关闭对话框
               this.dialogFormVisible = false
@@ -301,8 +306,13 @@ import { mapGetters } from 'vuex'
           // 表单校验通过
           if (valid) {
             this.isShow=true
+            let posdata=qs.stringify({
+              sysTitle: this.temp.sysTitle,
+            sysContent: this.temp.sysContent,
+            sysid: this.temp.sysid
+          })
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            update(posdata).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -398,6 +408,7 @@ import { mapGetters } from 'vuex'
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null
+        this.getList();
     }
     
     }

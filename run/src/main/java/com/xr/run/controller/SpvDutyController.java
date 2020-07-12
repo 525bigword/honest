@@ -13,6 +13,7 @@ import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class SpvDutyController {
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("spvduty:list")
     public JSONObject findSpvDuty(@PathVariable Integer pageNum, String dutyTitle, @PathVariable Integer pageRow){
         if(dutyTitle==null){
             dutyTitle="";
@@ -52,6 +54,7 @@ public class SpvDutyController {
         return CommonUtil.successJson(sysStaffAll);
     }
     @RequestMapping("update")
+    @RequiresPermissions("spvduty:update")
     public JSONObject updateSpvDuty(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
         System.out.println(spvDuty.getDutyAccessory());
         if(spvDuty.getDutyAccessoryName().equals("1")){
@@ -73,6 +76,7 @@ public class SpvDutyController {
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
+    @RequiresPermissions("spvduty:delete")
     public JSONObject deleteSpvDutyByDid(@RequestBody int[] did)  {
         if (did.length==1){
             SpvDuty spvDutyByDid = spvDutyService.findSpvDutyByDid(did[0]);
@@ -88,6 +92,7 @@ public class SpvDutyController {
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("spvduty:add")
     public JSONObject insertSpvDuty(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
         spvDutyService.insertSpvDuty(spvDuty);
         thymeleafSpvDuty(spvDuty,req,resp);
@@ -116,6 +121,7 @@ public class SpvDutyController {
     }
 
     @RequestMapping("updatestatus")
+    @RequiresPermissions("spvduty:update")
     public JSONObject updateStatus(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
         SpvBack spvBack = new SpvBack();
         spvBack.setBackType(spvDuty.getDutyType());
@@ -133,6 +139,7 @@ public class SpvDutyController {
     }
 
     @RequestMapping("updatetong")
+    @RequiresPermissions("spvduty:update")
     public JSONObject updateTongBaoByDid(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp){
         spvDutyService.updateTongBaoByDid(spvDuty);
         thymeleafSpvDuty(spvDuty,req,resp);

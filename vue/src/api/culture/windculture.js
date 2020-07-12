@@ -4,13 +4,7 @@ export function add(data) {
     return request({
         url: '/wind/insert',
         method: 'post',
-        params: {
-            wTitle: data.wtitle,
-            wContent: data.wcontent,
-            wContributor: data.sid,
-            wCreateId: data.sysStaff.sid,
-            wStatus: data.wstatus
-        }
+        data
     })
 }
 
@@ -28,13 +22,7 @@ export function update(data) {
     return request({
         url: '/wind/update',
         method: 'post',
-        params: {
-            wTitle: data.wtitle,
-            wContent: data.wcontent,
-            wContributor: data.sid,
-            wid: data.wid,
-            wStatus: data.wstatus
-        }
+        data
     })
 }
 export function melist(data) {
