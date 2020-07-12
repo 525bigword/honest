@@ -334,8 +334,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //
         //风险防控
 
-        //岗位风险
-       /* List<Postriskcombing>  postriskCombingAll = postriskcombingMapper.findPostriskCombingAll();
         //生成不同的RdWork
         getDifferentRdWord();
 
@@ -372,7 +370,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
         }else{
             list =list.subList(0,5);
         }
-        System.out.println("list============================"+list);
         map.put("reports",list);
     }
 
