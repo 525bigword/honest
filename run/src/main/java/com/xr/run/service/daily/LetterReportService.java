@@ -1,5 +1,6 @@
 package com.xr.run.service.daily;
 
+import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 
 import java.util.List;
@@ -32,4 +33,5 @@ public interface LetterReportService {
     public void leaderbc(LetterReport letterReport);
     /*纪检组长*/
     public void zzbc(LetterReport letterReport);
+    public DeptUnit finddp(String nickname);
 }

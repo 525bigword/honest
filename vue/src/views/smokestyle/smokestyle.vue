@@ -10,6 +10,22 @@
           </el-input>
         </el-form-item>
         <el-form-item>
+          <el-date-picker
+            v-model="starttime"
+            type="datetime"
+            class="search_name"
+            placeholder="请选择开始时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker
+            v-model="endtime"
+            type="datetime"
+            class="search_name"
+            placeholder="请选择结束时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
           <el-button
             type="primary"
             @click="onSearch()"
@@ -26,7 +42,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'>
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="smoid"
@@ -74,21 +90,21 @@
       </div>
     </el-form>
     <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
-      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
           <br/>
           <div align="right" ><el-form-item >
-            <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
             <el-button type="primary" class="el-icon-edit" align="right" @click="gxMethod" v-bind:style="{display:gx}">更新</el-button>
-            <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
+            <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.smoid" placeholder="编号" type="hidden"></el-input>
           <el-input v-model="userInfo.surl" placeholder="地址" type="hidden"></el-input>
-          <el-form-item label="文章标题">
-            <el-input v-model="userInfo.smotitle" placeholder="创建者" style="width: 500px"></el-input>
+          <el-form-item label="文章标题" prop="smotitle">
+            <el-input v-model="userInfo.smotitle" placeholder="请输入文章标题" style="width: 500px"></el-input>
           </el-form-item><br/>
-          <el-form-item label="文章属性">
+          <el-form-item label="文章属性" prop="smoproperty">
             <el-checkbox-group v-model="userInfo.smoproperty" >
               <el-checkbox label="头条" name="smoproperty"></el-checkbox>
               <el-checkbox label="推荐" name="smoproperty"></el-checkbox>
@@ -110,20 +126,20 @@
               <div slot="tip" class="el-upload__tip">只能上传单个图片，且不超过50M</div>
             </el-upload>
           </el-form-item><br/>
-          <el-form-item label="文章来源">
-            <el-input v-model="userInfo.smosource" placeholder="文章来源" style="width: 300px"></el-input>
+          <el-form-item label="文章来源" prop="smosource">
+            <el-input v-model="userInfo.smosource" placeholder="请输入文章来源" style="width: 300px"></el-input>
           </el-form-item>
-          <el-form-item label="文章作者">
-            <el-input v-model="userInfo.smoauthor" placeholder="文章作者" style="width: 300px"></el-input>
+          <el-form-item label="文章作者" prop="smoauthor">
+            <el-input v-model="userInfo.smoauthor" placeholder="请输入文章作者" style="width: 300px"></el-input>
           </el-form-item>
           <el-form-item label="创建时间">
             <el-date-picker v-model="userInfo.smocreatetime" type="datetime" placeholder="创建时间" style="width: 300px" disabled="disabled"></el-date-picker>
           </el-form-item>
-          <el-form-item label="描述">
-            <el-input v-model="userInfo.smodescrion" placeholder="描述" style="width: 300px"></el-input>
+          <el-form-item label="描述" prop="smodescrion">
+            <el-input v-model="userInfo.smodescrion" placeholder="请输入对该文章的简短描述，以便用户查看文章简略" style="width: 300px"></el-input>
           </el-form-item>
-          <el-form-item label="文章内容">
-            <quill-editor v-model="userInfo.smocontent" placeholder="文章内容" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" ></quill-editor>
+          <el-form-item label="文章内容" prop="smocontent">
+            <quill-editor v-model="userInfo.smocontent" placeholder="请输入文章内容" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" ></quill-editor>
           </el-form-item>
 
 
@@ -194,13 +210,16 @@
       },
       //重置
       onrest(){
-        this.search=''
-        this.times=''
+        this.title=''
+        this.starttime=''
+        this.endtime=''
       },
       //多条件查询
       onSearch() {
         let postData = qs.stringify({
-          smotitle:this.title
+          smotitle:this.title,
+          starttime:this.starttime,
+          endtime:this.endtime
         });
         this.listLoading = true
         findSmokestyle(postData).then((response) =>{
@@ -213,10 +232,12 @@
       },
       //初始化页面
       initList() {
+        this.listLoading = true
         findAllSmokestyle(this.listQuery).then(response =>{
           console.debug(response.info)
           this.tableData = response.list
           this.total = response.list.length
+        this.listLoading=false
         })
       },add(){
         this.fileList=[]//清空upload
@@ -224,46 +245,54 @@
         this.ad=''
         this.bc=''
         this.gx='none'
-        this.userInfo={smoproperty:[]}
           this.$set(this.userInfo,'smocreatetime',new Date())
 
       },
       //返回
-      back(){this.ad='none',this.tf=''
+      back(formName){this.ad='none',this.tf='',   this.$refs[formName].resetFields(), this.initList();
       },//新增提交
-      submitUser(){
-        let endtime = new Date(this.userInfo.smocreatetime).toJSON();
-        this.userInfo.smocreatetime = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-        let posdata=qs.stringify({
-          smotitle:this.userInfo.smotitle,
-          smoproperty:this.userInfo.smoproperty.toString(),
-          smoimage:this.userInfo.smoimage,
-          surl:this.userInfo.surl,
-          smosource:this.userInfo.smosource,
-          smoauthor:this.userInfo.smoauthor,
-          smocreatetime:this.userInfo.smocreatetime,
-          smodescrion:this.userInfo.smodescrion,
-          smocontent:this.userInfo.smocontent,
-          smocreateids:this.userId,
-          smocreatename:this.nickname,
-          sstatus:0
-        })
-        addSmokestyle(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.bc='',//保存按钮显示
-            this.gx='none',//更新按钮不显示
-            this.initList();
-          this.$notify({
-            title: '成功',
-            message: '新增成功',
-            type: 'success',
-            duration: 2000
-          })
-        })
+      submitUser(formName){
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              let endtime = new Date(this.userInfo.smocreatetime).toJSON();
+              this.userInfo.smocreatetime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "")
+              let posdata=qs.stringify({
+                smotitle:this.userInfo.smotitle,
+                smoproperty:this.userInfo.smoproperty.toString(),
+                smoimage:this.userInfo.smoimage,
+                surl:this.userInfo.surl,
+                smosource:this.userInfo.smosource,
+                smoauthor:this.userInfo.smoauthor,
+                smocreatetime:this.userInfo.smocreatetime,
+                smodescrion:this.userInfo.smodescrion,
+                smocontent:this.userInfo.smocontent,
+                smocreateids:this.userId,
+                smocreatename:this.nickname,
+                sstatus:0
+              })
+              addSmokestyle(posdata).then((response)=>{
+                this.tf='';
+              this.ad='none'
+              this.bc='',//保存按钮显示
+                this.gx='none',//更新按钮不显示
+                this.$refs[formName].resetFields()
+                this.initList();
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+            } else {
+              console.log('error submit!!');
+          return false;
+        }
+        });
+
       },//点击列编辑
       handleEdit(index, row){
         this.tf='none';
@@ -343,6 +372,28 @@
     },
     data() {
       return {
+        rules: {
+          smotitle: [
+            { required: true, message: '请输入文章标题', trigger: 'blur' },
+            { min: 3, message: '长度得大于3 字符', trigger: 'blur' }
+          ],
+          smosource: [
+            { required: true, message: '请输入文章来源', trigger: 'blur' },
+          ],
+          smoproperty: [
+            { type: 'array', required: true, message: '请至少选择一个文章属性', trigger: 'change' }
+          ],
+          smoauthor: [
+            { required: true, message: '请输入文章作者', trigger: 'change' }
+
+          ],
+          smocontent: [
+            { required: true, message: '请输入文章内容', trigger: 'change' }
+          ],
+          smodescrion: [
+            { required: true, message: '请输入描述', trigger: 'change' }
+          ]
+        },
         editorOption: {},
         fileList:[],
         tf:'',//父页面
@@ -360,7 +411,10 @@
         currentPage:1,
         times:'',
         tableData: [],
-        options:[]
+        options:[],
+        listLoading:false,
+        starttime:'',
+        endtime:''
       }
     }
   }

@@ -139,7 +139,7 @@ public class SpvDutyController {
         return CommonUtil.successJson("发布成功!");
     }
 
-    public void thymeleafSpvDuty(SpvDuty spvDuty, HttpServletRequest req, HttpServletResponse resp){
+    private void thymeleafSpvDuty(SpvDuty spvDuty, HttpServletRequest req, HttpServletResponse resp){
         ModelAndView modelAndView=new ModelAndView();
         if(spvDuty.getDid()!=0){
             SpvDuty spvDutyByDid = spvDutyService.findSpvDutyByDid(spvDuty.getDid());
@@ -155,7 +155,7 @@ public class SpvDutyController {
             modelAndView.addObject("name",name);
         }
         modelAndView.setViewName("jdzr/index1");
-        staticHtmlService.genHtmlPage(modelAndView,req,resp,spvDuty.getDutyTitle());
+//        staticHtmlService.genHtmlPage(modelAndView,req,resp,spvDuty.getDutyTitle());
     }
 
 

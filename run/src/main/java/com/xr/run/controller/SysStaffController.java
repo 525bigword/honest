@@ -31,10 +31,7 @@ public class SysStaffController {
     @Autowired
     private HomePageSevice homePageSevice;
 
-
-
     @GetMapping("get/{sid}")
-
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
         return CommonUtil.successJson(sysStaffBySid);
@@ -93,7 +90,7 @@ public class SysStaffController {
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
 
         //创建首页
-        homePageSevice.loading();
+//        homePageSevice.loading();
         return jsonObject;
     }
     /**

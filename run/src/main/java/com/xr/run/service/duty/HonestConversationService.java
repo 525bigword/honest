@@ -1,5 +1,6 @@
 package com.xr.run.service.duty;
 
+import com.xr.run.entity.SysPpost;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
@@ -21,6 +22,11 @@ public interface HonestConversationService {
     public void passauditHonestConversation(Integer id, Integer status,String auditresult);
     /*删除谈话*/
     public void delHonestConversationt(Integer id);
+    /*根据部门id查所有人*/
     public List<SysStaff> findallduty(Integer id);
+    /*根据部门id查所有部门*/
+    public List<SysPpost> findalldept(Integer id);
+    /*根据职务查人*/
+    public List<SysStaff> findallperson(Integer ppid);
     public List<SysMechanism> findallunit(Integer parent);
 }

@@ -50,31 +50,7 @@ public class HonestConversationAction {
     }
     /*新增工作部署*/
     @RequestMapping("addHonestConversation")
-    public ResponseResult addHonestConversation(HonestConversation honestConversation,String  puni){
-        System.out.println("puni"+puni);
-        System.out.println("honestConver"+honestConversation);
-        SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        Date date1=null;
-        try {
-            date = SDF.parse(honestConversation.getCreatetime());
-            date1= SDF.parse(honestConversation.getTime());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        Calendar cal = Calendar.getInstance();
-        Calendar cal1 = Calendar.getInstance();
-        cal.setTime(date);
-        cal1.setTime(date1);
-        cal.add(Calendar.HOUR, 8);// 24小时制
-        cal1.add(Calendar.HOUR,8);
-        date1=cal1.getTime();
-        date = cal.getTime();
-        cal = null;
-        cal1=null;
-        honestConversation.setCreatetime(format.format(date));
-        honestConversation.setTime(format.format(date1));
+    public ResponseResult addHonestConversation(HonestConversation honestConversation){
         System.out.println(honestConversation+"honestConversation");
         honestConversationService.addHonestConversation(honestConversation);
         ResponseResult result=new ResponseResult();
@@ -131,6 +107,7 @@ public class HonestConversationAction {
         return result;
 
     }
+
     @RequestMapping("getFileGroup")
     public ResponseResult getFileGroup(Integer parent){
         ResponseResult result=new ResponseResult();

@@ -2,9 +2,11 @@ package com.xr.run.entity.duty;
 
 import com.xr.run.entity.SysStaff;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -13,12 +15,14 @@ public class HonestConversation {
     private Integer id;
     private List<SysStaff> users=new ArrayList<>();
     private String type;//谈话类型
-    private String time;//谈话时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date time;//谈话时间
     private String site;//谈话地点
     private Integer personid;//记录人
     private String syllabus;//谈话提纲
     private String content;//谈话内容
-    private String createtime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createtime;
     private String createname;
     private Integer createid;
     private Integer staus;

@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div :style="{'display':dis}" style="width:100%">
+  <div >
+    <div class="app-container" :style="{'display':dis}" style="width:100%">
     <div class="filter-container"  style="margin-top: -30px;margin-left:60px">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
@@ -18,7 +18,7 @@
           </el-button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <el-button
             type="primary"
-            class="el-icon-refresh" 
+            class="el-icon-refresh"
             @click="resetSou">重置
           </el-button>
        <!--  </el-form-item> -->
@@ -44,9 +44,9 @@
         <!-- <template slot-scope="scope">
           <span>{{ scope.row.did }}</span>
         </template> -->
-        
+
       </el-table-column>
-      
+
         <el-table-column label="标题" prop="wtitle"  align="center" width="280px">
         <template slot-scope="scope">
 
@@ -84,50 +84,56 @@
         </el-pagination>
       </div>
     </div>
-    <!-- @blur="onEditorBlur($event)" 
-      @focus="onEditorFocus($event)"
-      @change="onEditorChange($event)" -->
-    <div :style="{'display':dis2}" style="margin-top:-30px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
+    <!-- style="margin-top:-30px" -->
+    <div :style="{'display':dis2}"  style="background-color: lightgray;width:100%;margin-top:-9px">
+      <el-main><!--  margin-left:40px; -->
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 100%;">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
         <!--        数据校验要求prop值和temp.属性名一致-->
-        <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
+        <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
         <el-button type="success" :disabled="isShow" class="el-icon-top"  @click="dialogStatus==='update'?updateData():createData()">
          保存
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
           返回
         </el-button>
-        </el-form-item>
+        </el-form-item></div>
+        <div style="background-color: white;margin-top: 25px;z-index:3;">
         <!-- <el-form-item style="font-weight: bold;" label="风险点编号" prop="numId" >
           <el-input v-model="temp.numId" placeholder="请输入风险点编号" style="width:50%" disabled="disabled" />
         </el-form-item> -->
         <!-- <el-form-item style="font-weight: bold;" label="所属部门" prop="dTitle" >
           <el-input placeholder="请输入清风文苑标题" style="width:30%" />
         </el-form-item> -->
+        <div style="height:20px"></div>
         <el-form-item style="font-weight: bold;" label="风险预警标题" prop="wtitle" >
           <el-input v-model="temp.wtitle" placeholder="请输入风险预警标题" style="width:50%" />
         </el-form-item>
-        
-        <el-form-item style="font-weight: bold;" label="内容" prop="wcontent" >
-          <quill-editor class="editor"  style="height:400px;width:85%;"
+
+        <el-form-item style="font-weight: bold;height:500px;" label="内容" prop="wcontent" >
+          <quill-editor class="editor"  style="height:500px;width:90%;"
         ref="myQuillEditor"
         v-model="temp.wcontent"
+        @change="onEditorChange($event)"
        >
         </quill-editor>
+<div style="font-weight: normal;margin-top:60px;margin-right:12%;float:right">
+        <span >{{TiLength}}/1000</span></div>
         </el-form-item>
         <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者姓名" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
         </el-form-item>
         <el-form-item style="font-weight: bold;" label="创建时间" prop="wCreateTime" >
-          <el-date-picker disabled="disabled" 
+          <el-date-picker disabled="disabled"
     style="width: 50%"
     type="date"
     v-model="temp.wCreateTime"
     :format="'yyyy-MM-dd HH:mm:ss'">
 </el-date-picker>
         </el-form-item>
-        
-      </el-form>
+        <el-form-item style="margin-top:10px"></el-form-item>
+        </div>
+      </el-form></el-main>
        
     </div>
   </div>
@@ -191,7 +197,8 @@ import { mapGetters } from 'vuex'
         isShow:false,
           wew:{},
         multipleSelection:[],
-        deleteid:[]
+        deleteid:[],
+        TiLength:0
       }
     },
     // 创建实例时的钩子函数
@@ -267,9 +274,6 @@ import { mapGetters } from 'vuex'
       },
       // 添加对话框里，点击确定，执行添加操作
       createData() {
-        if (!this.hasPerm('riskpointwarning:add')) {
-          return
-        }
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
@@ -277,7 +281,7 @@ import { mapGetters } from 'vuex'
             this.isShow=true
             // 调用api里的sys里的user.js的ajax方法
             add(this.temp).then((response) => {
-              
+
               // 关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格里的数据
@@ -294,7 +298,7 @@ import { mapGetters } from 'vuex'
             })
           }
         })
-        
+
       },
       // 显示修改对话框
       handleUpdate(row) {
@@ -309,13 +313,10 @@ import { mapGetters } from 'vuex'
           // 清除校验
           this.$refs['dataForm'].clearValidate()
         })
-        
+
       },
       // 执行修改操作
       updateData() {
-        if (!this.hasPerm('riskpointwarning:update')) {
-          return
-        }
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
@@ -338,15 +339,12 @@ import { mapGetters } from 'vuex'
             })
           }
         })
-         
+
       },
       out(){
         this.yincang()
       },
       handleDelete() {
-        if (!this.hasPerm('riskpointwarning:delete')) {
-          return
-        }
         // 先弹确认取消框
         let title='';
         if(this.multipleSelection.length<1){
@@ -413,24 +411,33 @@ import { mapGetters } from 'vuex'
       this.dis2='inline-block'
     },
     yincang(){
+       this.isShow=false
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null
-    }
-    
+       
+    },
+    onEditorChange(event){
+      event.quill.deleteText(1000,4)
+      if(this.temp.wcontent===''){
+        this.TiLength=0
+      }else{
+        this.TiLength=event.quill.getLength()-1
+      }
+    },
+
     },
     filters:{
-    getContent(val) {
+    getContent(val){
       /* val.replace(/<\/?[^>]*>/g, ""); */
       if(val.length>20){
           return val.replace(/<\/?[^>]*>/g, "").slice(0, 20) + "......";
       }else{
           return val.replace(/<\/?[^>]*>/g, "");
       }
-      
+
+    }
     }
   }
-    
 
-  }
-</script>
+</script>getContent(val) {

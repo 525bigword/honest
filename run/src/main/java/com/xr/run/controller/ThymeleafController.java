@@ -7,8 +7,10 @@ import com.xr.run.entity.*;
 import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.*;
 import com.xr.run.service.daily.LetterReportService;
+import com.xr.run.service.duty.HonestConversationService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import com.xr.run.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -47,8 +49,7 @@ public class ThymeleafController {
     private RdEntityResponsibilityService rdEntityResponsibilityService;
     @Autowired
     private PostriskcombingService postriskcombingService;
-    @Autowired
-    private LetterReportService letterreportService;
+
     @RequestMapping("/produce")
     public void index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
         Page page=new Page(1,10);
@@ -62,7 +63,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getDCreateTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("index1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDTitle());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDTitle());
             modelAndView=null;
         }
         IPage<Wind> wind = windService.findWind(page, "");
@@ -73,7 +74,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getWCreateTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("wind1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getWTitle());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getWTitle());
             modelAndView=null;
         }
         //工作计划
@@ -85,7 +86,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("zrjs/index1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
             modelAndView=null;
         }
         //主题责任
@@ -97,7 +98,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("zrjs/rdentityresponsibility1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
             modelAndView=null;
         }
         //工作计划
@@ -110,7 +111,7 @@ public class ThymeleafController {
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("zrjs/rdworkdeployment1.html");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
             modelAndView=null;
         }
         //TODO 纪检报表
@@ -123,7 +124,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getNewTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("jjbb/index1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getReportType());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getReportType());
             modelAndView=null;
         }
         //监督责任
@@ -135,7 +136,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getNewTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("jdzr/index1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDutyTitle());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDutyTitle());
             modelAndView=null;
         }
         //岗位风险
@@ -147,7 +148,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getPCreateTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("fxfk/index1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getPProject());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getPProject());
             modelAndView=null;
         }
         //流程风险
@@ -159,7 +160,7 @@ public class ThymeleafController {
             modelAndView.addObject("time", DateUtil.upDate(record.getProCreateTime()));
             modelAndView.addObject("name", record.getSysStaff().getName());
             modelAndView.setViewName("fxfk/processrick1");
-            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getProName());
+//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getProName());
             modelAndView=null;
         }
 //        return modelAndView;
@@ -167,22 +168,22 @@ public class ThymeleafController {
     @RequestMapping("datacollection")
     public ModelAndView indexa(){
         ModelAndView modelAndView=new ModelAndView( );
-        Page page=new Page(1,10);
-        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection(page, "");
-//        IPage<Wind> wind = windService.findWind(page, "");
-        modelAndView.addObject("list",dataConllection.getRecords());
-        modelAndView.addObject("total",dataConllection.getTotal());
-        modelAndView.setViewName("index");
+//        Page page=new Page(1,10);
+//        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection(page, "");
+////        IPage<Wind> wind = windService.findWind(page, "");
+//        modelAndView.addObject("list",dataConllection.getRecords());
+//        modelAndView.addObject("total",dataConllection.getTotal());
+        modelAndView.setViewName("182/index");
         return modelAndView;
     }
     /*廉政文化里的清风文苑查询数据*/
     @RequestMapping("wind")
     public ModelAndView findWind(){
         ModelAndView modelAndView=new ModelAndView();
-        Page<Wind> page=new Page(1,10);
-        IPage<Wind> wind = windService.findWind(page, "");
-        modelAndView.addObject("list",wind.getRecords());
-        modelAndView.setViewName("wind");
+//        Page<Wind> page=new Page(1,10);
+//        IPage<Wind> wind = windService.findWind(page, "");
+//        modelAndView.addObject("list",wind.getRecords());
+        modelAndView.setViewName("182/index");
         return modelAndView;
     }
     /*责任纪实 工作计划根据标题模糊查询 内容做显示详情*/
@@ -271,12 +272,5 @@ public class ThymeleafController {
         return modelAndView;
 
     }
-    @RequestMapping("addletter")
-    public ModelAndView addletter(LetterReport letterReport){
-        letterreportService.addletter(letterReport);
-        ModelAndView modelAndView=new ModelAndView();
-      //  modelAndView.addObject("message", "举报成功");
-        modelAndView.setViewName("xfjb/letterRepoter");
-      return modelAndView;
-    }
+
 }

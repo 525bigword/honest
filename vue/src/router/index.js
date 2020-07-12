@@ -8,6 +8,7 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 Vue.use(Router)
 export const constantRouterMap = [
     { path: '/login', component: _import('login/index'), hidden: true },
+  { path: '/userReport', component: _import('userReport'), hidden: true },
     { path: '/404', component: _import('404'), hidden: true },
     {
         path: '/',
@@ -218,7 +219,21 @@ export const asyncRouterMap = [
             meta: { title: '潭烟风貌', icon: 'user' },
             menu: 'smokestyle'
         }]
-    }, {
+    }
+  , {
+    path: '/educationPolitics',
+    component: Layout,
+    redirect: '/user/',
+    name: '廉政教育',
+    meta: { title: '廉政教育', icon: 'table' },
+    children: [{
+      path: '',
+      name: '廉政教育',
+      component: _import('educationPolitics/educationPolitics'),
+      meta: { title: '廉政教育', icon: 'user' },
+      menu: 'educationpolitics'
+    }]
+  }, {
         path: '/culture',
         component: Layout,
         redirect: '/culture/',
@@ -287,12 +302,6 @@ export const asyncRouterMap = [
             component: _import('daily/reference'),
             meta: { title: '三重一大事项备案审批', icon: 'user' },
             menu: 'reference'
-        }, {
-            path: 'userreport',
-            name: '用户举报',
-            component: _import('daily/userReport'),
-            meta: { title: '用户举报', icon: 'user' },
-            menu: 'userreport'
         }]
     }, ,
     {

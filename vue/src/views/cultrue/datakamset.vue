@@ -103,7 +103,7 @@
           rules:校验规则
           model:数据绑定
       -->
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 80%; margin-left:40px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 80%; margin-left:40px;margin-top:-10px">
         <!--        数据校验要求prop值和temp.属性名一致-->
         
         <el-form-item label="标题" prop="dtitle"  >
@@ -156,7 +156,7 @@
           <el-input v-model="temp.status" disabled="disabled" style="width:80%"></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" style="margin-top:-23px" class="dialog-footer">
        
         <!--
           dialogStatus==='create'?createData():updateData()
@@ -332,7 +332,7 @@ import { mapGetters } from 'vuex'
         console.debug(this.temp)
         // 点击确定时，是执行添加操作
         this.dialogStatus = 'create'
-        this.title="添加用户"
+        this.title="添加资料锦集"
         // 显示对话框
         this.dialogFormVisible = true
         this.$nextTick(() => {
@@ -409,7 +409,7 @@ import { mapGetters } from 'vuex'
         // 将对话框里的确定点击时，改为执行修改操作
         this.dialogStatus = 'update'
         // 修改标题
-        this.title = '修改用户'
+        this.title = '修改资料锦集'
         // 显示修改对话框
         this.dialogFormVisible = true
         this.$nextTick(() => {

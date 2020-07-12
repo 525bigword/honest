@@ -22,6 +22,8 @@ import com.xr.run.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -39,13 +41,14 @@ import java.util.*;
 @Service
 public class HomePageSeviceImpl implements HomePageSevice {
 
-    //静态页面生成地址
+    //静态页面生成地址${html.destPath}
     @Value("${html.destPath}")
-    private String destPath = "";
+    private String destPath;
 
     public void a(){
-        System.out.println("路径是============================="+destPath);
+        System.out.println(destPath);
     }
+
     @Autowired
     private TemplateEngine templateEngine;
 
@@ -267,6 +270,16 @@ public class HomePageSeviceImpl implements HomePageSevice {
     private void getMoreRdWork() {
         createIndexHtml(destPath+"/185/", "185/index", "index.html", null);
     }
+    //清风文苑更多
+    private void loadWind(){
+
+        createIndexHtml(destPath+"/182/", "182/index", "index.html", null);
+    }
+    //资料锦集更多
+    private void loadDatacollection(){
+        System.out.println("-----------------destPath+\"/183/\":"+destPath+"/183/");
+        createIndexHtml(destPath+"/182/184", "183/index", "index.html", null);
+    }
 
     //生成不同的RdWork
     private void getDifferentRdWord() {
@@ -307,11 +320,22 @@ public class HomePageSeviceImpl implements HomePageSevice {
         loadDuty(map);
         //责任监督更多
         getMoreDuty();
-
         //查询前五的责任纪实
         loadRdWork(map);
         //责任纪实更多
         getMoreRdWork();
+        //TODO 廉政文化
+        //清风文苑更多
+        loadWind();
+        //资料锦集更多
+        System.out.println("执行loadDatacollection");
+        this.loadDatacollection();
+        //查询前五廉政文化
+        //
+        //风险防控
+
+        //岗位风险
+       /* List<Postriskcombing>  postriskCombingAll = postriskcombingMapper.findPostriskCombingAll();
         //生成不同的RdWork
         getDifferentRdWord();
 

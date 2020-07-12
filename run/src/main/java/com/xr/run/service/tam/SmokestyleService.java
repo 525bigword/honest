@@ -12,7 +12,7 @@ public interface SmokestyleService {
     public void addSmokestyle(Smokestyle smokestyle);
 
     /*根据标题查*/
-    public List<Smokestyle> findSmokestyle(String title);
+    public List<Smokestyle> findSmokestyle(Smokestyle title);
 
     /*删除*/
     public void delSmokestyle(Integer smoid);

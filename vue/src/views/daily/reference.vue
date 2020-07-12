@@ -68,7 +68,7 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus" >
           <template slot-scope="scope">
-            <el-button v-if="scope.row.sstatus==1" v-bind:style="{display:(role.includes('纪检监察科科长')||role.includes('纪检组长')||role.includes('局领导')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
+            <el-button v-if="scope.row.sstatus==1" v-bind:style="{display:( hasPerm('reference:audit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
                 </template>
         </el-table-column>
       </el-table>
@@ -85,7 +85,7 @@
       </div>
 
     </el-form>
-    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 1000px;" >
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
           <br/>
@@ -94,7 +94,7 @@
             <el-button type="primary" class="el-icon-edit" align="right" @click="tgsh(-2)" >不通过</el-button>
             <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
         <br/>
-        <div style="height:900px;background-color: white;margin-top: 7px;z-index:3;">
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
           <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
           <el-form-item label="备案编号">
@@ -136,7 +136,7 @@
             <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number" disabled="disabled"></el-input>
           </el-form-item><br/><div>
           <el-form-item label="实施方式">
-            <el-card class="box-card"  style="margin-bottom:30px;width: 830px;height: 450px;text-align: left">
+            <el-card class="box-card"  style="margin-bottom:30px;width: 830px;text-align: left">
               <div v-html="userInfo.senforcementMode"></div>
             </el-card>
             <!--   <quill-editor id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 300px; margin-bottom: 80px" />

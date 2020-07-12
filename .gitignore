@@ -22,8 +22,10 @@
 *.ra
 hs_err_pid*
 
-
+/out
 /.idea
+/vue/.vscode
+/vue/node_modules
 target/
 *.iml
-logs
+/logs

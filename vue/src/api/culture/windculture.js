@@ -54,6 +54,12 @@ export function stafflist(mid) {
         }
     })
 }
+export function getDid() {
+    return request({
+        url: '/spvduty/getDid',
+        method: 'post'
+    })
+}
 
 // 根据用户对象进行查询用户
 export function list(pageNum, pageRow, wTitle) {

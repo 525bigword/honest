@@ -9,29 +9,33 @@
         <result column="newTime" property="newTime"></result>
         <result column="status" property="status"></result>
         <result column="url" property="url"></result>
+        <result column="typeconcrete" property="typeconcrete"></result>
         <association property="eid" javaType="com.xr.run.entity.SysStaff">
             <result column="name" property="name"></result>
         </association>
 
     </resultMap>
     <select id="list" resultMap="basemap">
-select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url from dcp_report re,Sys_Staff h where h.sid=re.eid
+select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,re.typeconcrete from dcp_report re,Sys_Staff h where h.sid=re.eid and re.status!=-1
     </select>
     <select id="fintBywhere" resultMap="basemap">
-        select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url from dcp_report re,Sys_Staff h where h.sid=re.eid
+        select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,re.typeconcrete from dcp_report re,Sys_Staff h where h.sid=re.eid and re.status!=-1
         <if test="reportType != null and !reportType.equals('')">
         and re.reporttype like #{reportType}</if>
-        <if test="newTime != null and !newTime.equals('')">
-            and re.newtime like #{newTime}
+        <if test="starttime != null and !starttime.equals('')">
+            and re.newtime  &gt;= #{starttime}
+        </if>
+        <if test="endtime != null and !endtime.equals('')">
+            and re.newtime  &lt;= #{endtime}
         </if>
     </select>
     <insert id="addreport" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
-        insert into dcp_report(reportType,report,newTime,eid,status,url) values(#{reportType},#{report},#{newTime},#{sid},#{status},#{url})
+        insert into dcp_report(reportType,report,newTime,eid,status,url,typeconcrete) values(#{reportType},#{report},#{newTime},#{sid},#{status},#{url},#{typeconcrete})
     </insert>
     <delete id="delReport" parameterType="Integer">
-        delete from dcp_report where id=#{id}
+        update  dcp_report set status=-1 where id=#{id}
     </delete>
     <update id="gxpost" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
-        update dcp_report set reportType=#{reportType},report=#{report},url=#{url} where id=#{id}
+        update dcp_report set reportType=#{reportType},report=#{report},url=#{url},typeconcrete=#{typeconcrete} where id=#{id}
     </update>
 </mapper>

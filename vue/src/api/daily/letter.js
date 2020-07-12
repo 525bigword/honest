@@ -80,3 +80,11 @@ export function zzbc(data){
     data
   })
 }
+/*登录举报*/
+export function finddb(data){
+  return request({
+    url: '/daily/letter/finddb',
+    method: 'post',
+    data
+  })
+}

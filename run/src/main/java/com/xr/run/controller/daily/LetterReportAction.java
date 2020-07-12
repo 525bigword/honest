@@ -1,6 +1,7 @@
 package com.xr.run.controller.daily;
 
 import com.alibaba.fastjson.JSON;
+import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.daily.LetterReportService;
 import com.xr.run.util.ResponseResult;
@@ -124,6 +125,13 @@ letterReportService.shbc(letterReport);
         letterReportService.zzbc(letterReport);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","已处理完成");
+        return result;
+    }
+    @RequestMapping("finddb")
+    public ResponseResult finddb(String nickname){
+        DeptUnit finddp = letterReportService.finddp(nickname);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("list",finddp);
         return result;
     }
 }

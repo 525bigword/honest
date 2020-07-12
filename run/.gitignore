@@ -20,6 +20,9 @@ target/
 *.ipr
 
 ### NetBeans ###
+/.idea
+/target
+/logs
 /nbproject/private/
 /nbbuild/
 /dist/

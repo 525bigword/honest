@@ -35,9 +35,9 @@ public class SmokestyleAction {
 
     /*根据标题查*/
     @RequestMapping("/findSmokestyle")
-    public ResponseResult findSmokestyle(String title){
+    public ResponseResult findSmokestyle(Smokestyle smotitle){
         ResponseResult result=new ResponseResult();
-        List<Smokestyle> list = smokestyleService.findSmokestyle(title);
+        List<Smokestyle> list = smokestyleService.findSmokestyle(smotitle);
 
         result.getInfo().put("list",list);
         return result;

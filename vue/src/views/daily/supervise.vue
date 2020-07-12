@@ -21,8 +21,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div><el-form-item>
-        <el-button type="primary" class="el-icon-plus" @click="add" v-if="role.includes('纪检监察员')">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="dele" v-if="role.includes('纪检监察员')">删除</el-button></el-form-item></div>
+        <el-button type="primary" class="el-icon-plus" @click="add" v-if="this.hasPerm('supervise:add')">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="dele" v-if="this.hasPerm('supervise:delete')">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -78,17 +78,17 @@
       </div>
 
     </el-form>
-  <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 1000px" >
+  <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
     <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
       <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
         <br/>
         <div align="right" ><el-form-item >
-          <el-button type="primary" class="el-icon-edit" v-if="role.includes('纪检监察员')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
-          <el-button type="primary" class="el-icon-edit" v-if="role.includes('纪检监察员')" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" v-if="role.includes('纪检监察员')" align="right" @click="gxmethod" v-bind:style="{display:gx}">更新</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')||this.hasPerm('supervise:update')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:update')" align="right" @click="gxmethod" v-bind:style="{display:gx}">更新</el-button>
           <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
       <br/>
-      <div style="height:900px;background-color: white;margin-top: 7px;z-index:3;">
+      <div style="background-color: white;margin-top: 7px;z-index:3;">
         <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
         <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
         <el-form-item label="备案编号">
@@ -132,7 +132,7 @@
 
         <div>
         <el-form-item label="实施方式">
-          <el-card class="box-card" style="margin-bottom:30px;width: 830px;height: 450px;text-align: left" v-if="userInfo.sstatus!=0&&dialogTitle!='增加'">
+          <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.sstatus!=0&&dialogTitle!='增加'">
             <div  v-html="userInfo.senforcementMode"></div>
           </el-card>
           <quill-editor v-if="dialogTitle=='增加'||userInfo.sstatus==0" id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" />
@@ -284,7 +284,7 @@
       },//新增提交
       submitUser(){
         let endtime = new Date(this.userInfo.screateTime).toJSON();
-        this.userInfo.screateTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+        this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
           .replace(/T/g, " ")
           .replace(/\.[\d]{3}Z/, "")
@@ -324,6 +324,7 @@
         }
 
         this.userInfo=row
+        console.log('ces',row.punit.split(',').map(Number))
         this.userInfo.sundertakerDeptId = row.punit.split(',').map(Number)
 
         this.isShowAddressInfo = false;
@@ -457,6 +458,7 @@
       add(){
         this.fileList=[]//清空upload
         this.userInfo={
+
         }
         this.tf='none'//父页面隐藏
         this.ad=''//新增页面出现

@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div :style="{'display':dis}" style="width:100%">
+  <div >
+    <div class="app-container" :style="{'display':dis}" style="width:100%">
     <div class="filter-container" align="center" style="margin-top: -30px;">
       <!-- v-waves -->
       <label>标题</label>&nbsp;&nbsp;
@@ -84,10 +84,12 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
       @change="onEditorChange($event)" -->
-    <div :style="{'display':dis2}" style="width:100%;margin-top:-30px">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 95%; margin-left:40px;">
+    <div :style="{'display':dis2}" style="background-color: lightgray;width:100%;margin-top:-9px">
+      <el-main>
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="center" label-width="130px" style="width: 100%;">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
         <!--        数据校验要求prop值和temp.属性名一致-->
-        <el-form-item  style="width:100%;height:30px;margin-left: -80px" align="right">
+       <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
           <el-button :disabled="isShow" type="success" class="el-icon-top"  v-show="btnShowTj"  @click="dialogStatus==='update'?updateData(2):createData(2)">
           提交审核
         </el-button>
@@ -100,7 +102,9 @@
          <el-button class="el-icon-back" plain @click="out()">
           返回
         </el-button>
-        </el-form-item>
+        </el-form-item></div>
+         <div style="background-color: white;margin-top: 25px;z-index:3;">
+            <div style="height:20px"></div>
         <el-form-item style="font-weight: bold;" label="清风文苑标题" prop="wtitle" >
           <el-input v-model="temp.wtitle" placeholder="请输入清风文苑标题" style="width:50%" />
         </el-form-item>
@@ -108,15 +112,24 @@
           <el-input placeholder="请输入清风文苑标题" style="width:30%" />
         </el-form-item> -->
         <el-form-item style="font-weight: bold;" label="投稿人" prop="sid" >
-          <el-select v-model="temp.wnew.mid" placeholder="请选择部门" style="width:23%" v-cloak  @change="bmChange">
+        <el-cascader 
+        ref="bbb" prop="value"
+        @change="bmChange"
+        style="width:23%"
+         v-model="value"
+             :options="options"
+             :props="{ expandTrigger: 'hover',checkStrictly: true }"
+             :show-all-levels="false"
+               clearable></el-cascader>
+          <!-- <el-select v-model="temp.wnew.mid" placeholder="请选择部门"  v-cloak  >
               <el-option
              v-for="item in melist"
             :key="item.mid"
             :label="item.mechanismName"
            :value="item.mid">
             </el-option>
-           </el-select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           <el-select v-model="temp.sid" :style="{'display':dis3}" placeholder="请选择投稿人" v-cloak style="width:23%">
+           </el-select> -->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           <el-select v-model="temp.sid" :style="{'display':dis3}" placeholder="请选择投稿人" v-cloak style="width:23%;">
               <el-option
              v-for="item in stafflist"
             :key="item.sid"
@@ -147,14 +160,16 @@
         <el-form-item style="font-weight: bold;" label="审核状态" prop="status">
           <el-input v-model="temp.status" disabled="disabled" style="width:50%"></el-input>
         </el-form-item>
+         <el-form-item style="margin-top:10px"></el-form-item>
+         </div>
       </el-form>
-       
+      </el-main>
     </div>
   </div>
 </template>
 
 <script>
-import { add, update, list, deleteWind,melist,stafflist } from '@/api/culture/windculture'
+import { add, update, list, deleteWind,stafflist,getDid } from '@/api/culture/windculture'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
   export default {
@@ -221,11 +236,14 @@ import { mapGetters } from 'vuex'
         multipleSelection:[],
         deleteid:[],
         melist:[],
-        stafflist:[]
+        stafflist:[],
+        options:[],
+        value:[]
       }
     },
     // 创建实例时的钩子函数
     created() {
+      this.getOption();
       this.getList()
       
       // 在创建时初始化获得部门信息
@@ -259,15 +277,6 @@ import { mapGetters } from 'vuex'
         })
        
       },
-      getMeList(){
-         this.listLoading = true
-          melist().then(response => {
-          this.melist=response;
-          console.debug(this.melist)
-          // 转圈圈结束
-          this.listLoading = false
-        })
-      },
       getStaffList(){
          this.listLoading = true
         stafflist(this.temp.wnew.mid).then(response=>{
@@ -277,6 +286,11 @@ import { mapGetters } from 'vuex'
           this.listLoading = false
         })
       },
+      getOption() {
+      getDid().then(response => {
+        this.options = response;
+      });
+    },
       resetSou(){
         this.wtitle=''
       },
@@ -289,17 +303,20 @@ import { mapGetters } from 'vuex'
           wcontent: '',
           wnew: {
             name: '',
-            sid: null
+            sid: null,
+            mid:0
           },
           sysStaff: {
             name: '',
-            sid: 0
+            sid: 0,
+            mid:0
           },
           wCreateTime:new Date(),
           status: '',
           wstatus:1,
           sid:null
         }
+        this.value=[]
 
       },
       // 显示添加的对话框
@@ -307,7 +324,6 @@ import { mapGetters } from 'vuex'
         // 重置表单数据
         this.resetTemp()
         this.xianshi()
-        this.getMeList()
         if(this.temp.wstatus===1){
           this.temp.status='创建'
         }else if(this.temp.wstatus===2){
@@ -366,6 +382,35 @@ import { mapGetters } from 'vuex'
       },
       // 显示修改对话框
       handleUpdate(row) {
+        let oldv = row.wnew.mid;
+        let sz = [];
+        this.options.filter(val => {
+          if (val.value === oldv) {
+            sz.push(val.value);
+          }else{
+            if(typeof val.children!=='undefined'){
+            val.children.filter(va=>{
+              if (va.value === oldv) {
+                sz.push(val.value);
+                sz.push(va.value);
+              } else {
+                if(typeof va.children!=='undefined'){
+                va.children.filter(v => {
+                  if (v.value === oldv) {
+                    sz.push(val.value);
+                    sz.push(va.value);
+                    sz.push(v.value);
+                  }
+                });
+                } 
+              }
+            })
+          }
+          }
+          
+        });
+        console.debug(sz)
+      this.value=sz;
         this.temp = row;
         this.xianshi()
         if((this.temp.wstatus===2||this.temp.wstatus===3)&&!this.hasPerm('wind:update')){
@@ -373,7 +418,6 @@ import { mapGetters } from 'vuex'
         this.dis2='none'
           return
       }
-        this.getMeList()
       this.getStaffList()
         if(this.temp.wstatus===1){
           this.temp.status='创建'
@@ -528,6 +572,7 @@ import { mapGetters } from 'vuex'
         this.stafflist=[]
     },
     bmChange(){
+      this.temp.wnew.mid=this.$refs["bbb"].getCheckedNodes()[0].value
       this.getStaffList()
       this.dis3='inline-block'
       this.temp.sid=null
