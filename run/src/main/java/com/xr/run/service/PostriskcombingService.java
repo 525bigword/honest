@@ -73,4 +73,10 @@ public interface PostriskcombingService extends IService<Postriskcombing> {
      * @return
      */
     List<Postriskcombing> findByPDeptIdAndPGrade(Integer pDeptId, String pGrade);
+    /**
+     * 根据pid查询
+     * @param pid
+     * @return
+     */
+    Postriskcombing findByPid(Integer pid);
 }

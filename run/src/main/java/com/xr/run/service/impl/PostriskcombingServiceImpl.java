@@ -57,4 +57,9 @@ public class PostriskcombingServiceImpl  extends ServiceImpl<PostriskcombingMapp
     public List<Postriskcombing> findByPDeptIdAndPGrade(Integer pDeptId, String pGrade) {
         return postriskcombingMapper.findByPDeptIdAndPGrade(pDeptId, pGrade);
     }
+
+    @Override
+    public Postriskcombing findByPid(Integer pid) {
+        return baseMapper.findPostriskcombingByPid(pid);
+    }
 }

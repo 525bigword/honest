@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>廉政文化</title>
+    <title>风险防控</title>
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
@@ -109,9 +109,9 @@
     <ul class="body-content list-style-none margin-center">
         <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
+        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
@@ -128,13 +128,13 @@
                 <div class="shape-circular ms-absolute">
                     <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
                 </div>
-                <span><label>廉政文化</label></span>
+                <span><label>风险防控</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><label><a>岗位风险梳理</a></label></span>
                     </li>
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
+                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/287/index.html','_self')"><label><a>流程风险梳理</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -154,15 +154,12 @@
                 <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
             </div>
         </div>
-        <hr style="background: #F7F7F7"/>
         <div>
-            <span th:text="'[文件名]：'+${dFileName}" style="color: #000000">
-            </span>&nbsp;&nbsp;&nbsp;
-            <span th:if="${dPdf}==null"><a th:href="'http://localhost:8080/uploadimg/'+${dFile}">预览</a></span>
-            <span style="border:none;background-color: white;height: 2px" th:if="${dPdf}!=null"><a th:href="'http://localhost:8080/uploadimg/'+${dPdf}">预览</a></span>
-        </div>
-        <div>
-            <label class="ms-relative" style="top:-3px;"></label>
+             <span style="color: #000000"><span style="font-size: 14px">
+                <span style="font-family: 宋体" th:utext="${content}">&nbsp;&nbsp;&nbsp;
+            </span>
+            </span>
+            </span>
         </div>
         <div>
 			  <span >
