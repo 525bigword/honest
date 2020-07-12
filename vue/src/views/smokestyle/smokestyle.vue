@@ -89,7 +89,7 @@
         </el-pagination>
       </div>
     </el-form>
-    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
           <br/>
