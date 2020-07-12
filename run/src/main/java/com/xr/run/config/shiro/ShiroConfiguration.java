@@ -6,6 +6,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -21,6 +22,8 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfiguration {
+	@Value("${server.servlet.context-path}")
+	private String path;
 	/**
 	 * Shiro的Web过滤器Factory 命名:shiroFilter
 	 */
@@ -40,23 +43,22 @@ public class ShiroConfiguration {
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
          /* 过滤链定义，从上向下顺序执行，一般将 / ** 放在最为下边:这是一个坑呢，一不小心代码就不好使了;
           authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问 */
-		filterChainDefinitionMap.put("/", "anon");
-		filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/index/**","anon");
-		filterChainDefinitionMap.put("/export","anon");
-		filterChainDefinitionMap.put("/uploadimg/**","anon");
-		filterChainDefinitionMap.put("/upload/**","anon");
-		filterChainDefinitionMap.put("/ms-mcms/**","anon");
-		filterChainDefinitionMap.put("/th/**","anon");
-		filterChainDefinitionMap.put("/nologin/**","anon");
-		filterChainDefinitionMap.put("/SysStaff/auth", "anon");
-		filterChainDefinitionMap.put("/login/logout", "anon");
-		filterChainDefinitionMap.put("/qt/**", "anon");
-		filterChainDefinitionMap.put("/error", "anon");
-		filterChainDefinitionMap.put("/demo", "anon");
-		filterChainDefinitionMap.put("/qt/**", "anon"); //责任监督、责任纪实
-		filterChainDefinitionMap.put("/moble", "anon");
-		filterChainDefinitionMap.put("/**", "authc");
+		filterChainDefinitionMap.put(path+"/", "anon");
+		filterChainDefinitionMap.put(path+"/static/**", "anon");
+		filterChainDefinitionMap.put(path+"/index/**","anon");
+		filterChainDefinitionMap.put(path+"/export","anon");
+		filterChainDefinitionMap.put(path+"/uploadimg/**","anon");
+		filterChainDefinitionMap.put(path+"/upload/**","anon");
+		filterChainDefinitionMap.put(path+"/ms-mcms/**","anon");
+		filterChainDefinitionMap.put(path+"/th/**","anon");
+		filterChainDefinitionMap.put(path+"/nologin/**","anon");
+		filterChainDefinitionMap.put(path+"/SysStaff/auth", "anon");
+		filterChainDefinitionMap.put(path+"/login/logout", "anon");
+		filterChainDefinitionMap.put(path+"/error", "anon");
+		filterChainDefinitionMap.put(path+"/demo", "anon");
+		filterChainDefinitionMap.put(path+"/qt/**", "anon"); //责任监督、责任纪实
+		filterChainDefinitionMap.put(path+"/moble", "anon");
+		filterChainDefinitionMap.put(path+"/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;
 	}

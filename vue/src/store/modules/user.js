@@ -66,7 +66,7 @@ const user = {
             return new Promise((resolve, reject) => {
                 console.log("getInfo")
                 api({
-                    url: '/SysStaff/getInfo',
+                    url: 'SysStaff/getInfo',
                     method: 'post'
                 }).then(data => {
                     console.log(data)
