@@ -1,10 +1,18 @@
 server:
   port: 8080
+  max-http-header-size: 800000
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: 8000000
 logging:
   level:
     root: debug
 logging.level.com.xr.run.dao: debug
 spring:
+  servlet:
+    multipart:
+      max-request-size: 500MB
+      max-file-size: 500MB
   mvc:
     static-path-pattern: /**
   resources:

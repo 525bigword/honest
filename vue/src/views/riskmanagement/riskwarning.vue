@@ -118,7 +118,7 @@
        >
         </quill-editor>
 <div style="font-weight: normal;margin-top:60px;margin-right:12%;float:right">
-        <span >{{TiLength}}/1000</span></div>
+        <span >{{TiLength}}/80000</span></div>
         </el-form-item>
         <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者姓名" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
@@ -418,7 +418,7 @@ import { mapGetters } from 'vuex'
        
     },
     onEditorChange(event){
-      event.quill.deleteText(1000,4)
+      event.quill.deleteText(80000,4)
       if(this.temp.wcontent===''){
         this.TiLength=0
       }else{
