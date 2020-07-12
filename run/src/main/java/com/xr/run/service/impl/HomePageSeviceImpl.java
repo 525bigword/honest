@@ -277,7 +277,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
     }
     //资料锦集更多
     private void loadDatacollection(){
-        System.out.println("-----------------destPath+\"/183/\":"+destPath+"/183/");
         createIndexHtml(destPath+"/182/184", "183/index", "index.html", null);
     }
 
@@ -313,7 +312,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
         }
         map.put("educations",educationPolitics);
     }
-
+    //岗位风险梳理更多
+    private void loadPostRiskCombing(){
+        createIndexHtml(destPath+"/195/196", "196/index", "index.html", null);
+    }
     public void loading() {
         Map<String, Object> map = new HashMap<>();
         //责任监督
@@ -328,10 +330,12 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //清风文苑更多
         loadWind();
         //资料锦集更多
-        System.out.println("执行loadDatacollection");
-        this.loadDatacollection();
+        loadDatacollection();
+        //TODO 风险防控
+        //岗位风险梳理更多
+        loadPostRiskCombing();
+        //流程风险梳理更多
         //查询前五廉政文化
-        //
         //风险防控
 
         //生成不同的RdWork

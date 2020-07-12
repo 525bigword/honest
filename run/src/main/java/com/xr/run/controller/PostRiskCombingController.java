@@ -7,18 +7,19 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSON;
 import com.xr.run.entity.*;
-import com.xr.run.service.PostriskcombingService;
-import com.xr.run.service.RiskpointassessmentService;
-import com.xr.run.service.SysMechanismService;
-import com.xr.run.service.SysPostService;
+import com.xr.run.service.*;
 import com.xr.run.util.ResponseResult;
 import com.xr.run.util.constants.Constants;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -29,7 +30,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/postRiskCombing")
 public class PostRiskCombingController {
-
+    @Value("${html.destPath}")
+    private String destPath="";
+    @Autowired
+    private StaticHtmlService staticHtmlService;
     @Autowired
     private PostriskcombingService postriskcombingService;
 
@@ -76,7 +80,7 @@ public class PostRiskCombingController {
     }
 
     @RequestMapping("add")
-    public ResponseResult addPostRiskCombing(Postriskcombing postriskcombing) {
+    public ResponseResult addPostRiskCombing(Postriskcombing postriskcombing,HttpServletRequest req, HttpServletResponse resp) {
         ResponseResult result = new ResponseResult();
         if (postriskcombing == null) {
             result.getInfo().put("message", "需要添加的数据为NULL");
@@ -115,6 +119,7 @@ public class PostRiskCombingController {
         postriskcombing.setPCreateId(userInfo.getSid());
         postriskcombing.setPStatus(1);
         postriskcombingService.addPostriskcombing(postriskcombing);
+        thymeleafPostriskcombing(postriskcombing,req,resp);
         result.getInfo().put("message", "添加成功");
         return result;
     }
@@ -167,6 +172,16 @@ public class PostRiskCombingController {
         responseResult.getInfo().put("total", list.size());
         return responseResult;
     }
+    public void thymeleafPostriskcombing(Postriskcombing postriskcombing, HttpServletRequest req, HttpServletResponse resp){
+        ModelAndView modelAndView=new ModelAndView();
+        Postriskcombing postrisk = postriskcombingService.findByPid(postriskcombing.getPid());
+        modelAndView.addObject("content",postrisk.getPRiskPointDescription());
+        modelAndView.addObject("title",postrisk.getPProject());
+        modelAndView.addObject("time", postrisk.getPCreateTime());
+        modelAndView.addObject("name", postrisk.getPCreateName());
+        modelAndView.setViewName("196/Info");
+        staticHtmlService.genHtmlPage(destPath+"\\195\\196\\",modelAndView,req,resp,postriskcombing.getPid()+"");
 
+    }
 
 }
