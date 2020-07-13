@@ -32,9 +32,9 @@ select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,r
     <insert id="addreport" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
         insert into dcp_report(reportType,report,newTime,eid,status,url,typeconcrete) values(#{reportType},#{report},#{newTime},#{sid},#{status},#{url},#{typeconcrete})
     </insert>
-    <delete id="delReport" parameterType="Integer">
+    <update id="delReport" parameterType="Integer">
         update  dcp_report set status=-1 where id=#{id}
-    </delete>
+    </update>
     <update id="gxpost" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
         update dcp_report set reportType=#{reportType},report=#{report},url=#{url},typeconcrete=#{typeconcrete} where id=#{id}
     </update>

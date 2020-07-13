@@ -30,9 +30,9 @@
         update rd_entity_responsibility set title=#{title},content=#{content} where id=#{id}
     </update>
     <!--按序号删除工作计划-->
-    <delete id="del" parameterType="Integer">
-        update rd_entity_responsibility set staus!=-1 where id=#{id}
-    </delete>
+    <update id="del" parameterType="Integer">
+        update rd_entity_responsibility set staus=-1 where id=#{id}
+    </update>
     <!--提交审核-->
     <update id="subaudit">
         update rd_entity_responsibility set staus=1 where id=#{id}

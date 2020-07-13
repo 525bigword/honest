@@ -112,9 +112,9 @@
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
           <template slot-scope="scope" >
             <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(hasPerm('letter:firstaudit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:zbaudit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
-            <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==2" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+          <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:zbaudit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+          <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
 
           </template>
         </el-table-column>
@@ -141,8 +141,8 @@
           <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="hasPerm('letter:firstaudit')&& userInfo.lstatus==1" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="hasPerm('letter:sencondadudit')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
           <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="hasPerm('letter:zbaudit') && userInfo.lstatus==3" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="hasPerm('letter:leadersign') && userInfo.lstatus==2"v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="hasPerm('letter:groupsign') && userInfo.lstatus==2"  v-bind:style="{display:xqbc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="hasPerm('letter:leadersign') && userInfo.lstatus==2"v-bind:style="{display:xqbc}">局领导意见确认</el-button>
+          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="hasPerm('letter:groupsign') && userInfo.lstatus==2"  v-bind:style="{display:xqbc}">纪检组长意见确认</el-button>
           <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
@@ -161,14 +161,14 @@
                        :props="props"
                        :options="options_cascader"
                        :expandTrigger="'hover'"
-                       clearable v-model="userInfo.deptname"   style="width: 300px" :disabled="hasPerm('letter:sencondadudit')? false:'disabled'"></el-cascader>
+                       clearable v-model="userInfo.deptname"   style="width: 300px" :disabled="hasPerm('letter:sencondadudit') && userInfo.lstatus==2? false:'disabled'"></el-cascader>
         </el-form-item>
           <br />
         <el-form-item label="来访人姓名">
           <el-input v-model="userInfo.lcomplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
         </el-form-item>
           <el-form-item label="被反映人姓名" prop="lpersonBeReported">
-            <el-select v-model="userInfo.lpersonBeReported"  placeholder="请选择被反映人姓名" style="width: 300px">
+            <el-select v-model="userInfo.lpersonBeReported"  placeholder="请选择被反映人姓名" style="width: 300px" :disabled= "userInfo.lstatus==null?false:'disabled'">
               <el-option
                 v-for="item in optionss"
                 :key="item.sid"
@@ -186,14 +186,14 @@
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                         clearable v-model="userInfo.lpbrDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
+                         clearable v-model="userInfo.lpbrDeptId" @change="handleItemChange"  style="width: 300px" :disabled= "userInfo.lstatus==null?false:'disabled'"></el-cascader>
           </el-form-item>
           <br/>
           <el-form-item label="来访人岗位/职务">
             <el-input v-model="userInfo.lpostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人岗位/职务" prop="lpbrPostId">
-            <el-select v-model="userInfo.lpbrPostId"  placeholder="请选择被反映人岗位/职务" style="width: 300px" @change="change" >
+            <el-select v-model="userInfo.lpbrPostId"  placeholder="请选择被反映人岗位/职务" style="width: 300px" @change="change" :disabled= "userInfo.lstatus==null?false:'disabled'" >
               <el-option
                 v-for="item in options"
                 :key="item.pid"
@@ -204,11 +204,11 @@
           </el-form-item>
           <br/>
           <el-form-item label="原始信访内容" prop="lcontent">
-            <el-input type="textarea" v-model="userInfo.lcontent" placeholder="请输入原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
+            <el-input type="textarea" v-model="userInfo.lcontent" placeholder="请输入原始信访内容" :rows=8 style="width: 840px;" :disabled= "userInfo.lstatus==null?false:'disabled'" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="信访内容摘要"  v-bind:style="{display:nrzy}" >
-            <el-input type="textarea" v-bind:disabled="sfjc" v-model="userInfo.lsynopsis" placeholder="请输入信访内容摘要" style="width: 840px;"  ></el-input>
+            <el-input type="textarea" :disabled= "userInfo.lstatus==1?false:'disabled'"  v-model="userInfo.lsynopsis" placeholder="请输入信访内容摘要" style="width: 840px;" :rows=8 ></el-input>
           </el-form-item>
           <br/>
 
@@ -429,10 +429,10 @@ this.userInfo={}
       if (cellValue == 0){
         return '创建';
       }else if (cellValue == 1){
-        return '待审';
+        return '初审';
       }
       else if(cellValue==2){
-        return '审核中'
+        return '二审'
       }
       else if(cellValue==3){
         return '转办'
@@ -476,7 +476,8 @@ else {
 
         if(checkedNodes[0]!=undefined){
           this.userInfo.lpbrDeptId=value
-        //  console.log('checkedNodes label'+checkedNodes[0].label)
+        console.debug('checkedNodes value'+checkedNodes[0].value)
+          console.debug('lpbrDeptID'+this.userInfo.lpbrDeptId)
           let postdata=qs.stringify({
             mid:checkedNodes[0].value
           })
@@ -588,6 +589,16 @@ else {
         setTimeout(() => {
           this.isShowAddressInfo = true;
       }, 10);
+   /*     let postdata=qs.stringify({
+          mid:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
+        })
+        initdept(postdata).then((response)=>{
+
+          this.options = response.list
+
+          //  console.log('职务'+JSON.stringify(response))
+
+        })*/
       },//详情
       details(index, row) {
         this.nrzy=''//内容摘要显示
@@ -601,7 +612,7 @@ else {
         }
 
         this.userInfo=row
-       // console.log('测试',row.puni.split(',').map(Number))
+        console.log('测试',row.puni.split(',').map(Number))
         this.userInfo.lpbrDeptId = row.puni.split(',').map(Number)
         this.isShowAddressInfo = false;
         // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
@@ -609,17 +620,12 @@ else {
           this.isShowAddressInfo = true;
       }, 10);
 
-
-          let postdata=qs.stringify({
-            id:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
-          })
+       /* let postdata=qs.stringify({
+          mid:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
+        })
         initdept(postdata).then((response)=>{
 
-          this.options = response.list
-
-       // console.log('职务'+JSON.stringify(response))
-
-      })
+            this.options = response.list
         let postsdata=qs.stringify({
           ppid:this.userInfo.lpbrPostId
         })
@@ -629,7 +635,7 @@ else {
 
        // console.log('职务'+JSON.stringify(response))
 
-      })
+      })*/
 
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
