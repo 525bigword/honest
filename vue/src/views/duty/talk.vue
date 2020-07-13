@@ -163,6 +163,7 @@
               <el-option label="党员" value="党员"></el-option>
               <el-option label="团员" value="团员"></el-option>
               <el-option label="群众" value="群众"></el-option>
+              <el-option label="其他" value="其他"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="谈话对象职务" prop="duty">

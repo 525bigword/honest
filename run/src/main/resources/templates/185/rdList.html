@@ -108,11 +108,11 @@
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
         <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//207/index.html','_blank')"><a>监督责任</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
 <script type="text/javascript">
@@ -162,18 +162,12 @@
         </div>
         <div>
              <span style="color: #000000"><span style="font-size: 14px">
-                <span style="font-family: 宋体" th:text="${rdWorkVo.content}">&nbsp;&nbsp;&nbsp;
+                <span style="font-family: 宋体" th:utext="${rdWorkVo.content}">&nbsp;&nbsp;&nbsp;
             </span>
             </span>
             </span>
         </div>
         <div>
-			  <span >
-                  <a th:if="${rdWorkVo.prev != null}" th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVo.type}+'/'+${rdWorkVo.prev}+'.html'">上一篇</a>&nbsp;&nbsp;
-			  <label th:if="${rdWorkVo.prev != null&&rdWorkVo.next!= null}"  class="ms-relative" style="top:-3px;">|</label>
-			  &nbsp;&nbsp;<a th:if="${rdWorkVo.next != null}" th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVo.type}+'/'+${rdWorkVo.next}+'.html'">下一篇</a>
-              </span>
-
             <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
         </div>
     </div>

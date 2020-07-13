@@ -37,6 +37,12 @@ public class RiskVo implements Serializable {
     private Date createTime; //时间
     private String cname;//姓名
 
+    private Integer next;
+
+    private Integer prev;
+
+    private Integer type; //状态
+
 
 
 

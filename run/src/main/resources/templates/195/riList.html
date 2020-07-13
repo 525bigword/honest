@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <title>风险防控</title>
@@ -108,11 +107,11 @@
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
         <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//207/index.html','_blank')"><a>监督责任</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
 <script type="text/javascript">
@@ -131,10 +130,10 @@
                 <span><label>风险防控</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><label><a>岗位风险梳理</a></label></span>
+                        <span th:class="${riskVo.type==0}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/195/0/index.html" >岗位风险梳理</a></label></span>
                     </li>
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/287/index.html','_self')"><label><a>流程风险梳理</a></label></span>
+                        <span th:class="${riskVo.type==1}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/195/1/index.html" >流程风险梳理</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -145,30 +144,26 @@
 
         <div>
             <div>
-                <label th:text="${title}"></label>
+                <label th:text="${riskVo.project}"></label>
             </div>
             <div>
-                <span>上传者：<label th:text="${name}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>来源：<label ></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${time}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
+                <span>上传者：<label th:text="${riskVo.cname}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
+<!--
+                <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/277/hit.do'></script></label></span>
+-->
             </div>
         </div>
         <div>
-             <span style="color: #000000"><span style="font-size: 14px">
-                <span style="font-family: 宋体" th:utext="${content}">&nbsp;&nbsp;&nbsp;
-            </span>
-            </span>
-            </span>
+            <p>
+	           <span style="font-size: 14px"><span style="color: #000000">
+                   <span style="font-family: 宋体" th:utext="${riskVo.description}">　　
+
+                  </span></span></span><br />
         </div>
         <div>
-			  <span >
-                  <a  >上一篇</a>&nbsp;&nbsp;
-			  <label   class="ms-relative" style="top:-3px;">|</label>
-			  &nbsp;&nbsp;<a  >下一篇</a>
-              </span>
 
-            <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
+             <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
         </div>
     </div>
 </div>
@@ -176,6 +171,5 @@
 <div class="footer max-width margin-center">
     主 管：湘潭市烟草专卖局 主 办：湘潭市烟草专卖局纪检监察科<br/>
     版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
-</div>
-</body>
+</div>	</body>
 </html>

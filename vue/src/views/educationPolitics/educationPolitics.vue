@@ -97,7 +97,7 @@
         </el-pagination>
       </div>
     </el-form>
-    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
       <el-main>      <el-form :inline="true" :model="userInfo" :rules="rules" ref="ruleForm" class="demo-form-inline" label-width="220px">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
           <br/>
@@ -129,7 +129,7 @@
             <el-date-picker v-model="userInfo.createTime" type="datetime" placeholder="请选择资讯发布时间" style="width: 300px"></el-date-picker>
           </el-form-item>
           <el-form-item label="资讯内容" prop="content">
-            <quill-editor v-model="userInfo.content" placeholder="资讯内容" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" ></quill-editor>
+            <quill-editor v-model="userInfo.content" placeholder="资讯内容" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 550px; margin-bottom: 80px" ></quill-editor>
           </el-form-item>
 
 

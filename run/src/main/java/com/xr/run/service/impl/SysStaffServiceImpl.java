@@ -22,10 +22,12 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
 @Service
+@CrossOrigin(allowCredentials="true")
 public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> implements SysStaffService {
     @Autowired
     private SysPermissionService sysPermissionService;
@@ -35,6 +37,7 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     private DatacollectionMapper datacollectionMapper;
     @Autowired
     private WindMapper windMapper;
+
     @Override
     public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid) {
         IPage<SysStaff> sysStaffAll=null;
@@ -89,7 +92,8 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     public JSONObject getInfo() {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
-        SysStaff userInfo = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
+        System.out.println(session.getId());
+        SysStaff userInfo = (SysStaff) SecurityUtils.getSubject().getSession().getAttribute(Constants.SESSION_USER_INFO);
         String username = userInfo.getUsername();
         JSONObject info = new JSONObject();
         JSONObject userPermission = sysPermissionService.getUserPermission(username);

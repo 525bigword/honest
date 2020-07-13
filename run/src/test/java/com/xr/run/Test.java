@@ -10,7 +10,6 @@
  */
 package com.xr.run;
 
-import com.xr.run.service.HomePageSevice;
 import com.xr.run.service.impl.HomePageSeviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

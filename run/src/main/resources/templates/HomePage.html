@@ -397,7 +397,7 @@
     <div class="left-content">
         <div class="ms-title title-model">
             <h5>廉政教育</h5>
-            <a href="http://localhost:4031/ms-mcms/html/2/181/index.html" target="_blank">更多</a>
+            <a th:if="${educations[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/181/index.html" target="_blank">更多</a>
         </div>
         <div class="ms-news">
             <div class="slideBox">
@@ -411,7 +411,7 @@
                     </ul>
                 </div>
                 <div class="bd">
-                    <ul class="list-style-none">
+                    <ul th:if="${educations[0].content!=''}" class="list-style-none">
                         <li>
                             <a href="http://localhost:4031/ms-mcms/html/2/211/283.html" target="_blank">
                                 <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png"/>
@@ -443,11 +443,11 @@
             </div>
             <div>
                 <h5 class="ms-text-ellipsis">
-                    <a href="http://localhost:4031/ms-mcms/html/2/181/193/294.html" target="_blank" th:text="${educations[0].title}"> </a>
+                    <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${educations[0].id}+'.html'" target="_blank" th:text="${educations[0].title}"> </a>
                 </h5>
                 <ul class="new-all">
                     <li th:each="edu:${educations}">
-                        <a href="http://localhost:4031/ms-mcms/html/2/181/226.html" th:text="${edu.title}" target="_blank"></a>
+                        <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${edu.id}+'.html'" th:text="${edu.title}" target="_blank"></a>
                         <span th:text="${#dates.format(edu.createTime,'MM-dd')}"></span>
                     </li>
                 </ul>
@@ -513,15 +513,15 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>责任纪实</h5>
-                <a href="http://localhost:4031/ms-mcms/html/2/185/index.html" target="_blank">更多</a>
+                <a th:if="${rdWorkVos[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/185/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img src="http://localhost:4031/ms-mcms//upload/1//article/3.jpg" alt="">
+                <img th:if="${rdWorkVos[0].content!=''}" src="http://localhost:4031/ms-mcms/upload/1/article/3.jpg" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${rdWorkVos[0].title}"></span>
                     <div class="content">
-                        <label th:text="${#strings.abbreviate(rdWorkVos[0].content,30)}"></label>
-                        <a th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVos[0].type}+'/'+${rdWorkVos[0].id}+'.html'"
+                        <label th:text="${#strings.abbreviate(rdContent,30)}" ></label>
+                        <a th:if="${rdWorkVos[0].content!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rdWorkVos[0].type}+'/'+${rdWorkVos[0].id}+'.html'"
                            target="_blank">详情>></a>
                     </div>
 
@@ -540,21 +540,21 @@
 
             <div class="title-model">
                 <h5>风险防控</h5>
-                <a href="http://localhost:4031/ms-mcms/html/2/195/index.html" target="_blank">更多</a>
+                <a th:if="${riskVos[0].description!=''}" href="http://localhost:4031/ms-mcms/html/2/195/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img src="http://localhost:4031/ms-mcms/upload/1/article/2.jpg" alt="">
+                <img  th:if="${riskVos[0].description!=''}" src="http://localhost:4031/ms-mcms/upload/1/article/2.jpg" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${riskVos[0].project}"></span>
                     <div class="content">
-                        <label th:text="${#strings.abbreviate(riskVos[0].description,50)}"></label>
-                        <a href="http://localhost:4031/ms-mcms/html/2/195/196/279.html" target="_blank">详情>></a>
+                        <label th:text="${#strings.abbreviate(riContent,30)}" th:inline="text"></label>
+                        <a th:if="${riskVos[0].description!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/195/'+${riskVos[0].type}+'/'+${riskVos[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="risk:${riskVos}">
-                    <a th:text="${risk.project}" href="http://localhost:4031/ms-mcms/html/2/195/196/277.html" target="_blank"></a>
+                    <a th:text="${risk.project}" th:href="'http://localhost:4031/ms-mcms/html/2/195/'+${risk.type}+'/'+${risk.id}+'.html'" target="_blank"></a>
                     <span th:text="${#dates.format(risk.createTime,'MM-dd')}"></span>
                 </li>
             </ul>
@@ -562,7 +562,7 @@
     </div>
     <div class="right-content ms-absolute picture-list">
         <div><img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/justice.png" alt="一身正气"></div>
-        <div><a name="lettersVisits" href="http://localhost:9520/userReport" target="_blank"><img
+        <div><a name="lettersVisits" href="http://localhost:9521/userReport" target="_blank"><img
                 src="http://localhost:4031/ms-mcms/templets/1/yancao/images/complaint-reporting.png" alt="信访入口"></a>
         </div>
     </div>
@@ -572,15 +572,15 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>监督责任</h5>
-                <a href="http://localhost:4031/ms-mcms/html/2/207/index.html" target="_blank">更多</a>
+                <a href="http://localhost:4031/ms-mcms/html/2/207/index.html" th:if="${supervise[0].DutyContent!=''}" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/dandelion.png" alt="">
+                <img th:if="${supervise[0].DutyContent!=''}" src="http://localhost:4031/ms-mcms/templets/1/yancao/images/dandelion.png" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${supervise[0].DutyTitle}"></span>
                     <div class="content">
-                        <label th:text="${#strings.abbreviate(supervise[0].DutyContent,50)}"></label>
-                        <a href="http://localhost:4031/ms-mcms/html/2/207/289.html" target="_blank">详情>></a>
+                        <label th:text="${#strings.abbreviate(duContent,30)}" th:inline="text"></label>
+                        <a th:if="${supervise[0].DutyContent!=''}" href="http://localhost:4031/ms-mcms/html/2/207/289.html" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
@@ -597,20 +597,20 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>纪检报表</h5>
-                <a href="http://localhost:4031/ms-mcms/html/2//189/index.html" target="_blank">更多</a>
+                <a th:if="${reports[0].report!=''}" href="http://localhost:4031/ms-mcms/html/2//189/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/meeting.png" alt="">
+                <img th:if="${reports[0].report!=''}" src="http://localhost:4031/ms-mcms/templets/1/yancao/images/meeting.png" alt="">
                 <div>
-                    <span class="title ms-text-ellipsis" th:text="${reports[0].report}" ></span>
+                    <span class="title ms-text-ellipsis"  th:text="${#strings.abbreviate(reports[0].report,30)}" ></span>
                     <div class="content">
-                        <a href="http://localhost:4031/ms-mcms/html/2/189/225.html" target="_blank">详情>></a>
+                        <a th:if="${reports[0].report!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/189/'+${reports[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="re:${reports}">
-                    <a href="http://localhost:4031/ms-mcms/html/2/189/225.html" target="_blank" th:text="${re.report}">
+                    <a th:href="'http://localhost:4031/ms-mcms/html/2/189/'+${re.id}+'.html'" target="_blank" th:text="${re.report}">
 
                     </a>
                     <span th:text="${#dates.format(re.newTime,'MM-dd')}"></span>
@@ -691,6 +691,9 @@
 
 </html>
 <script id="jsID" type="text/javascript">
+    function delHtmlTag(str){
+        return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
+    }
     jQuery(".slideBox").slide({mainCell: ".bd ul", autoPlay: true});
     var indexVue = new Vue({
         el: '#indexForm',

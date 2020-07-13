@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DcpReportMapper extends BaseMapper<DcpReport> {
-    @Select("select id,ReportType,report,NewTime,eid,`status`,url from dcp_report where `status`<>-1  and  report like CONCAT('%',#{report},'%') order by id desc")
+    @Select("select dr.id,dr.ReportType,dr.report,dr.NewTime,dr.eid,dr.`status`,dr.url,ss.name as cname from dcp_report dr inner join sys_staff ss on dr.eid = ss.sid  where `status`<>-1  and  report like CONCAT('%',#{report},'%') order by id desc")
     @Results({
             @Result(column = "eid",property = "eid"),
             @Result(column = "eid",property = "sysStaff",

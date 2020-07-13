@@ -45,7 +45,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
     @Value("${html.destPath}")
     private String destPath;
 
-    public void a(){
+    public void a() {
         System.out.println(destPath);
     }
 
@@ -77,227 +77,181 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
     //廉政教育
     @Autowired
-    private EducationPoliticsMapper  educationPoliticsMapper;
+    private EducationPoliticsMapper educationPoliticsMapper;
 
     //纪检报表
     @Autowired
     private DcpReportMapper dcpReportMapper;
 
 
-   //查询前五的责任监督
-   public void loadDuty(Map map){
-       Map<String, Object> mo = new HashMap<>();
-       List<SpvDuty> spvDuties = spvDutyMapper.findSpvDutyTopFive();
-       List<SpvDuty> list0 = new ArrayList<>();
-       int i0 = 0;
-       for (SpvDuty su : spvDuties) {
-           //去除html标签
-           String s = CommonUtil.delHTMLTag(su.getDutyContent());
-           su.setDutyContent(s);
-           list0.add(su);
-           mo.put("DutyTitle", su.getDutyTitle()); //标题
-           mo.put("DutyContent", su.getDutyContent()); //内容
-           createIndexHtml(destPath + "/207/", "207/suList", (289 + i0) + ".html", mo);
-           i0++;
-       }
-       map.put("supervise", list0);
-       //return map;
-   }
+    //查询前五的责任监督
+    public void loadDuty(Map map) {
+        Map<String, Object> mo = new HashMap<>();
+        List<SpvDuty> spvDuties = spvDutyMapper.findSpvDutyTopFive();
+        List<SpvDuty> list0 = new ArrayList<>();
+        int i0 = 0;
+        for (SpvDuty su : spvDuties) {
+            //去除html标签
+            list0.add(su);
+            mo.put("DutyTitle", su.getDutyTitle()); //标题
+            mo.put("DutyContent", su.getDutyContent()); //内容
+            createIndexHtml(destPath + "/207/", "207/suList", (289 + i0) + ".html", mo);
+            i0++;
+        }
+        if (list0.size() == 0) {
+            SpvDuty spvDuty = new SpvDuty();
+            spvDuty.setDutyContent("");
+            list0.add(spvDuty);
+        } else {
+            String s = CommonUtil.delHTMLTag(list0.get(0).getDutyContent());//去除标签
+            map.put("duContent", s);
+        }
+        map.put("supervise", list0);
+        //return map;
+    }
 
-   //责任纪实
-   public void loadRdWork(Map map){
-       //工作计划
-       List<RdWorkPlan> rdWorkPlans = rdWorkPlanMapper.findRdWorkPlanAll("");
+    //责任纪实
+    public void loadRdWork(Map map) {
+        //工作计划
+        List<RdWorkPlan> rdWorkPlans = rdWorkPlanMapper.findRdWorkPlanAll("");
         //工作部署
-       List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentAll("");
-       //廉政谈话
-       List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll("");
-       //主体责任
-       List<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityMapper.findRdEntityResponsibilityAll("");
+        List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentAll("");
+        //廉政谈话
+        List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll("");
+        //主体责任
+        List<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityMapper.findRdEntityResponsibilityAll("");
 
-       List<RdWorkVo> list1 = new ArrayList<>();
+        List<RdWorkVo> list1 = new ArrayList<>();
 
-       //将查询出来数据存在list1，按照时间降序进行排序
-       //工作计划
-       int i1 = 0;
-       for (RdWorkPlan rdWorkPlan : rdWorkPlans) {
-           //去除html标签
-           String s = CommonUtil.delHTMLTag(rdWorkPlan.getContent());
-           rdWorkPlan.setContent(s);
-           RdWorkVo rdWorkVo = new RdWorkVo();
-           rdWorkVo.setContent(rdWorkPlan.getContent());
-           rdWorkVo.setTitle(rdWorkPlan.getTitle());
-           rdWorkVo.setCreateTime(rdWorkPlan.getCreateTime());
-           rdWorkVo.setType(0);
-           rdWorkVo.setId(rdWorkPlan.getRdid());
-           rdWorkVo.setName(rdWorkPlan.getName());
-
-           Map map1 = new HashMap();
-           for (int i = 0; i < rdWorkPlans.size(); i++) {
-               if(rdWorkVo.getId()==rdWorkPlans.get(i).getRdid()){
-                   //下一页
-                   if(i<rdWorkPlans.size()-1){
-                       rdWorkVo.setNext(rdWorkPlans.get(i+1).getRdid());
-                   }
-                   //上一页
-                   if(i>0){
-                       rdWorkVo.setPrev(rdWorkPlans.get(i-1).getRdid());
-                   }
-               }
-               //工作计划
-               map1.put("rdWorkVo", rdWorkVo);
-           }
-           list1.add(rdWorkVo);
-           createIndexHtml(destPath + "/185/0/", "185/rdList", rdWorkVo.getId() + ".html", map1);
-           i1++;
-       }
+        //将查询出来数据存在list1，按照时间降序进行排序
+        //工作计划
+        for (RdWorkPlan rdWorkPlan : rdWorkPlans) {
+            //去除html标签
+            RdWorkVo rdWorkVo = new RdWorkVo();
+            rdWorkVo.setContent(rdWorkPlan.getContent());
+            rdWorkVo.setTitle(rdWorkPlan.getTitle());
+            rdWorkVo.setCreateTime(rdWorkPlan.getCreateTime());
+            rdWorkVo.setType(0);
+            rdWorkVo.setId(rdWorkPlan.getRdid());
+            rdWorkVo.setName(rdWorkPlan.getName());
+            list1.add(rdWorkVo);
+        }
 
 
-       int i2 = 0;
-       //工作部署
-       for (RdWorkDeployment rdWorkDeployment : rdWorkDeployments) {
-           //去除html标签
-           String s = CommonUtil.delHTMLTag(rdWorkDeployment.getContent());
-           rdWorkDeployment.setContent(s);
-           RdWorkVo rdWorkVo = new RdWorkVo();
-           rdWorkVo.setContent(rdWorkDeployment.getContent());
-           rdWorkVo.setTitle(rdWorkDeployment.getTitle());
-           rdWorkVo.setCreateTime(rdWorkDeployment.getCreateTime());
-           rdWorkVo.setType(1);
-           rdWorkVo.setId(rdWorkDeployment.getId());
-           rdWorkVo.setName(rdWorkDeployment.getName());
-           Map map1 = new HashMap();
-           for (int i = 0; i < rdWorkDeployments.size(); i++) {
-               if(rdWorkDeployment.getId()==rdWorkDeployments.get(i).getId()){
-                   //下一页
-                   if(i<rdWorkDeployments.size()-1){
-                       rdWorkVo.setNext(rdWorkDeployments.get(i+1).getId());
-                   }
-                   //上一页
-                   if(i>0){
-                       rdWorkVo.setPrev(rdWorkDeployments.get(i-1).getId());
-                   }
-               }
-               //工作部署
-               map1.put("rdWorkVo", rdWorkVo);
-           }
-           list1.add(rdWorkVo);
-           createIndexHtml(destPath + "/185/1/", "185/rdList", rdWorkVo.getId() + ".html", map1);
-           i2++;
-       }
-       int i3 = 0;
-       //廉政谈话
-       for (RdHonestConversation rdHonestConversation : rdHonestConversations) {
-           //去除html标签
-           String s = CommonUtil.delHTMLTag(rdHonestConversation.getContent());
-           rdHonestConversation.setContent(s);
-           RdWorkVo rdWorkVo = new RdWorkVo();
-           rdWorkVo.setContent(rdHonestConversation.getContent());
-           rdWorkVo.setTitle(rdHonestConversation.getSyllabus());
-           rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
-           rdWorkVo.setType(2);
-           rdWorkVo.setId(rdHonestConversation.getId());
-           rdWorkVo.setName(rdHonestConversation.getName());
-           Map map1 = new HashMap();
-           for (int i = 0; i < rdHonestConversations.size(); i++) {
-               if(rdHonestConversation.getId()==rdHonestConversations.get(i).getId()){
-                   //下一页
-                   if(i<rdHonestConversations.size()-1){
-                       rdWorkVo.setNext(rdHonestConversations.get(i+1).getId());
-                   }
-                   //上一页
-                   if(i>0){
-                       rdWorkVo.setPrev(rdHonestConversations.get(i-1).getId());
-                   }
+        //工作部署
+        for (RdWorkDeployment rdWorkDeployment : rdWorkDeployments) {
+            //去除html标签
+            RdWorkVo rdWorkVo = new RdWorkVo();
+            rdWorkVo.setContent(rdWorkDeployment.getContent());
+            rdWorkVo.setTitle(rdWorkDeployment.getTitle());
+            rdWorkVo.setCreateTime(rdWorkDeployment.getCreateTime());
+            rdWorkVo.setType(1);
+            rdWorkVo.setId(rdWorkDeployment.getId());
+            rdWorkVo.setName(rdWorkDeployment.getName());
+            list1.add(rdWorkVo);
+            if (list1.size() == 0) {
+                RdWorkVo rdWorkVo1 = new RdWorkVo();
+                rdWorkVo1.setContent("");
+                list1.add(rdWorkVo1);
+            }
+        }
+        //廉政谈话
+        for (RdHonestConversation rdHonestConversation : rdHonestConversations) {
+            //去除html标签
+            RdWorkVo rdWorkVo = new RdWorkVo();
+            rdWorkVo.setContent(rdHonestConversation.getContent());
+            rdWorkVo.setTitle(rdHonestConversation.getSyllabus());
+            rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
+            rdWorkVo.setType(2);
+            rdWorkVo.setId(rdHonestConversation.getId());
+            rdWorkVo.setName(rdHonestConversation.getName());
+            list1.add(rdWorkVo);
+        }
+        //主体责任
+        for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities) {
+            //去除html标签
 
-               }
-               //廉政谈话*/
-               map1.put("rdWorkVo", rdWorkVo);
-           }
-           list1.add(rdWorkVo);
-           createIndexHtml(destPath + "/185/2/", "185/rdList", rdWorkVo.getId() + ".html", map1);
-           i3++;
-       }
-       int i4 = 0;
-       //主体责任
-       for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities) {
-           //去除html标签
-           String s = CommonUtil.delHTMLTag(rdEntityResponsibility.getContent());
-           rdEntityResponsibility.setContent(s);
-           RdWorkVo rdWorkVo = new RdWorkVo();
-           rdWorkVo.setContent(rdEntityResponsibility.getContent());
-           rdWorkVo.setTitle(rdEntityResponsibility.getTitle());
-           rdWorkVo.setCreateTime(rdEntityResponsibility.getCreateTime());
-           rdWorkVo.setType(3);
-           rdWorkVo.setId(rdEntityResponsibility.getId());
-           rdWorkVo.setName(rdEntityResponsibility.getName());
-           Map map1 = new HashMap();
-           //分页问题
-           for (int i = 0; i < rdEntityResponsibilities.size(); i++) {
-               if(rdWorkVo.getId()==rdEntityResponsibilities.get(i).getId()){
-                   //下一页
-                   if(i<rdEntityResponsibilities.size()-1){
-                       rdWorkVo.setNext(rdEntityResponsibilities.get(i+1).getId());
-                   }
-                   //上一页
-                   if(i>0){
-                       rdWorkVo.setPrev(rdEntityResponsibilities.get(i-1).getId());
-                   }
-               }
-               //主体责任
-               map1.put("rdWorkVo", rdWorkVo);
-           }
-           list1.add(rdWorkVo);
-           createIndexHtml(destPath + "/185/3/", "185/rdList", rdWorkVo.getId() + ".html", map1);
-           i4++;
-       }
+            RdWorkVo rdWorkVo = new RdWorkVo();
+            rdWorkVo.setContent(rdEntityResponsibility.getContent());
+            rdWorkVo.setTitle(rdEntityResponsibility.getTitle());
+            rdWorkVo.setCreateTime(rdEntityResponsibility.getCreateTime());
+            rdWorkVo.setType(3);
+            rdWorkVo.setId(rdEntityResponsibility.getId());
+            rdWorkVo.setName(rdEntityResponsibility.getName());
 
-       listSort(list1);
-       if(list1.size()<5) {
-           list1 = list1.subList(0, list1.size());
-       }else{
-           list1 = list1.subList(0, 5);
-       }
-       map.put("rdWorkVos", list1);
-   }
+            list1.add(rdWorkVo);
+
+        }
+        listSort(list1);
+        if (list1.size() != 0) {
+            String s = CommonUtil.delHTMLTag(list1.get(0).getContent());//去除标签
+            map.put("rdContent", s);
+            if (list1.size() > 0 && list1.size() < 5) {
+                list1 = list1.subList(0, list1.size());
+            } else {
+                list1 = list1.subList(0, 5);
+            }
+            for (RdWorkVo rdWorkVo : list1) {
+                Map map1 = new HashMap();
+                map1.put("rdWorkVo", rdWorkVo);
+                if(rdWorkVo.getType()==0) {
+                    createIndexHtml(destPath + "/185/0/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                }else if(rdWorkVo.getType()==1){
+                    createIndexHtml(destPath + "/185/1/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                }else if(rdWorkVo.getType()==2){
+                    createIndexHtml(destPath + "/185/2/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                }else{
+                    createIndexHtml(destPath + "/185/3/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                }
+            }
+        } else {
+            RdWorkVo rdWorkVo = new RdWorkVo();
+            rdWorkVo.setContent("");
+            list1.add(rdWorkVo);
+        }
+        map.put("rdWorkVos", list1);
+    }
 
 
     //获得更多责任监督
-    private void getMoreDuty(){
-       createIndexHtml(destPath+"/207/", "207/index", "index.html", null);
+    private void getMoreDuty() {
+        createIndexHtml(destPath + "/207/", "207/index", "index.html", null);
     }
 
     private void getMoreRdWork() {
-        createIndexHtml(destPath+"/185/", "185/index", "index.html", null);
+        createIndexHtml(destPath + "/185/", "185/index", "index.html", null);
     }
-    //清风文苑更多
-    private void loadWind(){
 
-        createIndexHtml(destPath+"/182/", "182/index", "index.html", null);
+    //清风文苑更多
+    private void loadWind() {
+
+        createIndexHtml(destPath + "/182/", "182/index", "index.html", null);
     }
+
     //资料锦集更多
-    private void loadDatacollection(){
-        createIndexHtml(destPath+"/182/184", "183/index", "index.html", null);
+    private void loadDatacollection() {
+        System.out.println("-----------------destPath+\"/183/\":" + destPath + "/183/");
+        createIndexHtml(destPath + "/182/184", "183/index", "index.html", null);
     }
 
     //生成不同的RdWork
     private void getDifferentRdWord() {
         //工作计划
         Map map0 = new HashMap();
-        map0.put("type",0);
-        createIndexHtml(destPath+"/185/0/", "185/indexIn", "index.html", map0);
+        map0.put("type", 0);
+        createIndexHtml(destPath + "/185/0/", "185/indexIn", "index.html", map0);
         //工作部署
         Map map1 = new HashMap();
-        map1.put("type",1);
-        createIndexHtml(destPath+"/185/1/", "185/indexIn", "index.html", map1);
+        map1.put("type", 1);
+        createIndexHtml(destPath + "/185/1/", "185/indexIn", "index.html", map1);
         //廉政谈话
         Map map2 = new HashMap();
-        map2.put("type",2);
-        createIndexHtml(destPath+"/185/2/", "185/indexIn", "index.html", map2);
+        map2.put("type", 2);
+        createIndexHtml(destPath + "/185/2/", "185/indexIn", "index.html", map2);
         //主体责任
         Map map3 = new HashMap();
-        map3.put("type",3);
-        createIndexHtml(destPath+"/185/3/", "185/indexIn", "index.html", map3);
+        map3.put("type", 3);
+        createIndexHtml(destPath + "/185/3/", "185/indexIn", "index.html", map3);
     }
 
 
@@ -305,17 +259,18 @@ public class HomePageSeviceImpl implements HomePageSevice {
     private void loadEducation(Map map) {
         //查找
         List<EducationPolitics> educationPolitics = educationPoliticsMapper.findAllEducationsTopNine();
-        for (EducationPolitics educations : educationPolitics) {
-            //去除html标签
-            String s = CommonUtil.delHTMLTag(educations.getContent());
-            educations.setContent(s);
+        for (EducationPolitics education : educationPolitics) {
+            Map map1 = new HashMap();
+            map1.put("education", education);
+            createIndexHtml(destPath + "/181/", "181/eduList", education.getId() + ".html", map1);
         }
-        map.put("educations",educationPolitics);
+        if (educationPolitics.size() == 0) {
+            EducationPolitics e = new EducationPolitics();
+            e.setContent("");
+        }
+        map.put("educations", educationPolitics);
     }
-    //岗位风险梳理更多
-    private void loadPostRiskCombing(){
-        createIndexHtml(destPath+"/195/196", "196/index", "index.html", null);
-    }
+
     public void loading() {
         Map<String, Object> map = new HashMap<>();
         //责任监督
@@ -347,73 +302,98 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //风险防控
         loadRisk(map);
 
+
         //纪检报表
         loadReport(map);
-
-
-
-
-
-
-
-
-
 
 
         createIndexHtml(destPath, "HomePage", "index.html", map);
     }
 
-    private void loadReport(Map  map) {
+    //纪检报表
+    private void loadReport(Map map) {
         IPage<DcpReport> dcpReportIndex = dcpReportMapper.findDcpReportIndex(new Page(), "");
         List<DcpReport> list = new ArrayList<>();
         for (DcpReport record : dcpReportIndex.getRecords()) {
+            Map map1 = new HashMap();
+            int i = record.getReport().lastIndexOf(".");
+            record.setFile(record.getReport().substring(0, i));
             list.add(record);
+            map1.put("record", record);
+            createIndexHtml(destPath + "/189/", "189/repList", record.getId() + ".html", map1);
+
         }
-        if(list.size()<5){
-            list = list.subList(0,list.size());
-        }else{
-            list =list.subList(0,5);
+        if (list.size() != 0) {
+            if (list.size() > 0 && list.size() < 5) {
+                list = list.subList(0, list.size());
+            } else if (list.size() >= 5) {
+                list = list.subList(0, 5);
+            }
+        } else {
+            DcpReport report = new DcpReport();
+            report.setReport("");
+            list.add(report);
         }
-        map.put("reports",list);
+
+        map.put("reports", list);
     }
 
     //风险防控
     private void loadRisk(Map map) {
         //流程风险
-        IPage<Processrick>  processrickAll = processrickMapper.findProcessrickIndex(new Page(),"");
-        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(),"");
+        IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex(new Page(), "");
+        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(), "");
         List<RiskVo> list = new ArrayList<>();
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
             RiskVo riskVo = new RiskVo();
-            String s = CommonUtil.delHTMLTag(postriskcombing.getPRiskPointDescription());
             riskVo.setCreateTime(postriskcombing.getPCreateTime());
-            riskVo.setDescription(s);
+            riskVo.setDescription(postriskcombing.getPRiskPointDescription());
             riskVo.setProject(postriskcombing.getPProject());
             riskVo.setId(postriskcombing.getPid());
             riskVo.setCname(postriskcombing.getPCreateName());
+            //状态
+            riskVo.setType(0); //岗位风险
             list.add(riskVo);
         }
 
-       for (Processrick processrick : processrickAll.getRecords()) {
+        for (Processrick processrick : processrickAll.getRecords()) {
             RiskVo riskVo = new RiskVo();
-            String s = CommonUtil.delHTMLTag(processrick.getProInfomation());
+            String s = processrick.getProInfomation();
             riskVo.setCreateTime(processrick.getProCreateTime());
             riskVo.setDescription(s);
             riskVo.setProject(processrick.getProName());
             riskVo.setId(processrick.getProid());
             riskVo.setCname(processrick.getProCreateName());
+            //状态
+            riskVo.setType(1); //岗位风险
             list.add(riskVo);
         }
         listSortriskVos(list);
-        if(list.size()<5) {
-            list = list.subList(0, list.size());
-        }else{
-            list = list.subList(0, 5);
+        if (list.size() != 0) {
+            String s = CommonUtil.delHTMLTag(list.get(0).getDescription());//去除标签
+            map.put("riContent", s);
+            if (list.size() > 0 && list.size() < 5) {
+                list = list.subList(0, list.size());
+            } else {
+                list = list.subList(0, 5);
+            }
+            for (RiskVo riskVo : list) {
+                Map map1 = new HashMap();
+                map1.put("riskVo", riskVo);
+                if (riskVo.getType() == 0) {
+                    createIndexHtml(destPath + "/195/0/", "195/riList", riskVo.getId() + ".html", map1);
+                }else{
+                    createIndexHtml(destPath + "/195/1/", "195/riList", riskVo.getId() + ".html", map1);
+                }
+            }
+        } else {
+            RiskVo riskVo = new RiskVo();
+            riskVo.setDescription("");
+            list.add(riskVo);
         }
-        map.put("riskVos",list);
+
+        map.put("riskVos", list);
     }
-
-
 
 
     private void listSortriskVos(List<RiskVo> list) {
@@ -493,8 +473,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
             log.error("[静态页服务]：生成静态页异常", e);
         }
     }
-
-
 
 
 }
