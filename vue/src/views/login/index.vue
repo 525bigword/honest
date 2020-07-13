@@ -4,7 +4,7 @@
          <el-container class="ms-admin-login-container">
             <el-main class="ms-admin-login-main">
                <div class="ms-admin-login-warp"  @keydown.13="handleLogin">
-          <img src="http://localhost:9520/src/image/ms-admin/4.7.0/images/login-slogn.png" />
+                  <img src="http://localhost:9520/src/image/ms-admin/4.7.0/images/login-slogn.png" />
                   <el-form :model="loginForm"  :rules="loginRules" ref="loginForm" label-width="100px"  class="ms-admin-login-form">
                      <h1>
                         <span style="color: #529076">用户登录 / </span>User login</h1>

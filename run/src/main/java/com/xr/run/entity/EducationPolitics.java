@@ -1,6 +1,7 @@
 package com.xr.run.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import io.swagger.models.auth.In;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,5 +23,8 @@ public class EducationPolitics {
   private Date createTime;
   private Integer createId;
   private String staus;
+  private String cname;
+  private Integer prev;
+  private Integer next;
 
 }

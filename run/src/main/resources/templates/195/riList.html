@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>责任纪实</title>
+    <title>风险防控</title>
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
@@ -128,19 +127,13 @@
                 <div class="shape-circular ms-absolute">
                     <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
                 </div>
-                <span><label>责任纪实</label></span>
+                <span><label>风险防控</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span th:class="${rdWorkVo.type==0}?'active-span-title':''" ><label><a href="http://localhost:4031/ms-mcms/html/2/185/0/index.html" >工作计划</a></label></span>
+                        <span th:class="${riskVo.type==0}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/195/0/index.html" >岗位风险梳理</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${rdWorkVo.type==1}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/185/1/index.html" >工作部署</a></label></span>
-                    </li>
-                    <li>
-                        <span th:class="${rdWorkVo.type==2}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/185/2/index.html" >廉政谈话</a></label></span>
-                    </li>
-                    <li>
-                        <span th:class="${rdWorkVo.type==3}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/185/3/index.html" >主体责任</a></label></span>
+                        <span th:class="${riskVo.type==1}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/195/1/index.html" >流程风险梳理</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -151,24 +144,26 @@
 
         <div>
             <div>
-                <label th:text="${rdWorkVo.title}"></label>
+                <label th:text="${riskVo.project}"></label>
             </div>
             <div>
-                 <span>上传者：<label th:text="${rdWorkVo.name}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>来源：<label ></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(rdWorkVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
+                <span>上传者：<label th:text="${riskVo.cname}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
+<!--
+                <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/277/hit.do'></script></label></span>
+-->
             </div>
         </div>
         <div>
-             <span style="color: #000000"><span style="font-size: 14px">
-                <span style="font-family: 宋体" th:utext="${rdWorkVo.content}">&nbsp;&nbsp;&nbsp;
-            </span>
-            </span>
-            </span>
+            <p>
+	           <span style="font-size: 14px"><span style="color: #000000">
+                   <span style="font-family: 宋体" th:utext="${riskVo.description}">　　
+
+                  </span></span></span><br />
         </div>
         <div>
-            <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
+
+             <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
         </div>
     </div>
 </div>
@@ -176,6 +171,5 @@
 <div class="footer max-width margin-center">
     主 管：湘潭市烟草专卖局 主 办：湘潭市烟草专卖局纪检监察科<br/>
     版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
-</div>
-</body>
+</div>	</body>
 </html>

@@ -160,7 +160,7 @@
                        :props="props"
                        :options="options_cascader"
                        :expandTrigger="'hover'"
-                       clearable v-model="userInfo.deptname"   style="width: 300px" v-bind:disabled=" hasPerm('letter:sencondaudit')?false:'disabled'"></el-cascader>
+                       clearable v-model="userInfo.deptname"   style="width: 300px" v-bind:disabled=" hasPerm('letter:sencondadudit')?false:'disabled'"></el-cascader>
         </el-form-item>
           <br />
         <el-form-item label="来访人姓名">

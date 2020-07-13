@@ -90,7 +90,7 @@ public class SysStaffController {
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
 
         //创建首页
-//        homePageSevice.loading();
+        homePageSevice.loading();
         return jsonObject;
     }
     /**

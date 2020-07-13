@@ -96,7 +96,8 @@
               <div  class="clearfix" v-html="userInfo.content"></div>
             </el-card>
 
-            <quill-editor id="editer"   v-if="userInfo.status==0||dialogTitle=='增加'" v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
+            <quill-editor id="editer"   v-if="userInfo.status==0||dialogTitle=='增加'" v-bind:disabled='nr'  ref="text"
+                          v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
      </el-form-item><br/>
 
           <el-form-item label="创建者姓名">
@@ -448,7 +449,22 @@ this.search=''
         },
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
-        editorOption: {},
+        editorOption: {
+          modules: {
+            toolbar: {
+              container: toolbarOptions,  // 工具栏
+              handlers: {
+                'image': function (value) {
+                  if (value) {
+                    alert('自定义图片')
+                  } else {
+                    this.quill.format('image', false);
+                  }
+                }
+              }
+            }
+          }
+        },
         nr:false,
         bt:false,
         bc:'',//保存按钮

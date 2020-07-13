@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface EducationPoliticsMapper extends BaseMapper<EducationPolitics> {
 
-    @Select("select * from education_politics ep inner join sys_staff ss on ep.create_id = ss.sid where ep.staus =0 " +
+    @Select("select ep.*,ss.name as cname from education_politics ep inner join sys_staff ss on ep.create_id = ss.sid where ep.staus =0 " +
             " order by ep.create_time desc limit 0,9")
     List<EducationPolitics> findAllEducationsTopNine();
 }
