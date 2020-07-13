@@ -216,7 +216,7 @@ export default {
       total: 0, // 总记录数
       listLoading: true, // 是否使用动画
       pageNum: 1, // 分页需要的当前页
-      pageRow: 10, // 分页需要的每页显示多少
+      pageRow: 5, // 分页需要的每页显示多少
       articletitle: "",
       describe: "",
       temp: {
@@ -446,7 +446,7 @@ export default {
       this.checkList=this.temp.attribute.split(",")
       this.temp.createTime = row.createTime;
       if(row.picture!==''&&row.picture!==null){
-        this.fileList = [{ name: row.picturename, url:this.virtualIp+row.picture }];
+        this.fileList = [{ name: row.picturename, url:this.virtualimgIp+row.picture }];
       }else{
           this.fileList=[]
       }

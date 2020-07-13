@@ -81,8 +81,6 @@ public class UserRealm extends AuthorizingRealm {
 		user.setPassword("");
 		//将用户信息放入session中
 		SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_INFO, user);
-		Session session = SecurityUtils.getSubject().getSession();
-		System.out.println(session.getId());
 		return authenticationInfo;
 	}
 }

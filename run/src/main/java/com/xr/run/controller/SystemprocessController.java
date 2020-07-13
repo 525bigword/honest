@@ -23,6 +23,7 @@ public class SystemprocessController {
     @GetMapping("/get/{pageNum}/{pageRow}")
     @RequiresPermissions("systemprocess:list")
     public JSONObject findSystemprocessService(@PathVariable Integer pageNum, String sysTitle, String sysContent, @PathVariable Integer pageRow){
+        System.out.println(sysTitle+"=========="+sysContent);
         if(sysTitle==null||sysContent==null){
             sysTitle="";
             sysContent="";
