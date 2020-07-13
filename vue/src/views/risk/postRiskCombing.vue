@@ -141,11 +141,11 @@
 
       <!--弹窗-->
       <el-dialog :title="dialogTitle" width="65%" :visible.sync="iconFormVisible">
-        <el-form :inline="true" :model="userInfo" label-width="140px" width="100%">
+        <el-form :inline="true" ref="dataForm" :rules="rules" :model="userInfo" label-width="140px" width="100%">
           <el-input v-model="userInfo.pid" placeholder="编号" type="hidden"></el-input>
           <el-row>
           <el-col style="width:43%">
-           <el-form-item label="父级部门" >
+           <el-form-item label="父级部门" prop="defaultvalue2">
             <el-cascader style="width:100%;"
               :placeholder="placeholder2"
               v-model="defaultvalue2"
@@ -157,7 +157,7 @@
           </el-form-item>
           </el-col>
           <el-col style="width:43%">
-            <el-form-item  label="岗位">
+            <el-form-item  label="岗位" prop="pinfomationId">
             <el-select @change="selectSystemChanged" style="width:100%"  v-model="userInfo.pinfomationId"
                        placeholder="岗位">
               <el-option
@@ -171,33 +171,33 @@
           </el-col>
         </el-row>
           
-          <el-form-item label="风险项目名称">
+          <el-form-item label="风险项目名称" prop="pproject">
             <el-input style="width: 560px" v-model="userInfo.pproject" placeholder="请输入风险项目名称" ></el-input>
           </el-form-item>
-          <el-form-item label="廉政风险点描述">
+          <el-form-item label="廉政风险点描述" prop="priskPointDescription">
             <el-input v-model="userInfo.priskPointDescription" :rows="5" :cols="73" placeholder="请输入廉政风险点描述" type="textarea"
                       ></el-input>
           </el-form-item>
-          <el-form-item label="风险发生可能性L值" :line="true">
-            <el-col style="width:37%">
-              <el-select style="width: 100%;" v-model="userInfo.pprobableLValue" placeholder="风险发生可能性L值">
+              <el-form-item label-width="40%" style="width:43%;margin-left:-4px" label="风险发生可能性L值" prop="pprobableLValue">
+              <el-select  style="width:100%" v-model="userInfo.pprobableLValue" placeholder="风险发生可能性L值">
                 <el-option label="可能性极小" value="可能性极小"></el-option>
                 <el-option label="可能性较小" value="可能性较小"></el-option>
                 <el-option label="可能性较大" value="可能性较大"></el-option>
                 <el-option label="可能性极大" value="可能性极大"></el-option>
               </el-select>
-            </el-col>
-            <el-col   style="margin-left:10px;width:132px" align="right">风险产生严重性C值</el-col>
-            <el-col style="width:37%" >
-              <el-select style="width: 100%;margin-left:10px" v-model="userInfo.pcvalue" placeholder="风险产生严重性C值">
+              </el-form-item>
+            <!-- <el-col   style="margin-left:10px;width:132px" align="right">风险产生严重性C值</el-col> -->
+           <!--  <el-col style="width:200px" > -->
+              <el-form-item label-width="43%" style="width:43%;margin-left:-22px" label="风险产生严重性C值" prop="pcvalue">
+              <el-select style="width:100%" v-model="userInfo.pcvalue" placeholder="风险产生严重性C值">
                 <el-option label="极小" value="极小"></el-option>
                 <el-option label="较小" value="较小"></el-option>
                 <el-option label="较大" value="较大"></el-option>
                 <el-option label="极大" value="极大"></el-option>
               </el-select>
-            </el-col>
-          </el-form-item>
-          <el-form-item label="预防和控制措施">
+              </el-form-item>
+          <!-- </el-form-item> -->
+          <el-form-item label="预防和控制措施" prop="pmeasures">
             <el-input v-model="userInfo.pmeasures" :rows="5" :cols="73" placeholder="请输入预防和控制措施" type="textarea"
                       ></el-input>
           </el-form-item>
@@ -299,7 +299,7 @@
         })
       },
       Change2(val) {
-        console.log(this.bm)
+        console.debug(val)
         this.userInfo.pdeptId = val;
         let postData = qs.stringify({
           parent: val
@@ -482,6 +482,23 @@
       },
       // 弹窗确定
       submitUser() {
+        if(this.userInfo.pdeptId===''||this.userInfo.pdeptId===null|this.userInfo.pdeptId===undefined){
+            this.$message({
+          type: "error",
+          message: "父级部门不能为空",
+          duration:1000
+
+        });
+        return
+        } 
+        if(this.userInfo.pinfomationId===0||this.userInfo.pinfomationId===null||this.userInfo.pinfomationId===undefined||this.userInfo.pinfomationId===''){
+            this.$message({
+          type: "error",
+          message: "岗位不能为空",
+          duration:1000
+        });
+        return
+        }
         let postData = qs.stringify({
           pDeptId: this.userInfo.pdeptId,
           pInfomationId:this.userInfo.pinfomationId,
@@ -494,6 +511,9 @@
         });
         if (this.dialogTitle === '增加') {
           //新增
+          this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
           add(postData).then((response) => {
             this.iconFormVisible = false;
             clearInterval(this.timer)
@@ -506,7 +526,12 @@
             })
           })
         }
+        })
+        }
         if (this.dialogTitle === '修改') {
+          this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
           update(postData).then((response) => {
             this.iconFormVisible = false;
             clearInterval(this.timer)
@@ -518,6 +543,7 @@
               duration: 2000
             })
           })
+        }})
         }
 
       },
@@ -526,7 +552,10 @@
       return {
         timer: '',
         iconFormVisible: false,
-        userInfo: {},
+        userInfo: {
+          pdeptId:undefined,
+          pinfomationId:undefined
+        },
         dialogTitle: '增加',
         rowIndex: null,
         search: {
@@ -586,7 +615,45 @@
         listQuery: {
           page: 1,
           limit: 5
+        },
+        rules:{
+          pproject: [
+          {
+            required: true,
+            message: "风险项目名称不能为空",
+            trigger: ["change", "blur"]
+          }],
+          priskPointDescription: [
+          {
+            required: true,
+            message: "风险点描述不能为空",
+            trigger: ["change", "blur"]
+          }],
+          pmeasures: [
+          {
+            required: true,
+            message: "预防和控制措施不能为空",
+            trigger: ["change", "blur"]
+          }],
+          pprobableLValue:[{
+            required: true,
+            message: "风险发生可能性L值不能为空",
+            trigger:  ["change", "blur"]
+          }],
+          pcvalue:[{
+            required: true,
+            message: "风险发生可能性C值不能为空",
+            trigger:  ["change", "blur"]
+          }]
         }
+        /* pDeptId: this.userInfo.pdeptId,
+          pInfomationId:this.userInfo.pinfomationId,
+          pProject: this.userInfo.pproject,
+          pRiskPointDescription: this.userInfo.priskPointDescription,
+          pProbableLValue: this.userInfo.pprobableLValue,
+          pCValue: this.userInfo.pcvalue,
+          pMeasures: this.userInfo.pmeasures,
+          pid: this.userInfo.pid */
 
       }
     }
