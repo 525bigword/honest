@@ -194,13 +194,13 @@
 </template>
 
 <script>
-/*import {
+import {
   add,
   update,
   list,
   deletesystemmessage,
     imageFile
-} from "@/api/systemnotice/systemmessage";*/
+} from "@/api/systemnotice/systemmessage";
 import qs from "qs";
 import { mapGetters } from "vuex";
 export default {
@@ -374,10 +374,19 @@ export default {
                   if(this.fileList.length!==0){
                       imageFile(this.formData).then((response)=>{
           this.temp.picture=response.dFile
-            console.debug(this.temp)
             this.isShow=true
+            let posdata=qs.stringify({
+              articletitle: this.temp.articletitle,
+            attribute: this.temp.attribute,
+            picture: this.temp.picture,
+            picturename: this.temp.picturename,
+            content: this.temp.content,
+            articlesource: this.temp.articlesource,
+            describe: this.temp.describe,
+            createId: this.temp.sysStaff.sid
+          })
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
+            add(posdata).then((response) => {
 
               // 关闭对话框
               this.dialogFormVisible = false
@@ -396,7 +405,17 @@ export default {
           })
           })
                   }else{
-                      add(this.temp).then((response) => {
+                    let posdata=qs.stringify({
+              articletitle: this.temp.articletitle,
+            attribute: this.temp.attribute,
+            picture: this.temp.picture,
+            picturename: this.temp.picturename,
+            content: this.temp.content,
+            articlesource: this.temp.articlesource,
+            describe: this.temp.describe,
+            createId: this.temp.sysStaff.sid
+          })
+                      add(posdata).then((response) => {
 
               // 关闭对话框
               this.dialogFormVisible = false
@@ -462,7 +481,17 @@ export default {
               console.debug(this.temp);
               this.isShow = true;
               // 调用api里的sys里的user.js的ajax方法
-              update(this.temp).then(response => {
+              let posdata=qs.stringify({
+              aid: this.temp.aid,
+            articletitle: this.temp.articletitle,
+            attribute: this.temp.attribute,
+            picture: this.temp.picture,
+            picturename: this.temp.picturename,
+            content: this.temp.content,
+            articlesource: this.temp.articlesource,
+            describe: this.temp.describe
+          })
+              update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -481,7 +510,17 @@ export default {
             }else if(this.fileList.length===0&&this.aginp !==''&&this.aginp !==null){
                 this.temp.picturename=''
                 this.temp.picture=''
-                update(this.temp).then(response => {
+                let posdata=qs.stringify({
+              aid: this.temp.aid,
+            articletitle: this.temp.articletitle,
+            attribute: this.temp.attribute,
+            picture: this.temp.picture,
+            picturename: this.temp.picturename,
+            content: this.temp.content,
+            articlesource: this.temp.articlesource,
+            describe: this.temp.describe
+          })
+                update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -498,7 +537,17 @@ export default {
               });
             }else{
                 this.temp.picturename='1'
-                update(this.temp).then(response => {
+                let posdata=qs.stringify({
+              aid: this.temp.aid,
+            articletitle: this.temp.articletitle,
+            attribute: this.temp.attribute,
+            picture: this.temp.picture,
+            picturename: this.temp.picturename,
+            content: this.temp.content,
+            articlesource: this.temp.articlesource,
+            describe: this.temp.describe
+          })
+                update(posdata).then(response => {
                 // 关闭对话框
                 this.dialogFormVisible = false;
                 // 刷新数据表格里的数据
@@ -594,6 +643,7 @@ export default {
       this.dis = "inline-block";
       this.dis2 = "none";
       this.sid = null;
+      this.getList();
     },
     handleImgChange1(file, fileList, name) {
       const isLt2M = file.size / 1024/1024  < 10;

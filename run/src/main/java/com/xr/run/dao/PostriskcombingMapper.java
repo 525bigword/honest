@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
     @Select("select pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures," +
-            " pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing where pStatus = 0 and  pRiskPointDescription " +
+            " pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing where pStatus = 1 and  pRiskPointDescription " +
             " like CONCAT('%',#{pRiskPointDescription},'%') order by pid desc")
     @Results({
             @Result(column = "pCreateId", property = "pCreateId"),
@@ -58,6 +58,7 @@ public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
      * @param postriskcombing
      */
     @Insert("insert into postriskcombing(pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,pStatus) values(#{pRiskId},#{pYear},#{pDeptId},#{pInfomationId},#{pProject},#{pRiskPointDescription},#{pProbableLValue},#{pCValue},#{pDValue},#{pGrade},#{pMeasures},#{pCreateTime},#{pCreateId},#{pCreateName},#{pStatus})")
+    @Options(useGeneratedKeys = true,keyProperty = "pid")
     void addPostriskcombing(Postriskcombing postriskcombing);
 
     /**
@@ -85,6 +86,10 @@ public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
      */
     @Select("select * from postriskcombing where pDeptId=#{pDeptId} and pGrade=#{pGrade}")
     List<Postriskcombing> findByPDeptIdAndPGrade(@Param("pDeptId") Integer pDeptId, @Param("pGrade") String pGrade);
-
+    @Select("select pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing where pid=#{pid}")
+    @Results({
+            @Result(column = "pCreateId",property = "pCreateName",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName",fetchType = FetchType.DEFAULT))
+    })
+    Postriskcombing findPostriskcombingByPid(@Param("pid")Integer pid);
 
 }

@@ -72,7 +72,7 @@
       </div></el-form>
 
       <!--隐藏窗-->
-      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
+      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" :title="dialogTitle">
         <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
           <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
             <br/>
@@ -92,7 +92,7 @@
             <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
           <el-form-item label="文章内容" prop="content">
-            <el-card class="box-card"  style="margin-bottom:30px;width: 830px;height: 350px;text-align: left" v-if="userInfo.status!=0&&dialogTitle!='增加'">
+            <el-card class="box-card"  style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.status!=0&&dialogTitle!='增加'">
               <div  class="clearfix" v-html="userInfo.content"></div>
             </el-card>
 

@@ -358,7 +358,14 @@ import { mapGetters } from 'vuex'
           if (valid) {
             this.isShow=true
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
+            let posdata=qs.stringify({
+            wTitle: this.temp.wtitle,
+            wContent: this.temp.wcontent,
+            wContributor: this.temp.sid,
+            wCreateId: this.temp.sysStaff.sid,
+            wStatus: this.temp.wstatus
+          })
+            add(posdata).then((response) => {
               
               // 关闭对话框
               this.dialogFormVisible = false
@@ -456,7 +463,14 @@ import { mapGetters } from 'vuex'
             this.isShow=true
             console.debug(this.temp)
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            let posdata=qs.stringify({
+            wTitle: this.temp.wtitle,
+            wContent: this.temp.wcontent,
+            wContributor: this.temp.sid,
+            wid: this.temp.wid,
+            wStatus: this.temp.wstatus
+          })
+            update(posdata).then((response) => {
              
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
@@ -570,6 +584,7 @@ import { mapGetters } from 'vuex'
         this.dis3='none'
         this.melist=[],
         this.stafflist=[]
+        this.getList()
     },
     bmChange(){
       this.temp.wnew.mid=this.$refs["bbb"].getCheckedNodes()[0].value

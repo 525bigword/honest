@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>廉政文化</title>
+    <title>风险防控</title>
     <link rel="stylesheet" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css">
     <link rel="stylesheet"  href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
@@ -309,9 +309,9 @@
     <ul class="body-content list-style-none margin-center">
         <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
+        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
@@ -329,13 +329,15 @@
                 <div class="shape-circular ms-absolute">
                     <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
                 </div>
-                <span><label>廉政文化</label></span>
+                <span><label>风险防控
+
+                </label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
+                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><label><a>岗位风险梳理</a></label></span>
                     </li>
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/287/index.html','_self')"><label><a>流程风险梳理</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -383,8 +385,8 @@
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/182/184/"+data.did+".html";//a链接地址
-                var title = data.dTitle;		//标题
+                var url = "http://localhost:4031/ms-mcms/html/2/195/196/"+data.pid+".html";//a链接地址
+                var title = data.pProject;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
             $(".content-list ul").html(htmlContent);
@@ -401,7 +403,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "http://localhost:8080/qt/datacollection/get";
+            var URL = "http://localhost:8080/qt/fontpostriskcombing/get";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

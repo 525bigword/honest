@@ -11,6 +11,7 @@ import com.xr.run.service.SysStaffService;
 import com.xr.run.service.WindService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class WindController {
     @Autowired
     private StaticHtmlService staticHtmlService;
     @GetMapping("/get/{pageNum}/{pageRow}")
+    @RequiresPermissions("wind:list")
     public JSONObject findWind(@PathVariable Integer pageNum, String wTitle, @PathVariable Integer pageRow){
         if(wTitle==null){
             wTitle="";
@@ -56,6 +58,7 @@ public class WindController {
         return CommonUtil.successJson(map);
     }
     @RequestMapping("update")
+    @RequiresPermissions("wind:update")
     public JSONObject updateWind(Wind wind,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         windService.updateWindByWid(wind);
 
@@ -63,6 +66,7 @@ public class WindController {
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("delete")
+    @RequiresPermissions("wind:delete")
     public JSONObject deleteWindByWid(@RequestBody int[] wid)  {
         if (wid.length==1){
             Wind windByWid = windService.findWindByWid(wid[0]);
@@ -78,6 +82,7 @@ public class WindController {
         return CommonUtil.successJson("删除成功!");
     }
     @RequestMapping("insert")
+    @RequiresPermissions("wind:add")
     public JSONObject insertWind(Wind wind,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         windService.insertWind(wind);
         System.out.println(wind.getWid());

@@ -118,7 +118,7 @@
        >
         </quill-editor>
 <div style="font-weight: normal;margin-top:60px;margin-right:12%;float:right">
-        <span >{{TiLength}}/1000</span></div>
+        <span >{{TiLength}}/80000</span></div>
         </el-form-item>
         <el-form-item style="font-weight: bold;margin-top:120px;" label="创建者姓名" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
@@ -279,8 +279,14 @@ import { mapGetters } from 'vuex'
           // 所有的校验都通过
           if (valid) {
             this.isShow=true
+            let posdata=qs.stringify({
+            wTitle: this.temp.wtitle,
+            wContent: this.temp.wcontent,
+            numId: this.temp.numId,
+            wCreateId: this.temp.sysStaff.sid
+          })
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
+            add(posdata).then((response) => {
 
               // 关闭对话框
               this.dialogFormVisible = false
@@ -317,12 +323,18 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData() {
+        
         this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             this.isShow=true
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            let posdata=qs.stringify({
+            wTitle: this.temp.wtitle,
+            wContent: this.temp.wcontent,
+            wid: this.temp.wid
+          })
+            update(posdata).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -415,10 +427,11 @@ import { mapGetters } from 'vuex'
       this.dis='inline-block'
         this.dis2='none'
         this.sid=null
+        this.getList();
        
     },
     onEditorChange(event){
-      event.quill.deleteText(1000,4)
+      event.quill.deleteText(80000,4)
       if(this.temp.wcontent===''){
         this.TiLength=0
       }else{

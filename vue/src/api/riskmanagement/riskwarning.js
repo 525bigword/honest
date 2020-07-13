@@ -4,12 +4,7 @@ export function add(data) {
     return request({
         url: '/riskpointwarning/insert',
         method: 'post',
-        params: {
-            wTitle: data.wtitle,
-            wContent: data.wcontent,
-            numId: data.numId,
-            wCreateId: data.sysStaff.sid
-        }
+        data
     })
 }
 
@@ -27,11 +22,7 @@ export function update(data) {
     return request({
         url: '/riskpointwarning/update',
         method: 'post',
-        params: {
-            wTitle: data.wtitle,
-            wContent: data.wcontent,
-            wid: data.wid
-        }
+        data
     })
 }
 

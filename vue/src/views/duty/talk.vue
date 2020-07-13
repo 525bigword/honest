@@ -112,7 +112,7 @@
         </el-pagination>
       </div> </el-form>
 <!--隐藏窗-->
-      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
+      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
         <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
           <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
             <br/>
@@ -163,6 +163,7 @@
               <el-option label="党员" value="党员"></el-option>
               <el-option label="团员" value="团员"></el-option>
               <el-option label="群众" value="群众"></el-option>
+              <el-option label="其他" value="其他"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="谈话对象职务" prop="duty">

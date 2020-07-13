@@ -285,9 +285,13 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //清风文苑更多
         loadWind();
         //资料锦集更多
-        System.out.println("执行loadDatacollection");
-        this.loadDatacollection();
+        loadDatacollection();
+        //TODO 风险防控
+        //岗位风险梳理更多
+        loadPostRiskCombing();
+        //流程风险梳理更多
         //查询前五廉政文化
+        //风险防控
 
         //生成不同的RdWork
         getDifferentRdWord();
