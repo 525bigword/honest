@@ -288,7 +288,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         loadDatacollection();
         //TODO 风险防控
         //岗位风险梳理更多
-        loadPostRiskCombing();
+//        loadPostRiskCombing();
         //流程风险梳理更多
         //查询前五廉政文化
         //风险防控

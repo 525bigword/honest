@@ -121,12 +121,16 @@ public class DatacollectionController {
         if (did.length==1){
             Datacollection data= datacollectionService.findDatacollectionById(did[0]);
             staticHtmlService.deleteHtmlPage(destPath+"\\182\\184\\"+data.getDid()+".html");
+            Datacollection datacollectionById = datacollectionService.findDatacollectionById(did[0]);
+            deleteFile(datacollectionById);
             datacollectionService.deleteDataConllectionByDid(did[0]);
         }else{
             for (int i = 0; i < did.length; i++) {
                 Datacollection data= datacollectionService.findDatacollectionById(did[i]);
                 staticHtmlService.deleteHtmlPage(data.getDTitle());
                 staticHtmlService.deleteHtmlPage(destPath+"\\182\\184\\"+data.getDid()+".html");
+                Datacollection datacollectionById = datacollectionService.findDatacollectionById(did[i]);
+                deleteFile(datacollectionById);
                 datacollectionService.deleteDataConllectionByDid(did[i]);
             }
         }
@@ -164,6 +168,33 @@ public class DatacollectionController {
         modelAndView.setViewName("183/Info");
 
         staticHtmlService.genHtmlPage(destPath+"\\182\\184\\",modelAndView,req,resp,datacollectionById.getDid()+"");
+    }
+
+    public void deleteFile(Datacollection datacollectionById){
+        try {
+            File file = new File(videoBasePath + datacollectionById.getDVideo());
+            if (file.exists()) {
+                file.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            File file = new File(realBasePath + datacollectionById.getDPdf());
+            if (file.exists()) {
+                file.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            File file = new File(realBasePath + datacollectionById.getDFile());
+            if (file.exists()) {
+                file.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

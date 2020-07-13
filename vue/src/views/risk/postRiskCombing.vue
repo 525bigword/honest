@@ -140,12 +140,12 @@
       </div>
 
       <!--弹窗-->
-      <el-dialog :title="dialogTitle" width="65%" :visible.sync="iconFormVisible">
-        <el-form :inline="true" ref="dataForm" :rules="rules" :model="userInfo" label-width="140px" width="100%">
+      <el-dialog :title="dialogTitle" width="875px" :visible.sync="iconFormVisible">
+        <el-form :inline="true" ref="dataForm" :rules="rules" :model="userInfo"  width="100%">
           <el-input v-model="userInfo.pid" placeholder="编号" type="hidden"></el-input>
-          <el-row>
-          <el-col style="width:43%">
-           <el-form-item label="父级部门" prop="defaultvalue2">
+         <!--  <el-row>
+          <el-col style="width:43%"> -->
+           <el-form-item label-width="130px" style="width:43%;margin-left:10px" label="父级部门" prop="defaultvalue2">
             <el-cascader style="width:100%;"
               :placeholder="placeholder2"
               v-model="defaultvalue2"
@@ -155,9 +155,9 @@
               :options="bm"
             ></el-cascader>
           </el-form-item>
-          </el-col>
-          <el-col style="width:43%">
-            <el-form-item  label="岗位" prop="pinfomationId">
+          <!-- </el-col>
+          <el-col style="width:43%"> -->
+            <el-form-item label-width="133px" style="width:43%;margin-left:-33px" label="岗位" prop="pinfomationId">
             <el-select @change="selectSystemChanged" style="width:100%"  v-model="userInfo.pinfomationId"
                        placeholder="岗位">
               <el-option
@@ -168,17 +168,16 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          </el-col>
-        </el-row>
-          
-          <el-form-item label="风险项目名称" prop="pproject">
-            <el-input style="width: 560px" v-model="userInfo.pproject" placeholder="请输入风险项目名称" ></el-input>
+          <!-- </el-col>
+        </el-row> -->
+          <el-form-item label-width="130px" style="margin-left:10px" label="风险项目名称" prop="pproject">
+            <el-input style="width:543px" v-model="userInfo.pproject" placeholder="请输入风险项目名称" ></el-input>
           </el-form-item>
-          <el-form-item label="廉政风险点描述" prop="priskPointDescription">
-            <el-input v-model="userInfo.priskPointDescription" :rows="5" :cols="73" placeholder="请输入廉政风险点描述" type="textarea"
+          <el-form-item label-width="130px" style="margin-left:10px" label="廉政风险点描述" prop="priskPointDescription">
+            <el-input v-model="userInfo.priskPointDescription" :rows="5" style="width:543px" placeholder="请输入廉政风险点描述" type="textarea"
                       ></el-input>
           </el-form-item>
-              <el-form-item label-width="40%" style="width:43%;margin-left:-4px" label="风险发生可能性L值" prop="pprobableLValue">
+              <el-form-item label-width="150px" style="width:43%;margin-left:-10px" label="风险发生可能性L值" prop="pprobableLValue">
               <el-select  style="width:100%" v-model="userInfo.pprobableLValue" placeholder="风险发生可能性L值">
                 <el-option label="可能性极小" value="可能性极小"></el-option>
                 <el-option label="可能性较小" value="可能性较小"></el-option>
@@ -188,7 +187,7 @@
               </el-form-item>
             <!-- <el-col   style="margin-left:10px;width:132px" align="right">风险产生严重性C值</el-col> -->
            <!--  <el-col style="width:200px" > -->
-              <el-form-item label-width="43%" style="width:43%;margin-left:-22px" label="风险产生严重性C值" prop="pcvalue">
+              <el-form-item label-width="155px" style="width:43%;margin-left:-33px" label="风险产生严重性C值" prop="pcvalue">
               <el-select style="width:100%" v-model="userInfo.pcvalue" placeholder="风险产生严重性C值">
                 <el-option label="极小" value="极小"></el-option>
                 <el-option label="较小" value="较小"></el-option>
@@ -197,8 +196,8 @@
               </el-select>
               </el-form-item>
           <!-- </el-form-item> -->
-          <el-form-item label="预防和控制措施" prop="pmeasures">
-            <el-input v-model="userInfo.pmeasures" :rows="5" :cols="73" placeholder="请输入预防和控制措施" type="textarea"
+          <el-form-item label-width="130px" style="margin-left:10px" label="预防和控制措施" prop="pmeasures">
+            <el-input v-model="userInfo.pmeasures" :rows="5" style="width:543px" placeholder="请输入预防和控制措施" type="textarea"
                       ></el-input>
           </el-form-item>
         </el-form>
@@ -472,8 +471,8 @@
         /* 动态赋值实时设置当前时间*/
         //this.$set(this.userInfo, 'pcreateTime', new Date())
         //this.timer= setInterval(this.time, 1000 );
-
         this.iconFormVisible = true;
+          this.$refs["dataForm"].clearValidate();
       },
       //弹窗取消
       deselect() {

@@ -598,9 +598,9 @@ export default {
       btotal:0,
       listLoading: true, // 是否使用动画
       pageNum: 1, // 分页需要的当前页
-      pageRow: 5, // 分页需要的每页显示多少
+      pageRow: 10, // 分页需要的每页显示多少
        bpageNum: 1, // 分页需要的当前页
-      bpageRow: 5, // 分页需要的每页显示多少
+      bpageRow: 10, // 分页需要的每页显示多少
       dutyTitle: "",
       dutyContent: "",
       backTitle: "",
