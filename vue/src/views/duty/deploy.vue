@@ -89,7 +89,7 @@
           <el-input v-model="userInfo.id" placeholder="序号" type="hidden"></el-input>
           <el-form-item label="工作部署标题" prop="title">
 
-            <el-input style="width: 400px"  v-model="userInfo.title" placeholder="标题" width="220px"  v-bind:disabled='bt'></el-input>
+            <el-input style="width: 400px"  v-model="userInfo.title" placeholder="请输入工作部署标题标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
           <el-form-item label="文章内容" prop="content">
             <el-card class="box-card"  style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.status!=0&&dialogTitle!='增加'">

@@ -30,9 +30,9 @@
         update rd_work_deployment set title=#{title},content=#{content} where id=#{id}
     </update>
     <!--按序号删除工作计划-->
-    <delete id="delDeployment" parameterType="Integer">
+    <update id="delDeployment" parameterType="Integer">
         update  rd_work_deployment set staus=-1 where id=#{id}
-    </delete>
+    </update>
     <!--提交审核-->
     <update id="subauditDeployment">
         update rd_work_deployment set staus=1 where id=#{id}

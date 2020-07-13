@@ -115,7 +115,7 @@
             </el-tree>
           </el-form-item>
           <el-form-item label="工作计划内容" prop="content">
-            <el-input v-model="userInfo.content" placeholder="内容" type="textarea"  style="width: 800px" :rows="16"  v-bind:disabled='nr'></el-input>
+            <el-input v-model="userInfo.content" placeholder="请输入工作计划内容" type="textarea"  style="width: 800px" :rows="16"  v-bind:disabled='nr'></el-input>
           </el-form-item>
           <el-form-item label="状态" v-if="false">
             <el-input v-model="userInfo.staus" placeholder="状态"   disabled="disabled"  style="width: 400px" ></el-input>

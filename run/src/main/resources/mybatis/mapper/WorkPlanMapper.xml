@@ -36,9 +36,9 @@
         update rd_work_plan set title=#{title},content=#{content} where rdid=#{id}
     </update>
     <!--按序号删除工作计划-->
-    <delete id="del" parameterType="Integer">
+    <update id="del" parameterType="Integer">
         update rd_work_plan set staus=-1 where rdid=#{id}
-    </delete>
+    </update>
     <!--提交审核-->
     <update id="subaudit">
         update rd_work_plan set staus=1 where rdid=#{id}

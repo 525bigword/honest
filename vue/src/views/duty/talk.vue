@@ -170,7 +170,7 @@
             <el-input v-model="userInfo.duty" placeholder="请输入谈话对象职务" style="width: 400px"></el-input>
           </el-form-item><br/>
           <el-form-item label="谈话类型" prop="type">
-            <el-select v-model="userInfo.type" placeholder="谈话类型" style="width: 400px">
+            <el-select v-model="userInfo.type" placeholder="请选择谈话类型" style="width: 400px">
               <el-option label="例行廉政谈话" value="例行廉政谈话"></el-option>
               <el-option label="任前廉政谈话" value="任前廉政谈话"></el-option>
               <el-option label="提醒谈话" value="提醒谈话"></el-option>

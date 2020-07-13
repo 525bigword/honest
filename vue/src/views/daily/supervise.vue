@@ -79,14 +79,14 @@
 
     </el-form>
   <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
-    <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
+    <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
       <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
         <br/>
         <div align="right" ><el-form-item >
           <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')||this.hasPerm('supervise:update')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
-          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:update')" align="right" @click="gxmethod" v-bind:style="{display:gx}">更新</el-button>
-          <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
+          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
+          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:update')" align="right" @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
+          <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
       <br/>
       <div style="background-color: white;margin-top: 7px;z-index:3;">
         <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
@@ -105,7 +105,7 @@
             v-model="userInfo.saccessory"
           ><el-button size="small" type="primary">上传</el-button></el-upload>
         </el-form-item><br/>
-        <el-form-item label="承办部门">
+        <el-form-item label="承办部门" prop="sundertakerDeptId">
           <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
                        :placeholder="defaUnit"
                        :props="props"
@@ -113,7 +113,7 @@
                        :expandTrigger="'hover'"
                        clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
         </el-form-item>
-        <el-form-item label="承办人">
+        <el-form-item label="承办人" prop="sundertaker">
           <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px">
             <el-option
               v-for="item in options"
@@ -123,15 +123,15 @@
             </el-option>
           </el-select>
         </el-form-item><br/>
-        <el-form-item label="事项摘要">
-          <el-input v-model="userInfo.spaperItems" placeholder="事项摘要" style="width: 300px"></el-input>
+        <el-form-item label="事项摘要" prop="spaperItems">
+          <el-input v-model="userInfo.spaperItems" placeholder="请输入事项摘要" style="width: 300px"></el-input>
         </el-form-item>
-        <el-form-item label="耗资">
-          <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number"></el-input>
+        <el-form-item label="耗资" prop="scost">
+          <el-input v-model="userInfo.scost" placeholder="请输入耗资" style="width: 300px" type="Number"></el-input>
         </el-form-item><br/>
 
         <div>
-        <el-form-item label="实施方式">
+        <el-form-item label="实施方式" prop="senforcementMode">
           <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.sstatus!=0&&dialogTitle!='增加'">
             <div  v-html="userInfo.senforcementMode"></div>
           </el-card>
@@ -282,40 +282,48 @@
         this.search=''
 
       },//新增提交
-      submitUser(){
-        let endtime = new Date(this.userInfo.screateTime).toJSON();
-        this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-     console.log('擦擦擦' ,this.userInfo);
+      submitUser(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.screateTime).toJSON();
+            this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            console.log('擦擦擦' ,this.userInfo);
 
-        let posdata=qs.stringify({
-          url:this.userInfo.url,
-          sFilingId:this.userInfo.sfilingId,
-          sPaperItems:this.userInfo.spaperItems,
-          sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
-          sAccessory:this.userInfo.saccessory,
-          sCost:this.userInfo.scost,
-          sUndertaker:this.userInfo.sundertaker,
-          sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
-          punit:this.userInfo.sundertakerDeptId.toString(),
-          sCreateTime:this.userInfo.screateTime,
-          sCreateName:this.nickname,
-          sStatus:0,
-          sCreateId:this.userId
-        })
-        addsuper(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-        })
+            let posdata=qs.stringify({
+              url:this.userInfo.url,
+              sFilingId:this.userInfo.sfilingId,
+              sPaperItems:this.userInfo.spaperItems,
+              sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
+              sAccessory:this.userInfo.saccessory,
+              sCost:this.userInfo.scost,
+              sUndertaker:this.userInfo.sundertaker,
+              sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+              punit:this.userInfo.sundertakerDeptId.toString(),
+              sCreateTime:this.userInfo.screateTime,
+              sCreateName:this.nickname,
+              sStatus:0,
+              sCreateId:this.userId
+            })
+            addsuper(posdata).then((response)=>{
+              this.tf='';
+              this.ad='none'
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
       },//点击列编辑
       handleEdit(index, row){
         this.dialogTitle='编辑'
@@ -380,35 +388,47 @@
         })
 
       },//更新数据
-      gxmethod(){
-        let posdata=qs.stringify({
-          url:this.userInfo.url,
-          sid:this.userInfo.sid,
-          sPaperItems:this.userInfo.spaperItems,
-          sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
-          sAccessory:this.userInfo.saccessory,
-          sCost:this.userInfo.scost,
-          sUndertaker:this.userInfo.sundertaker,
-          sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
-          punit:this.userInfo.sundertakerDeptId.toString()
-        })
-        gxme(posdata).then((response)=>{
-          this.initList();
-          this.tf=''//父页面隐藏
-          this.ad='none'
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-        })
+      gxmethod(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let posdata=qs.stringify({
+              url:this.userInfo.url,
+              sid:this.userInfo.sid,
+              sPaperItems:this.userInfo.spaperItems,
+              sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
+              sAccessory:this.userInfo.saccessory,
+              sCost:this.userInfo.scost,
+              sUndertaker:this.userInfo.sundertaker,
+              sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+              punit:this.userInfo.sundertakerDeptId.toString()
+            })
+            gxme(posdata).then((response)=>{
+              this.initList();
+              this.tf=''//父页面隐藏
+              this.ad='none'
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
       },
-      back(){
+      back(formName){
         console.log(this.userInfo.senforcementMode)
         console.log(this.userInfo.cfil)
         this.tf=''//父页面隐藏
-        this.ad='none'},//删除
+        this.ad='none'
+        this.$refs[formName].resetFields();
+        this.initList()
+      },//删除
+
     dele(){
       var data = this.$refs.multipleTable.selection;
       console.log("11"+data)
@@ -456,6 +476,7 @@
       }}
     },
       add(){
+        this.dialogTitle='增加'
         this.fileList=[]//清空upload
         this.userInfo={
 
@@ -483,7 +504,20 @@
     },
     data() {
 
-      return {
+      return {rules: {
+          sundertakerDeptId: [
+            {  required: true, message: '请选择承办部门', trigger: 'blur' }
+          ],sundertaker: [
+            {  required: true, message: '请选择承办人', trigger: 'blur' }
+          ],spaperItems: [
+            {  required: true, message: '请输入事项摘要', trigger: 'blur' }
+          ],scost: [
+            {  required: true, message: '请输入耗资', trigger: 'blur' }
+          ],senforcementMode: [
+            {  required: true, message: '请输入实施方式', trigger: 'blur' }
+          ]
+
+        },
         defaUnit:'请选择谈话对象单位',
         options_cascader:[],//级联选择器的options属性
         options:[],

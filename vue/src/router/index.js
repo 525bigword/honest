@@ -112,30 +112,30 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/user/',
         name: '责任纪实',
-        meta: { title: '责任纪实', icon: 'table' },
+        meta: { title: '责任纪实', icon: 'form' },
         children: [{
                 path: 'plan',
                 name: '工作计划',
                 component: _import('duty/plan'),
-                meta: { title: '工作计划', icon: 'user' },
+                meta: { title: '工作计划', icon: 'edit' },
                 menu: 'workplan'
             }, {
                 path: 'deploy',
                 name: '工作部署',
                 component: _import('duty/deploy'),
-                meta: { title: '工作部署', icon: 'user' },
+                meta: { title: '工作部署', icon: 'tree-table' },
                 menu: 'workdeployment'
             }, {
                 path: 'talk',
                 name: '廉政谈话',
                 component: _import('duty/talk'),
-                meta: { title: '廉政谈话', icon: 'user' },
+                meta: { title: '廉政谈话', icon: 'peoples' },
                 menu: 'honestconversation'
             }, {
                 path: 'main',
                 name: '主体责任',
                 component: _import('duty/main'),
-                meta: { title: '主体责任', icon: 'user' },
+                meta: { title: '主体责任', icon: 'nested' },
                 menu: 'entityresponsibility'
             }
 
@@ -203,7 +203,7 @@ export const asyncRouterMap = [
             path: '',
             name: '纪检报表',
             component: _import('inspect/report'),
-            meta: { title: '纪检报表', icon: 'user' },
+            meta: { title: '纪检报表', icon: 'excel' },
             menu: 'report'
         }]
     }, {
@@ -216,7 +216,7 @@ export const asyncRouterMap = [
             path: '',
             name: '潭烟风貌',
             component: _import('smokestyle/smokestyle'),
-            meta: { title: '潭烟风貌', icon: 'user' },
+            meta: { title: '潭烟风貌', icon: 'guide' },
             menu: 'smokestyle'
         }]
     }
@@ -225,12 +225,12 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/user/',
     name: '廉政教育',
-    meta: { title: '廉政教育', icon: 'table' },
+    meta: { title: '廉政教育', icon: 'education' },
     children: [{
       path: '',
       name: '廉政教育',
       component: _import('educationPolitics/educationPolitics'),
-      meta: { title: '廉政教育', icon: 'user' },
+      meta: { title: '廉政教育', icon: 'education' },
       menu: 'educationpolitics'
     }]
   }, {
@@ -277,30 +277,30 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/user/',
         name: '日常管理',
-        meta: { title: '日常管理', icon: 'table' },
+        meta: { title: '日常管理', icon: 'international' },
         children: [{
             path: 'letter',
             name: '信访举报管理',
             component: _import('daily/letter'),
-            meta: { title: '信访举报管理', icon: 'user' },
+            meta: { title: '信访举报管理', icon: 'email' },
             menu: 'letter'
         }, {
             path: 'supervise',
             name: '三重一大事项监管',
             component: _import('daily/supervise'),
-            meta: { title: '三重一大事项监管', icon: 'user' },
+            meta: { title: '三重一大事项监管', icon: 'documentation' },
             menu: 'supervise'
         }, {
             path: 'collect',
             name: '三重一大事项汇总',
             component: _import('daily/collect'),
-            meta: { title: '三重一大事项汇总', icon: 'user' },
+            meta: { title: '三重一大事项汇总', icon: 'clipboard' },
             menu: 'collect'
         }, {
             path: 'reference',
             name: '三重一大事项备案审批',
             component: _import('daily/reference'),
-            meta: { title: '三重一大事项备案审批', icon: 'user' },
+            meta: { title: '三重一大事项备案审批', icon: 'skill' },
             menu: 'reference'
         }]
     }, ,
