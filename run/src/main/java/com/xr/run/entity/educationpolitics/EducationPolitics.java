@@ -19,7 +19,7 @@ public class EducationPolitics {
   private Integer createId;
   private String createname;
   private String staus;
-//业务属性
+  //业务属性
   private String starttime;
   private String endtime;
 }

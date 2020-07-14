@@ -12,7 +12,7 @@ public interface SupervisionfilingMapper {
     @Select("SELECT count(sid) FROM (SELECT sid,sCreateId FROM daily_supervisionfiling WHERE " +
             "sStatus <> 2 AND sStatus <>- 1 ) daily_supervisionfiling WHERE sCreateId = #{sid}")
     Integer findSupervisionfilingByWstatusToCount(@Param("sid") Integer sid);
-/*查询*/
+    /*查询*/
     public List<Supervisionfiling> list(@Param(value = "sStatus") Integer sStatus);
     /*按事项摘要查询*/
     public List<Supervisionfiling> findbytitle(@Param(value = "sPaperItems")String sPaperItems,@Param(value = "sStatus") Integer sStatus);

@@ -5,6 +5,7 @@ import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.daily.LetterReportService;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,15 +17,8 @@ import java.util.List;
 public class LetterReportAction {
     @Autowired
     private LetterReportService letterReportService;
- /*   @RequestMapping("xfbh")
-    public ResponseResult xfbh(){
-
-        ResponseResult result=new ResponseResult();
-        String xfbh = letterReportService.xfbh();
-        result.getInfo().put("xfbh",xfbh);
-        return result;
-    };*/
     @RequestMapping("listLetter")
+    @RequiresPermissions("letter:list")
     public ResponseResult list(LetterReport letterReport){
         ResponseResult result=new ResponseResult();
         List<LetterReport> list = letterReportService.list(letterReport);
@@ -68,7 +62,7 @@ public class LetterReportAction {
     }
     @RequestMapping("shbc")
     public ResponseResult shbc(LetterReport letterReport) {
-letterReportService.shbc(letterReport);
+        letterReportService.shbc(letterReport);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","保存成功");
         return result;
@@ -80,9 +74,9 @@ letterReportService.shbc(letterReport);
         result.getInfo().put("message","已提交审核");
         return result;
     }
-   @RequestMapping("turndept")
-    public ResponseResult turndept(Integer lid){
-        letterReportService.turndept(lid);
+    @RequestMapping("turndept")
+    public ResponseResult turndept(Integer lid,Integer lmid){
+        letterReportService.turndept(lid,lmid);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","转办部门成功");
         return result;
@@ -98,7 +92,7 @@ letterReportService.shbc(letterReport);
     /*转办部门处理结果*/
     @RequestMapping("deptbc")
     public ResponseResult deptbc(LetterReport letterReport){
-     letterReportService.deptbc(letterReport);
+        letterReportService.deptbc(letterReport);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","已处理完成");
         return result;

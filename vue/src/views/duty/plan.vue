@@ -21,8 +21,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div><el-form-item>
-      <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(this.hasPerm('workplan:add')?'':'none')}">新增</el-button>
-      <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(this.hasPerm('workplan:delete')?'':'none')}">删除</el-button></el-form-item></div>
+        <el-button type="primary" class="el-icon-plus" @click="add" v-bind:style="{display:(this.hasPerm('workplan:add')?'':'none')}">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="dele" v-bind:style="{display:(this.hasPerm('workplan:delete')?'':'none')}">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -40,8 +40,8 @@
           width="360">
           <template slot-scope="scope">
             <a  @click="handleEdit(scope.$index, scope.row)"
-               target="_blank"
-               class="buttonText" style="color: #1890ff">{{scope.row.title}}</a>
+                target="_blank"
+                class="buttonText" style="color: #1890ff">{{scope.row.title}}</a>
           </template>
         </el-table-column>
         <el-table-column
@@ -74,27 +74,27 @@
           :total="total">
         </el-pagination>
       </div> </el-form>
-      <!--隐藏窗-->
-      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
-          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
-            <br/>
-            <div align="right" >
-
-              <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
-              <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
-              <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
-              <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
-              <el-button type="primary"  @click="tgmethod('不通过')"  v-bind:style="{display:btg}">不通过</el-button>
-              <el-button type="primary" class="el-icon-back" @click="deselect('ruleForm')">返回</el-button>
-            </div></div>
+    <!--隐藏窗-->
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
           <br/>
-          <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <div align="right" >
+
+            <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
+            <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
+            <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
+            <el-button type="primary"  @click="tgmethod('不通过')"  v-bind:style="{display:btg}">不通过</el-button>
+            <el-button type="primary" class="el-icon-back" @click="deselect('ruleForm')">返回</el-button>
+          </div></div>
+        <br/>
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
 
           <el-form-item label="工作计划标题" prop="title">
 
-                <el-input style="width: 400px"  v-model="userInfo.title" placeholder="请输入工作标题" width="220px"  v-bind:disabled='bt'></el-input>
+            <el-input style="width: 400px"  v-model="userInfo.title" placeholder="请输入工作标题" width="220px"  v-bind:disabled='bt'></el-input>
           </el-form-item><br/>
           <el-form-item label="所属部门" v-if="false">
             <el-input style="width: 400px" v-model="userInfo.deptName" placeholder="所属部门"  auto-complete="off"
@@ -126,9 +126,9 @@
           <el-form-item label="创建时间">
             <el-date-picker v-model="userInfo.createtime" placeholder="创建时间" type="datetime"  style="width: 400px"  disabled="disabled"></el-date-picker>
           </el-form-item>
-          </div>
-        </el-form></el-main>
-      </div>
+        </div>
+      </el-form></el-main>
+    </div>
   </div>
 </template>
 
@@ -139,33 +139,34 @@
   export default {  computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role'
+        'userId', 'role','mid'
       ])
     },
-  created() {//创建时调用初始化页面的方法
-    this.initList()
-  },
+    created() {//创建时调用初始化页面的方法
+      this.initList()
+      //console.log('mid',this.mid)
+    },
     methods:{//设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
-             return 'text-align:center';
-            },
+        return 'text-align:center';
+      },
       rowClass({row, rowIndex}){//设置表头居中
-            return 'text-align:center';
-             },
-    //重置
+        return 'text-align:center';
+      },
+      //重置
       onrest(){
         this.search=''
       },//判断状态给提示
-    cstatus: function (row, column, cellValue) {
-      if (cellValue == 0){
-        return '创建';
-      }else if (cellValue == 1){
-        return '待审';
-      }
-      else{
-        return '已审核'
-      }
-    },
+      cstatus: function (row, column, cellValue) {
+        if (cellValue == 0){
+          return '创建';
+        }else if (cellValue == 1){
+          return '待审';
+        }
+        else{
+          return '已审核'
+        }
+      },
       //更新数据
       gxmethod(){
         let postData = qs.stringify({
@@ -184,7 +185,7 @@
             duration: 2000
           })
         })
-          console.log('gx'+this.userInfo.id)
+        console.log('gx'+this.userInfo.id)
       },
       //提交审核
       tjshmethod(formName){
@@ -207,27 +208,27 @@
               });
               add(postData).then((response) => {
                 this.initList();
-              let postData = qs.stringify({
-                id:response.id
-              });
-              console.log('tjsh'+response.id)
-              subaudit(postData).then((response)=>{
-                this.ad='none'//默认新增页面隐藏
-              this.tf=''//表格页面显示
-              this.initList()
-              this.$notify({
-                title: '成功',
-                message: '提交成功',
-                type: 'success',
-                duration: 2000
+                let postData = qs.stringify({
+                  id:response.id
+                });
+                console.log('tjsh'+response.id)
+                subaudit(postData).then((response)=>{
+                  this.ad='none'//默认新增页面隐藏
+                  this.tf=''//表格页面显示
+                  this.initList()
+                  this.$notify({
+                    title: '成功',
+                    message: '提交成功',
+                    type: 'success',
+                    duration: 2000
+                  })
+                })
               })
-            })
-            })
             } else {
               console.log('error submit!!');
-          return false;
-        }
-        });
+              return false;
+            }
+          });
 
         }
         else {
@@ -266,7 +267,14 @@
       //初始化页面
       initList() {
         this.listLoading=true
-        list(this.listQuery).then(response =>{
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
+        let posdata=qs.stringify({
+          mid:mid
+        })
+        list(posdata).then(response =>{
           console.debug(response.data)
           this.tableData = response.list
           this.total = response.list.length
@@ -282,8 +290,8 @@
           this.nr=false
           this.bt=false
           this.bc='none'//保存按钮
-            this.tg='none'//通过按钮不显示
-            this.btg='none'//不通过按钮不显示
+          this.tg='none'//通过按钮不显示
+          this.btg='none'//不通过按钮不显示
           if(this.hasPerm('workplan:update')) {
             this.gx = ''//更新按钮显示
             this.tjsh = ''//提交审核按钮显示
@@ -298,12 +306,12 @@
           this.bt='disabled'//标题禁用
 
           this.bc='none'//保存按钮
-            if(this.hasPerm('workplan:audit')){
+          if(this.hasPerm('workplan:audit')){
             this.tg=''//通过按钮显示
             this.btg=''//不通过按钮显示
-            }
-            this.gx='none'//更新按钮不显示
-            this.tjsh='none'//提交审核按钮不显示
+          }
+          this.gx='none'//更新按钮不显示
+          this.tjsh='none'//提交审核按钮不显示
         }
         else{
 
@@ -321,8 +329,13 @@
       },
       //按标题查询
       onSearch() {
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
         let postData = qs.stringify({
-         title:this.search
+          title:this.search,
+          mid:mid
         });
         console.log(postData+'postdate--------')
         this.listLoading = true
@@ -366,21 +379,21 @@
               duration: 2000
             })
           }else {
-     let postData = qs.stringify({
-          test:JSON.stringify(data)
-        });
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
 
-        console.debug('选中行数据'+JSON.stringify(data))
-        del(postData).then((response) =>{
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-        })
-        }}
+            console.debug('选中行数据'+JSON.stringify(data))
+            del(postData).then((response) =>{
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }}
       },
       selectClassfy(data) {
         this.userInfo.deptName=data.label;
@@ -420,10 +433,10 @@
         this.nr=false
         this.bt=false
         this.bc='',//保存按钮显示
-           this.tg='none',//通过按钮隐藏
+          this.tg='none',//通过按钮隐藏
           this.btg='none',//不通过按钮隐藏
           this.gx='none',//更新按钮隐藏
-        this.tjsh=''//提交审核按钮显示
+          this.tjsh=''//提交审核按钮显示
         this.userInfo={title:''};//清空数据
         //新增时初始化默认值
         this.userInfo.title='履行全面从严治党主体责任年度工作计划和措施'
@@ -452,20 +465,20 @@
             });
             add(postData).then((response) => {
               this.ad='none'//新增页面出现
-            this.tf=''//表格页面隐藏
-            this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
+              this.tf=''//表格页面隐藏
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
           } else {
             console.log('error submit!!');
-        return false;
-      }
-      });
+            return false;
+          }
+        });
 
       },
       //返回
@@ -556,9 +569,9 @@
                   ]
                 }]
             }]
-          }],
+        }],
         isShowSelect:false,
-      tableData: []
+        tableData: []
       }
     },
   }

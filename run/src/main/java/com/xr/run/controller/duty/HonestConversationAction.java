@@ -6,6 +6,7 @@ import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
 import com.xr.run.service.duty.HonestConversationService;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +31,9 @@ public class HonestConversationAction {
     private HonestConversationService honestConversationService;
     /*初始化工作部署页面*/
     @RequestMapping("list")
-    public ResponseResult list(){
-        List<HonestConversation> list =   honestConversationService.list();
+    @RequiresPermissions("honestconversation:list")
+    public ResponseResult list(Integer mid){
+        List<HonestConversation> list =   honestConversationService.list(mid);
         System.out.println("list"+list.size());
         ResponseResult result=new ResponseResult();
         result.getInfo().put("list",list);
@@ -40,9 +42,10 @@ public class HonestConversationAction {
     }
     /*根据谈话类型查询*/
     @RequestMapping("findbytitle")
-    public ResponseResult listBytitle(String title){
+    @RequiresPermissions("honestconversation:list")
+    public ResponseResult listBytitle(String title,Integer mid){
         System.out.println("title"+title);
-        List<HonestConversation> list=honestConversationService.listBytitle(title);
+        List<HonestConversation> list=honestConversationService.listBytitle(title,mid);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("list",list);
         result.getInfo().put("total",list.size());
@@ -50,6 +53,7 @@ public class HonestConversationAction {
     }
     /*新增工作部署*/
     @RequestMapping("addHonestConversation")
+    @RequiresPermissions("honestconversation:add")
     public ResponseResult addHonestConversation(HonestConversation honestConversation){
         System.out.println(honestConversation+"honestConversation");
         honestConversationService.addHonestConversation(honestConversation);
@@ -59,6 +63,7 @@ public class HonestConversationAction {
     }
     /*更新工作部署*/
     @RequestMapping("updateHonestConversation")
+    @RequiresPermissions("honestconversation:update")
     public ResponseResult updateHonestConversation (HonestConversation honestConversation)throws ParseException {
         honestConversationService.updateHonestConversation(honestConversation);
         ResponseResult result=new ResponseResult();
@@ -72,7 +77,7 @@ public class HonestConversationAction {
         System.out.println("提交");
         honestConversationService.subauditHonestConversation(id);
         ResponseResult result=new ResponseResult();
-      //  result.getData().put("message","提交成功");
+        result.getInfo().put("message","已提交审核");
         return result;
     }
     /*审核通过*/
@@ -81,11 +86,12 @@ public class HonestConversationAction {
         System.out.println("审核 id="+id+",status="+status);
         honestConversationService.passauditHonestConversation(id,status,auditresult);
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("message","审核通过");
+        result.getInfo().put("message","处理成功");
         return result;
     }
     /*删除工作部署*/
     @RequestMapping("delhonestConversation")
+    @RequiresPermissions("honestconversation:delete")
     public ResponseResult delDeployment(String test){
 
         System.out.println("test"+test);
@@ -115,7 +121,7 @@ public class HonestConversationAction {
         result.getInfo().put("list",findallunit);
         return result;
     }
-   // @Value("${files.uploadFolder}")
+    // @Value("${files.uploadFolder}")
     private String realBasePath="D://IDE/";
     @Value("${file.staticAccessPaths}")
     private String accessPath;
@@ -124,7 +130,7 @@ public class HonestConversationAction {
     public ResponseResult uploadFile(@RequestParam("filename") MultipartFile file, HttpServletRequest req) throws IOException {
         ResponseResult result=new ResponseResult();
         String format = sdf.format(new Date());
-       // String realPath = req.getServletContext().getRealPath("/honest/upload") + format;
+        // String realPath = req.getServletContext().getRealPath("/honest/upload") + format;
         // 域名访问的相对路径（通过浏览器访问的链接-虚拟路径）
         String saveToPath = accessPath + format;
         // 真实路径，实际储存的路径
@@ -136,7 +142,7 @@ public class HonestConversationAction {
         String oldName = file.getOriginalFilename();
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
         file.transferTo(new File(folder,newName));
-      //  String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/honest/upload" + format + newName;
+        //  String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/honest/upload" + format + newName;
         String url = format  + newName;
         System.out.println(url);
         result.getInfo().put("url",url);

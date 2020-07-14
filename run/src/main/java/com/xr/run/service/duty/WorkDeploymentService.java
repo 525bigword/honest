@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface WorkDeploymentService {
     /*初始化工作部署页面*/
-    public List<WorkDeployment> list();
+    public List<WorkDeployment> list(Integer mid);
     /*根据标题查询*/
-    public List<WorkDeployment> listBytitle(String title);
+    public List<WorkDeployment> listBytitle(String title,Integer mid);
     /*新增工作部署*/
     public Integer addDeployment(WorkDeployment workDeployment);
     /*更新工作部署*/

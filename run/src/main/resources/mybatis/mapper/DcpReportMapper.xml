@@ -21,7 +21,7 @@ select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,r
     <select id="fintBywhere" resultMap="basemap">
         select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,re.typeconcrete from dcp_report re,Sys_Staff h where h.sid=re.eid and re.status!=-1
         <if test="reportType != null and !reportType.equals('')">
-        and re.reporttype like #{reportType}</if>
+            and re.reporttype like #{reportType}</if>
         <if test="starttime != null and !starttime.equals('')">
             and re.newtime  &gt;= #{starttime}
         </if>

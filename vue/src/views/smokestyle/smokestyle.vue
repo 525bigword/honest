@@ -72,9 +72,9 @@
         <el-table-column
           prop="surl"
           label="路径" v-if="false"></el-table-column>
-          <el-table-column
-            prop="smoimage"
-            label="图片" v-if="false">
+        <el-table-column
+          prop="smoimage"
+          label="图片" v-if="false">
         </el-table-column>
       </el-table>
       <div class="block" align="center">
@@ -237,7 +237,7 @@
           console.debug(response.info)
           this.tableData = response.list
           this.total = response.list.length
-        this.listLoading=false
+          this.listLoading=false
         })
       },add(){
         this.fileList=[]//清空upload
@@ -245,41 +245,41 @@
         this.ad=''
         this.bc=''
         this.gx='none'
-          this.$set(this.userInfo,'smocreatetime',new Date())
+        this.$set(this.userInfo,'smocreatetime',new Date())
 
       },
       //返回
       back(formName){this.ad='none',this.tf='',   this.$refs[formName].resetFields(), this.initList();
       },//新增提交
       submitUser(formName){
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              let endtime = new Date(this.userInfo.smocreatetime).toJSON();
-              this.userInfo.smocreatetime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-                .toISOString()
-                .replace(/T/g, " ")
-                .replace(/\.[\d]{3}Z/, "")
-              let posdata=qs.stringify({
-                smotitle:this.userInfo.smotitle,
-                smoproperty:this.userInfo.smoproperty.toString(),
-                smoimage:this.userInfo.smoimage,
-                surl:this.userInfo.surl,
-                smosource:this.userInfo.smosource,
-                smoauthor:this.userInfo.smoauthor,
-                smocreatetime:this.userInfo.smocreatetime,
-                smodescrion:this.userInfo.smodescrion,
-                smocontent:this.userInfo.smocontent,
-                smocreateids:this.userId,
-                smocreatename:this.nickname,
-                sstatus:0
-              })
-              addSmokestyle(posdata).then((response)=>{
-                this.tf='';
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.smocreatetime).toJSON();
+            this.userInfo.smocreatetime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let posdata=qs.stringify({
+              smotitle:this.userInfo.smotitle,
+              smoproperty:this.userInfo.smoproperty.toString(),
+              smoimage:this.userInfo.smoimage,
+              surl:this.userInfo.surl,
+              smosource:this.userInfo.smosource,
+              smoauthor:this.userInfo.smoauthor,
+              smocreatetime:this.userInfo.smocreatetime,
+              smodescrion:this.userInfo.smodescrion,
+              smocontent:this.userInfo.smocontent,
+              smocreateids:this.userId,
+              smocreatename:this.nickname,
+              sstatus:0
+            })
+            addSmokestyle(posdata).then((response)=>{
+              this.tf='';
               this.ad='none'
               this.bc='',//保存按钮显示
                 this.gx='none',//更新按钮不显示
                 this.$refs[formName].resetFields()
-                this.initList();
+              this.initList();
               this.$notify({
                 title: '成功',
                 message: '新增成功',
@@ -287,10 +287,10 @@
                 duration: 2000
               })
             })
-            } else {
-              console.log('error submit!!');
-          return false;
-        }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
         });
 
       },//点击列编辑

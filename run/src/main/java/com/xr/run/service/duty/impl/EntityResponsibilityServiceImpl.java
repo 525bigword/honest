@@ -13,38 +13,38 @@ public class EntityResponsibilityServiceImpl implements EntityResponsibilityServ
     @Autowired
     private EntityResponsibilityMapper entityResponsibilityMapper;
     @Override
-    public List<EntityResponsibility> list() {
-        return entityResponsibilityMapper.list();
+    public List<EntityResponsibility> list(Integer mid) {
+        return entityResponsibilityMapper.list(mid);
     }
 
     @Override
-    public List<EntityResponsibility> findbytitle(String title) {
-        return entityResponsibilityMapper.findbytitle(title);
+    public List<EntityResponsibility> findbytitle(String title,Integer mid) {
+        return entityResponsibilityMapper.findbytitle(title,mid);
     }
 
     @Override
     public Integer addEntityResponsibility(EntityResponsibility entityResponsibility) {
-entityResponsibilityMapper.addEntityResponsibility(entityResponsibility);
-return entityResponsibility.getId();
+        entityResponsibilityMapper.addEntityResponsibility(entityResponsibility);
+        return entityResponsibility.getId();
     }
 
     @Override
     public void updateEntityResponsibility(EntityResponsibility entityResponsibility) {
-entityResponsibilityMapper.updateEntityResponsibility(entityResponsibility);
+        entityResponsibilityMapper.updateEntityResponsibility(entityResponsibility);
     }
 
     @Override
     public void del(Integer id) {
-entityResponsibilityMapper.del(id);
+        entityResponsibilityMapper.del(id);
     }
 
     @Override
     public void subaudit(Integer id) {
-entityResponsibilityMapper.subaudit(id);
+        entityResponsibilityMapper.subaudit(id);
     }
 
     @Override
     public void passaudit(EntityResponsibility entityResponsibility) {
-entityResponsibilityMapper.passaudit(entityResponsibility);
+        entityResponsibilityMapper.passaudit(entityResponsibility);
     }
 }

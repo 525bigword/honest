@@ -18,28 +18,28 @@ public class SupervisionfilingAction {
     private SupervisionfilingService supervisionfilingService;
     @RequestMapping("list")
     @RequiresPermissions("supervise:list")
-public ResponseResult list(Integer sStatus){
-    List<Supervisionfiling> list = supervisionfilingService.list(sStatus);
-    ResponseResult result=new ResponseResult();
-    result.getInfo().put("list",list);
-    return result;
+    public ResponseResult list(Integer sStatus){
+        List<Supervisionfiling> list = supervisionfilingService.list(sStatus);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("list",list);
+        return result;
 
-}
-@RequestMapping("signleader")
-public ResponseResult signleader(Integer sid){
+    }
+    @RequestMapping("signleader")
+    public ResponseResult signleader(Integer sid){
         supervisionfilingService.signleader(sid);
-    ResponseResult result=new ResponseResult();
-    result.getInfo().put("message","验收完毕");
-    return result;
-}
-@RequestMapping("findbytitle")
-@RequiresPermissions("supervise:list")
-public ResponseResult findbytitle(String sPaperItems,Integer sStatus){
-    List<Supervisionfiling> list = supervisionfilingService.findbytitle(sPaperItems,sStatus);
-    ResponseResult result=new ResponseResult();
-    result.getInfo().put("list",list);
-    return result;
-}
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","验收完毕");
+        return result;
+    }
+    @RequestMapping("findbytitle")
+    @RequiresPermissions("supervise:list")
+    public ResponseResult findbytitle(String sPaperItems,Integer sStatus){
+        List<Supervisionfiling> list = supervisionfilingService.findbytitle(sPaperItems,sStatus);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("list",list);
+        return result;
+    }
     @RequestMapping("findbysFilingId")
     public ResponseResult findbysFilingId(String sFilingId){
         List<Supervisionfiling> list = supervisionfilingService.findbysFilingId(sFilingId);
@@ -47,14 +47,14 @@ public ResponseResult findbytitle(String sPaperItems,Integer sStatus){
         result.getInfo().put("list",list);
         return result;
     }
-@RequestMapping("addsupervisionfiling")
-@RequiresPermissions("supervise:add")
+    @RequestMapping("addsupervisionfiling")
+    @RequiresPermissions("supervise:add")
     public ResponseResult addsupervisionfiling(Supervisionfiling supervisionfiling){
-   supervisionfilingService.addsupervisionfiling(supervisionfiling);
-    ResponseResult result=new ResponseResult();
-    result.getInfo().put("message","新增成功");
-    return result;
-}
+        supervisionfilingService.addsupervisionfiling(supervisionfiling);
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message","新增成功");
+        return result;
+    }
     /*删除*/
     @RequestMapping("delesupervision")
     @RequiresPermissions("supervise:delete")
