@@ -29,7 +29,7 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-       <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
+       <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button> -->
         <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"

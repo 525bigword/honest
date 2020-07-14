@@ -25,6 +25,6 @@ public interface RdWorkPlanMapper extends BaseMapper<RdWorkPlan> {
 
     List<RdWorkPlan> findRdWorkPlanAll(@Param("title") String title);
 
-    @Select("SELECT count(rdid) FROM ( SELECT rdid,create_id FROM rd_work_plan WHERE staus <> 0 and staus <> 1 ) rd_work_plan WHERE create_id = #{sid}")
+    @Select("SELECT count(rdid) FROM ( SELECT rdid,create_id FROM rd_work_plan WHERE staus <> 2 and staus <> -1) rd_work_plan WHERE create_id = #{sid}")
     Integer findrdWorkPlanByWstatusToCount(@Param("sid") Integer sid);
 }

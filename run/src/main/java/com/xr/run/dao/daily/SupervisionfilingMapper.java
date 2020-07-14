@@ -26,7 +26,7 @@ public interface SupervisionfilingMapper {
     /*审核意见*/
     public void tgsh(Supervisionfiling supervisionfiling);
     /*查询是否包含业务*/
-    @Select("SELECT count(sid) FROM (SELECT sid,sStatus FROM daily_supervisionfiling where sStatus<>2) daily_supervisionfiling " +
+    @Select("SELECT count(sid) FROM (SELECT sid,sStatus FROM daily_supervisionfiling where sStatus<>2 and sStatus<>-1) daily_supervisionfiling " +
             " WHERE sid = #{sid}")
     Integer findSupervisionfilingByWstatusToCount(@Param("sid")Integer sid);
 }

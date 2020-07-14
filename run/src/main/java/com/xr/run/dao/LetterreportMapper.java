@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface LetterreportMapper extends BaseMapper<Letterreport> {
 
     @Select("SELECT count(lid) FROM ( SELECT lid,lPersonBeReported FROM daily_letterreport where " +
-            " lStatus<>4) daily_letterreport WHERE lPersonBeReported = #{sid}")
+            " lStatus<>4 and lStatus<>-1) daily_letterreport WHERE lPersonBeReported = #{sid}")
     Integer findSpvBackByWstatusToCount(@Param("sid")Integer sid);
 
 }

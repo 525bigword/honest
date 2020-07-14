@@ -450,20 +450,20 @@ this.search=''
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
         editorOption: {
-          modules: {
-            toolbar: {
-              container: toolbarOptions,  // 工具栏
-              handlers: {
-                'image': function (value) {
-                  if (value) {
-                    alert('自定义图片')
-                  } else {
-                    this.quill.format('image', false);
-                  }
-                }
-              }
-            }
-          }
+          // modules: {
+          //   toolbar: {
+          //     container: toolbarOptions,  // 工具栏
+          //     handlers: {
+          //       'image': function (value) {
+          //         if (value) {
+          //           alert('自定义图片')
+          //         } else {
+          //           this.quill.format('image', false);
+          //         }
+          //       }
+          //     }
+          //   }
+          // }
         },
         nr:false,
         bt:false,
