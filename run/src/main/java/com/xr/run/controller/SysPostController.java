@@ -42,6 +42,15 @@ public class SysPostController {
         System.out.println(jsonObject.get("message"));
         System.out.println(jsonObject.get("pname"));
         System.out.println(jsonObject.get("mids"));
+        if(jsonObject.get("message")==null){
+            jsonObject.fluentPut("message","");
+        }
+        if(jsonObject.get("pname")==null){
+            jsonObject.fluentPut("pname","");
+        }
+        if(jsonObject.get("mids")==null){
+            jsonObject.fluentPut("mids","");
+        }
         pageNum=pageNum<0||null==pageNum?0:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page page=new Page(pageNum,pageRow);
@@ -57,6 +66,9 @@ public class SysPostController {
     @RequiresPermissions("post:add")
     public JSONObject addSysPost(@RequestBody SysPost sysPost){
         System.out.println(sysPost);
+        if(sysPost.getMessage()==null){
+            sysPost.setMessage("");
+        }
         try {
             sysPostService.addSysPost(sysPost);
             return CommonUtil.successJson(1);
@@ -70,6 +82,9 @@ public class SysPostController {
     @RequiresPermissions("post:update")
     public JSONObject upSysPost(@RequestBody SysPost sysPost){
         System.out.println(sysPost);
+        if(sysPost.getMessage()==null){
+            sysPost.setMessage("");
+        }
         sysPostService.upSysPost(sysPost);
         return CommonUtil.successJson(1);
     }

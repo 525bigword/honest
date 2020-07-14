@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column align="center" prop="menuCode" label="栏目码"></el-table-column>
       <!-- <el-table-column prop="menuCode" label="栏目码" width="150px" align="center">
-        
+
          <template slot-scope="{row}">
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -144,9 +144,9 @@
         ref="dataForm"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="70px"
-        style="width: 400px; margin-left:50px;"
+        label-position="right"
+        label-width="80px"
+        style="width: 430px; margin-left:50px;"
       >
         <el-form-item label="栏目名" prop="menuName">
           <el-input v-model="temp.menuName" placeholder="栏目名" />
@@ -154,11 +154,13 @@
         <el-form-item label="栏目码" prop="menuCode">
           <el-input v-model="temp.menuCode" placeholder="栏目码" />
         </el-form-item>
-        <el-form-item label="权限类型" prop="code">
-          <el-radio v-model="radio" label="add">新增</el-radio>
-          <el-radio v-model="radio" label="update">修改</el-radio>
-          <el-radio v-model="radio" label="delete">删除</el-radio>
-          <el-radio v-model="radio" label="list">查询</el-radio>
+        <el-form-item label="权限类型" prop="radio">
+          <el-radio-group  v-model="temp.radio">
+          <el-radio  label="add">新增</el-radio>
+          <el-radio  label="update">修改</el-radio>
+          <el-radio  label="delete">删除</el-radio>
+          <el-radio  label="list">查询</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item v-if="textMap[dialogStatus]=='修改'" label="是否必须" prop="code">
           <el-switch
@@ -190,7 +192,6 @@ export default {
   data() {
     return {
       yesOrno: false,
-      radio: "",
       tableKey: 0,
       list: [],
       total: 0,
@@ -215,7 +216,8 @@ export default {
         menuName: "",
         menuCode: "",
         code: "",
-        status: "published"
+        status: "published",
+        radio: ""
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -227,23 +229,24 @@ export default {
       Excel: "",
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        type: [
-          { required: true, message: "type is required", trigger: "change" }
-        ],
-        timestamp: [
-          {
-            type: "date",
+      downloadLoading: false,
+      rules:{
+        menuName: [{
             required: true,
-            message: "timestamp is required",
-            trigger: "change"
-          }
-        ],
-        title: [
-          { required: true, message: "title is required", trigger: "blur" }
-        ]
-      },
-      downloadLoading: false
+            message: "栏目名不能为空",
+            trigger: ["blur", "change"]
+          }],
+          menuCode: [{
+            required: true,
+            message: "栏目码不能为空",
+            trigger: [ "change","blur"]
+          }],
+          radio: [{
+            required: true,
+            message: "请选择权限类型",
+            trigger: ["change","blur"]
+          }]
+      }
     };
   },
   created() {
@@ -353,23 +356,26 @@ export default {
       });
     },
     createData() {
-      if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
+      /* if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
         this.$message({
           type: "error",
           message: "请将信息填写完整"
         });
-      } else {
+      } else { */
         let name = "";
-        if (this.radio == "add") {
+        if (this.temp.radio == "add") {
           name = "新增";
-        } else if (this.radio == "delete") {
+        } else if (this.temp.radio == "delete") {
           name = "删除";
-        } else if (this.radio == "update") {
+        } else if (this.temp.radio == "update") {
           name = "修改";
         } else {
           name = "列表";
         }
-        let permissionCode = this.temp.menuCode + ":" + this.radio;
+        let permissionCode = this.temp.menuCode + ":" + this.temp.radio;
+         this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
         this.api({
           url: "syspermission/add",
           method: "post",
@@ -387,7 +393,7 @@ export default {
               type: "error",
               message: "已存在该权限"
             });
-            
+
           } else {
             this.$message({
               type: "success",
@@ -397,7 +403,8 @@ export default {
             this.getList();
           }
         });
-      }
+        }})
+     /*  } */
     },
     handleUpdate(row) {
       // console.log("row",row)
@@ -406,7 +413,7 @@ export default {
       // console.log()
       this.temp = Object.assign({}, row); // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp);
-      this.radio = row.permissionCode.substring(
+      this.temp.radio = row.permissionCode.substring(
         row.permissionCode.indexOf(":") + 1,
         row.permissionCode.length
       );
@@ -480,7 +487,7 @@ export default {
           }
         }
       });
-      
+
       // this.$notify({
       //   title: "Success",
       //   message: "Delete Successfully",

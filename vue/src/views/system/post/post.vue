@@ -289,7 +289,10 @@ export default {
         ],
         title: [
           { required: true, message: "title is required", trigger: "blur" }
-        ]
+        ],
+        pname:[{
+          required:true,message:"角色名不能为空",trigger:['blur','change']
+        }]
       },
       downloadLoading: false
     };
@@ -492,14 +495,17 @@ export default {
     },
     createData() {
       this.temp.id = store.getters.userId;
-      console.log(this.temp);
-      console.log(this.default_checked);
-      if (!this.temp.pname ) {
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
+          if (this.default_checked[0]===undefined) {
         this.$message({
           type: "error",
-          message: "请将信息填写完整"
+          message: "请选择角色的权限",
+          duration:2000
         });
-      } else {
+        return
+       }
         let arr = this.default_checked.join(",");
         this.api({
           url: "syspost/add",
@@ -514,21 +520,25 @@ export default {
         }).then(respone => {
           console.log(respone);
           if (respone === 0) {
-            this.$message({
-              type: "error",
-              message: "添加失败"
-            });
+             this.$notify({
+                  title: "成功",
+                  message: "添加失败",
+                  type: "success",
+                  duration: 2000
+                });
           } else {
-            this.$message({
-              type: "success",
-              message: "添加成功"
-            });
+            this.$notify({
+                  title: "成功",
+                  message: "添加成功",
+                  type: "success",
+                  duration: 2000
+                });
             this.temp.defaultvalue = [];
             this.getList();
             this.treeDisable = false;
           }
         });
-      }
+      }})
     },
     handleUpdate(row) {
       this.placeholder = row.mname;
@@ -547,18 +557,17 @@ export default {
     updateData() {
       console.log("temp", this.temp);
       console.log("this.default_checked", this.default_checked);
-      this.$alert("是否确定修改", "提示", {
-        showCancelButton: true,
-        showConfirmButton: true,
-        closeOnPressEscape: false,
-        callback: action => {
-          if (action === "confirm") {
-            if (!this.temp.pname || !this.temp.pid || !this.temp.mid) {
-              this.$message({
-                type: "error",
-                message: "请将信息填写完整"
-              });
-            } else {
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
+          if (this.default_checked[0]===undefined) {
+        this.$message({
+          type: "error",
+          message: "请选择角色的权限",
+          duration:2000
+        });
+        return
+       }
               let arr = this.default_checked.join(",");
               console.log(arr);
               this.api({
@@ -576,12 +585,16 @@ export default {
               }).then(res => {
                 this.temp.defaultvalue = [];
                 this.getList();
+                this.$notify({
+                  title: "成功",
+                  message: "修改成功",
+                  type: "success",
+                  duration: 2000
+                });
                 this.treeDisable = false;
               });
             }
-          }
-        }
-      });
+      })
     },
     handleDelete(row, index) {
       console.log(row, index);
