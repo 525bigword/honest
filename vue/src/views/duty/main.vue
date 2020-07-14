@@ -69,21 +69,21 @@
           :total="total">
         </el-pagination>
       </div></el-form>
-      <!--隐藏窗-->
-      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" :title="dialogTitle">
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
-          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
-            <br/>
-            <div align="right">
-              <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
-              <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
-              <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
-              <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
-              <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
-              <el-button type="primary" class="el-icon-back" @click="deselect('ruleForm')">返回</el-button>
-            </div></div>
+    <!--隐藏窗-->
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" :title="dialogTitle">
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
           <br/>
-          <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <div align="right">
+            <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
+            <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
+            <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
+            <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
+            <el-button type="primary" class="el-icon-back" @click="deselect('ruleForm')">返回</el-button>
+          </div></div>
+        <br/>
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
           <el-form-item label="主体责任标题" prop="title">
 
@@ -106,9 +106,9 @@
           <el-form-item label="状态" v-if="false">
             <el-input v-model="userInfo.staus"  placeholder="状态"  disabled="disabled"  style="width: 300px" ></el-input>
           </el-form-item>
-      </div>
-    </el-form></el-main>
-  </div>
+        </div>
+      </el-form></el-main>
+    </div>
   </div>
 </template>
 
@@ -126,19 +126,19 @@
     computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role'
+        'userId', 'role','mid'
       ])
     },  created() {
       this.initList()
     },
     methods:{
-  //设置表格内容居中
-  cellStyle({row, column, rowIndex, columnIndex}){
-    return 'text-align:center';
-  },
-  rowClass({row, rowIndex}){//设置表头居中
-    return 'text-align:center';
-  },
+      //设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },
       onrest(){
         this.search=''
       },//判断状态给提示
@@ -194,43 +194,43 @@
                 let postData = qs.stringify({
                   id:response.id
                 });
-              console.log('tjsh'+response.id)
-              subaudit(postData).then((response)=>{
-                this.ad='none'//新增页面隐藏
-              this.tf=''//表格页面
-              this.initList()
-              this.$notify({
-                title: '成功',
-                message: '提交成功',
-                type: 'success',
-                duration: 2000
+                console.log('tjsh'+response.id)
+                subaudit(postData).then((response)=>{
+                  this.ad='none'//新增页面隐藏
+                  this.tf=''//表格页面
+                  this.initList()
+                  this.$notify({
+                    title: '成功',
+                    message: '提交成功',
+                    type: 'success',
+                    duration: 2000
+                  })
+                })
               })
-            })
-            })
 
             } else {
               console.log('error submit!!');
-          return false;
-        }
-        });
+              return false;
+            }
+          });
 
         }
         else {
-        let postData = qs.stringify({
-          id:this.userInfo.id
-        });
-        console.log('tjsh'+this.userInfo.id)
-        subaudit(postData).then((response)=>{
-          this.ad='none'//新增页面出现
-          this.tf=''//表格页面隐藏
-          this.initList()
-          this.$notify({
-            title: '成功',
-            message: '提交成功',
-            type: 'success',
-            duration: 2000
+          let postData = qs.stringify({
+            id:this.userInfo.id
+          });
+          console.log('tjsh'+this.userInfo.id)
+          subaudit(postData).then((response)=>{
+            this.ad='none'//新增页面出现
+            this.tf=''//表格页面隐藏
+            this.initList()
+            this.$notify({
+              title: '成功',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
           })
-        })
         }},
       tgmethod(val){
         let postData = qs.stringify({
@@ -252,8 +252,15 @@
       },
       //初始化页面
       initList() {
-    this.listLoading=true
-        list(this.listQuery).then(response =>{
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
+        let postData = qs.stringify({
+          mid:mid
+        });
+        this.listLoading=true
+        list(postData).then(response =>{
           console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
@@ -280,7 +287,7 @@
       handleEdit(index, row) {
         this.dialogTitle = '编辑';
         this.userInfo = row;
-     this.userInfo.createname=row.users[0].name
+        this.userInfo.createname=row.users[0].name
 
         if(row.staus==0){
 
@@ -292,18 +299,18 @@
           if(this.hasPerm('entityresponsibility:update')) {
             this.gx=''//更新按钮显示
             this.tjsh=''//提交审核按钮显示
-             }
+          }
         }
         else if(row.staus==1){
 
           this.nr='disabled'
           this.bt='disabled'
           this.bc='none'//保存按钮
-            if(this.hasPerm('entityresponsibility:audit')){
+          if(this.hasPerm('entityresponsibility:audit')){
             this.tg='',//通过按钮显示
-            this.btg=''//不通过按钮显示
-               }
-            this.gx='none',//更新按钮不显示
+              this.btg=''//不通过按钮显示
+          }
+          this.gx='none',//更新按钮不显示
             this.tjsh='none'//提交审核按钮不显示
         }
         else{
@@ -350,27 +357,33 @@
               duration: 2000
             })
           }else {
-          let postData = qs.stringify({
-            test:JSON.stringify(data)
-          });
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
 
-          console.debug('选中行数据'+JSON.stringify(data))
-          del(postData).then((response) =>{
-            this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
+            console.debug('选中行数据'+JSON.stringify(data))
+            del(postData).then((response) =>{
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
-        }}
+          }}
       },
       //按标题查询
       onSearch() {
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
         let postData = qs.stringify({
-          title:this.search
+          title:this.search,
+          mid:mid
         });
+
         this.listLoading = true
         findbytitle(postData).then((response) =>{
           this.currentPage = 1
@@ -406,33 +419,33 @@
             //新增
             add(postData).then((response) => {
               this.ad='none'//新增页面隐藏
-            this.tf=''//表格页面出现
-            this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
+              this.tf=''//表格页面出现
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
 
 
 
           } else {
             console.log('error submit!!');
-        return false;
-      }
-      });
+            return false;
+          }
+        });
 
       },
-    handleSizeChange(size) {
-      this.pageSize = size;
-      console.log(this.pageSize)
-    },
-    handleCurrentChange(currentPage) {
-      this.currentPage = currentPage;
-      console.log(this.currentPage)  //点击第几页
-    }
+      handleSizeChange(size) {
+        this.pageSize = size;
+        console.log(this.pageSize)
+      },
+      handleCurrentChange(currentPage) {
+        this.currentPage = currentPage;
+        console.log(this.currentPage)  //点击第几页
+      }
     },
     data() {
       return {rules: {
@@ -447,21 +460,21 @@
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
         nr:'disabled',
-      bt:'disabled',
-      bc:'none',//保存按钮
+        bt:'disabled',
+        bc:'none',//保存按钮
         tg:'none',//通过按钮不显示
-      btg:'none',//不通过按钮不显示
-       gx:'none',//更新按钮不显示
+        btg:'none',//不通过按钮不显示
+        gx:'none',//更新按钮不显示
         tjsh:'none',//提交审核按钮显示
         editorOption: {},
-          userInfo: {},
-          dialogTitle: '增加',
-          rowIndex: null,
-          search:'',
-          currentPage4: 1,
-          pageSize:10,
-          total:0,
-          currentPage:1,
+        userInfo: {},
+        dialogTitle: '增加',
+        rowIndex: null,
+        search:'',
+        currentPage4: 1,
+        pageSize:10,
+        total:0,
+        currentPage:1,
         tableData: []
       }
     }

@@ -203,7 +203,7 @@
         <el-form-item  label="部门名称" prop="menuName">
           <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="栏目名" />
         </el-form-item>
-        <el-form-item label="负责人">
+        <el-form-item label="负责人" prop="region">
           <el-select style="width:45%;margin-left:10px" v-model="temp.region"  placeholder="负责人">
             <el-option
               v-for="(item,index) in staff"
@@ -213,7 +213,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="父级部门">
+        <el-form-item label="父级部门" prop="defaultvalue">
           <!-- //temp.parent -->
           <el-cascader  style="width:45%;margin-left:10px"
             :placeholder="placeholder"
@@ -224,7 +224,7 @@
             :options="bm"
           ></el-cascader>
         </el-form-item>
-        <el-form-item label="分管领导">
+        <el-form-item label="分管领导" prop="ld">
           <el-select style="width:45%;margin-left:10px" v-model="temp.ld" @change="ldchange" placeholder="分管领导">
             <el-option  v-for="(item,index) in ld" :label="item.name" :value="item.sid" :key="index"></el-option>
           </el-select>
@@ -249,7 +249,7 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
-      defaultvalue: ["1"],
+      defaultvalue: [1],
       props: {
         value: "mid",
         label: "mechanismName",
@@ -302,20 +302,17 @@ export default {
       dialogPvVisible: true,
       pvData: [],
       rules: {
-        type: [
-          { required: true, message: "type is required", trigger: "change" }
-        ],
-        timestamp: [
-          {
-            type: "date",
-            required: true,
-            message: "timestamp is required",
-            trigger: "change"
-          }
-        ],
-        title: [
-          { required: true, message: "title is required", trigger: "blur" }
-        ]
+        menuName: [
+          { required: true, message: "部门名称不能为空", trigger: ["change","blur"] }],
+          region:[{
+          required:true,message:"请选择负责人",trigger:'change'
+        }],
+        /* defaultvalue:[{
+          required:true,message:"请选择父级部门",trigger:'change'
+        }], */
+        ld:[{
+          required:true,message:"请选择分管领导",trigger:'change'
+        }],
       },
       bm: [],
       downloadLoading: false
@@ -333,7 +330,7 @@ export default {
     closefase() {
       console.log("123");
       this.placeholder = "";
-      this.defaultvalue = [];
+      this.defaultvalue = [1];;
     },
     clicen() {
       this.dialogFormVisible = false;
@@ -442,7 +439,8 @@ export default {
       });
     },
     Change(val) {
-      console.log(val);
+     this.defaultvalue=[]
+      this.defaultvalue.push(val);
     },
     getSysmechanismAll(val=0) {
       this.api({
@@ -467,28 +465,15 @@ export default {
       });
     },
     createData() {
-      console.log(store.getters.userId);
-      console.log(this.temp);
-      if (
-        !store.getters.userId == null ||
-        !this.temp.menuName == null ||
-        !this.temp.region == null ||
-        !this.temp.ld == null
-      ) {
-        this.$notify({
-          title: "error",
-          message: "请将信息填写完整",
-          type: "error",
-          duration: 2000
-        });
-      } else {
+      this.$refs["dataForm"].validate(valid => {
+        if(valid){
         this.api({
           url: "sysmechanism/add",
           method: "post",
           params: {
             mechanismName: this.temp.menuName,
             sid: this.temp.region,
-            parent: this.defaultvalue,
+            parent: this.defaultvalue[0],
             branch: this.temp.ld,
             createId: store.getters.userId
           }
@@ -497,13 +482,15 @@ export default {
           this.getList()
           this.temp.parent = this.defaultvalue;
           console.log(res);
-          this.$message({
-            type: "success",
-            title: "成功"
-          });
+          this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
           this.dialogFormVisible = false;
         });
-      }
+      }})
     },
     handleUpdate(row) {
       console.log("row", row);
@@ -524,7 +511,8 @@ export default {
       });
     },
     updateData() {
-      console.log(this.temp, this.defaultvalue);
+      this.$refs["dataForm"].validate(valid => {
+        if(valid){
       this.api({
         url:'sysmechanism/update',
         method:'put',
@@ -533,11 +521,19 @@ export default {
           mechanismName:this.temp.menuName,
           sid:this.temp.region,
           parent:this.defaultvalue[0],
+          branch:this.temp.ld
         }
       }).then(res=>{
         this.getList();
+        this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
         this.dialogFormVisible = false;
       })
+        }})
     },
     handleDelete(row, index) {
       console.log("delete", row, index);

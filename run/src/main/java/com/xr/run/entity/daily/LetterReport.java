@@ -41,4 +41,6 @@ public class LetterReport {
     private Integer lCreateId;
     private String lCreateName;
     private Integer lStatus;
+    //业务字段
+    private Integer mid;
 }

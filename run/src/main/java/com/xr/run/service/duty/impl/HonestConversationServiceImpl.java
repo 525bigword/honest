@@ -17,38 +17,38 @@ public class HonestConversationServiceImpl implements HonestConversationService 
     private HonestConversationMapper honestConversationMapper;
 
     @Override
-    public List<HonestConversation> list() {
-        return honestConversationMapper.list();
+    public List<HonestConversation> list(Integer mid) {
+        return honestConversationMapper.list(mid);
     }
 
     @Override
-    public List<HonestConversation> listBytitle(String title) {
-        return honestConversationMapper.listBytitle(title);
+    public List<HonestConversation> listBytitle(String title,Integer mid) {
+        return honestConversationMapper.listBytitle(title,mid);
     }
 
     @Override
     public void addHonestConversation(HonestConversation honestConversation) {
-honestConversationMapper.addHonestConversation(honestConversation);
+        honestConversationMapper.addHonestConversation(honestConversation);
     }
 
     @Override
     public void updateHonestConversation(HonestConversation honestConversation) {
-honestConversationMapper.updateHonestConversation(honestConversation);
+        honestConversationMapper.updateHonestConversation(honestConversation);
     }
 
     @Override
     public void subauditHonestConversation(Integer id) {
-honestConversationMapper.subauditHonestConversation(id);
+        honestConversationMapper.subauditHonestConversation(id);
     }
 
     @Override
     public void passauditHonestConversation(Integer id,Integer status,String auditresult) {
-honestConversationMapper.passauditHonestConversation(id,status,auditresult);
+        honestConversationMapper.passauditHonestConversation(id,status,auditresult);
     }
 
     @Override
     public void delHonestConversationt(Integer id) {
-honestConversationMapper.delHonestConversationt(id);
+        honestConversationMapper.delHonestConversationt(id);
     }
 
     @Override

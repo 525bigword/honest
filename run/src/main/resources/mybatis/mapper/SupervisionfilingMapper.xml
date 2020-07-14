@@ -3,21 +3,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.SupervisionfilingMapper">
     <select id="list" resultType="com.xr.run.entity.daily.Supervisionfiling">
-select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling where sStatus!=-1
+        select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling where sStatus!=-1
         <if test="sStatus != null and !sStatus.equals('')">
             and sStatus=#{sStatus}</if>
         <if test="sStatus ==1">
             or sStatus=3</if>
     </select>
     <select id="findbytitle" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-    select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
-   where sStatus!=-1 and   sPaperItems like CONCAT('%',#{sPaperItems},'%')
+        select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
+        where sStatus!=-1 and   sPaperItems like CONCAT('%',#{sPaperItems},'%')
         <if test="sStatus != null and !sStatus.equals('')">
             and sStatus=#{sStatus}</if>
     </select>
     <select id="findbysFilingId" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-     select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
-   where sStatus!=-1 and   sFilingId like CONCAT('%',#{sFilingId},'%')
+        select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
+        where sStatus!=-1 and   sFilingId like CONCAT('%',#{sFilingId},'%')
         <if test="sStatus != null and !sStatus.equals('')">
             and sStatus=#{sStatus}</if>
         <if test="sStatus ==1">

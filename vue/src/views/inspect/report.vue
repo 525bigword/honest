@@ -103,20 +103,20 @@
         </el-pagination>
       </div>
     </el-form>
-      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
-          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
-            <br/>
-            <div align="right" ><el-form-item >
-              <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
-              <el-button type="primary" class="el-icon-edit" align="right" @click="gxMethod" v-bind:style="{display:gx}">更新</el-button>
-              <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" >
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;"  >
           <br/>
-          <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <div align="right" ><el-form-item >
+            <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" align="right" @click="gxMethod" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
+        <br/>
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
-            <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
+          <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
 
-            <el-form-item label="报表文件">
+          <el-form-item label="报表文件">
             <el-upload
               class="upload-demo"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -144,37 +144,37 @@
             </el-select>
           </el-form-item><br/>
 
-            <el-form-item :label="placeholders">
-              <el-select
-                v-model="userInfo.typeconcrete"
-                class="bbxq"
-                :placeholder="placeholders">
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
-            </el-form-item><br/>
-            <el-form-item label="创建者">
-              <el-input v-model="userInfo.lCreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
-            </el-form-item><br/>
-            <el-form-item label="创建时间">
-              <el-date-picker v-model="userInfo.lCreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-            </el-form-item>
+          <el-form-item :label="placeholders">
+            <el-select
+              v-model="userInfo.typeconcrete"
+              class="bbxq"
+              :placeholder="placeholders">
+              <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item><br/>
+          <el-form-item label="创建者">
+            <el-input v-model="userInfo.lCreateName" placeholder="创建者" style="width: 300px" disabled="disabled"></el-input>
+          </el-form-item><br/>
+          <el-form-item label="创建时间">
+            <el-date-picker v-model="userInfo.lCreateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+          </el-form-item>
 
-      </div>
-    </el-form></el-main>
-  </div>
+        </div>
+      </el-form></el-main>
+    </div>
   </div>
 </template>
 
 <script>
-import qs from 'qs'
+  import qs from 'qs'
   import { mapGetters } from 'vuex'
   import { list,findwhere,addreport,del,gxpost } from '@/api/inspect/report'
-import { fileUpload } from '@/api/daily/supervise'
+  import { fileUpload } from '@/api/daily/supervise'
 
   export default {
     computed: {
@@ -189,7 +189,7 @@ import { fileUpload } from '@/api/daily/supervise'
     methods:{
       to(index,row){
         window.open("http://localhost:8080/upload/"+row.url)
-},
+      },
       //设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
         return 'text-align:center';
@@ -224,8 +224,8 @@ import { fileUpload } from '@/api/daily/supervise'
       },
       //文件预览
       handlePreview(file) {
-     console.log('file'+JSON.stringify(file))
-       const userAgent = navigator.userAgent;
+        console.log('file'+JSON.stringify(file))
+        const userAgent = navigator.userAgent;
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
           alert('推荐谷歌进行文件预览')
         }else{
@@ -256,7 +256,7 @@ import { fileUpload } from '@/api/daily/supervise'
       //重置
       onrest(){
         this.search=''
-       this.starttime=''
+        this.starttime=''
         this.endtime=''
       },
       //多条件查询
@@ -283,7 +283,7 @@ import { fileUpload } from '@/api/daily/supervise'
           console.debug(response.info)
           this.tableData = response.list
           this.total = response.list.length
-        this.listLoading=false
+          this.listLoading=false
         })
       },add(){
         this.fileList=[]//清空upload
@@ -291,7 +291,7 @@ import { fileUpload } from '@/api/daily/supervise'
         this.ad=''
         this.bc=''
         this.gx='none'
-       this.userInfo={}
+        this.userInfo={}
         this.userInfo.lCreateName=this.nickname,
           this.$set(this.userInfo,'lCreateTime',new Date())
 
@@ -319,23 +319,23 @@ import { fileUpload } from '@/api/daily/supervise'
             })
             addreport(posdata).then((response)=>{
               this.tf='';
-            this.ad='none'
-            this.bc='',//保存按钮显示
-              this.gx='none',//更新按钮不显示
-              this.$refs[formName].resetFields()
+              this.ad='none'
+              this.bc='',//保存按钮显示
+                this.gx='none',//更新按钮不显示
+                this.$refs[formName].resetFields()
               this.initList();
-            this.$notify({
-              title: '成功',
-              message: '新增成功',
-              type: 'success',
-              duration: 2000
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
           } else {
             console.log('error submit!!');
-        return false;
-      }
-      });
+            return false;
+          }
+        });
 
       },//点击列编辑
       handleEdit(index, row){
@@ -347,7 +347,7 @@ import { fileUpload } from '@/api/daily/supervise'
         this.userInfo=row
         this.userInfo.typeconcrete=Number(row.typeconcrete)
         console.log('this.ursInfo.url'+this.userInfo.url)
-      this.fileList=[{name:this.userInfo.report,url:"http://localhost:8080/upload/"+this.userInfo.url}]
+        this.fileList=[{name:this.userInfo.report,url:"http://localhost:8080/upload/"+this.userInfo.url}]
         /* 赋值实时设置当前时间*/
         this.$set(this.userInfo,'lCreateTime',row.newTime)
         this.userInfo.lCreateName=row.eid[0].name

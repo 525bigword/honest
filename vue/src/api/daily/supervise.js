@@ -5,7 +5,7 @@ import qs from 'qs'
  * @param {*} fileobj
  */
 export function fileUpload(data){
- // let param = new FormData();
+  // let param = new FormData();
   // 上传文件对象 名称file与后台控制器参数要一致
 //  param.append('filename',fileobj.filename);
   return request({

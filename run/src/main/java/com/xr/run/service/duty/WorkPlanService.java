@@ -7,9 +7,9 @@ import java.util.List;
 public interface WorkPlanService {
     /*
      * 初始化页面*/
-    public List<WorkPlan> list();
+    public List<WorkPlan> list(Integer mid);
     /*根据标题模糊查询*/
-    public List<WorkPlan> findbytitle(String title);
+    public List<WorkPlan> findbytitle(String title,Integer mid);
     /*新增数据*/
     public Integer addWorkPlan(WorkPlan workPlan);
     /*更新工作计划*/

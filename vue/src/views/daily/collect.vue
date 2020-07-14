@@ -109,14 +109,14 @@
             ><el-button size="small" type="primary">上传</el-button></el-upload>
           </el-form-item><br/>
 
-            <el-form-item label="承办部门">
-              <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
-                           :placeholder="defaUnit"
-                           :props="props"
-                           :options="options_cascader"
-                           :expandTrigger="'hover'"
-                           clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px" disabled="disabled"></el-cascader>
-            </el-form-item>
+          <el-form-item label="承办部门">
+            <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
+                         :placeholder="defaUnit"
+                         :props="props"
+                         :options="options_cascader"
+                         :expandTrigger="'hover'"
+                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px" disabled="disabled"></el-cascader>
+          </el-form-item>
           <el-form-item label="承办人">
             <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px" disabled="disabled">
               <el-option
@@ -135,29 +135,29 @@
           </el-form-item><br/><div>
           <el-form-item label="实施方式">
             <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left">
-<div  v-html="userInfo.senforcementMode"></div>
+              <div  v-html="userInfo.senforcementMode"></div>
             </el-card>
-           <!-- <div v-html="userInfo.senforcementMode" style="margin-bottom: 120px"></div>-->
-          <!--  <quill-editor id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px;height: 350px;margin-bottom: 90px" />
-         --> </el-form-item></div>
+            <!-- <div v-html="userInfo.senforcementMode" style="margin-bottom: 120px"></div>-->
+            <!--  <quill-editor id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px;height: 350px;margin-bottom: 90px" />
+           --> </el-form-item></div>
 
           <div>   <el-form-item label="审核意见">
             <el-input v-model="userInfo.sauditOpinion" placeholder="审核意见"  style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
 
-          <el-form-item label="状态" v-if="false">
-            <el-input v-model="userInfo.sstatus" placeholder="状态"  style="width: 300px" disabled="disabled"></el-input>
-          </el-form-item>
+            <el-form-item label="状态" v-if="false">
+              <el-input v-model="userInfo.sstatus" placeholder="状态"  style="width: 300px" disabled="disabled"></el-input>
+            </el-form-item>
             <el-form-item label="审核人角色" >
               <el-input v-model="userInfo.auditorrole" placeholder="审核人角色"  style="width: 300px" disabled="disabled"></el-input>
             </el-form-item>
 
-          <el-form-item label="创建者姓名">
-            <el-input v-model="userInfo.screateName" placeholder="创建者姓名" style="width: 300px" disabled="disabled"></el-input>
-          </el-form-item>
-          <el-form-item label="创建时间">
-            <el-date-picker v-model="userInfo.screateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
-          </el-form-item></div>
+            <el-form-item label="创建者姓名">
+              <el-input v-model="userInfo.screateName" placeholder="创建者姓名" style="width: 300px" disabled="disabled"></el-input>
+            </el-form-item>
+            <el-form-item label="创建时间">
+              <el-date-picker v-model="userInfo.screateTime" placeholder="创建时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
+            </el-form-item></div>
         </div>
       </el-form></el-main>
     </div>
@@ -403,7 +403,7 @@
         pageSize:10,
         total:0,
         currentPage:1,
-listLoading:true,
+        listLoading:true,
         tableData: []
       }
     }
