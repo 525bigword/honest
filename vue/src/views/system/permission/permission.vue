@@ -373,7 +373,6 @@ export default {
                 type: "error",
                 message: "已存在该权限"
               });
-
             } else {
               this.$message({
                 type: "success",
@@ -387,72 +386,12 @@ export default {
           return false;
         }
       });
-      //   if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
-      //     this.$message({
-      //       type: "error",
-      //       message: "请将信息填写完整"
-      //     });
-      //   } else {
-      //     let name = "";
-      //     if (this.radio == "add") {
-      //       name = "新增";
-      //     } else if (this.radio == "delete") {
-      //       name = "删除";
-      //     } else if (this.radio == "update") {
-      //       name = "修改";
-      //     } else if (this.radio == "list") {
-      //       name = "列表";
-      //     }else{
-      //       name=this.temp.qt
-      //     }
-      //     let permissionCode = this.temp.menuCode + ":" + this.radio;
-      //     this.api({
-      //       url: "syspermission/add",
-      //       method: "post",
-      //       data: {
-      //         menuCode: this.temp.menuCode,
-      //         menuName: this.temp.menuName,
-      //         permissionCode: permissionCode,
-      //         permissionName: name,
-      //         requiredPermissionis: this.radio == "list" ? 1 : 2
-      //       }
-      //     }).then(respone => {
-      //       console.log(respone);
-      //       if (respone === 2) {
-      //         this.$message({
-      //           type: "error",
-      //           message: "已存在该权限"
-      //         });
-
-      //       } else {
-      //         this.$message({
-      //           type: "success",
-      //           message: "添加成功"
-      //         });
-      //         this.dialogFormVisible = false;
-      //         this.getList();
-      //       }
-      //     });
-      //   }
-      // },
-      // handleUpdate(row) {
-      //   // console.log("row",row)
-      //   // let str=row.permissionCode
-      //   // //row.permissionCode.indexOf
-      //   // console.log()
-      //   this.temp = Object.assign({}, row); // copy obj
-      //   this.temp.timestamp = new Date(this.temp.timestamp);
-      //   this.radio = row.permissionCode.substring(
-      //     row.permissionCode.indexOf(":") + 1,
-      //     row.permissionCode.length
-      //   );
-      //   // this.temp.requiredPermission=this.yesOrno?"1":"2"
-      //   this.yesOrno = this.temp.requiredPermission == 1 ? true : false;
-      //   this.dialogStatus = "update";
-      //   this.dialogFormVisible = true;
-      //   this.$nextTick(() => {
-      //     this.$refs["dataForm"].clearValidate();
-      //   });
+    },
+    handleUpdate(row){
+      console.log(row)
+      this.temp=row
+      this.temp.permissionCode=this.temp.permissionCode.substring(this.temp.menuCode.length+1)
+      this.dialogFormVisible = true
     },
     updateData() {
       this.$alert("是否确定修改", "提示", {
@@ -474,8 +413,20 @@ export default {
                 requiredPermission: this.temp.requiredPermission
               }
             }).then(res => {
-              this.getList();
-              this.dialogFormVisible = false;
+              console.log(res)
+              if(res===1){
+                this.$message({
+                  type: "success",
+                  message: "修改成功"
+                });
+                this.getList();
+                this.dialogFormVisible = false;
+              }else if(res===0){
+                this.$message({
+                  type: "success",
+                  message: "栏目码不能重复"
+                });
+              }
             });
           }
         }

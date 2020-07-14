@@ -68,9 +68,10 @@ public class SysPermissionController {
 
     }
     @PutMapping("update")
-    public void updateSysPermission(SysPermission sysPermission){
+    public JSONObject updateSysPermission(SysPermission sysPermission){
         System.out.println(sysPermission);
-        sysPermissionService.updateSysPermission(sysPermission);
+        Integer i = sysPermissionService.updateSysPermission(sysPermission);
+        return CommonUtil.successJson(i);
     }
 
 }

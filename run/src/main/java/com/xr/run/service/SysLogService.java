@@ -15,4 +15,6 @@ import java.util.Date;
 public interface SysLogService extends IService<SysLog> {
     void addSysLog(SysLog sysLog);
     IPage<SysLog> findSysLog(Page page,Date begin,Date end,String ip,String username);
+    //定时删除日志
+    void delSysLogByTimeSixMonth();
 }
