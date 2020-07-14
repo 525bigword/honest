@@ -101,4 +101,5 @@ public class WindController {
             staticHtmlService.genHtmlPage(destPath+"\\182\\183\\",modelAndView,req,resp,windByWid.getWid()+"");
 
     }
+
 }
