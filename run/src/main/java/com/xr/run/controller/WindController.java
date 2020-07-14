@@ -61,6 +61,7 @@ public class WindController {
     @RequiresPermissions("wind:update")
     public JSONObject updateWind(Wind wind,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
         windService.updateWindByWid(wind);
+
         thymeleafWind(wind,httpServletRequest,httpServletResponse);
         return CommonUtil.successJson("修改成功!");
     }

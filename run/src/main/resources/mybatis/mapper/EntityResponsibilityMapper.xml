@@ -16,10 +16,15 @@
         </association>
     </resultMap>
     <select id="list" resultMap="baseMap" parameterType="com.xr.run.entity.duty.EntityResponsibility">
-  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_entity_responsibility rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1 </select>
+  select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_entity_responsibility rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1
+        <if test="mid != null and !mid.equals('')">
+            and h.mid=#{mid}</if>
+</select>
     <!--按标题查询-->
     <select id="findbytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.EntityResponsibility">
       select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_entity_responsibility rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1 and rwd.title like CONCAT('%',#{title},'%')
+        <if test="mid != null and !mid.equals('')">
+            and h.mid=#{mid}</if>
     </select>
     <!--新增工作计划-->
     <insert id="addEntityResponsibility" parameterType="com.xr.run.entity.duty.EntityResponsibility" keyProperty="id" useGeneratedKeys="true">

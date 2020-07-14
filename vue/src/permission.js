@@ -3,8 +3,8 @@ import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css' // Progress 进度条样式
 import { getToken } from '@/utils/auth' // 验权
-const whiteList = ['/login', '/404', '/userReport', ''] //白名单,不需要登录的路由
-    //const i=0;
+const whiteList = ['/login', '/404','/userReport', ''] //白名单,不需要登录的路由
+//const i=0;
 router.beforeEach((to, from, next) => {
     NProgress.start()
     if (getToken()) {
@@ -21,26 +21,25 @@ router.beforeEach((to, from, next) => {
         if (to.path === '/login') {
             next({ path: '/' })
             NProgress.done() // 结束Progress
-                //&&localStorage.getItem('roleName')
-        } else {
+            //&&localStorage.getItem('roleName')
+        }else{
             console.log(store.getters.role)
             if (store.getters.role) {
                 next()
             } else {
-                console.log("GetInfo()")
-                store.dispatch('GetInfo').then(() => {
-                        next({...to })
-                    }, (err) => {
-                        store.dispatch('FedLogOut').then(() => {
-                            location.reload() // 为了重新实例化vue-router对象 避免bug
-                        })
-                    })
-                    // const { roles } =  store.dispatch('GetInfo')
-                    // const accessRoutes=store.dispatch('generateRoutes', roles)
-                    // router.addRoutes(accessRoutes)
-                    // next({ ...to, replace: true })
+                store.dispatch('GetInfo').then((res) => {
+                    next({...to })
+                },(err)=>{
+                    store.dispatch('FedLogOut').then(() => {
+                        location.reload() // 为了重新实例化vue-router对象 避免bug
+                     })
+                })
+                // const { roles } =  store.dispatch('GetInfo')
+                // const accessRoutes=store.dispatch('generateRoutes', roles)
+                // router.addRoutes(accessRoutes)
+                // next({ ...to, replace: true })
             }
-        }
+        } 
     } else if (whiteList.indexOf(to.path) !== -1) {
         //如果前往的路径是白名单内的,就可以直接前往
         next()

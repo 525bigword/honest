@@ -25,7 +25,10 @@ Vue.prototype.api = api
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.mom = moment
     //全局的常量
-Vue.prototype.virtualIp = 'http://localhost:8080/uploadimg'
+Vue.prototype.virtualIp = 'http://localhost:4031/hoonest/tmp'
+Vue.prototype.virtualdutyIp = 'http://localhost:4031/hoonest/duty'
+Vue.prototype.virtualimgIp = 'http://localhost:4031/hoonest/img'
+Vue.prototype.videoIp='http://localhost:4031/hoonest/vido'
     //生产环境时自动设置为 false 以阻止 vue 在启动时生成生产提示。
 Vue.config.productionTip = (process.env.NODE_ENV != 'production')
 new Vue({

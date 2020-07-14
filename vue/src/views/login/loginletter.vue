@@ -29,8 +29,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-      <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button>--></el-form-item></div>
+      <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -111,10 +111,10 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
           <template slot-scope="scope" >
-            <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(hasPerm('letter:firstaudit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
+         <!--   <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(hasPerm('letter:firstaudit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
             <el-button type="primary" size="small" v-if="scope.row.lstatus==2" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
           <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:zbaudit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
+       -->   <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
 
           </template>
         </el-table-column>
@@ -546,15 +546,9 @@ lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
       initList() {
         let status;
         let mid;
-        if(this.hasPerm('letter:sencondaudit')){
-        //  status=2
-        }
-        else if(this.hasPerm('letter:firstaudit')){
-          //status=1
-        }
-        else if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
-          mid:this.mid
-          status=3
+        let createid;
+      if(this.role.includes('普通用户')){
+        createid:this.userId
         }
 /*
         if(this.role.includes('单位/部门负责人')){
@@ -562,7 +556,8 @@ lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
         }*/
         let posdata=qs.stringify({
           mid:mid,
-          lStatus:status
+          lStatus:status,
+          lCreateid:createid
         })
         this.listLoading=true
         list(posdata).then(response =>{

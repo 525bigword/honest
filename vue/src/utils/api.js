@@ -5,14 +5,14 @@ import store from '../store'
 axios.defaults.withCredentials = true;
 // 创建axios实例
 const service = axios.create({
-        baseURL: process.env.BASE_URL, //process.env.BASE_URL, // api的base_url
+        baseURL: process.env.BASE_URL,//process.env.BASE_URL, // api的base_url
         timeout: 15000000 // 请求超时时间2
     })
     // request拦截器
 service.interceptors.request.use(config => {
 
-        config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-        return config
+  config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+  return config
     }, error => {
         // Do something with request error
         console.error(error) // for debug
@@ -21,6 +21,7 @@ service.interceptors.request.use(config => {
     // respone拦截器
 service.interceptors.response.use(
     response => {
+        debugger
         const res = response.data;
         if (res.code == '1000') {
             return res;

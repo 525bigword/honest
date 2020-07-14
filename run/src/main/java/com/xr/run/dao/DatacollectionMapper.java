@@ -48,6 +48,6 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Select("select count(did) from datacollection where dCreateId=#{sid} and dStatus=1 ")
     Integer findDatacollectionByStatusAndSidToCount(@Param("sid")Integer sid);
     //根据ID查询
-    @Select("select did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName from datacollection where did=#{did}")
+    @Select("select did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName,dPdf from datacollection where did=#{did}")
     Datacollection findDatacollectionById(@Param("did") int did);
 }

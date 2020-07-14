@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface HonestConversationService {
     /*初始化廉政谈话页面*/
-    public List<HonestConversation> list();
+    public List<HonestConversation> list(Integer mid);
     /*根据谈话类型标题查询*/
-    public List<HonestConversation> listBytitle(String title);
+    public List<HonestConversation> listBytitle(String title,Integer mid);
     /*新增谈话*/
     public void addHonestConversation(HonestConversation honestConversation);
     /*更新谈话*/
