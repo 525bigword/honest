@@ -188,7 +188,7 @@ import { fileUpload } from '@/api/daily/supervise'
     },
     methods:{
       to(index,row){
-        window.open(row.url)
+        window.open("http://localhost:8080/upload/"+row.url)
 },
       //设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
@@ -248,7 +248,7 @@ import { fileUpload } from '@/api/daily/supervise'
             duration: 2000
 
           })
-          this.fileList=[{name:this.file.name,url:response.url}]
+          this.fileList=[{name:this.file.name,url:"http://localhost:8080/upload/"+response.url}]
           this.userInfo.url=response.url
         })
         console.log('ce是'+JSON.stringify(this.file))
@@ -347,7 +347,7 @@ import { fileUpload } from '@/api/daily/supervise'
         this.userInfo=row
         this.userInfo.typeconcrete=Number(row.typeconcrete)
         console.log('this.ursInfo.url'+this.userInfo.url)
-      this.fileList=[{name:this.userInfo.report,url:this.userInfo.url}]
+      this.fileList=[{name:this.userInfo.report,url:"http://localhost:8080/upload/"+this.userInfo.url}]
         /* 赋值实时设置当前时间*/
         this.$set(this.userInfo,'lCreateTime',row.newTime)
         this.userInfo.lCreateName=row.eid[0].name

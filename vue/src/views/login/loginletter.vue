@@ -29,7 +29,7 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-      <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
+     <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
         <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button>--></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -111,9 +111,6 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
           <template slot-scope="scope" >
-            <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(hasPerm('letter:firstaudit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==2" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
-          <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:zbaudit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
           <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
 
           </template>
@@ -137,13 +134,7 @@
 <br/>
         <div align="right" ><el-form-item >
           <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')"  v-bind:style="{display:tj}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="turn" v-if="hasPerm('letter:sencondadudit') && userInfo.lstatus==2"  v-bind:style="{display:zb}">转办</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="hasPerm('letter:firstaudit')&& userInfo.lstatus==1" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="hasPerm('letter:sencondadudit')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="hasPerm('letter:zbaudit') && userInfo.lstatus==3" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="hasPerm('letter:leadersign') && userInfo.lstatus==2"v-bind:style="{display:xqbc}">局领导意见确认</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="hasPerm('letter:groupsign') && userInfo.lstatus==2"  v-bind:style="{display:xqbc}">纪检组长意见确认</el-button>
-          <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
+       <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
         <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
@@ -319,111 +310,6 @@ this.userInfo={}
 
 
       },
-    //监察科自办
-      kezhangbc(){
-        let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
-        this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-        let stime = new Date(this.userInfo.lsupervisionResultTime).toJSON();
-        this.userInfo.lsupervisionResultTime = new Date(+new Date(stime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-
-        let posdata=qs.stringify({
-  lid:this.userInfo.lid,
-  lSupervisionComments:this.userInfo.lsupervisionComments,//监察科部门意见
-  lSupervisionCommentsTime:this.userInfo.lsupervisionCommentsTime,//监察科部门意见签署时间
-           lSupervisionResutl:this.userInfo.lsupervisionResutl,//监察科自办结果
-  lSupervisionResultTime:this.userInfo.lsupervisionResultTime//监察科自办时间
-})
-        kezhangbc(posdata).then((response)=>{
-          this.tf='';
-        this.ad='none'
-        this.initList();
-        this.$notify({
-          title: '温馨提示',
-          message: '监察科自办处理完成',
-          type: 'success',
-          duration: 2000
-        })
-        })
-      },
-      //转办部门处理
-      deptbc(){
-        let endtime = new Date(this.userInfo.lresultTime).toJSON();
-        this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid,
-          lResult:this.userInfo.lresult,
-          lResultTime:this.userInfo.lresultTime
-        })
-        deptbc(posdata).then((response)=>{
-          this.tf='';
-        this.ad='none'
-        this.initList();
-          this.$notify({
-          title: '温馨提示',
-          message: '本部门处理完成',
-          type: 'success',
-          duration: 2000
-        })
-        })
-      },//局领导签署意见
-      leaderbc(){
-        let endtime = new Date(this.userInfo.lleadersTime).toJSON();
-        this.userInfo.lleadersTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid,
-          lLeadersComments:this.userInfo.lleadersComments,
-          lLeadersTime:this.userInfo.lleadersTime
-        })
-        leaderbc(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
-          this.$notify({
-            title: '温馨提示',
-            message: '局领导处理完成',
-            type: 'success',
-            duration: 2000
-          })
-        })
-      },//纪检组长签署意见
-      zzbc(){
-        let endtime = new Date(this.userInfo.ldisciplinaryTime).toJSON();
-        this.userInfo.ldisciplinaryTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid,
-          lDisciplinaryComments:this.userInfo.ldisciplinaryComments,
-          lDisciplinaryTime:this.userInfo.ldisciplinaryTime
-        })
-        zzbc(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
-          this.$notify({
-            title: '温馨提示',
-            message: '纪检组长处理完成',
-            type: 'success',
-            duration: 2000
-          })
-        })
-      },
     //判断状态给提示
     cstatus: function (row, column, cellValue) {
       if (cellValue == 0){
@@ -441,41 +327,6 @@ this.userInfo={}
         return '已审核'
       }
     },
-    //转办部门
-      turn(){
-if(this.userInfo.lstatus==3){
-  this.$notify({
-    title: '温馨提示',
-    message: '已转办部门',
-    type: 'warning',
-    duration: 2000
-  })
-}
-else {
-  if(this.userInfo.deptname==undefined){
-    this.$notify({
-      title: '温馨提示',
-      message: '请选择一个部门转办',
-      type: 'warning',
-      duration: 2000
-    })
-  }else {  let posdata=qs.stringify({
-    lid:this.userInfo.lid,
-    lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
-  })
-    turndept(posdata).then((response)=>{
-      this.tf='';
-      this.ad='none'
-      this.initList();
-      this.$notify({
-        title: '成功',
-        message: response.data.message,
-        type: 'success',
-        duration: 2000
-      })
-    })}
-}
-      },
       bjbcmethod(){},//重置
      onrest(){
         this.search=''
@@ -554,15 +405,9 @@ else {
       initList() {
         let status;
         let mid;
-        if(this.hasPerm('letter:sencondaudit')){
-        //  status=2
-        }
-        else if(this.hasPerm('letter:firstaudit')){
-          //status=1
-        }
-        else if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
-          mid:this.mid
-          status=3
+        let createid;
+      if(this.role.includes('普通用户')){
+        lCreateId:this.userId
         }
 /*
         if(this.role.includes('单位/部门负责人')){
@@ -570,7 +415,8 @@ else {
         }*/
         let posdata=qs.stringify({
           mid:mid,
-          lStatus:status
+          lStatus:status,
+          lCreateId:createid
         })
         this.listLoading=true
         list(posdata).then(response =>{
@@ -579,42 +425,6 @@ else {
           this.total = response.list.length
           this.listLoading=false
         })
-      },//审核
-      handleEdit(index, row) {
-        this.userInfo={
-          lpbrDeptId:[]
-        }
-        this.tf='none';
-        this.ad=''//编辑/审核页面出来,
-        this.nrzy=''
-        this.zhuanban=''
-        this.zhuanbanjy='disabled'
-        this.tj='none',//提交按钮
-          this.zb='none',//转办按钮默认隐藏
-          this.bc=''//审核保存按钮默认显示
-        this.bjbc='none'//编辑保存按钮隐藏
-        this.sfjc=false
-        this.ysnr='disabled'//原始信访内容
-        this.beunit='disabled',//被反映人单位
-          this.beduty='disabled',//被反映人职务
-          this.bename='disabled'//被反映人姓名
-        this.userInfo=row
-        this.userInfo.lpbrDeptId = row.puni.split(',').map(Number)
-        this.isShowAddressInfo = false;
-        // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
-        setTimeout(() => {
-          this.isShowAddressInfo = true;
-      }, 10);
-   /*     let postdata=qs.stringify({
-          mid:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
-        })
-        initdept(postdata).then((response)=>{
-
-          this.options = response.list
-
-          //  console.log('职务'+JSON.stringify(response))
-
-        })*/
       },//详情
       details(index, row) {
         this.nrzy=''//内容摘要显示
@@ -688,23 +498,6 @@ else {
         this.$set(this.userInfo,'ldisciplinaryTime',new Date())
         this.$set(this.userInfo,'lleadersTime',new Date())
        // this.userInfo.lCreateName=this.nickname
-      },//纪检监察员审核提交保存
-      shbc(){
-        let postData = qs.stringify({
-          lid:this.userInfo.lid,
-          lSynopsis:this.userInfo.lsynopsis
-        });
-        shbc(postData).then((response)=>{
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-          this.tf='';
-          this.ad='none'//编辑/审核页面出来,
-        })
       },// 删除
       del(){
         var data = this.$refs.multipleTable.selection;
@@ -871,51 +664,7 @@ else {
         total:0,
         currentPage:1,
         isShowAddressInfo:true,
-        tableData: [/*{
-          userId:'2019/2/2 19:09',
-          userDate: '黎智英',
-          userName: '财务部',
-          userAddress: '财务部干事',
-          state:'刘罗国',
-          bydept:'财务部',
-          byjob:'总经理',
-          letcontent:'测试',
-          lettermain:'测试',
-          lStatus:0
-        }, {
-          userId:'2019/2/2 19:09',
-          userDate: '张江游',
-          userName: '采购科',
-          userAddress: '采购科干事',
-          state:'李源',
-          bydept:'市场分部',
-          byjob:'总经理',
-          letcontent:'测试',
-          lettermain:'测试',
-          lStatus:0
-        }, {
-          userId:'2019/2/2 19:09',
-          userDate: '刘英',
-          userName: '财务部',
-          userAddress: '财务部干事',
-          state:'韩联安',
-          bydept:'财务部',
-          byjob:'主任',
-          letcontent:'测试',
-          lettermain:'测试',
-          lStatus:0
-        }, {
-          userId:'2019/2/2 19:09',
-          userDate: '朴修夏',
-          userName: '市场分部',
-          userAddress: '干事',
-          state:'林黎语',
-          bydept:'市场分部',
-          byjob:'干事',
-          letcontent:'测试',
-          lettermain:'测试',
-          lStatus:1
-        }*/]
+        tableData: []
       }
     }
   }

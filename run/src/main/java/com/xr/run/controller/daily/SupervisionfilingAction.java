@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xr.run.entity.daily.Supervisionfiling;
 import com.xr.run.service.daily.SupervisionfilingService;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,16 +17,25 @@ public class SupervisionfilingAction {
     @Autowired
     private SupervisionfilingService supervisionfilingService;
     @RequestMapping("list")
-public ResponseResult list(){
-    List<Supervisionfiling> list = supervisionfilingService.list();
+    @RequiresPermissions("supervise:list")
+public ResponseResult list(Integer sStatus){
+    List<Supervisionfiling> list = supervisionfilingService.list(sStatus);
     ResponseResult result=new ResponseResult();
     result.getInfo().put("list",list);
     return result;
 
 }
+@RequestMapping("signleader")
+public ResponseResult signleader(Integer sid){
+        supervisionfilingService.signleader(sid);
+    ResponseResult result=new ResponseResult();
+    result.getInfo().put("message","验收完毕");
+    return result;
+}
 @RequestMapping("findbytitle")
-public ResponseResult findbytitle(String sPaperItems){
-    List<Supervisionfiling> list = supervisionfilingService.findbytitle(sPaperItems);
+@RequiresPermissions("supervise:list")
+public ResponseResult findbytitle(String sPaperItems,Integer sStatus){
+    List<Supervisionfiling> list = supervisionfilingService.findbytitle(sPaperItems,sStatus);
     ResponseResult result=new ResponseResult();
     result.getInfo().put("list",list);
     return result;
@@ -38,6 +48,7 @@ public ResponseResult findbytitle(String sPaperItems){
         return result;
     }
 @RequestMapping("addsupervisionfiling")
+@RequiresPermissions("supervise:add")
     public ResponseResult addsupervisionfiling(Supervisionfiling supervisionfiling){
    supervisionfilingService.addsupervisionfiling(supervisionfiling);
     ResponseResult result=new ResponseResult();
@@ -46,6 +57,7 @@ public ResponseResult findbytitle(String sPaperItems){
 }
     /*删除*/
     @RequestMapping("delesupervision")
+    @RequiresPermissions("supervise:delete")
     public ResponseResult delesupervision(String test){
         System.out.println("test"+test);
         List<Supervisionfiling> supervisionfilings = JSON.parseArray(test, Supervisionfiling.class);
@@ -68,6 +80,7 @@ public ResponseResult findbytitle(String sPaperItems){
     }
     /*更新*/
     @RequestMapping("updatesupervision")
+    @RequiresPermissions("supervise:update")
     public ResponseResult updatesupervision(Supervisionfiling supervisionfiling){
         supervisionfilingService.updatesupervision(supervisionfiling);
         ResponseResult result=new ResponseResult();

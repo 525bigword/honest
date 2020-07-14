@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xr.run.entity.educationpolitics.EducationPolitics;
 import com.xr.run.service.educationPolitics.EducationPoliticsService;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ public class EducationPoliticsController {
     private EducationPoliticsService educationPoliticsService;
     /*查询廉政教育*/
     @RequestMapping("findAllEducation")
+    @RequiresPermissions("educationpolitics:list")
     public ResponseResult findAllEducation(){
         List<EducationPolitics> list = educationPoliticsService.findAllEducation();
         ResponseResult result=new ResponseResult();
@@ -26,6 +28,7 @@ public class EducationPoliticsController {
 
     /*多条件查询廉政教育*/
     @RequestMapping("findwhereEducation")
+    @RequiresPermissions("educationpolitics:list")
     public ResponseResult findwhereEducation(EducationPolitics educationPolitics){
         List<EducationPolitics> list = educationPoliticsService.findwhereEducation(educationPolitics);
         ResponseResult result=new ResponseResult();
@@ -34,6 +37,7 @@ public class EducationPoliticsController {
     }
     /*更新廉政教育*/
     @RequestMapping("updateEducation")
+    @RequiresPermissions("educationpolitics:update")
     public ResponseResult updateEducation(EducationPolitics educationPolitics){
         educationPoliticsService.updateEducation(educationPolitics);
         ResponseResult result=new ResponseResult();
@@ -42,6 +46,7 @@ public class EducationPoliticsController {
     }
     /*删除廉政教育*/
     @RequestMapping("delEcucation")
+    @RequiresPermissions("educationpolitics:delete")
     public ResponseResult delEcucation(String test){
         System.out.println("test"+test);
         List<EducationPolitics> educationPoliticss = JSON.parseArray(test, EducationPolitics.class);
@@ -56,6 +61,7 @@ public class EducationPoliticsController {
     }
     /*新增廉政教育信息*/
     @RequestMapping("addEcucation")
+    @RequiresPermissions("educationpolitics:add")
     public ResponseResult addEcucation(EducationPolitics educationPolitics){
         educationPoliticsService.addEcucation(educationPolitics);
         ResponseResult result=new ResponseResult();

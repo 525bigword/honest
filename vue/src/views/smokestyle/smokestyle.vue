@@ -203,7 +203,7 @@
             duration: 2000
 
           })
-          this.fileList=[{name:this.file.name,url:response.url}]
+          this.fileList=[{name:this.file.name,url:"http://localhost:8080/upload/"+response.url}]
           this.userInfo.surl=response.url
         })
         console.log('ce是'+JSON.stringify(this.file))
@@ -301,7 +301,7 @@
         this.gx=''//更新按钮显示
         this.userInfo=row
         console.log('this.ursInfo.surl'+this.userInfo.surl)
-        this.fileList=[{name:row.smoimage,url:row.surl}]
+        this.fileList=[{name:row.smoimage,url:"http://localhost:8080/upload/"+row.surl}]
         console.log('属性',row.smoproperty.split(','));
         this.userInfo.smoproperty=row.smoproperty.split(',')
         /* 赋值实时设置当前时间*/
