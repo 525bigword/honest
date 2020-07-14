@@ -14,13 +14,13 @@ public class WorkDeploymentServiceImpl implements WorkDeploymentService {
     private WorkDeploymentMapper workDeploymentMapper;
 
     @Override
-    public List<WorkDeployment> list() {
-        return workDeploymentMapper.list();
+    public List<WorkDeployment> list(Integer mid) {
+        return workDeploymentMapper.list(mid);
     }
 
     @Override
-    public List<WorkDeployment> listBytitle(String title) {
-        return workDeploymentMapper.listBytitle(title);
+    public List<WorkDeployment> listBytitle(String title,Integer mid) {
+        return workDeploymentMapper.listBytitle(title,mid);
     }
 
     @Override

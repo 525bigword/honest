@@ -32,11 +32,15 @@
     </resultMap>
 <!--初始化廉政谈话页面-->
     <select id="list" resultMap="baseMap">
-  select rhc.id,rhc.pid,rhc.personid,rhc.auditresult,rhc.punit,rhc.dept,sm.mechanism_name,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_ppost sp where rhc.pid=h.sid and h.mid=sm.mid and h.ppid=sp.pid and rhc.staus!=-1
+  select rhc.id,rhc.pid,rhc.personid,rhc.auditresult,rhc.punit,rhc.dept,sm.mechanism_name,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_ppost sp where rhc.create_id=h.sid and h.mid=sm.mid and h.ppid=sp.pid and rhc.staus!=-1
+        <if test="mid != null and !mid.equals('')">
+            and h.mid=#{mid}</if>
     </select>
     <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.HonestConversation">
-  select rhc.id,rhc.pid,rhc.personid,rhc.punit,rhc.dept,rhc.auditresult,sm.mechanism_name,h.sid,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_ppost sp where rhc.pid=h.sid and h.mid=sm.mid and h.ppid=sp.pid and rhc.staus!=-1
+  select rhc.id,rhc.pid,rhc.personid,rhc.punit,rhc.dept,rhc.auditresult,sm.mechanism_name,h.sid,h.name,(select cn.name from Sys_Staff cn where cn.sid=rhc.personid) personname,rhc.`time`,rhc.`type`,rhc.site,h.political_appearance,sp.pname,rhc.syllabus,rhc.content,rhc.createname,rhc.create_time,rhc.staus from rd_honest_conversation rhc,Sys_Staff h,sys_mechanism sm,sys_ppost sp where rhc.create_id=h.sid and h.mid=sm.mid and h.ppid=sp.pid and rhc.staus!=-1
     and rhc.`type` like CONCAT('%',#{type},'%')
+        <if test="mid != null and !mid.equals('')">
+            and h.mid=#{mid}</if>
     </select>
     <update id="delHonestConversationt"   parameterType="Integer" >
         update  rd_honest_conversation set staus=-1  where id=#{id}

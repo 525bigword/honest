@@ -13,13 +13,13 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     @Autowired
     private WorkPlanMapper workPlanMapper;
     @Override
-    public List<WorkPlan> list() {
-        return workPlanMapper.list();
+    public List<WorkPlan> list(Integer mid) {
+        return workPlanMapper.list(mid);
     }
 
     @Override
-    public List<WorkPlan> findbytitle(String title) {
-        return workPlanMapper.findbytitle(title);
+    public List<WorkPlan> findbytitle(String title,Integer mid) {
+        return workPlanMapper.findbytitle(title,mid);
     }
 
     @Override
