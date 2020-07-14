@@ -9,7 +9,7 @@ import com.xr.run.entity.Wind;
 import com.xr.run.service.DatacollectionService;
 import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysStaffService;
-import com.xr.run.util.AsposeUtil;
+//import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -35,7 +35,7 @@ public class DatacollectionController {
     private String realBasePath;
     @Value("${file.uploadVideo}")
     private String videoBasePath;
-    @Value("${html.destPath}")
+    @Value("${file.uploadVideo}")
     private String destPath;
     @Autowired
     private StaticHtmlService staticHtmlService;
@@ -121,12 +121,63 @@ public class DatacollectionController {
         if (did.length==1){
             Datacollection data= datacollectionService.findDatacollectionById(did[0]);
             staticHtmlService.deleteHtmlPage(destPath+"\\182\\184\\"+data.getDid()+".html");
+            Datacollection datacollectionById = datacollectionService.findDatacollectionById(did[0]);
+            try {
+                File file = new File(realBasePath + datacollectionById.getDFile());
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                File file = new File(videoBasePath + datacollectionById.getDVideo());
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                File file = new File(realBasePath + datacollectionById.getDPdf());
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             datacollectionService.deleteDataConllectionByDid(did[0]);
         }else{
             for (int i = 0; i < did.length; i++) {
                 Datacollection data= datacollectionService.findDatacollectionById(did[i]);
                 staticHtmlService.deleteHtmlPage(data.getDTitle());
                 staticHtmlService.deleteHtmlPage(destPath+"\\182\\184\\"+data.getDid()+".html");
+                Datacollection datacollectionById = datacollectionService.findDatacollectionById(did[i]);
+                String filePath = datacollectionService.findDatacollectionByFile(datacollectionById.getDid());
+                try {
+                    File file = new File(realBasePath + datacollectionById.getDFile());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    File file = new File(videoBasePath + datacollectionById.getDVideo());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    File file = new File(realBasePath + datacollectionById.getDPdf());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 datacollectionService.deleteDataConllectionByDid(did[i]);
             }
         }
@@ -146,7 +197,7 @@ public class DatacollectionController {
         if(path.contains(".doc")||path.contains(".docx")){
             String path1 = path.substring(0, path.lastIndexOf("."));
             String url=path1+".pdf";
-         AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+//         AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
             return url;
         }
         return null;

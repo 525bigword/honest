@@ -27,9 +27,12 @@ router.beforeEach((to, from, next) => {
             if (store.getters.role) {
                 next()
             } else {
-                console.log("GetInfo()")
-                store.dispatch('GetInfo').then(() => {
+                store.dispatch('GetInfo').then((res) => {
                     next({...to })
+                },(err)=>{
+                    store.dispatch('FedLogOut').then(() => {
+                        location.reload() // 为了重新实例化vue-router对象 避免bug
+                     })
                 })
                 // const { roles } =  store.dispatch('GetInfo')
                 // const accessRoutes=store.dispatch('generateRoutes', roles)

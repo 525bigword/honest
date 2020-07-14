@@ -587,7 +587,7 @@ import { mapGetters } from 'vuex'
       },
       shipin(row){
         if(row.dvideo!==null&&row.dvideo!==''){
-          this.he='http://localhost:4031/hoonest/vido'+row.dvideo
+          this.he=this.videoIp+row.dvideo
         }else{
           this.he='#'
         }

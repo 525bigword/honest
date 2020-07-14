@@ -3,7 +3,7 @@ import api from '@/utils/api'
 export function list() {
   return api({
     url: '/postRiskCombing/getList',
-    method: 'post',
+    method: 'post'
   })
 }
 

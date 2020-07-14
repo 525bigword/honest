@@ -372,6 +372,7 @@
       },
       initList() {
         list().then(response => {
+          console.log(response,"response")
           this.tableData = response.list
           this.total = response.list.length
         })
@@ -587,7 +588,7 @@
         },
         currentPage4: 1,
         pageSize: 5,
-        total: 0,
+        total: 1,
         postList: [],
         postList2: [],
         postList3: [],
