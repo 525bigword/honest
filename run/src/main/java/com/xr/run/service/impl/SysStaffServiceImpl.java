@@ -5,13 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.xr.run.dao.DatacollectionMapper;
-import com.xr.run.dao.RdHonestConversationMapper;
-import com.xr.run.dao.SysStaffMapper;
-import com.xr.run.dao.WindMapper;
+import com.xr.run.dao.*;
+import com.xr.run.dao.daily.SupervisionfilingMapper;
+import com.xr.run.entity.SpvDuty;
 import com.xr.run.entity.SysStaff;
-import com.xr.run.service.SysPermissionService;
-import com.xr.run.service.SysStaffService;
+import com.xr.run.service.*;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
 import com.xr.run.util.constants.Constants;
@@ -37,7 +35,20 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     private DatacollectionMapper datacollectionMapper;
     @Autowired
     private WindMapper windMapper;
-
+    @Autowired
+    private RdWorkPlanMapper rdWorkPlanMapper;
+    @Autowired
+    private RdWorkDeploymentMapper rdWorkDeploymentMapper;
+    @Autowired
+    private RdEntityResponsibilityMapper rdEntityResponsibilityMapper;
+    @Autowired
+    private SpvDutyMapper spvDutyMapper;
+    @Autowired
+    private SpvBackMapper spvBackMapper;
+    @Autowired
+    private LetterreportMapper letterreportMapper;
+    @Autowired
+    private SupervisionfilingMapper supervisionfilingMapper;
     @Override
     public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid) {
         IPage<SysStaff> sysStaffAll=null;
@@ -155,16 +166,45 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         for (String s : split) {
             SysStaff sysStaffBySid = baseMapper.findSysStaffBySid(Integer.parseInt(s));
             int sid=sysStaffBySid.getSid();
-            Integer rdHonestConversationCount = rdHonestConversationMapper.findRdHonestConversationCount(sid);
-            if(rdHonestConversationCount>0){
+            //查询是否含有资料锦集的业务
+            if(datacollectionMapper.findDatacollectionByStatusAndSidToCount(sid)>0){
                 return 2;
             }
-            Integer datacollectionByStatusAndSidToCount = datacollectionMapper.findDatacollectionByStatusAndSidToCount(sid);
-            if(datacollectionByStatusAndSidToCount>0){
+            //查询是否含有清风文苑的业务
+            if(windMapper.findWindByWstatusToCount(sid)>0) {
                 return 2;
             }
-            Integer windByWstatusToCount = windMapper.findWindByWstatusToCount(sid);
-            if(windByWstatusToCount>0) {
+            //查询是否含有廉政谈话的业务
+            if(rdHonestConversationMapper.findRdHonestConversationCount(sid)>0){
+                System.out.println(rdHonestConversationMapper.findRdHonestConversationCount(sid));
+                return 2;
+            }
+            //查询是否含有工作计划的业务
+            if(rdWorkPlanMapper.findrdWorkPlanByWstatusToCount(sid)>0){
+                return 2;
+            }
+            //查询是否含有工作部署的业务
+            if(rdWorkDeploymentMapper.findrdRdWorkDeploymentByWstatusToCount(sid)>0){
+                return 2;
+            }
+            //查询是否含有主体责任的业务
+            if(rdEntityResponsibilityMapper.findrdRdEntityResponsibilityByWstatusToCount(sid)>0){
+                return 2;
+            }
+            //查询是否含有监督责任的业务
+            if(spvDutyMapper.findSpvDutyByWstatusToCount(sid)>0){
+                return 2;
+            }
+            //查询是否含有监督反馈的业务
+            if(spvBackMapper.findspvBackByWstatusToCount(sid)>0){
+                return 2;
+            }
+            //查询是否含有信访举报管理的业务
+            if(letterreportMapper.findSpvBackByWstatusToCount(sid)>0){
+                return 2;
+            }
+            //查询是否含有三重一大事项监管的业务
+            if(supervisionfilingMapper.findSupervisionfilingByWstatusToCount(sid)>0){
                 return 2;
             }
         }

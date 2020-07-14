@@ -17,13 +17,13 @@ public class HonestConversationServiceImpl implements HonestConversationService 
     private HonestConversationMapper honestConversationMapper;
 
     @Override
-    public List<HonestConversation> list(Integer mid) {
-        return honestConversationMapper.list(mid);
+    public List<HonestConversation> list() {
+        return honestConversationMapper.list();
     }
 
     @Override
-    public List<HonestConversation> listBytitle(String title,Integer mid) {
-        return honestConversationMapper.listBytitle(title,mid);
+    public List<HonestConversation> listBytitle(String title) {
+        return honestConversationMapper.listBytitle(title);
     }
 
     @Override

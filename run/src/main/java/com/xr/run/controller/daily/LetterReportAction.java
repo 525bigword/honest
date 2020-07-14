@@ -5,7 +5,6 @@ import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 import com.xr.run.service.daily.LetterReportService;
 import com.xr.run.util.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +25,6 @@ public class LetterReportAction {
         return result;
     };*/
     @RequestMapping("listLetter")
-    @RequiresPermissions("letter:list")
     public ResponseResult list(LetterReport letterReport){
         ResponseResult result=new ResponseResult();
         List<LetterReport> list = letterReportService.list(letterReport);
@@ -83,8 +81,8 @@ letterReportService.shbc(letterReport);
         return result;
     }
    @RequestMapping("turndept")
-    public ResponseResult turndept(Integer lid,Integer lmid){
-        letterReportService.turndept(lid,lmid);
+    public ResponseResult turndept(Integer lid){
+        letterReportService.turndept(lid);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","转办部门成功");
         return result;

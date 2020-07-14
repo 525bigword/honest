@@ -328,7 +328,7 @@ export default {
           if (res == 2) {
             this.$message({
               type: "error",
-              message: "请确保该员工当前没有进行中的任务"
+              message: "请确保该员工当前没有进行中的任务或业务"
             });
           } else {
             {

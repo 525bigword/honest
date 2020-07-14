@@ -39,8 +39,8 @@ public class SysStaffController {
     @PostMapping("delete")
     @RequiresPermissions("staff:delete")
     public JSONObject delSysStaff(String str){
-        System.out.println(str);
         Integer integer = sysStaffService.delSysStaff(str);
+        System.out.println("=========================="+integer);
         return CommonUtil.successJson(integer);
     }
     @PostMapping("add")

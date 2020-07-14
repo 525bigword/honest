@@ -33,6 +33,4 @@ public class HonestConversation {
     private String politcs;//谈话对象政治面貌
     private String auditresult;
     private String dept;
-    //业务属性
-    private Integer mid;
 }

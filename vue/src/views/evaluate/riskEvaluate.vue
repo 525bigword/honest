@@ -82,14 +82,17 @@ export default {
     eConsole(param) {
       console.log(param);
       console.log(this.mids);
-      this.$router.push({
+      if(!this.hasPerm('rist:list')){
+        this.$router.push({
         path: "/echartInfo",
-        name: "风险图表",
+        name: "增长态势分析",
         params: {
           mids: this.mids,
           type: param.dataIndex
         }
       });
+      }
+      
     },
     //按条件查询
     onSearch() {

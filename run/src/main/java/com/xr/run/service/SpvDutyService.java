@@ -8,6 +8,8 @@ import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SpvDuty;
 import com.xr.run.entity.SysMechanism;
 import lombok.Data;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -78,6 +80,7 @@ public interface SpvDutyService extends IService<SpvDuty> {
      * @return
      */
     SpvDuty findSpvDutyByDid(int did);
+
 
 
 }

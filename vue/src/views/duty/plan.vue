@@ -139,12 +139,11 @@
   export default {  computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role','mid'
+        'userId', 'role'
       ])
     },
   created() {//创建时调用初始化页面的方法
     this.initList()
-    //console.log('mid',this.mid)
   },
     methods:{//设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
@@ -267,14 +266,7 @@
       //初始化页面
       initList() {
         this.listLoading=true
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
-        let posdata=qs.stringify({
-          mid:mid
-        })
-        list(posdata).then(response =>{
+        list(this.listQuery).then(response =>{
           console.debug(response.data)
           this.tableData = response.list
           this.total = response.list.length
@@ -329,13 +321,8 @@
       },
       //按标题查询
       onSearch() {
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
         let postData = qs.stringify({
-         title:this.search,
-          mid:mid
+         title:this.search
         });
         console.log(postData+'postdate--------')
         this.listLoading = true

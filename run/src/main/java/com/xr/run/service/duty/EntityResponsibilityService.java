@@ -7,9 +7,9 @@ import java.util.List;
 public interface EntityResponsibilityService {
     /*
      * 初始化页面*/
-    public List<EntityResponsibility> list(Integer mid);
+    public List<EntityResponsibility> list();
     /*根据标题模糊查询*/
-    public List<EntityResponsibility> findbytitle(String title,Integer mid);
+    public List<EntityResponsibility> findbytitle(String title);
     /*新增数据*/
     public Integer addEntityResponsibility(EntityResponsibility entityResponsibility);
     /*更新工作计划*/

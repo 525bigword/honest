@@ -334,13 +334,13 @@ export const asyncRouterMap = [
         path: '/echartInfo',
         component: Layout,
         redirect: '/echartInfo/',
-        name: '风险图表',
+        name: '增长态势分析',
         hidden: true,
         children: [{
             path: '',
-            name: '风险图表',
+            name: '增长态势分析',
             component: _import('evaluate/echatInfo'),
-            menu: 'riskpointwarning'
+            menu: 'risk'
         }]
     }, { path: '*', redirect: '/404', hidden: true }
 ]

@@ -21,6 +21,4 @@ public class WorkDeployment {
     private Integer createid;
     private Integer status;
     private String auditresult;
-    //业务属性
-    private Integer mid;
 }

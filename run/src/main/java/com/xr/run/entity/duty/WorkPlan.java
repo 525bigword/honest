@@ -21,6 +21,4 @@ public class WorkPlan {
     private String createname;
     private Integer staus;
     private String auditresult;
-    //业务属性
-    private String mid;
 }

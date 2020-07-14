@@ -13,13 +13,13 @@ public class EntityResponsibilityServiceImpl implements EntityResponsibilityServ
     @Autowired
     private EntityResponsibilityMapper entityResponsibilityMapper;
     @Override
-    public List<EntityResponsibility> list(Integer mid) {
-        return entityResponsibilityMapper.list(mid);
+    public List<EntityResponsibility> list() {
+        return entityResponsibilityMapper.list();
     }
 
     @Override
-    public List<EntityResponsibility> findbytitle(String title,Integer mid) {
-        return entityResponsibilityMapper.findbytitle(title,mid);
+    public List<EntityResponsibility> findbytitle(String title) {
+        return entityResponsibilityMapper.findbytitle(title);
     }
 
     @Override

@@ -126,7 +126,7 @@
     computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role','mid'
+        'userId', 'role'
       ])
     },  created() {
       this.initList()
@@ -252,15 +252,8 @@
       },
       //初始化页面
       initList() {
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
-        let postData = qs.stringify({
-          mid:mid
-        });
     this.listLoading=true
-        list(postData).then(response =>{
+        list(this.listQuery).then(response =>{
           console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
@@ -375,15 +368,9 @@
       },
       //按标题查询
       onSearch() {
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
         let postData = qs.stringify({
-          title:this.search,
-          mid:mid
+          title:this.search
         });
-
         this.listLoading = true
         findbytitle(postData).then((response) =>{
           this.currentPage = 1
