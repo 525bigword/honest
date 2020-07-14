@@ -144,9 +144,9 @@
         ref="dataForm"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="70px"
-        style="width: 400px; margin-left:50px;"
+        label-position="right"
+        label-width="80px"
+        style="width: 430px; margin-left:50px;"
       >
         <el-form-item label="栏目名" prop="menuName">
           <el-input v-model="temp.menuName" placeholder="栏目名" />
@@ -154,11 +154,11 @@
         <el-form-item label="栏目码" prop="menuCode">
           <el-input v-model="temp.menuCode" placeholder="栏目码" />
         </el-form-item>
-        <el-form-item label="权限类型" prop="code">
-          <el-radio v-model="radio" label="add">新增</el-radio>
-          <el-radio v-model="radio" label="update">修改</el-radio>
-          <el-radio v-model="radio" label="delete">删除</el-radio>
-          <el-radio v-model="radio" label="list">查询</el-radio>
+        <el-form-item label="权限类型" prop="radio">
+          <el-radio v-model="temp.radio" label="add">新增</el-radio>
+          <el-radio v-model="temp.radio" label="update">修改</el-radio>
+          <el-radio v-model="temp.radio" label="delete">删除</el-radio>
+          <el-radio v-model="temp.radio" label="list">查询</el-radio>
         </el-form-item>
         <el-form-item v-if="textMap[dialogStatus]=='修改'" label="是否必须" prop="code">
           <el-switch
@@ -190,7 +190,6 @@ export default {
   data() {
     return {
       yesOrno: false,
-      radio: "",
       tableKey: 0,
       list: [],
       total: 0,
@@ -215,7 +214,8 @@ export default {
         menuName: "",
         menuCode: "",
         code: "",
-        status: "published"
+        status: "published",
+        radio: ""
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -243,7 +243,24 @@ export default {
           { required: true, message: "title is required", trigger: "blur" }
         ]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      rules:{
+        menuName: [{
+            required: true,
+            message: "栏目名不能为空",
+            trigger: ["blur", "change"]
+          }],
+          menuCode: [{
+            required: true,
+            message: "栏目码不能为空",
+            trigger: [ "change","blur"]
+          }],
+          radio: [{
+            required: true,
+            message: "请选择权限类型",
+            trigger: ["change","blur"]
+          }]
+      }
     };
   },
   created() {
@@ -353,23 +370,26 @@ export default {
       });
     },
     createData() {
-      if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
+      /* if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
         this.$message({
           type: "error",
           message: "请将信息填写完整"
         });
-      } else {
+      } else { */
         let name = "";
-        if (this.radio == "add") {
+        if (this.temp.radio == "add") {
           name = "新增";
-        } else if (this.radio == "delete") {
+        } else if (this.temp.radio == "delete") {
           name = "删除";
-        } else if (this.radio == "update") {
+        } else if (this.temp.radio == "update") {
           name = "修改";
         } else {
           name = "列表";
         }
-        let permissionCode = this.temp.menuCode + ":" + this.radio;
+        let permissionCode = this.temp.menuCode + ":" + this.temp.radio;
+         this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
         this.api({
           url: "syspermission/add",
           method: "post",
@@ -396,7 +416,8 @@ export default {
             this.dialogFormVisible = false;
           }
         });
-      }
+        }})
+     /*  } */
     },
     handleUpdate(row) {
       // console.log("row",row)

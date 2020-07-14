@@ -21,7 +21,6 @@ service.interceptors.request.use(config => {
     // respone拦截器
 service.interceptors.response.use(
     response => {
-        debugger
         const res = response.data;
         if (res.code == '1000') {
             return res;
