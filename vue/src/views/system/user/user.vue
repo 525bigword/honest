@@ -75,15 +75,15 @@
     ></el-pagination>
 
     <el-dialog @closed="Close" :title="textMap[dialogStatus]" :visible.sync="dialogTableVisible">
-      <el-form ref="form" :model="form" label-width="80px">
+     <el-form ref="dataForm" :rules="rules" :model="form" label-width="80px">
         <el-row>
           <el-col style="width:45%">
-            <el-form-item label="员工名">
+            <el-form-item label="员工名" prop="name">
               <el-input placeholder="员工名" v-model="form.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-            <el-form-item label="年龄">
+            <el-form-item label="年龄" prop="age">
               <el-input
                 onkeyup="value=value.replace(/[^\d]/g,'')"
                 placeholder="年龄"
@@ -94,7 +94,7 @@
         </el-row>
         <el-row>
           <el-col style="width:45%">
-            <el-form-item label="学历" :line="true">
+            <el-form-item label="学历" :line="true" prop="educationalBackground">
               <el-select style="width: 100%;" v-model="form.educationalBackground" placeholder="学历">
                 <el-option label="初中" value="初中"></el-option>
                 <el-option label="高中" value="高中"></el-option>
@@ -105,7 +105,7 @@
             </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-            <el-form-item label="政治面貌">
+            <el-form-item label="政治面貌" prop="politicalAppearance">
               <el-select style="width:100%" v-model="form.politicalAppearance" placeholder="政治面貌">
                 <el-option label="团员" value="团员"></el-option>
                 <el-option label="党员" value="党员"></el-option>
@@ -114,12 +114,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="电话号码" style="width:91.5%">
+          <el-form-item label="电话号码" style="width:91.5%" prop="phone">
           <el-input v-model="form.phone" placeholder="电话号码"></el-input>
         </el-form-item>
         <el-row>
           <el-col style="width:45%">
-            <el-form-item label="所属部门">
+          <el-form-item label="所属部门" prop="mid">
               <el-cascader
                 placeholder="部门"
                 :props="props"
@@ -132,15 +132,17 @@
             </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-            <el-form-item label="性别">
-              <el-radio style="margin-left:3%" v-model="form.sex" label="男">男</el-radio>
-              <el-radio style="margin-left:10%" v-model="form.sex" label="女">女</el-radio>
+            <el-form-item label="性别" prop="sex">
+              <el-radio-group v-model="form.sex">
+            <el-radio   label="男">男</el-radio>
+            <el-radio label="女">女</el-radio>
+            </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col style="width:45%">
-            <el-form-item label="登录名">
+            <el-form-item label="登录名" prop="username">
               <el-input
                 style="width:100%"
                 v-model="form.username"
@@ -149,8 +151,8 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col style="margin-left:10px;width:45%">
-            <el-form-item label="登录密码">
+          <el-col style="margin-left:10px;width:45%" >
+            <el-form-item label="登录密码" prop="password">
               <el-input
                 type="password"
                 style="width:100%"
@@ -162,7 +164,7 @@
         </el-row>
         <el-row>
           <el-col style="width:45%">
-            <el-form-item label="岗位">
+            <el-form-item label="岗位" prop="ppid">
               <el-select style="width: 100%;" v-model="form.ppid" placeholder="岗位">
                 <el-option
                   v-for="(post) in postList"
@@ -174,7 +176,7 @@
             </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-            <el-form-item label="角色">
+            <el-form-item label="角色" prop="pid">
               <el-select style="width: 100%;" v-model="form.pid" placeholder="角色">
                 <el-option
                   v-for="(post) in ppostList"
@@ -262,8 +264,65 @@ export default {
         ppid: undefined,
         mid: undefined
       },
+      rules:{
+        name: [{
+            required: true,
+            message: "员工名不能为空",
+            trigger: ["blur", "change"]
+          }],
+          age: [{
+            required: true,
+            message: "年龄不能为空",
+            trigger: ["blur", "change"]
+          }],
+          educationalBackground: [{
+            required: true,
+            message: "请选择学历",
+            trigger: [ "change"]
+          }],
+          politicalAppearance: [{
+            required: true,
+            message: "请选择政治面貌",
+            trigger: [ "change"]
+          }],
+          phone: [{
+            required: true,
+            message: "电话号码不能为空",
+            trigger: ["blur", "change"]
+          }],
+          mid: [{
+            required: true,
+            message: "请选择所属部门",
+            trigger: "change"
+          }],
+          sex: [{
+            required: true,
+            message: "请选择员工性别",
+            trigger: ["change"]
+          }],
+          username: [{
+            required: true,
+            message: "登录名不能为空",
+            trigger: ["blur", "change"]
+          }],
+          password: [{
+            required: true,
+            message: "登录密码不能为空",
+            trigger: ["blur", "change"]
+          }],
+          ppid: [{
+            required: true,
+            message: "请选择岗位",
+            trigger: [ "change"]
+          }],
+          pid: [{
+            required: true,
+            message: "请选择角色",
+            trigger: ["change"]
+          }],
       deleteList: []
-    };
+    }
+    }
   },
   components: {
     // add
@@ -416,25 +475,9 @@ export default {
         });
     },
     add() {
-      console.log(this.form);
-      if (
-        !this.form.name ||
-        !this.form.ppid ||
-        !this.form.sex ||
-        !this.form.age ||
-        !this.form.educationalBackground ||
-        !this.form.username ||
-        !this.form.mid ||
-        !this.form.password ||
-        !this.form.phone ||
-        !this.form.pid ||
-        !this.form.politicalAppearance
-      ) {
-        this.$message({
-          type: "error",
-          message: "请确保信息填写完整"
-        });
-      } else {
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
         this.api({
           url: "SysStaff/add",
           method: "post",
@@ -455,7 +498,7 @@ export default {
             });
           }
         });
-      }
+      }})
     },
     init(id) {
       this.form.id = id || 0;
@@ -484,6 +527,7 @@ export default {
       // this.$nextTick(()=>{
       //   this.$refs.add.init(id)
       // })
+      this.$refs["dataForm"].clearValidate();
     },
     get() {
       this.getList();
@@ -548,7 +592,23 @@ export default {
       // this.form = {};
       // this.postList = [];
       this.getList();
-      this.form = {};
+      this.form={
+        staus: "",
+        name: "",
+        sex: "男",
+        age: "",
+        educationalBackground: "",
+        politicalAppearance: "",
+        phone: "",
+        username: "",
+        password: "",
+        phone: "",
+        pname:"",
+        createId: store.getters.userId,
+        pid: undefined,
+        ppid:undefined,
+        mid: undefined
+      }
     },
     showUpdate(scope, $index) {
       console.log(scope);
@@ -563,45 +623,19 @@ export default {
         });
         console.log(this.postList);
       });
-      // this.api({
-      //   url: "SysPostPermission/getPpost/"+ scope.row.mid,
-      //   method: "get"
-      // }).then(res => {
-      //   console.log(res);
-      //   this.ppostList = [];
-      //   res.filter(item => {
-      //     this.ppostList.push(item);
-      //   });
-      // });
-
+      
       //显示修改对话框
       this.form = scope.row;
+      this.form.mid=scope.row.mid
       this.form.pid = parseInt(scope.row.pid);
       this.dialogStatus = "update";
       this.dialogTableVisible = true;
+      this.$refs["dataForm"].clearValidate();
     },
     update() {
-      console.log(this.form);
-      if (
-        !this.form.sid ||
-        !this.form.ppid ||
-        !this.form.name ||
-        !this.form.sex ||
-        !this.form.age ||
-        !this.form.educationalBackground ||
-        !this.form.username ||
-        !this.form.mid ||
-        !this.form.password ||
-        !this.form.phone ||
-        !this.form.pid ||
-        !this.form.politicalAppearance
-      ) {
-        this.$message({
-          type: "error",
-          message: "请先完善信息"
-        });
-      } else {
-        console.log(this.form.staus);
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
         this.api({
           url: "SysStaff/update",
           method: "put",
@@ -617,6 +651,7 @@ export default {
           }
         });
       }
+      })
     },
     createArticle() {
       //保存新文章
