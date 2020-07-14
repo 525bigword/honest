@@ -29,7 +29,7 @@ public interface WindMapper extends BaseMapper<Wind> {
     @Delete("delete from  Wind where wid=#{wid}")
     void deleteWindByWid(int wid);
 
-    @Select("SELECT count(wid) FROM (SELECT wid,wCreateId FROM wind WHERE wStatus <> 3) wind WHERE wCreateId = #{sid}")
+    @Select("SELECT count(wid) FROM (SELECT wid,wCreateId FROM wind WHERE wStatus <> 3 and wStatus <> -1) wind WHERE wCreateId = #{sid}")
     Integer findWindByWstatusToCount(@Param("sid")Integer sid);
 
     @Select("select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wid=#{wid}")

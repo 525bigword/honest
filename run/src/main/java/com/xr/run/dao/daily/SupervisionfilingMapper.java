@@ -2,12 +2,16 @@ package com.xr.run.dao.daily;
 
 import com.xr.run.entity.daily.Supervisionfiling;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository(value = "SupervisionfilingMapper")
 public interface SupervisionfilingMapper {
+    @Select("SELECT count(sid) FROM (SELECT sid,sCreateId FROM daily_supervisionfiling WHERE " +
+            "sStatus <> 2 AND sStatus <>- 1 ) daily_supervisionfiling WHERE sCreateId = #{sid}")
+    Integer findSupervisionfilingByWstatusToCount(@Param("sid") Integer sid);
 /*查询*/
     public List<Supervisionfiling> list(@Param(value = "sStatus") Integer sStatus);
     /*按事项摘要查询*/

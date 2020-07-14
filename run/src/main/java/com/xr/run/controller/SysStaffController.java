@@ -38,7 +38,7 @@ public class SysStaffController {
     }
     @GetMapping("hf/{id}")
     public JSONObject hfSysStaff(@PathVariable Integer id){
-        sysStaffService.yjDelSysStaffById(id);
+        sysStaffService.hfSysStaff(id);
         return CommonUtil.successJson();
     }
 
