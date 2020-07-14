@@ -10,7 +10,7 @@ const service = axios.create({
     })
     // request拦截器
 service.interceptors.request.use(config => {
-
+    
   config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
   return config
     }, error => {
@@ -21,7 +21,7 @@ service.interceptors.request.use(config => {
     // respone拦截器
 service.interceptors.response.use(
     response => {
-        debugger
+        // debugger
         const res = response.data;
         if (res.code == '1000') {
             return res;
@@ -36,12 +36,12 @@ service.interceptors.response.use(
                 duration: 500,
                 onClose: () => {
                     store.dispatch('FedLogOut').then(() => {
-                        location.reload() // 为了重新实例化vue-router对象 避免bug
+                       location.reload() // 为了重新实例化vue-router对象 避免bug
                     })
                 }
             });
             return Promise.reject("未登录")
-        } //else {
+         } //else {
         //     Message({
         //         message: res.msg,
         //         type: 'error',

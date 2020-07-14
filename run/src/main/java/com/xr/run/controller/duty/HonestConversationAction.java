@@ -6,7 +6,6 @@ import com.xr.run.entity.SysMechanism;
 import com.xr.run.entity.duty.HonestConversation;
 import com.xr.run.service.duty.HonestConversationService;
 import com.xr.run.util.ResponseResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +30,8 @@ public class HonestConversationAction {
     private HonestConversationService honestConversationService;
     /*初始化工作部署页面*/
     @RequestMapping("list")
-    @RequiresPermissions("honestconversation:list")
-    public ResponseResult list(Integer mid){
-        List<HonestConversation> list =   honestConversationService.list(mid);
+    public ResponseResult list(){
+        List<HonestConversation> list =   honestConversationService.list();
         System.out.println("list"+list.size());
         ResponseResult result=new ResponseResult();
         result.getInfo().put("list",list);
@@ -42,10 +40,9 @@ public class HonestConversationAction {
     }
     /*根据谈话类型查询*/
     @RequestMapping("findbytitle")
-    @RequiresPermissions("honestconversation:list")
-    public ResponseResult listBytitle(String title,Integer mid){
+    public ResponseResult listBytitle(String title){
         System.out.println("title"+title);
-        List<HonestConversation> list=honestConversationService.listBytitle(title,mid);
+        List<HonestConversation> list=honestConversationService.listBytitle(title);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("list",list);
         result.getInfo().put("total",list.size());
@@ -53,7 +50,6 @@ public class HonestConversationAction {
     }
     /*新增工作部署*/
     @RequestMapping("addHonestConversation")
-    @RequiresPermissions("honestconversation:add")
     public ResponseResult addHonestConversation(HonestConversation honestConversation){
         System.out.println(honestConversation+"honestConversation");
         honestConversationService.addHonestConversation(honestConversation);
@@ -63,7 +59,6 @@ public class HonestConversationAction {
     }
     /*更新工作部署*/
     @RequestMapping("updateHonestConversation")
-    @RequiresPermissions("honestconversation:update")
     public ResponseResult updateHonestConversation (HonestConversation honestConversation)throws ParseException {
         honestConversationService.updateHonestConversation(honestConversation);
         ResponseResult result=new ResponseResult();
@@ -77,7 +72,7 @@ public class HonestConversationAction {
         System.out.println("提交");
         honestConversationService.subauditHonestConversation(id);
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("message","已提交审核");
+      //  result.getData().put("message","提交成功");
         return result;
     }
     /*审核通过*/
@@ -86,12 +81,11 @@ public class HonestConversationAction {
         System.out.println("审核 id="+id+",status="+status);
         honestConversationService.passauditHonestConversation(id,status,auditresult);
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("message","处理成功");
+        result.getInfo().put("message","审核通过");
         return result;
     }
     /*删除工作部署*/
     @RequestMapping("delhonestConversation")
-    @RequiresPermissions("honestconversation:delete")
     public ResponseResult delDeployment(String test){
 
         System.out.println("test"+test);

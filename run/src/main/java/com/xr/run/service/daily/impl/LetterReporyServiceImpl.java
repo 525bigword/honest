@@ -55,8 +55,8 @@ public class LetterReporyServiceImpl implements LetterReportService {
     }
 
     @Override
-    public void turndept(Integer lid,Integer lmid) {
-        letterReportMapper.turndept(lid,lmid);
+    public void turndept(Integer lid) {
+        letterReportMapper.turndept(lid);
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SpvBack;
 import lombok.Data;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Date;
 
@@ -26,5 +28,7 @@ public interface SpvBackService extends IService<SpvBack> {
 
     void updateStatusBySid(SpvBack spvBack);
     IPage<SpvBack> findSpvBackByDid(Page page, int did);
+
+
 
 }

@@ -29,8 +29,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-      <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button>--></el-form-item></div>
+       <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -263,7 +263,7 @@
   export default {  computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role','mid'
+        'userId', 'role'
       ])
     },
     created() {
@@ -453,8 +453,7 @@ if(this.userInfo.lstatus==3){
 }
 else {
   let posdata=qs.stringify({
-    lid:this.userInfo.lid,
-lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
+    lid:this.userInfo.lid
   })
         turndept(posdata).then((response)=>{
           this.tf='';
@@ -521,7 +520,7 @@ lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
               lCreateName:this.nickname,
               lTime: this.userInfo.lcreateTime,
               lCreateTime:this.userInfo.lcreateTime,
-              lCreateId:this.userId,
+              lCreateId:0,
               lStatus:1
             })
             add(posdata).then((response)=>{
@@ -545,23 +544,16 @@ lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
       //初始化页面
       initList() {
         let status;
-        let mid;
         if(this.hasPerm('letter:sencondaudit')){
-        //  status=2
+          status=2
         }
         else if(this.hasPerm('letter:firstaudit')){
-          //status=1
+          status=1
         }
-        else if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
-          mid:this.mid
+        else if(this.hasPerm('letter:zbaudit')){
           status=3
         }
-/*
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }*/
         let posdata=qs.stringify({
-          mid:mid,
           lStatus:status
         })
         this.listLoading=true

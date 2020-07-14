@@ -1,6 +1,8 @@
 package com.xr.run.dao.daily;
 
 import com.xr.run.entity.daily.Supervisionfiling;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +25,8 @@ public interface SupervisionfilingMapper {
     public List<Supervisionfiling> findbysFilingId(String sFilingId);
     /*审核意见*/
     public void tgsh(Supervisionfiling supervisionfiling);
+    /*查询是否包含业务*/
+    @Select("SELECT count(sid) FROM (SELECT sid,sStatus FROM daily_supervisionfiling where sStatus<>2) daily_supervisionfiling " +
+            " WHERE sid = #{sid}")
+    Integer findSupervisionfilingByWstatusToCount(@Param("sid")Integer sid);
 }

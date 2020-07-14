@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface RdHonestConversationMapper extends BaseMapper<RdHonestConversation> {
     //根据谈话对象和记录人查询创建状态和待审状态的数量
-    @Select("select count(id) from rd_honest_conversation where pid = #{pid} or personid=#{pid}")
+    @Select("SELECT count(id) FROM (SELECT id,pid,personid FROM rd_honest_conversation WHERE staus <> 2) rd_honest_conversation " +
+            " WHERE pid = #{pid} OR personid = #{pid}")
     Integer findRdHonestConversationCount(@Param("pid") Integer pid);
 
     List<RdHonestConversation> findRdHonestConversationAll(@Param("title") String title);

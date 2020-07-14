@@ -3,14 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.LetterReportMapper">
     <select id="list" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported)  lpersonbereported, (select s.mechanism_name from sys_mechanism s where s.mid=lr.lPbrDeptId) lPbrDeptId,(select s.pname from sys_ppost s where s.pid=lr.lPbrPostId) lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime,lr.puni from daily_letterreport lr where  lr.lStatus!=-1
-        <if test="mid != null and !mid.equals('')">
-            and lr.lmid=#{mid}</if>
-        <if test="lStatus != null and !lStatus.equals('')">
-            and lr.lStatus=#{lStatus}</if>
-        <if test="lCreateid != null and !lCreateid.equals('')">
-            and lr.lCreateid=#{lCreateid}</if>
- order by lr.lCreateTime desc
+select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported)  lpersonbereported, (select s.mechanism_name from sys_mechanism s where s.mid=lr.lPbrDeptId) lPbrDeptId,(select s.pname from sys_ppost s where s.pid=lr.lPbrPostId) lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime,lr.puni from daily_letterreport lr where lr.lStatus!=0 and lr.lStatus!=-1 order by lr.lCreateTime desc
     </select>
     <insert id="addletter">
         insert into daily_letterreport(letterid,ltime,lComplainantName,lDeptId,lPostId,lpersonbereported,lPbrDeptId,lPbrPostId,lcontent,lCreateTime,lCreateName,lCreateid,lStatus,puni) values(#{letterId},#{lTime},#{lComplainantName},#{lDeptId},#{lPostId},#{lPersonBeReported},#{lPbrDeptId},#{lPbrPostId},#{lContent},#{lCreateTime},#{lCreateName},#{lCreateId},#{lStatus},#{puni})
@@ -19,13 +12,11 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(
         update  daily_letterreport set lStatus=-1 where lid=#{lid}
     </update>
     <select id="findbyName" resultType="com.xr.run.entity.daily.LetterReport" parameterType="com.xr.run.entity.daily.LetterReport">
-        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported)  lpersonbereported, (select s.mechanism_name from sys_mechanism s where s.mid=lr.lPbrDeptId) lPbrDeptId,(select s.pname from sys_ppost s where s.pid=lr.lPbrPostId) lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime,lr.puni from daily_letterreport lr where lr.lStatus!=-1
-        <if test="mid != null and !mid.equals('')">
-            and lr.lmid=#{mid}</if>
-        <if test="lStatus != null and !lStatus.equals('')">
-            and lr.lStatus=#{lStatus}</if>
-        <if test="lCreateid != null and !lCreateid.equals('')">
-            and lr.lCreateid=#{lCreateid}</if>
+        select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(select s.`name` from sys_staff s where s.sid=lr.lPersonBeReported)  lpersonbereported, (select s.mechanism_name from sys_mechanism s where s.mid=lr.lPbrDeptId) lPbrDeptId,(select s.pname from sys_ppost s where s.pid=lr.lPbrPostId) lPbrPostId,lr.lcontent,lr.lsynopsis,lr.lSupervisionComments,lr.lSupervisionCommentsTime,lr.lSupervisionResutl,lr.lSupervisionResultTime,lr.lResult,lr.lResultTime,lr.lCreateTime,lr.lCreateName,lr.lStatus,lr.lDisciplinaryComments,lr.lDisciplinaryTime,lr.lLeadersComments,lr.lLeadersTime,lr.puni from daily_letterreport lr where lr.lStatus!=0 and lr.lStatus!=-1
+        <if test="lCreateId != null and !lCreateId.equals('')">
+            AND lr.lCreateId=#{lCreateId}</if>
+        <if test="lStatus != 1">
+            AND lr.lStatus!=0</if>
         <if test="lComplainantName != null and !lComplainantName.equals('')">
         AND lComplainantName like #{lComplainantName}</if>
         <if test="lPersonBeReported != null and !lPersonBeReported.equals('')">
@@ -45,8 +36,8 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
         update daily_letterreport set lStatus=1 where lid=#{lid}
     </update>
     <!--转办部门-->
-    <update id="turndept" parameterType="com.xr.run.entity.daily.LetterReport">
-        update daily_letterreport set lStatus=3,lmid=#{mid} where lid=#{lid}
+    <update id="turndept" parameterType="Integer">
+        update daily_letterreport set lStatus=3 where lid=#{lid}
     </update>
     <!--监察科自办-->
     <update id="kezhangbc" parameterType="com.xr.run.entity.daily.LetterReport">

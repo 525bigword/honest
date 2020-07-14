@@ -133,4 +133,5 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(column = "pid",property = "pid")
     })
     SysStaff findSysStaffBySidDetail(@Param("sid")Integer sid);
+
 }

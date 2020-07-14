@@ -129,7 +129,7 @@
     computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role','mid'
+        'userId', 'role'
       ])
     },
     created() {
@@ -257,10 +257,7 @@ this.search=''
       //初始化页面
       initList() {
     this.listLoading=true
-        let posdata=qs.stringify({
-          mid:this.mid
-        })
-        list(posdata).then(response =>{
+        list(this.listQuery).then(response =>{
           console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
@@ -412,13 +409,8 @@ this.search=''
       },
       //按标题查询
       onSearch() {
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
         let postData = qs.stringify({
-          title:this.search,
-          mid:mid
+          title:this.search
         });
         this.listLoading = true
         findbytitle(postData).then((response) =>{
@@ -458,6 +450,20 @@ this.search=''
         ad:'none',//默认新增页面隐藏
         tf:'',//表格页面显示
         editorOption: {
+          modules: {
+            toolbar: {
+              container: toolbarOptions,  // 工具栏
+              handlers: {
+                'image': function (value) {
+                  if (value) {
+                    alert('自定义图片')
+                  } else {
+                    this.quill.format('image', false);
+                  }
+                }
+              }
+            }
+          }
         },
         nr:false,
         bt:false,

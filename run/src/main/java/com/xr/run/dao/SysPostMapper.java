@@ -35,8 +35,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
     /**
      * 分页数量
      */
-    @Select("select count(pid) from sys_post where EXISTS " +
-            "(select mid from sys_mechanism where sys_post.mid=sys_mechanism.mid ${str} AND staus = '正常') and " +
+    @Select("select count(pid) from sys_post where "+
             "pname like CONCAT('%',#{pame},'%') and staus='1'  and message like CONCAT('%',#{message},'%')")
     Integer findSYsPostPagecount(@Param("message")String message,@Param("pame")String pame,@Param("str") String str);
     /**
@@ -73,4 +72,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
     //根绝部门查询岗位
     @Select("select pid,pname,mid,message,create_time,create_id,staus from sys_post where mid=#{mid} and staus='1'")
     List<SysPost> getSysPostByMid(@Param("mid") Integer mid);
+    //根绝postid删除修改
+    @Update("update sys_post_permission set stuas='2' where postid=#{postid}")
+    void upSysPostPermissionStuasByPostId(@Param("postid")Integer postId);
 }

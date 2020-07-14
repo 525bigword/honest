@@ -208,7 +208,7 @@
     computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role','mid'
+        'userId', 'role'
       ])
     },
     created() {
@@ -254,7 +254,7 @@
               createtime:this.userInfo.createtime,
               staus:0
             });
-          //  console.log("postdata"+postData)
+            console.log("postdata"+postData)
             add(postData).then((response)=>{
               this.ad='none',
               this.tf=''
@@ -282,7 +282,7 @@
 
        if(checkedNodes[0]!=undefined){
          this.userInfo.punit=value
-        // console.log('checkedNodes label'+checkedNodes[0].label)
+         console.log('checkedNodes label'+checkedNodes[0].label)
          let postdata=qs.stringify({
            id:checkedNodes[0].value
          })
@@ -290,7 +290,7 @@
 
            this.options = response.list
 
-           //console.log('记录人'+JSON.stringify(response))
+           console.log('记录人'+JSON.stringify(response))
 
          })
        }
@@ -466,13 +466,8 @@
 ,
       //按标题查询
       onSearch() {
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
         let postData = qs.stringify({
-          title:this.search,
-          mid:mid
+          title:this.search
         });
         this.listLoading = true
         findbytitle(postData).then((response) =>{
@@ -557,21 +552,14 @@
         this.userInfo.name.push(row.pid)
         this.userInfo.personname=[],
           this.userInfo.personname.push(row.personid)*/
-      //  console.log('测试状态'+row.staus)
+        console.log('测试状态'+row.staus)
 
       },
       //初始化页面
       initList() {
     this.listLoading=true
-        let mid;
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }
-        let posdata=qs.stringify({
-          mid:mid
-        })
-        list(posdata).then(response =>{
-         // console.log(response)
+        list(this.listQuery).then(response =>{
+          console.log(response)
           this.tableData = response.list
           this.total = response.list.length
           this.listLoading=false
@@ -653,7 +641,7 @@
               parent:parentId
             });
           getFileGroup(postData).then((response)=>{
-           // console.log('response.list'+JSON.stringify(response.list))
+            console.log('response.list'+JSON.stringify(response.list))
             let nodes = level ===0?[]:[]
 
             if(response.list&&Array.isArray(response.list)){

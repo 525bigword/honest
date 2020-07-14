@@ -25,5 +25,6 @@ public interface RdEntityResponsibilityMapper extends BaseMapper<RdEntityRespons
 
     List<RdEntityResponsibility> findRdEntityResponsibilityAll(@Param("title") String title);
 
-
+    @Select("SELECT count(id) FROM (SELECT id,create_id FROM rd_entity_responsibility WHERE staus <> 0 and staus <> 1 ) rd_entity_responsibility WHERE create_id = #{sid}")
+    Integer findrdRdEntityResponsibilityByWstatusToCount(@Param("sid") Integer sid) ;
 }

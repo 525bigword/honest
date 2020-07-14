@@ -198,7 +198,7 @@ import { mapGetters } from 'vuex'
         total: 0, // 总记录数
         listLoading: true, // 是否使用动画
           pageNum: 1, // 分页需要的当前页
-          pageRow:10, // 分页需要的每页显示多少
+          pageRow:5, // 分页需要的每页显示多少
           dtitle: '',
           dstatus: 1,
           dpdf:'',
@@ -671,11 +671,11 @@ import { mapGetters } from 'vuex'
        
     },
     handleImgChange(file, fileList, name){
-      const isLt2M = file.size / 1024/1024  < 200;
+      const isLt2M = file.size / 1024/1024  < 500;
       if(!isLt2M){
         this.$message({
           showClose:true,
-          message:'文件不能超过200M',
+          message:'文件不能超过500M',
           type: 'warning'
         })
         if(fileList.length==2){

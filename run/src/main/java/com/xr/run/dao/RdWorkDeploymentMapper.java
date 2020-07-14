@@ -24,5 +24,6 @@ public interface RdWorkDeploymentMapper extends BaseMapper<RdWorkDeployment> {
 
     List<RdWorkDeployment> findRdWorkDeploymentAll(@Param("title") String title);
 
-
+    @Select("SELECT count(id) FROM ( SELECT id,create_id FROM rd_work_deployment WHERE staus <> 0 and staus <> 1 ) rd_work_deployment WHERE create_id = #{sid}")
+    Integer findrdRdWorkDeploymentByWstatusToCount(@Param("sid") Integer sid);
 }
