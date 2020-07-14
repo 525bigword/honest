@@ -394,6 +394,7 @@ export default {
               message: "添加成功"
             });
             this.dialogFormVisible = false;
+            this.getList();
           }
         });
       }

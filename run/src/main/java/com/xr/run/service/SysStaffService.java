@@ -15,7 +15,10 @@ import java.util.List;
 
 
 public interface SysStaffService extends IService<SysStaff> {
-
+    //根绝角色获取对应的用户
+    List<SysStaff> findstatffByPid(Integer pid);
+    void hfSysStaff(Integer id);
+    void yjDelSysStaffById(Integer id);
     IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid);
     List<SysStaff> findSysStaffAll();
     /**

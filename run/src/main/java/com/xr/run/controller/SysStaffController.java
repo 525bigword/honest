@@ -31,6 +31,17 @@ public class SysStaffController {
     @Autowired
     private HomePageSevice homePageSevice;
 
+    @GetMapping("del/{id}")
+    public JSONObject yjDel(@PathVariable Integer id){
+        sysStaffService.yjDelSysStaffById(id);
+        return CommonUtil.successJson();
+    }
+    @GetMapping("hf/{id}")
+    public JSONObject hfSysStaff(@PathVariable Integer id){
+        sysStaffService.yjDelSysStaffById(id);
+        return CommonUtil.successJson();
+    }
+
     @GetMapping("get/{sid}")
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
@@ -54,6 +65,12 @@ public class SysStaffController {
     @GetMapping("/get")
     public JSONObject findstatffs(){
         List<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll();
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
+    }
+    @GetMapping("gets/{pid}")
+    public JSONObject findstatffByPid(@PathVariable Integer pid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid);
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }

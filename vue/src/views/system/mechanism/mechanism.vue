@@ -284,7 +284,7 @@ export default {
         id: undefined,
         menuName: "",
         menuCode: "",
-        region: "",
+        region: 0,
         parent: [],
         ld: "",
         status: "published"
@@ -431,10 +431,10 @@ export default {
     },
     getAllStaff() {
       this.api({
-        url: "SysStaff/get",
+        url: "SysStaff/gets/10",
         method: "get"
       }).then(res => {
-        console.log(res);
+        console.log(res,"负责人列表");
         res.filter(item => {
           this.staff.push(item);
           this.ld.push(item);

@@ -49,6 +49,22 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     private LetterreportMapper letterreportMapper;
     @Autowired
     private SupervisionfilingMapper supervisionfilingMapper;
+
+    @Override
+    public List<SysStaff> findstatffByPid(Integer pid) {
+        return baseMapper.findstatffByPid(pid);
+    }
+
+    @Override
+    public void hfSysStaff(Integer id) {
+        baseMapper.hfSysStaffByid(id);
+    }
+
+    @Override
+    public void yjDelSysStaffById(Integer id) {
+        baseMapper.yjDelSysStaffById(id);
+    }
+
     @Override
     public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid) {
         IPage<SysStaff> sysStaffAll=null;

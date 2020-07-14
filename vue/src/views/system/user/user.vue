@@ -9,8 +9,8 @@
           <el-select v-model="formInline.staus" placeholder="活动区域">
             <el-option label="正常" value="1"></el-option>
             <el-option label="删除" value="2"></el-option>
-            <el-option label="离退" value="3"></el-option>
-            <el-option label="借调" value="4"></el-option>
+            <!-- <el-option label="离退" value="3"></el-option>
+            <el-option label="借调" value="4"></el-option>-->
           </el-select>
         </el-form-item>
         <el-form-item label="部门">
@@ -50,9 +50,17 @@
       <el-table-column align="center" prop="mechanismname" label="部门"></el-table-column>
       <el-table-column align="center" prop="postname" label="角色"></el-table-column>
       <el-table-column align="center" prop="ppname" label="岗位"></el-table-column>
-      <el-table-column align="center" label="管理" width="200" v-if="hasPerm('staff:update')">
+      <el-table-column align="center" label="管理" width="180" v-if="hasPerm('staff:update')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showUpdate(scope)">修改</el-button>
+          <div v-if="scope.row.staus==1">
+            <el-button type="primary" size="small" icon="edit" @click="showUpdate(scope)">修改</el-button>
+          </div>
+          <div v-if="scope.row.staus==2">
+            <el-row>
+              <el-button type="success" size="small" icon="edit" @click="huifu(scope)">恢复</el-button>
+              <el-button type="danger" size="small" icon="edit" @click="yjdelete(scope)">永久删除</el-button>
+            </el-row>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -71,109 +79,122 @@
         <el-row>
           <el-col style="width:45%">
             <el-form-item label="员工名">
-            <el-input placeholder="员工名" v-model="form.name"></el-input>
+              <el-input placeholder="员工名" v-model="form.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
             <el-form-item label="年龄">
-            <el-input
-              onkeyup="value=value.replace(/[^\d]/g,'')"
-              placeholder="年龄"
-              v-model="form.age"
-            ></el-input>
+              <el-input
+                onkeyup="value=value.replace(/[^\d]/g,'')"
+                placeholder="年龄"
+                v-model="form.age"
+              ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-       <el-row>
+        <el-row>
           <el-col style="width:45%">
-             <el-form-item label="学历" :line="true">
-            <el-select style="width: 100%;" v-model="form.educationalBackground" placeholder="学历">
-              <el-option label="初中" value="初中"></el-option>
-              <el-option label="高中" value="高中"></el-option>
-              <el-option label="专科" value="专科"></el-option>
-              <el-option label="本科" value="本科"></el-option>
-              <el-option label="本科以上" value="本科以上"></el-option>
-            </el-select>
-             </el-form-item>
+            <el-form-item label="学历" :line="true">
+              <el-select style="width: 100%;" v-model="form.educationalBackground" placeholder="学历">
+                <el-option label="初中" value="初中"></el-option>
+                <el-option label="高中" value="高中"></el-option>
+                <el-option label="专科" value="专科"></el-option>
+                <el-option label="本科" value="本科"></el-option>
+                <el-option label="本科以上" value="本科以上"></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-             <el-form-item label="政治面貌" >
-            <el-select style="width:100%" v-model="form.politicalAppearance" placeholder="政治面貌">
-              <el-option label="团员" value="团员"></el-option>
-              <el-option label="党员" value="党员"></el-option>
-              <el-option label="其他" value="其他"></el-option>
-            </el-select>
-             </el-form-item>
+            <el-form-item label="政治面貌">
+              <el-select style="width:100%" v-model="form.politicalAppearance" placeholder="政治面貌">
+                <el-option label="团员" value="团员"></el-option>
+                <el-option label="党员" value="党员"></el-option>
+                <el-option label="其他" value="其他"></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
-          </el-row>
+        </el-row>
         <el-form-item label="电话号码" style="width:91.5%">
           <el-input v-model="form.phone" placeholder="电话号码"></el-input>
         </el-form-item>
         <el-row>
           <el-col style="width:45%">
             <el-form-item label="所属部门">
-            <el-cascader
-              placeholder="部门"
-              :props="props"
-              v-model="form.mid"
-              @change="Change"
-              :show-all-levels="false"
-              :options="bm"
-              style="width:100%"
-            ></el-cascader></el-form-item>
+              <el-cascader
+                placeholder="部门"
+                :props="props"
+                v-model="form.mid"
+                @change="Change"
+                :show-all-levels="false"
+                :options="bm"
+                style="width:100%"
+              ></el-cascader>
+            </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-             <el-form-item label="性别">
-            <el-radio style="margin-left:3%" v-model="form.sex" label="男">男</el-radio>
-            <el-radio style="margin-left:10%" v-model="form.sex" label="女">女</el-radio></el-form-item>
+            <el-form-item label="性别">
+              <el-radio style="margin-left:3%" v-model="form.sex" label="男">男</el-radio>
+              <el-radio style="margin-left:10%" v-model="form.sex" label="女">女</el-radio>
+            </el-form-item>
           </el-col>
-       </el-row>
+        </el-row>
         <el-row>
           <el-col style="width:45%">
             <el-form-item label="登录名">
-            <el-input style="width:100%"
-              v-model="form.username"
-              :disabled="dialogStatus==='create'?false:true"
-              placeholder="登录名"
-            ></el-input></el-form-item>
+              <el-input
+                style="width:100%"
+                v-model="form.username"
+                :disabled="dialogStatus==='create'?false:true"
+                placeholder="登录名"
+              ></el-input>
+            </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
             <el-form-item label="登录密码">
-            <el-input type="password" style="width:100%" v-model="form.password" placeholder="登录密码"></el-input></el-form-item>
+              <el-input
+                type="password"
+                style="width:100%"
+                v-model="form.password"
+                placeholder="登录密码"
+              ></el-input>
+            </el-form-item>
           </el-col>
-          </el-row>
+        </el-row>
         <el-row>
           <el-col style="width:45%">
-             <el-form-item label="岗位">
-            <el-select style="width: 100%;" v-model="form.ppid" placeholder="岗位">
-              <el-option
-                v-for="(post) in postList"
-                :key="post.pid"
-                :label="post.pname"
-                :value="post.pid"
-              ></el-option>
-            </el-select></el-form-item>
+            <el-form-item label="岗位">
+              <el-select style="width: 100%;" v-model="form.ppid" placeholder="岗位">
+                <el-option
+                  v-for="(post) in postList"
+                  :key="post.pid"
+                  :label="post.pname"
+                  :value="post.pid"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col style="margin-left:10px;width:45%">
-             <el-form-item label="角色">
-            <el-select style="width: 100%;" v-model="form.pid" placeholder="角色">
-              <el-option
-                v-for="(post) in ppostList"
-                :key="post.pid"
-                :label="post.pname"
-                :value="post.pid"
-              ></el-option>
-            </el-select></el-form-item>
+            <el-form-item label="角色">
+              <el-select style="width: 100%;" v-model="form.pid" placeholder="角色">
+                <el-option
+                  v-for="(post) in ppostList"
+                  :key="post.pid"
+                  :label="post.pname"
+                  :value="post.pid"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
-          </el-row>
-        <el-form-item label="状态" v-if="dialogStatus==='update'">
+        </el-row>
+        <!-- <el-form-item label="状态" v-if="dialogStatus==='update'">
           <el-radio v-model="form.staus" label="1">正常</el-radio>
           <el-radio v-model="form.staus" label="2">删除</el-radio>
           <el-radio v-model="form.staus" label="3">离退</el-radio>
           <el-radio v-model="form.staus" label="4">借调</el-radio>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item style="margin-top:15px">
-          <el-button style="margin-left:63%"
+          <el-button
+            style="margin-left:63%"
             type="primary"
             @click="dialogStatus==='create'?add():update()"
           >{{dialogStatus==='create'?'添加':'修改'}}</el-button>
@@ -235,10 +256,10 @@ export default {
         username: "",
         password: "",
         phone: "",
-        pname:"",
+        pname: "",
         createId: store.getters.userId,
         pid: undefined,
-        ppid:undefined,
+        ppid: undefined,
         mid: undefined
       },
       deleteList: []
@@ -274,7 +295,7 @@ export default {
         url: "syspost/get",
         method: "get"
       }).then(res => {
-        console.log(res,"res1");
+        console.log(res, "res1");
         this.ppostList = [];
         res.filter(item => {
           this.ppostList.push(item);
@@ -341,6 +362,58 @@ export default {
           }
         });
       }
+    },
+    huifu(row) {
+      console.log(row);
+      this.$confirm("此操作将恢复用户以及用户信息", "是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.api({
+            url: "SysStaff/hf/" + row.row.sid,
+            method: "get"
+          }).then(res => {
+            this.getList();
+          });
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+    yjdelete(row) {
+      console.log(row);
+      this.$confirm("此操作将永久删除用户以及用户信息", "是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.api({
+            url: "SysStaff/del/" + row.row.sid,
+            method: "get"
+          }).then(res => {
+            this.getList();
+          });
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     add() {
       console.log(this.form);
@@ -474,8 +547,8 @@ export default {
     Close() {
       // this.form = {};
       // this.postList = [];
-      this.getList()
-      this.form={}
+      this.getList();
+      this.form = {};
     },
     showUpdate(scope, $index) {
       console.log(scope);
@@ -488,7 +561,7 @@ export default {
         res.filter(item => {
           this.postList.push(item);
         });
-        console.log(this.postList)
+        console.log(this.postList);
       });
       // this.api({
       //   url: "SysPostPermission/getPpost/"+ scope.row.mid,
@@ -500,15 +573,15 @@ export default {
       //     this.ppostList.push(item);
       //   });
       // });
-    
+
       //显示修改对话框
       this.form = scope.row;
-      this.form.pid=parseInt(scope.row.pid)
+      this.form.pid = parseInt(scope.row.pid);
       this.dialogStatus = "update";
       this.dialogTableVisible = true;
     },
     update() {
-      console.log(this.form)
+      console.log(this.form);
       if (
         !this.form.sid ||
         !this.form.ppid ||
@@ -574,6 +647,9 @@ export default {
 };
 </script>
 <style scoped>
+.div {
+  display: inline-block;
+}
 .th {
   float: left;
 }
