@@ -32,6 +32,7 @@ public class SysPermissionController {
     public JSONObject addSysPermission(@RequestBody SysPermission sysPermission){
         try {
             System.out.println(sysPermission);
+            sysPermission.setPermissionCode(sysPermission.getMenuCode()+":"+sysPermission.getPermissionCode());
             Integer i = sysPermissionService.addSysPermission(sysPermission);
             if(i>0){
                 return CommonUtil.successJson(1);

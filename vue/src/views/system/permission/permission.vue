@@ -32,7 +32,7 @@
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button> -->
+      >导出</el-button>-->
       <!-- <el-checkbox
         v-model="showReviewer"
         class="filter-item"
@@ -141,11 +141,11 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form
-        ref="dataForm"
+        ref="temp"
         :rules="rules"
         :model="temp"
-        label-position="left"
-        label-width="70px"
+        label-position="right"
+        label-width="80px"
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item label="栏目名" prop="menuName">
@@ -154,21 +154,17 @@
         <el-form-item label="栏目码" prop="menuCode">
           <el-input v-model="temp.menuCode" placeholder="栏目码" />
         </el-form-item>
-        <el-form-item label="权限类型" prop="code">
-          <el-radio v-model="radio" label="add">新增</el-radio>
-          <el-radio v-model="radio" label="update">修改</el-radio>
-          <el-radio v-model="radio" label="delete">删除</el-radio>
-          <el-radio v-model="radio" label="list">查询</el-radio>
+        <el-form-item label="权限名" prop="permissionName">
+          <el-input v-model="temp.permissionName" placeholder="权限名"></el-input>
         </el-form-item>
-        <el-form-item v-if="textMap[dialogStatus]=='修改'" label="是否必须" prop="code">
-          <el-switch
-            @change="swchange"
-            v-model="yesOrno"
-            active-text="是"
-            inactive-text="否"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          ></el-switch>
+        <el-form-item label="权限码" prop="permissionCode">
+          <el-input v-model="temp.permissionCode" placeholder="权限码"></el-input>
+        </el-form-item>
+        <el-form-item label="是否必选" prop="permissionCode">
+          <el-radio-group v-model="temp.requiredPermission">
+            <el-radio  :label="2" checked>非必选</el-radio>
+            <el-radio  :label="1">必选</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -188,8 +184,14 @@ const calendarTypeOptions = [
 ];
 export default {
   data() {
+    var validateNoChinese= (rule, value, callback) => {
+        if (/^[\u4e00-\u9fa5]+$/.test(value)) {
+          callback(new Error('暂不支持中文'));
+        } else {
+          callback();
+        }
+      };
     return {
-      yesOrno: false,
       radio: "",
       tableKey: 0,
       list: [],
@@ -212,10 +214,28 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        menuName: "",
+        requiredPermission:1,
         menuCode: "",
-        code: "",
+        menuName: "",
+        permissionCode: "",
+        permissionName: "",
         status: "published"
+      },
+      rules: {
+        menuCode: [
+          { required: true, message: "请输入栏目码", trigger: "blur" },
+          {validator: validateNoChinese, trigger: 'blur'}
+        ],
+        menuName: [{ required: true, message: "请输入名", trigger: "blur" },
+        
+          ],
+        permissionCode: [
+          { required: true, message: "请输入权限码", trigger: "blur" },
+          {validator: validateNoChinese, trigger: 'blur'}
+        ],
+        permissionName: [
+          { required: true, message: "请输入权限名", trigger: "blur" }
+        ]
       },
       dialogFormVisible: false,
       dialogStatus: "",
@@ -223,29 +243,15 @@ export default {
         update: "修改",
         create: "新增"
       },
-      listLoading:true,
+
+      listLoading: true,
       Excel: "",
       dialogPvVisible: false,
       pvData: [],
-      rules: {
-        type: [
-          { required: true, message: "type is required", trigger: "change" }
-        ],
-        timestamp: [
-          {
-            type: "date",
-            required: true,
-            message: "timestamp is required",
-            trigger: "change"
-          }
-        ],
-        title: [
-          { required: true, message: "title is required", trigger: "blur" }
-        ]
-      },
       downloadLoading: false
     };
   },
+  computed: {},
   created() {
     this.getList();
   },
@@ -348,75 +354,105 @@ export default {
       this.resetTemp();
       this.dialogStatus = "create";
       this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+      // this.$nextTick(() => {
+      //   this.$refs["dataForm"].clearValidate();
+      // });
     },
     createData() {
-      if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
-        this.$message({
-          type: "error",
-          message: "请将信息填写完整"
-        });
-      } else {
-        let name = "";
-        if (this.radio == "add") {
-          name = "新增";
-        } else if (this.radio == "delete") {
-          name = "删除";
-        } else if (this.radio == "update") {
-          name = "修改";
+      this.$refs["temp"].validate(valid => {
+        console.log(valid,"valid")
+        if (valid) {
+          this.api({
+            url: "syspermission/add",
+            method: "post",
+            data: this.temp,
+          }).then(respone => {
+            console.log(respone);
+            if (respone === 2) {
+              this.$message({
+                type: "error",
+                message: "已存在该权限"
+              });
+
+            } else {
+              this.$message({
+                type: "success",
+                message: "添加成功"
+              });
+              this.dialogFormVisible = false;
+              this.getList();
+            }
+          });
         } else {
-          name = "列表";
+          return false;
         }
-        let permissionCode = this.temp.menuCode + ":" + this.radio;
-        this.api({
-          url: "syspermission/add",
-          method: "post",
-          data: {
-            menuCode: this.temp.menuCode,
-            menuName: this.temp.menuName,
-            permissionCode: permissionCode,
-            permissionName: name,
-            requiredPermissionis: this.radio == "list" ? 1 : 2
-          }
-        }).then(respone => {
-          console.log(respone);
-          if (respone === 2) {
-            this.$message({
-              type: "error",
-              message: "已存在该权限"
-            });
-            
-          } else {
-            this.$message({
-              type: "success",
-              message: "添加成功"
-            });
-            this.dialogFormVisible = false;
-            this.getList();
-          }
-        });
-      }
-    },
-    handleUpdate(row) {
-      // console.log("row",row)
-      // let str=row.permissionCode
-      // //row.permissionCode.indexOf
-      // console.log()
-      this.temp = Object.assign({}, row); // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp);
-      this.radio = row.permissionCode.substring(
-        row.permissionCode.indexOf(":") + 1,
-        row.permissionCode.length
-      );
-      // this.temp.requiredPermission=this.yesOrno?"1":"2"
-      this.yesOrno = this.temp.requiredPermission == 1 ? true : false;
-      this.dialogStatus = "update";
-      this.dialogFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
       });
+      //   if (!this.temp.menuName || !this.temp.menuCode || !this.radio) {
+      //     this.$message({
+      //       type: "error",
+      //       message: "请将信息填写完整"
+      //     });
+      //   } else {
+      //     let name = "";
+      //     if (this.radio == "add") {
+      //       name = "新增";
+      //     } else if (this.radio == "delete") {
+      //       name = "删除";
+      //     } else if (this.radio == "update") {
+      //       name = "修改";
+      //     } else if (this.radio == "list") {
+      //       name = "列表";
+      //     }else{
+      //       name=this.temp.qt
+      //     }
+      //     let permissionCode = this.temp.menuCode + ":" + this.radio;
+      //     this.api({
+      //       url: "syspermission/add",
+      //       method: "post",
+      //       data: {
+      //         menuCode: this.temp.menuCode,
+      //         menuName: this.temp.menuName,
+      //         permissionCode: permissionCode,
+      //         permissionName: name,
+      //         requiredPermissionis: this.radio == "list" ? 1 : 2
+      //       }
+      //     }).then(respone => {
+      //       console.log(respone);
+      //       if (respone === 2) {
+      //         this.$message({
+      //           type: "error",
+      //           message: "已存在该权限"
+      //         });
+
+      //       } else {
+      //         this.$message({
+      //           type: "success",
+      //           message: "添加成功"
+      //         });
+      //         this.dialogFormVisible = false;
+      //         this.getList();
+      //       }
+      //     });
+      //   }
+      // },
+      // handleUpdate(row) {
+      //   // console.log("row",row)
+      //   // let str=row.permissionCode
+      //   // //row.permissionCode.indexOf
+      //   // console.log()
+      //   this.temp = Object.assign({}, row); // copy obj
+      //   this.temp.timestamp = new Date(this.temp.timestamp);
+      //   this.radio = row.permissionCode.substring(
+      //     row.permissionCode.indexOf(":") + 1,
+      //     row.permissionCode.length
+      //   );
+      //   // this.temp.requiredPermission=this.yesOrno?"1":"2"
+      //   this.yesOrno = this.temp.requiredPermission == 1 ? true : false;
+      //   this.dialogStatus = "update";
+      //   this.dialogFormVisible = true;
+      //   this.$nextTick(() => {
+      //     this.$refs["dataForm"].clearValidate();
+      //   });
     },
     updateData() {
       this.$alert("是否确定修改", "提示", {
@@ -454,33 +490,33 @@ export default {
         callback: action => {
           if (action === "confirm") {
             this.api({
-        url: "syspermission/del",
-        method: "delete",
-        data: row
-      }).then(res => {
-        // console.log(res);
-        if (res === 1) {
-          this.$notify({
-            title: "Success",
-            message: "Delete Successfully",
-            type: "success",
-            duration: 2000
-          });
-          this.total = this.total - 1;
-          this.list.splice(index, 1);
-        } else {
-          this.$notify({
-            title: "error",
-            message: "请最后删除列表(list)项",
-            type: "error",
-            duration: 2000
-          });
-        }
-      });
+              url: "syspermission/del",
+              method: "delete",
+              data: row
+            }).then(res => {
+              // console.log(res);
+              if (res === 1) {
+                this.$notify({
+                  title: "成功",
+                  message: "删除成功",
+                  type: "success",
+                  duration: 2000
+                });
+                this.total = this.total - 1;
+                this.list.splice(index, 1);
+              } else {
+                this.$notify({
+                  title: "error",
+                  message: "请最后删除列表(list)项",
+                  type: "error",
+                  duration: 2000
+                });
+              }
+            });
           }
         }
       });
-      
+
       // this.$notify({
       //   title: "Success",
       //   message: "Delete Successfully",
