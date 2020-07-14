@@ -17,14 +17,14 @@ import java.util.List;
 public class LetterReportAction {
     @Autowired
     private LetterReportService letterReportService;
-    @RequestMapping("xfbh")
+ /*   @RequestMapping("xfbh")
     public ResponseResult xfbh(){
 
         ResponseResult result=new ResponseResult();
         String xfbh = letterReportService.xfbh();
         result.getInfo().put("xfbh",xfbh);
         return result;
-    };
+    };*/
     @RequestMapping("listLetter")
     @RequiresPermissions("letter:list")
     public ResponseResult list(LetterReport letterReport){
@@ -79,7 +79,7 @@ letterReportService.shbc(letterReport);
     public ResponseResult tjshme(Integer lid){
         letterReportService.tjshme(lid);
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("message","提交审核成功");
+        result.getInfo().put("message","已提交审核");
         return result;
     }
    @RequestMapping("turndept")

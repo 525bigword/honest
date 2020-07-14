@@ -219,8 +219,11 @@
         }else if (cellValue == 1){
           return '待审';
         }
+        else if (cellValue == 3){
+          return '待验收';
+        }
         else{
-          return '已审核'
+          return '验收完毕'
         }
       },
       //文件预览
@@ -248,7 +251,7 @@
         fileUpload(fd
         ).then(response => {
           this.$message.success(response.message)
-          this.fileList=[{name:this.file.name,url:response.url}]
+          this.fileList=[{name:this.file.name,url:"http://localhost:8080/upload/"+response.url}]
           this.userInfo.url=response.url
         })
       },
@@ -348,7 +351,7 @@
         })
         this.userInfo.sundertaker=Number(row.sundertaker)
         console.log('this.userInfo',this.userInfo)
-        this.fileList=[{name:row.saccessory,url:row.url}]
+        this.fileList=[{name:row.saccessory,url:"http://localhost:8080/upload/"+row.url}]
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
 
@@ -445,7 +448,7 @@
         var ids1 =true
         for(var i = 0; i < ids.length; i++) {
           console.log('ids[i].sstatus'+ids[i].sstatus)
-          if(ids[i].sstatus=='1'){
+          if(ids[i].sstatus=='1'||ids[i].sstatus=='3'){
             ids1=false
           }
         }

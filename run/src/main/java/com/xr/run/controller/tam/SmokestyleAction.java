@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xr.run.entity.tam.Smokestyle;
 import com.xr.run.service.tam.SmokestyleService;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ public class SmokestyleAction {
     private SmokestyleService smokestyleService;
     /*查询潭烟风貌*/
     @RequestMapping("/findAllSmokestyle")
+    @RequiresPermissions("smokestyle:list")
     public ResponseResult findAllSmokestyle(){
         List<Smokestyle> list = smokestyleService.findAllSmokestyle();
         ResponseResult result=new ResponseResult();
@@ -26,6 +28,7 @@ public class SmokestyleAction {
 
     /*新增*/
     @RequestMapping("/addSmokestyle")
+    @RequiresPermissions("smokestyle:add")
     public ResponseResult addSmokestyle(Smokestyle smokestyle){
         ResponseResult result=new ResponseResult();
         smokestyleService.addSmokestyle(smokestyle);
@@ -35,6 +38,7 @@ public class SmokestyleAction {
 
     /*根据标题查*/
     @RequestMapping("/findSmokestyle")
+    @RequiresPermissions("smokestyle:list")
     public ResponseResult findSmokestyle(Smokestyle smotitle){
         ResponseResult result=new ResponseResult();
         List<Smokestyle> list = smokestyleService.findSmokestyle(smotitle);
@@ -45,6 +49,7 @@ public class SmokestyleAction {
 
     /*删除*/
     @RequestMapping("/delSmokestyle")
+    @RequiresPermissions("smokestyle:delete")
     public ResponseResult delSmokestyle(String test){
         List<Smokestyle> smokestyles = JSON.parseArray(test, Smokestyle.class);
         for(Smokestyle smokestyle : smokestyles){ // Exception
@@ -59,6 +64,7 @@ public class SmokestyleAction {
 
     /*更新*/
     @RequestMapping("/gxSmokestyle")
+    @RequiresPermissions("smokestyle:update")
     public ResponseResult gxSmokestyle(Smokestyle smokestyle){
         ResponseResult result=new ResponseResult();
         smokestyleService.gxSmokestyle(smokestyle);

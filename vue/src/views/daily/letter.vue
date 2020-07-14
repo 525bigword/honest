@@ -452,21 +452,29 @@ if(this.userInfo.lstatus==3){
   })
 }
 else {
-  let posdata=qs.stringify({
+  if(this.userInfo.deptname==undefined){
+    this.$notify({
+      title: '温馨提示',
+      message: '请选择一个部门转办',
+      type: 'warning',
+      duration: 2000
+    })
+  }else {  let posdata=qs.stringify({
     lid:this.userInfo.lid,
-lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
+    lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
   })
-        turndept(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.data.message,
-            type: 'success',
-            duration: 2000
-          })
-        })}
+    turndept(posdata).then((response)=>{
+      this.tf='';
+      this.ad='none'
+      this.initList();
+      this.$notify({
+        title: '成功',
+        message: response.data.message,
+        type: 'success',
+        duration: 2000
+      })
+    })}
+}
       },
       bjbcmethod(){},//重置
      onrest(){

@@ -143,7 +143,7 @@ public class HonestConversationAction {
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
         file.transferTo(new File(folder,newName));
       //  String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/honest/upload" + format + newName;
-        String url = req.getScheme() + "://" + req.getServerName() + ":8080/upload/"+format  + newName;
+        String url = format  + newName;
         System.out.println(url);
         result.getInfo().put("url",url);
         result.getInfo().put("message","上传成功");

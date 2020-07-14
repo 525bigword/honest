@@ -8,8 +8,8 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(
             and lr.lmid=#{mid}</if>
         <if test="lStatus != null and !lStatus.equals('')">
             and lr.lStatus=#{lStatus}</if>
-        <if test="lCreateid != null and !lCreateid.equals('')">
-            and lr.lCreateid=#{lCreateid}</if>
+        <if test="lCreateId != null and !lCreateId.equals('')">
+            and lr.lCreateId=#{lCreateId}</if>
  order by lr.lCreateTime desc
     </select>
     <insert id="addletter">
@@ -24,8 +24,8 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,(
             and lr.lmid=#{mid}</if>
         <if test="lStatus != null and !lStatus.equals('')">
             and lr.lStatus=#{lStatus}</if>
-        <if test="lCreateid != null and !lCreateid.equals('')">
-            and lr.lCreateid=#{lCreateid}</if>
+        <if test="lCreateId != null and !lCreateId.equals('')">
+            and lr.lCreateId=#{lCreateId}</if>
         <if test="lComplainantName != null and !lComplainantName.equals('')">
         AND lComplainantName like #{lComplainantName}</if>
         <if test="lPersonBeReported != null and !lPersonBeReported.equals('')">
