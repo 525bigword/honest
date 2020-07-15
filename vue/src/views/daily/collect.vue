@@ -262,7 +262,7 @@
         fileUpload(fd
         ).then(response => {
           this.$message.success(response.message)
-          this.fileList=[{name:this.file.name,url:"http://localhost:8080/upload/"+response.url}]
+          this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
           this.userInfo.url=response.url
         })
       },
@@ -325,7 +325,7 @@
         })
         this.userInfo.sundertaker=Number(row.sundertaker)
         console.log('this.userInfo',this.userInfo)
-        this.fileList=[{name:row.saccessory,url:"http://localhost:8080/upload/"+row.url}]
+        this.fileList=[{name:row.saccessory,url:this.uploadimage+row.url}]
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
 

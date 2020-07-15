@@ -12,15 +12,16 @@
         <result column="create_time" property="createTime"></result>
         <result column="create_id" property="createId"></result>
         <result column="staus" property="staus"></result>
-
+        <result column="smoimage" property="smoimage"></result>
+        <result column="surl" property="surl"></result>
     </resultMap>
     <!--查询廉政教育-->
     <select id="findAllEducation" resultMap="basemap">
-select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname  from Education_politics ep where ep.staus!=-1
+select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname,ep.smoimage,ep.surl  from Education_politics ep where ep.staus!=-1
     </select>
     <!--多条件查询廉政教育-->
     <select id="findwhereEducation" resultMap="basemap">
-        select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname  from Education_politics ep
+        select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname,ep.smoimage,ep.surl  from Education_politics ep
         where ep.staus!=-1
         <if test="title != null and !title.equals('')">
             and ep.title like CONCAT('%',#{title},'%')</if>
@@ -36,11 +37,11 @@ select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.cre
     </select>
     <!--新增廉政教育信息-->
     <insert id="addEcucation" useGeneratedKeys="true" keyProperty="id" parameterType="com.xr.run.entity.educationpolitics.EducationPolitics">
-insert into Education_politics(title,source,`type`,content,`time`,create_time,create_id,staus,createname) values(#{title},#{source},#{type},#{content},#{time},#{createTime},#{createId},#{staus},#{createname})
+insert into Education_politics(title,source,`type`,content,`time`,create_time,create_id,staus,createname,smoimage,surl) values(#{title},#{source},#{type},#{content},#{time},#{createTime},#{createId},#{staus},#{createname},#{smoimage},#{surl})
     </insert>
     <!--修改廉政教育信息-->
     <update id="updateEducation" parameterType="com.xr.run.entity.educationpolitics.EducationPolitics">
-        update Education_politics set title=#{title},source=#{source},`type`=#{type},content=#{content},`time`=#{time} where id=#{id}
+        update Education_politics set title=#{title},source=#{source},`type`=#{type},content=#{content},`time`=#{time},smoimage=#{smoimage},surl=#{surl} where id=#{id}
     </update>
     <!--删除廉政教育信息，实际上是软删除-->
     <update id="delEcucation" parameterType="Integer">

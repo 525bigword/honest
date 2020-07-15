@@ -58,8 +58,8 @@ file:
   uploadImage: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
   uploadVideo: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/vido
   #uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
-  accessPaths: /frontPage/upload
+  accessPaths: /upload
   staticAccessPaths: /upload/**
-  uploadFolders: D://IDE/
+  uploadFolders: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
 html:
   destPath: D:\IDE\nginx-1.8.1\html\ms-mcms\html\2

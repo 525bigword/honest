@@ -284,7 +284,7 @@ export const asyncRouterMap = [
             component: _import('daily/letter'),
             meta: { title: '信访举报管理', icon: 'email' },
             menu: 'letter'
-        }, {
+        },{
             path: 'supervise',
             name: '三重一大事项监管',
             component: _import('daily/supervise'),
