@@ -30,4 +30,5 @@ public class SysMechanism {
   private List<SysMechanism> chilrenMechanism;
   private String lable;
   private Integer value;
+  private String bmName;
 }

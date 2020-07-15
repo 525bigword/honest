@@ -365,7 +365,8 @@ export default {
       console.log(this.form.mid);
       console.log(val);
       this.form.pname = "";
-      this.form.pid = undefined;
+      // this.form.pid = undefined;
+      this.form.ppid=undefined;
       this.api({
         url: "SysPostPermission/getPpost/" + val,
         method: "get"
@@ -630,7 +631,7 @@ export default {
       this.form.pid = parseInt(scope.row.pid);
       this.dialogStatus = "update";
       this.dialogTableVisible = true;
-      this.$refs["dataForm"].clearValidate();
+      // this.$refs["dataForm"].clearValidate();
     },
     update() {
       this.$refs["dataForm"].validate(valid => {

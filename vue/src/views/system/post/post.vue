@@ -8,23 +8,6 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <!-- <el-form-item label="部门"> -->
-      <!-- //temp.parent -->
-      <!-- <el-cascader
-        placeholder="部门"
-        :props="props"
-        @change="Change"
-        :show-all-levels="false"
-        :options="bm"
-      ></el-cascader>
-      </el-form-item> 
-      <el-input
-        v-model="listQuery.message"
-        placeholder="部门描述"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      /> -->
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button
         v-if="hasPerm('post:add')"
@@ -42,19 +25,13 @@
         icon="el-icon-edit"
         @click="handleDelete"
       >删除</el-button>
-      <el-button
+      <!-- <el-button
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button>
-      <!-- <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox>-->
+      >导出</el-button> -->
     </div>
 
     <el-table
