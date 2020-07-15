@@ -111,9 +111,9 @@ public class SysStaffController {
     public JSONObject authLogin(@RequestBody JSONObject requestJson) {
         CommonUtil.hasAllRequired(requestJson, "username,password");
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
-
         //创建首页
         homePageSevice.loading();
+        System.out.println("==================jsonObject="+jsonObject);
         return jsonObject;
     }
     /**
@@ -130,6 +130,7 @@ public class SysStaffController {
     public JSONObject getInfo() {
         return sysStaffService.getInfo();
     }
+
     @PutMapping("update")
     @RequiresPermissions("staff:update")
     public JSONObject updateSysStaff(@RequestBody SysStaff sysStaff){

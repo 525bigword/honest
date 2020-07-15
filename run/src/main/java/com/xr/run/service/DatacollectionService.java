@@ -78,6 +78,8 @@ public interface DatacollectionService extends IService<Datacollection> {
      */
     Datacollection findDatacollectionById(int did);
 
+    IPage<Datacollection> findDataConllection1(Page page, String title);
+
 //    /**
 //     * 用于前台资料锦鸡
 //     * @param page

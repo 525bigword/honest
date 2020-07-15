@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository
 public interface RdWorkPlanMapper extends BaseMapper<RdWorkPlan> {
-    @Select("select rdid,title,content,create_time,create_id,create_name,staus from " +
-            " rd_work_plan where staus <> -1 and staus = CONCAT(#{staus}) and  title like CONCAT('%',#{title},'%') order by rdid desc")
+    @Select("select rw.rdid,rw.title,rw.content,rw.create_time,rw.create_id,rw.create_name,rw.staus,ss.name from " +
+            " rd_work_plan rw inner join sys_staff ss on rw.create_id= ss.sid where rw.staus <> -1 and rw.staus = CONCAT(#{staus}) and  rw.title like CONCAT('%',#{title},'%') order by rw.rdid desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",
@@ -25,6 +25,8 @@ public interface RdWorkPlanMapper extends BaseMapper<RdWorkPlan> {
 
     List<RdWorkPlan> findRdWorkPlanAll(@Param("title") String title);
 
-    @Select("SELECT count(rdid) FROM ( SELECT rdid,create_id FROM rd_work_plan WHERE staus <> 2 and staus <> -1) rd_work_plan WHERE create_id = #{sid}")
-    Integer findrdWorkPlanByWstatusToCount(@Param("sid") Integer sid);
+    @Select("select rw.rdid,rw.title,rw.content,rw.create_time,rw.create_id,rw.create_name,rw.staus,ss.name from " +
+            " rd_work_plan rw inner join sys_staff ss on rw.create_id= ss.sid where rw.rdid=#{id} order by rw.rdid desc")
+    RdWorkPlan findRdWorkPlanById(@Param("id") Integer id);
+
 }

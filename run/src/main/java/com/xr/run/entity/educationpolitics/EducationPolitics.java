@@ -1,5 +1,6 @@
 package com.xr.run.entity.educationpolitics;
 
+import io.swagger.models.auth.In;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,9 +20,10 @@ public class EducationPolitics {
   private Integer createId;
   private String createname;
   private String staus;
-  //业务属性
+//业务属性
   private String starttime;
   private String endtime;
-  private String smoimage;
-  private String surl;
+  private String cname;
+
+  private Integer firstPage; //最上面那一页面
 }

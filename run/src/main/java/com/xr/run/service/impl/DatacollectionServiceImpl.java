@@ -67,4 +67,9 @@ public class DatacollectionServiceImpl extends ServiceImpl<DatacollectionMapper,
         return baseMapper.findDatacollectionById(did);
     }
 
+    @Override
+    public IPage<Datacollection> findDataConllection1(Page page, String title) {
+        return baseMapper.findDataConllection1(page,title);
+    }
+
 }

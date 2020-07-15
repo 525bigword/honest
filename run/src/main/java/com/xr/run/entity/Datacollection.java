@@ -31,4 +31,5 @@ public class Datacollection {
   private String dPdf;
   private String dVideo;
   private String dVideoName;
+  private String cname;
 }

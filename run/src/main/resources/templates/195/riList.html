@@ -148,14 +148,13 @@
             </div>
             <div>
                 <span>上传者：<label th:text="${riskVo.cname}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>&nbsp;&nbsp;&nbsp;
 <!--
                 <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/277/hit.do'></script></label></span>
 -->
             </div>
         </div>
         <div>
-            <p>
 	           <span style="font-size: 14px"><span style="color: #000000">
                    <span style="font-family: 宋体" th:utext="${riskVo.description}">　　
 

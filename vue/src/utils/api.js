@@ -10,7 +10,7 @@ const service = axios.create({
     })
     // request拦截器
 service.interceptors.request.use(config => {
-    
+
   config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
   return config
     }, error => {
