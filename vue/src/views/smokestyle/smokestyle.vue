@@ -112,7 +112,7 @@
               <el-checkbox label="幻灯" name="smoproperty"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="文章缩略图">
+          <el-form-item label="图片">
             <el-upload
               class="upload-demo"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -203,7 +203,7 @@
             duration: 2000
 
           })
-          this.fileList=[{name:this.file.name,url:"http://localhost:8080/upload/"+response.url}]
+          this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
           this.userInfo.surl=response.url
         })
         console.log('ce是'+JSON.stringify(this.file))
@@ -301,7 +301,7 @@
         this.gx=''//更新按钮显示
         this.userInfo=row
         console.log('this.ursInfo.surl'+this.userInfo.surl)
-        this.fileList=[{name:row.smoimage,url:"http://localhost:8080/upload/"+row.surl}]
+        this.fileList=[{name:row.smoimage,url:this.uploadimage+row.surl}]
         console.log('属性',row.smoproperty.split(','));
         this.userInfo.smoproperty=row.smoproperty.split(',')
         /* 赋值实时设置当前时间*/

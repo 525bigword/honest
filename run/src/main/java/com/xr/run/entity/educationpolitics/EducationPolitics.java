@@ -22,4 +22,6 @@ public class EducationPolitics {
   //业务属性
   private String starttime;
   private String endtime;
+  private String smoimage;
+  private String surl;
 }
