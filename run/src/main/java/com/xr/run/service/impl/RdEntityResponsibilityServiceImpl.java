@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RdEntityResponsibilityServiceImpl extends ServiceImpl<RdEntityResponsibilityMapper,
-        RdEntityResponsibility> implements RdEntityResponsibilityService {
+public class RdEntityResponsibilityServiceImpl extends ServiceImpl<RdEntityResponsibilityMapper,RdEntityResponsibility> implements RdEntityResponsibilityService {
 
     @Override
     public IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, String title,Integer staus) {

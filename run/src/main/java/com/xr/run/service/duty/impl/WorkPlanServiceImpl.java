@@ -13,29 +13,29 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     @Autowired
     private WorkPlanMapper workPlanMapper;
     @Override
-    public List<WorkPlan> list() {
-        return workPlanMapper.list();
+    public List<WorkPlan> list(Integer mid) {
+        return workPlanMapper.list(mid);
     }
 
     @Override
-    public List<WorkPlan> findbytitle(String title) {
-        return workPlanMapper.findbytitle(title);
+    public List<WorkPlan> findbytitle(String title,Integer mid) {
+        return workPlanMapper.findbytitle(title,mid);
     }
 
     @Override
     public Integer addWorkPlan(WorkPlan workPlan) {
-         workPlanMapper.addWorkPlan(workPlan);
-         return workPlan.getId();
+        workPlanMapper.addWorkPlan(workPlan);
+        return workPlan.getId();
     }
 
     @Override
     public void updateWorkPlan(WorkPlan workPlan) {
-workPlanMapper.updateWorkPlan(workPlan);
+        workPlanMapper.updateWorkPlan(workPlan);
     }
 
     @Override
     public void del(Integer id) {
-workPlanMapper.del(id);
+        workPlanMapper.del(id);
     }
 
     @Override

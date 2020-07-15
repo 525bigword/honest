@@ -29,8 +29,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-       <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button></el-form-item></div>
+        <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
+          <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button>--></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -74,9 +74,9 @@
           label="被反映人岗位/职务"  width="100">
         </el-table-column>
         <el-table-column
-        prop="lcontent"
-        label="原始信访内容"  width="100">
-      </el-table-column>
+          prop="lcontent"
+          label="原始信访内容"  width="100">
+        </el-table-column>
         <el-table-column
           prop="lsynopsis"
           label="信访内容摘要"  width="80">
@@ -112,7 +112,7 @@
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus"  >
           <template slot-scope="scope" >
             <el-button v-if="scope.row.lstatus==1" v-bind:style="{display:(hasPerm('letter:firstaudit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.lstatus==2||scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.lstatus==2" v-bind:style="{display:(hasPerm('letter:audit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
             <el-button type="primary" size="small" v-if="scope.row.lstatus==3" v-bind:style="{display:(hasPerm('letter:zbaudit')?'':'none')}" @click="bj(scope.$index, scope.row)">编辑</el-button>
             <el-button type="info" size="small"  @click="details(scope.$index, scope.row)">详情</el-button>
 
@@ -134,41 +134,41 @@
     <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px"  :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
-<br/>
-        <div align="right" ><el-form-item >
-          <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')"  v-bind:style="{display:tj}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="turn" v-if="hasPerm('letter:sencondadudit') && userInfo.lstatus==2"  v-bind:style="{display:zb}">转办</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="hasPerm('letter:firstaudit')&& userInfo.lstatus==1" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="hasPerm('letter:sencondadudit')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="hasPerm('letter:zbaudit') && userInfo.lstatus==3" v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="hasPerm('letter:leadersign') && userInfo.lstatus==2"v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="hasPerm('letter:groupsign') && userInfo.lstatus==2"  v-bind:style="{display:xqbc}">保存</el-button>
-          <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
+          <br/>
+          <div align="right" ><el-form-item >
+            <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')"  v-bind:style="{display:tj}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="turn" v-if="hasPerm('letter:sencondadudit') && userInfo.lstatus==2"  v-bind:style="{display:zb}">转办</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="shbc" v-if="hasPerm('letter:firstaudit')&& userInfo.lstatus==1" v-bind:style="{display:xqbc}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="kezhangbc" v-if="hasPerm('letter:sencondadudit')&&(userInfo.lstatus==2?true:false)" v-bind:style="{display:xqbc}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="deptbc" v-if="hasPerm('letter:zbaudit') && userInfo.lstatus==3" v-bind:style="{display:xqbc}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="leaderbc" v-if="hasPerm('letter:leadersign') && userInfo.lstatus==2"v-bind:style="{display:xqbc}">局领导意见确认</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="zzbc" v-if="hasPerm('letter:groupsign') && userInfo.lstatus==2"  v-bind:style="{display:xqbc}">纪检组长意见确认</el-button>
+            <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
-        <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
+          <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
           <el-form-item label="状态"  v-if="false">
             <el-input v-model="userInfo.lstatus" placeholder="状态" style="width: 300px" v-if="false"></el-input>
           </el-form-item>
 
-        <el-form-item label="信访编号">
+          <el-form-item label="信访编号">
 
-          <el-input v-model="userInfo.letterId" placeholder="信访编号" style="width: 300px" disabled="disabled"></el-input>
-        </el-form-item>
-        <el-form-item label="转办部门">
-         <el-cascader ref='cascaderUnit' :show-all-levels="false"
-                       :placeholder="defaUnit"
-                       :props="props"
-                       :options="options_cascader"
-                       :expandTrigger="'hover'"
-                       clearable v-model="userInfo.deptname"   style="width: 300px" :disabled="hasPerm('letter:sencondadudit')? false:'disabled'"></el-cascader>
-        </el-form-item>
+            <el-input v-model="userInfo.letterId" placeholder="信访编号" style="width: 300px" disabled="disabled"></el-input>
+          </el-form-item>
+          <el-form-item label="转办部门">
+            <el-cascader ref='cascaderUnit' :show-all-levels="false"
+                         :placeholder="defaUnit"
+                         :props="props"
+                         :options="options_cascader"
+                         :expandTrigger="'hover'"
+                         clearable v-model="userInfo.deptname"   style="width: 300px" :disabled="hasPerm('letter:sencondadudit') && userInfo.lstatus==2? false:'disabled'"></el-cascader>
+          </el-form-item>
           <br />
-        <el-form-item label="来访人姓名">
-          <el-input v-model="userInfo.lcomplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
-        </el-form-item>
+          <el-form-item label="来访人姓名">
+            <el-input v-model="userInfo.lcomplainantName" placeholder="来访人姓名" style="width: 300px" disabled="disabled"></el-input>
+          </el-form-item>
           <el-form-item label="被反映人姓名" prop="lpersonBeReported">
-            <el-select v-model="userInfo.lpersonBeReported"  placeholder="请选择被反映人姓名" style="width: 300px">
+            <el-select v-model="userInfo.lpersonBeReported"  placeholder="请选择被反映人姓名" style="width: 300px" :disabled= "userInfo.lstatus==null?false:'disabled'">
               <el-option
                 v-for="item in optionss"
                 :key="item.sid"
@@ -186,14 +186,14 @@
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                         clearable v-model="userInfo.lpbrDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
+                         clearable v-model="userInfo.lpbrDeptId" @change="handleItemChange"  style="width: 300px" :disabled= "userInfo.lstatus==null?false:'disabled'"></el-cascader>
           </el-form-item>
           <br/>
           <el-form-item label="来访人岗位/职务">
             <el-input v-model="userInfo.lpostId" placeholder="来访人岗位/职务" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
           <el-form-item label="被反映人岗位/职务" prop="lpbrPostId">
-            <el-select v-model="userInfo.lpbrPostId"  placeholder="请选择被反映人岗位/职务" style="width: 300px" @change="change" >
+            <el-select v-model="userInfo.lpbrPostId"  placeholder="请选择被反映人岗位/职务" style="width: 300px" @change="change" :disabled= "userInfo.lstatus==null?false:'disabled'" >
               <el-option
                 v-for="item in options"
                 :key="item.pid"
@@ -204,11 +204,11 @@
           </el-form-item>
           <br/>
           <el-form-item label="原始信访内容" prop="lcontent">
-            <el-input type="textarea" v-model="userInfo.lcontent" placeholder="请输入原始信访内容" style="width: 840px;" v-bind:disabled="ysnr"></el-input>
+            <el-input type="textarea" v-model="userInfo.lcontent" placeholder="请输入原始信访内容" :rows=8 style="width: 840px;" :disabled= "userInfo.lstatus==null?false:'disabled'" ></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="信访内容摘要"  v-bind:style="{display:nrzy}" >
-            <el-input type="textarea" v-bind:disabled="sfjc" v-model="userInfo.lsynopsis" placeholder="请输入信访内容摘要" style="width: 840px;"  ></el-input>
+            <el-input type="textarea" :disabled= "userInfo.lstatus==1?false:'disabled'"  v-model="userInfo.lsynopsis" placeholder="请输入信访内容摘要" style="width: 840px;" :rows=8 ></el-input>
           </el-form-item>
           <br/>
 
@@ -263,12 +263,12 @@
   export default {  computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role'
+        'userId', 'role','mid'
       ])
     },
     created() {
 
-        this.initList();
+      this.initList();
     },
     methods:{//设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
@@ -282,44 +282,44 @@
           lid:this.userInfo.lid})
         tjshme(posdata).then((response)=>{
           this.tf='';
-        this.ad='none'
-        this.initList();
-        this.$notify({
-          title: '成功',
-          message: response.message,
-          type: 'success',
-          duration: 2000
+          this.ad='none'
+          this.initList();
+          this.$notify({
+            title: '成功',
+            message: response.message,
+            type: 'success',
+            duration: 2000
+          })
         })
-      })
       },//新增
       add(){
         let posdata=qs.stringify({nickname:this.nickname})
-this.userInfo={}
+        this.userInfo={}
 
         letterreporter().then((response)=>{
           this.userInfo.letterId=response.letterid
-        this.userInfo.lcreateName =this.nickname
-        this.userInfo.lcomplainantName=this.nickname
-        finddb(posdata).then((response)=>{
-         // console.log('测试',response.list.mname)
-        this.userInfo.lpostId=response.list.pname
-        this.userInfo.ldeptId=response.list.mname
-        this.$set(this.userInfo,'lcreateTime',new Date())
-        this.tf='none';
-        this.ad=''
-        this.tj='',//提交按钮
-          this.bjbc='none'//编辑保存按钮隐藏
-        this.ysnr=false//原始信访内容
-        this.beunit=false//被反映人单位
-        this.beduty=false//被反映人职务
-        this.bename=false//被反映人姓名
-      })
+          this.userInfo.lcreateName =this.nickname
+          this.userInfo.lcomplainantName=this.nickname
+          finddb(posdata).then((response)=>{
+            // console.log('测试',response.list.mname)
+            this.userInfo.lpostId=response.list.pname
+            this.userInfo.ldeptId=response.list.mname
+            this.$set(this.userInfo,'lcreateTime',new Date())
+            this.tf='none';
+            this.ad=''
+            this.tj='',//提交按钮
+              this.bjbc='none'//编辑保存按钮隐藏
+            this.ysnr=false//原始信访内容
+            this.beunit=false//被反映人单位
+            this.beduty=false//被反映人职务
+            this.bename=false//被反映人姓名
+          })
 
-      })
+        })
 
 
       },
-    //监察科自办
+      //监察科自办
       kezhangbc(){
         let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
         this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
@@ -333,22 +333,22 @@ this.userInfo={}
           .replace(/\.[\d]{3}Z/, "")
 
         let posdata=qs.stringify({
-  lid:this.userInfo.lid,
-  lSupervisionComments:this.userInfo.lsupervisionComments,//监察科部门意见
-  lSupervisionCommentsTime:this.userInfo.lsupervisionCommentsTime,//监察科部门意见签署时间
-           lSupervisionResutl:this.userInfo.lsupervisionResutl,//监察科自办结果
-  lSupervisionResultTime:this.userInfo.lsupervisionResultTime//监察科自办时间
-})
+          lid:this.userInfo.lid,
+          lSupervisionComments:this.userInfo.lsupervisionComments,//监察科部门意见
+          lSupervisionCommentsTime:this.userInfo.lsupervisionCommentsTime,//监察科部门意见签署时间
+          lSupervisionResutl:this.userInfo.lsupervisionResutl,//监察科自办结果
+          lSupervisionResultTime:this.userInfo.lsupervisionResultTime//监察科自办时间
+        })
         kezhangbc(posdata).then((response)=>{
           this.tf='';
-        this.ad='none'
-        this.initList();
-        this.$notify({
-          title: '温馨提示',
-          message: '监察科自办处理完成',
-          type: 'success',
-          duration: 2000
-        })
+          this.ad='none'
+          this.initList();
+          this.$notify({
+            title: '温馨提示',
+            message: '监察科自办处理完成',
+            type: 'success',
+            duration: 2000
+          })
         })
       },
       //转办部门处理
@@ -366,14 +366,14 @@ this.userInfo={}
         })
         deptbc(posdata).then((response)=>{
           this.tf='';
-        this.ad='none'
-        this.initList();
+          this.ad='none'
+          this.initList();
           this.$notify({
-          title: '温馨提示',
-          message: '本部门处理完成',
-          type: 'success',
-          duration: 2000
-        })
+            title: '温馨提示',
+            message: '本部门处理完成',
+            type: 'success',
+            duration: 2000
+          })
         })
       },//局领导签署意见
       leaderbc(){
@@ -424,59 +424,69 @@ this.userInfo={}
           })
         })
       },
-    //判断状态给提示
-    cstatus: function (row, column, cellValue) {
-      if (cellValue == 0){
-        return '创建';
-      }else if (cellValue == 1){
-        return '待审';
-      }
-      else if(cellValue==2){
-        return '审核中'
-      }
-      else if(cellValue==3){
-        return '转办'
-      }
-      else {
-        return '已审核'
-      }
-    },
-    //转办部门
+      //判断状态给提示
+      cstatus: function (row, column, cellValue) {
+        if (cellValue == 0){
+          return '创建';
+        }else if (cellValue == 1){
+          return '初审';
+        }
+        else if(cellValue==2){
+          return '二审'
+        }
+        else if(cellValue==3){
+          return '转办'
+        }
+        else {
+          return '已审核'
+        }
+      },
+      //转办部门
       turn(){
-if(this.userInfo.lstatus==3){
-  this.$notify({
-    title: '温馨提示',
-    message: '已转办部门',
-    type: 'warning',
-    duration: 2000
-  })
-}
-else {
-  let posdata=qs.stringify({
-    lid:this.userInfo.lid
-  })
-        turndept(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
+        if(this.userInfo.lstatus==3){
           this.$notify({
-            title: '成功',
-            message: response.data.message,
-            type: 'success',
+            title: '温馨提示',
+            message: '已转办部门',
+            type: 'warning',
             duration: 2000
           })
-        })}
+        }
+        else {
+          if(this.userInfo.deptname==undefined){
+            this.$notify({
+              title: '温馨提示',
+              message: '请选择一个部门转办',
+              type: 'warning',
+              duration: 2000
+            })
+          }else {  let posdata=qs.stringify({
+            lid:this.userInfo.lid,
+            lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
+          })
+            turndept(posdata).then((response)=>{
+              this.tf='';
+              this.ad='none'
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.data.message,
+                type: 'success',
+                duration: 2000
+              })
+            })}
+        }
       },
       bjbcmethod(){},//重置
-     onrest(){
+      onrest(){
         this.search=''
-       this.besearch=''
+        this.besearch=''
       } ,handleItemChange(value){//点击选择时初始化谈话对象和记录人
         var checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
 
         if(checkedNodes[0]!=undefined){
           this.userInfo.lpbrDeptId=value
-        //  console.log('checkedNodes label'+checkedNodes[0].label)
+          console.debug('checkedNodes value'+checkedNodes[0].value)
+          console.debug('lpbrDeptID'+this.userInfo.lpbrDeptId)
           let postdata=qs.stringify({
             mid:checkedNodes[0].value
           })
@@ -484,9 +494,9 @@ else {
 
             this.options = response.list
 
-        //  console.log('职务'+JSON.stringify(response))
+            //  console.log('职务'+JSON.stringify(response))
 
-        })
+          })
         }
         else{
           this.options=[]
@@ -519,45 +529,49 @@ else {
               lCreateName:this.nickname,
               lTime: this.userInfo.lcreateTime,
               lCreateTime:this.userInfo.lcreateTime,
-              lCreateId:0,
+              lCreateId:this.userId,
               lStatus:1
             })
             add(posdata).then((response)=>{
-            this.ad='none'
-            this.tf=''
-            this.$refs[formName].resetFields();
-            this.initList()
+              this.ad='none'
+              this.tf=''
+              this.$refs[formName].resetFields();
+              this.initList()
               this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
           } else {
             console.log('error submit!!');
-        return false;
-      }
-      });
+            return false;
+          }
+        });
       },
       //初始化页面
       initList() {
+        console.log('测试mid',this.mid);
         let status;
+        let mids;
         if(this.hasPerm('letter:sencondaudit')){
-          status=2
+          //  status=2
         }
         else if(this.hasPerm('letter:firstaudit')){
-          status=1
+          //status=1
         }
-        else if(this.hasPerm('letter:zbaudit')){
+        else if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
+          mids=this.mid
           status=3
         }
         let posdata=qs.stringify({
+          mid:mids,
           lStatus:status
         })
         this.listLoading=true
         list(posdata).then(response =>{
-        //  console.log(JSON.stringify(response))
+          //  console.log(JSON.stringify(response))
           this.tableData = response.list
           this.total = response.list.length
           this.listLoading=false
@@ -587,7 +601,17 @@ else {
         // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
         setTimeout(() => {
           this.isShowAddressInfo = true;
-      }, 10);
+        }, 10);
+        /*     let postdata=qs.stringify({
+               mid:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
+             })
+             initdept(postdata).then((response)=>{
+
+               this.options = response.list
+
+               //  console.log('职务'+JSON.stringify(response))
+
+             })*/
       },//详情
       details(index, row) {
         this.nrzy=''//内容摘要显示
@@ -601,35 +625,30 @@ else {
         }
 
         this.userInfo=row
-       // console.log('测试',row.puni.split(',').map(Number))
+        console.log('测试',row.puni.split(',').map(Number))
         this.userInfo.lpbrDeptId = row.puni.split(',').map(Number)
         this.isShowAddressInfo = false;
         // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
         setTimeout(() => {
           this.isShowAddressInfo = true;
-      }, 10);
+        }, 10);
 
+        /* let postdata=qs.stringify({
+           mid:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
+         })
+         initdept(postdata).then((response)=>{
 
-          let postdata=qs.stringify({
-            id:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
-          })
-        initdept(postdata).then((response)=>{
+             this.options = response.list
+         let postsdata=qs.stringify({
+           ppid:this.userInfo.lpbrPostId
+         })
+         initemploy(postsdata).then((response)=>{
 
-          this.options = response.list
+           this.optionss = response.list
 
-       // console.log('职务'+JSON.stringify(response))
+        // console.log('职务'+JSON.stringify(response))
 
-      })
-        let postsdata=qs.stringify({
-          ppid:this.userInfo.lpbrPostId
-        })
-        initemploy(postsdata).then((response)=>{
-
-          this.optionss = response.list
-
-       // console.log('职务'+JSON.stringify(response))
-
-      })
+       })*/
 
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
@@ -658,14 +677,14 @@ else {
         // 这里搞个定时器重新载入一下组件就可以触发组件拉取数据
         setTimeout(() => {
           this.isShowAddressInfo = true;
-      }, 10);
+        }, 10);
 
         this.$set(this.userInfo,'lresultTime',new Date())
         this.$set(this.userInfo,'lsupervisionCommentsTime',new Date())
         this.$set(this.userInfo,'lsupervisionResultTime',new Date())
         this.$set(this.userInfo,'ldisciplinaryTime',new Date())
         this.$set(this.userInfo,'lleadersTime',new Date())
-       // this.userInfo.lCreateName=this.nickname
+        // this.userInfo.lCreateName=this.nickname
       },//纪检监察员审核提交保存
       shbc(){
         let postData = qs.stringify({
@@ -686,7 +705,7 @@ else {
       },// 删除
       del(){
         var data = this.$refs.multipleTable.selection;
-       // console.log("11"+data)
+        // console.log("11"+data)
         if(JSON.stringify(data)=='[]'){
           this.$notify({
             title: '温馨提示',
@@ -699,12 +718,12 @@ else {
           var ids = data.map(item => { return { lstatus: item.lstatus } })
           var ids1 =true
           for(var i = 0; i < ids.length; i++) {
-           // console.log('ids[i].lstatus'+ids[i].lstatus)
+            // console.log('ids[i].lstatus'+ids[i].lstatus)
             if(ids[i].lstatus!='4'){
               ids1=false
             }
           }
-         // console.log(ids1)
+          // console.log(ids1)
           if(!ids1){//判断处于审核中的不能删除
 
             this.$notify({
@@ -714,50 +733,59 @@ else {
               duration: 2000
             })
           }else {
-          let postData = qs.stringify({
-            test:JSON.stringify(data)
-          });
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
 
-        //  console.debug('选中行数据'+JSON.stringify(data))
-          del(postData).then((response) =>{
-            this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
-            })
-          })}
+            //  console.debug('选中行数据'+JSON.stringify(data))
+            del(postData).then((response) =>{
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })}
         }
       },//多条件查询
         //按标题查询
       onSearch() {
+        let status;
+        let mids;
+
+        if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
+          mids=this.mid
+          status=3
+        }
         let postData = qs.stringify({
           lComplainantName:this.search,
-          lPersonBeReported:this.besearch
+          lPersonBeReported:this.besearch,
+          lStatus:status,
+          mid:mids
         });
         this.listLoading = true
         findbyName(postData).then((response) =>{
           this.currentPage = 1
           this.tableData = response.list
-       //   console.debug(this.tableData)
+          //   console.debug(this.tableData)
           this.total=response.list.length
           this.listLoading=false
         })
       },
       //返回
       back(formName){this.ad='none',this.tf='' ,this.nrzy='none'//内容摘要文本框
-         this.$refs[formName].resetFields();
+        this.$refs[formName].resetFields();
         this.initList()
-         this.xqbc=''//点击返回是保存都隐藏
-         },
+        this.xqbc=''//点击返回是保存都隐藏
+      },
       handleSizeChange(size) {
         this.pageSize = size;
-      //  console.log(this.pageSize)
+        //  console.log(this.pageSize)
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
-       // console.log(this.currentPage)  //点击第几页
+        // console.log(this.currentPage)  //点击第几页
       },   change(){
         let postdata=qs.stringify({
           ppid:this.userInfo.lpbrPostId
@@ -766,9 +794,9 @@ else {
 
           this.optionss = response.list
 
-      //  console.log('职务'+JSON.stringify(response))
+          //  console.log('职务'+JSON.stringify(response))
 
-      })
+        })
       }
     },
     data() {
@@ -802,7 +830,7 @@ else {
               parent:parentId
             });
             getFileGroup(postData).then((response)=>{
-             // console.log('response.list'+JSON.stringify(response.list))
+              // console.log('response.list'+JSON.stringify(response.list))
               let nodes = level ===0?[]:[]
 
               if(response.list&&Array.isArray(response.list)){

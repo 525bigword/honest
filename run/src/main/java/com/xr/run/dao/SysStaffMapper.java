@@ -13,6 +13,21 @@ import java.util.List;
 
 @Repository
 public interface SysStaffMapper extends BaseMapper<SysStaff> {
+    @Select("select sid,name from sys_staff where pid=#{pid} and mid=#{mid}")
+    List<SysStaff> findstatffByPid(@Param("pid") Integer pid,@Param("mid")Integer mid);
+    @Select("select sid,name from sys_staff where mid=#{mid}")
+    List<SysStaff> findstatffByMid(@Param("mid")Integer mid);
+    /**
+     * 恢复
+     * @param id
+     */
+    @Update("update sys_staff set staus=1 where sid=#{id}")
+    void hfSysStaffByid(@Param("id") Integer id);
+    /**
+     * 永久物理删除用户
+     */
+    @Delete("delete from sys_staff where sid=#{id} and staus=2")
+    void yjDelSysStaffById(@Param("id") Integer id);
     /**
      * 根据用户名和密码查询对应的用户
      */
@@ -133,4 +148,5 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(column = "pid",property = "pid")
     })
     SysStaff findSysStaffBySidDetail(@Param("sid")Integer sid);
+
 }

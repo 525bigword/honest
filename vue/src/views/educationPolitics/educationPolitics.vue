@@ -83,7 +83,13 @@
           prop="time"
           label="发布时间">
         </el-table-column>
-
+        <el-table-column
+          prop="surl"
+          label="路径" v-if="false"></el-table-column>
+        <el-table-column
+          prop="smoimage"
+          label="图片" v-if="false">
+        </el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -107,23 +113,39 @@
             <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <el-input v-model="userInfo.surl" placeholder="地址" type="hidden"></el-input>
           <el-input v-model="userInfo.id" placeholder="序号" type="hidden"></el-input>
           <el-form-item label="资讯标题" prop="title">
-            <el-input v-model="userInfo.title" placeholder="请输入资讯标题" style="width: 400px"></el-input>
-          </el-form-item><br/>
+            <el-input v-model="userInfo.title" placeholder="请输入资讯标题" style="width: 350px"></el-input>
+          </el-form-item>
           <el-form-item label="资讯来源" prop="source">
-            <el-input v-model="userInfo.source" placeholder="请输入资讯来源" style="width: 400px"></el-input>
+            <el-input v-model="userInfo.source" placeholder="请输入资讯来源" style="width: 350px"></el-input>
           </el-form-item><br/>
           <el-form-item label="资讯类型" prop="type">
-            <el-select v-model="userInfo.type" placeholder="请选择资讯类型" style="width: 400px">
+            <el-select v-model="userInfo.type" placeholder="请选择资讯类型" style="width: 350px">
               <el-option label="警钟长鸣" value="警钟长鸣"></el-option>
               <el-option label="领导讲话" value="领导讲话"></el-option>
               <el-option label="文件制度" value="文件制度"></el-option>
               <el-option label="廉政要闻" value="廉政要闻"></el-option>
             </el-select>
-          </el-form-item><br/>
+          </el-form-item>
+          <el-form-item label="资讯插图">
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-change="handleChange"
+              :on-preview="handlePreview"
+              accept=".jpg,.gif,.png"
+              :http-request="modeUpload"
+              :limit="1"
+              :file-list="fileList">
+              <el-button size="small" type="primary">上传图片</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传单个图片，且不超过50M</div>
+            </el-upload>
+          </el-form-item>
+          <br/>
           <el-form-item label="资讯发布时间" prop="time">
-            <el-date-picker v-model="userInfo.time" type="datetime" placeholder="请选择资讯发布时间" style="width: 400px"></el-date-picker>
+            <el-date-picker v-model="userInfo.time" type="datetime" placeholder="请选择资讯发布时间" style="width: 350px"></el-date-picker>
           </el-form-item>
           <el-form-item label="创建时间" v-if="false">
             <el-date-picker v-model="userInfo.createTime" type="datetime" placeholder="请选择资讯发布时间" style="width: 300px"></el-date-picker>
@@ -142,228 +164,267 @@
 <script>
   import qs from 'qs'
   import { mapGetters } from 'vuex'
-import {findAllEducation,addEcucation,delEcucation,updateEducation,findwhereEducation} from '@/api/educationpolitics/educationpolitics'
+  import { fileUpload } from '@/api/daily/supervise'
+  import {findAllEducation,addEcucation,delEcucation,updateEducation,findwhereEducation} from '@/api/educationpolitics/educationpolitics'
   export default {
     computed: {
       ...mapGetters([
         'nickname',
         'userId'
       ])
-  },
-  created() {
-    this.initList()
-  },
-  methods:{
-    //设置表格内容居中
-    cellStyle({row, column, rowIndex, columnIndex}){
-      return 'text-align:center';
     },
-    rowClass({row, rowIndex}){//设置表头居中
-      return 'text-align:center';
+    created() {
+      this.initList()
     },
-    //重置
-    onrest(){
-      this.title=''
-      this.content=''
-      this.starttime=''
-      this.endtime=''
-    },
-    //多条件查询
-    onSearch() {
-      let postData = qs.stringify({
-        title:this.title,
-        content:this.content,
-        starttime:this.starttime,
-        endtime:this.endtime
-      });
-      this.listLoading = true
-      findwhereEducation(postData).then((response) =>{
-        this.currentPage = 1
-      this.tableData = response.list
-      console.debug(this.tableData)
-      this.total=response.list.length
-      this.listLoading=false
-    })
-    },
-    //初始化页面
-    initList() {
-      this.listLoading=true
-      findAllEducation().then(response =>{
-        console.debug(response.info)
-      this.tableData = response.list
-      this.total = response.list.length
-      this.listLoading=false
-    })
-    },add(){
-      this.fileList=[]//清空upload
-      this.tf='none'
-      this.ad=''
-      this.bc=''
-      this.gx='none'
-      this.userInfo={}
-      this.$set(this.userInfo,'createTime',new Date())
-      this.$set(this.userInfo,'time',new Date())
+    methods:{
+      //设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },
+      //重置
+      onrest(){
+        this.title=''
+        this.content=''
+        this.starttime=''
+        this.endtime=''
+      },
+      //多条件查询
+      onSearch() {
+        let postData = qs.stringify({
+          title:this.title,
+          content:this.content,
+          starttime:this.starttime,
+          endtime:this.endtime
+        });
+        this.listLoading = true
+        findwhereEducation(postData).then((response) =>{
+          this.currentPage = 1
+          this.tableData = response.list
+          console.debug(this.tableData)
+          this.total=response.list.length
+          this.listLoading=false
+        })
+      },
+      //初始化页面
+      initList() {
+        this.listLoading=true
+        findAllEducation().then(response =>{
+          console.debug(response.info)
+          this.tableData = response.list
+          this.total = response.list.length
+          this.listLoading=false
+        })
+      },add(){
+        this.fileList=[]//清空upload
+        this.tf='none'
+        this.ad=''
+        this.bc=''
+        this.gx='none'
+        this.userInfo={}
+        this.$set(this.userInfo,'createTime',new Date())
+        this.$set(this.userInfo,'time',new Date())
 
-    },
-    //返回
-    back(formName){this.ad='none',this.$refs['ruleForm'].resetFields();  this.tf='', this.initList();
-    },//新增提交
-    submitUser(formName){
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          let createTime = new Date(this.userInfo.createTime).toJSON();
-          this.userInfo.createTime = new Date(+new Date(createTime) + 8 * 3600 * 1000)
-            .toISOString()
-            .replace(/T/g, " ")
-            .replace(/\.[\d]{3}Z/, "")
-          let time = new Date(this.userInfo.time).toJSON();
-          this.userInfo.time = new Date(+new Date(time) + 8 * 3600 * 1000)
-            .toISOString()
-            .replace(/T/g, " ")
-            .replace(/\.[\d]{3}Z/, "")
-          let posdata=qs.stringify({
-            title:this.userInfo.title,
-            source:this.userInfo.source,
-            type:this.userInfo.type,
-            time:this.userInfo.time,
-            createTime:this.userInfo.createTime,
-            content:this.userInfo.content,
-            createId:this.userId,
-            createname:this.nickname,
-            staus:0
-          })
-          addEcucation(posdata).then((response)=>{
-            this.tf='';
-          this.ad='none'
-          this.bc='',//保存按钮显示
-            this.gx='none',//更新按钮不显示
-            this.initList();
+      },
+      //返回
+      back(formName){this.ad='none',this.$refs['ruleForm'].resetFields();  this.tf='', this.initList();
+      },//新增提交
+      submitUser(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let createTime = new Date(this.userInfo.createTime).toJSON();
+            this.userInfo.createTime = new Date(+new Date(createTime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let time = new Date(this.userInfo.time).toJSON();
+            this.userInfo.time = new Date(+new Date(time) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let posdata=qs.stringify({
+              smoimage:this.userInfo.smoimage,
+              surl:this.userInfo.surl,
+              title:this.userInfo.title,
+              source:this.userInfo.source,
+              type:this.userInfo.type,
+              time:this.userInfo.time,
+              createTime:this.userInfo.createTime,
+              content:this.userInfo.content,
+              createId:this.userId,
+              createname:this.nickname,
+              staus:0
+            })
+            addEcucation(posdata).then((response)=>{
+              this.tf='';
+              this.ad='none'
+              this.bc='',//保存按钮显示
+                this.gx='none',//更新按钮不显示
+                this.initList();
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
+      },//点击列编辑
+      handleEdit(index, row){
+
+        this.tf='none';
+        this.ad=''//编辑/审核页面出来,
+        this.bc='none'//保存按钮隐藏
+        this.gx=''//更新按钮显示
+        this.userInfo=row
+        this.fileList=[{name:row.smoimage,url:this.uploadimage+row.surl}]
+
+      },//删除
+      del(){
+        var data = this.$refs.multipleTable.selection;
+        console.log("11"+JSON.stringify(data))
+        if(JSON.stringify(data)=='[]'){
           this.$notify({
-            title: '成功',
-            message: '新增成功',
+            title: '温馨提示',
+            message: '请选择一行进行删除',
             type: 'success',
             duration: 2000
           })
-        })
-        } else {
-          console.log('error submit!!');
-      return false;
-    }
-    });
+        }
+        else {
+          let postData = qs.stringify({
+            test:JSON.stringify(data)
+          });
 
-    },//点击列编辑
-    handleEdit(index, row){
-
-      this.tf='none';
-      this.ad=''//编辑/审核页面出来,
-      this.bc='none'//保存按钮隐藏
-      this.gx=''//更新按钮显示
-      this.userInfo=row
-    },//删除
-    del(){
-      var data = this.$refs.multipleTable.selection;
-      console.log("11"+JSON.stringify(data))
-      if(JSON.stringify(data)=='[]'){
-        this.$notify({
-          title: '温馨提示',
-          message: '请选择一行进行删除',
-          type: 'success',
-          duration: 2000
-        })
-      }
-      else {
-        let postData = qs.stringify({
-          test:JSON.stringify(data)
-        });
-
-        console.debug('选中行数据'+JSON.stringify(data))
-        delEcucation(postData).then((response) =>{
-          this.initList();
-        this.$notify({
+          console.debug('选中行数据'+JSON.stringify(data))
+          delEcucation(postData).then((response) =>{
+            this.initList();
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      },
+      //文件预览
+      handlePreview(file) {
+        console.log('file'+JSON.stringify(file))
+        const userAgent = navigator.userAgent;
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          alert('推荐谷歌进行文件预览')
+        }else{
+          window.open(file.url) //blob格式地址
+        }
+      },handleChange(file, fileList) {
+        this.userInfo.smoimage=file.name
+      },
+      modeUpload: function(item) {
+        // console.log(item.file);
+        this.file = item.file
+        const fd = new FormData()
+        fd.append('filename', this.file)
+        fileUpload(fd
+        ).then(response => {
+          this.$message({
           title: '成功',
           message: response.message,
           type: 'success',
           duration: 2000
-        })
-      })
-      }
-    },//更新
-    gxMethod(){
 
-      let endtime1 = new Date(this.userInfo.time).toJSON();
-      this.userInfo.time = new Date(+new Date(endtime1)+ 8 * 3600 * 1000)
-        .toISOString()
-        .replace(/T/g, " ")
-        .replace(/\.[\d]{3}Z/, "")
-      let posdata=qs.stringify({
-        id:this.userInfo.id,
-        title:this.userInfo.title,
-        source:this.userInfo.source,
-        type:this.userInfo.type,
-        time:this.userInfo.time,
-        content:this.userInfo.content,
+        })
+        this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
+        this.userInfo.surl=response.url
       })
-      updateEducation(posdata).then((response)=>{
-        this.initList();
-      this.$notify({
-        title: '成功',
-        message: response.message,
-        type: 'success',
-        duration: 2000
-      })
-      this.tf='';
-      this.ad='none'
-    })
-    },
-    handleSizeChange(size) {
-      this.pageSize = size;
-      console.log(this.pageSize)
-    },
-    handleCurrentChange(currentPage) {
-      this.currentPage = currentPage;
-      console.log(this.currentPage)  //点击第几页
-    }
-  },
-  data() {
-    return { rules: {
-        title: [
-          { required: true, message: '请输入资讯标题', trigger: 'blur' },
-          { min: 3, message: '长度得大于3 字符', trigger: 'blur' }
-        ],
-        source: [
-          { required: true, message: '请输入资讯标题', trigger: 'blur' },
-        ],
-        type: [
-          { required: true, message: '请选择资讯类型', trigger: 'change' }
-        ],
-        content: [
-          { required: true, message: '请输入资讯内容', trigger: 'change' }
-        ]
+        console.log('ce是'+JSON.stringify(this.file))
+      },//更新
+      gxMethod(){
+
+        let endtime1 = new Date(this.userInfo.time).toJSON();
+        this.userInfo.time = new Date(+new Date(endtime1)+ 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "")
+        let posdata=qs.stringify({
+          id:this.userInfo.id,
+          title:this.userInfo.title,
+          source:this.userInfo.source,
+          type:this.userInfo.type,
+          time:this.userInfo.time,
+          content:this.userInfo.content,
+          smoimage:this.userInfo.smoimage,
+          surl:this.userInfo.surl,
+        })
+        updateEducation(posdata).then((response)=>{
+          this.initList();
+          this.$notify({
+            title: '成功',
+            message: response.message,
+            type: 'success',
+            duration: 2000
+          })
+          this.tf='';
+          this.ad='none'
+        })
       },
-      editorOption: {},
-      fileList:[],
-      tf:'',//父页面
-      ad:'none',//新增、审核页面
-      bc:'',//保存按钮显示
-      gx:'none',//更新按钮不显示
-      iconFormVisible: false,
-      userInfo: {smoproperty:[]},
-      dialogTitle: '增加',
-      rowIndex: null,
-      title:'',
-      starttime:'',
-      endtime:'',
-      content:'',
-      currentPage4: 1,
-      pageSize:10,
-      total:0,
-      currentPage:1,
-      times:'',
-      tableData: [],
-      options:[],
-      listLoading:true
+      handleSizeChange(size) {
+        this.pageSize = size;
+        console.log(this.pageSize)
+      },
+      handleCurrentChange(currentPage) {
+        this.currentPage = currentPage;
+        console.log(this.currentPage)  //点击第几页
+      }
+    },
+    data() {
+      return { rules: {
+          title: [
+            { required: true, message: '请输入资讯标题', trigger: 'blur' },
+            { min: 3, message: '长度得大于3 字符', trigger: 'blur' }
+          ],
+          source: [
+            { required: true, message: '请输入资讯标题', trigger: 'blur' },
+          ],
+          type: [
+            { required: true, message: '请选择资讯类型', trigger: 'change' }
+          ],
+          content: [
+            { required: true, message: '请输入资讯内容', trigger: 'change' }
+          ]
+        },
+
+        editorOption: {},
+        fileList:[],
+        tf:'',//父页面
+        ad:'none',//新增、审核页面
+        bc:'',//保存按钮显示
+        gx:'none',//更新按钮不显示
+        iconFormVisible: false,
+        userInfo: {smoproperty:[]},
+        dialogTitle: '增加',
+        rowIndex: null,
+        title:'',
+        starttime:'',
+        endtime:'',
+        content:'',
+        currentPage4: 1,
+        pageSize:10,
+        total:0,
+        currentPage:1,
+        times:'',
+        tableData: [],
+        options:[],
+        listLoading:true
+      }
     }
-  }
   }
 </script>
 

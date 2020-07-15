@@ -47,7 +47,7 @@
         <el-table-column v-if="false" prop="dept" label="部门路径"></el-table-column>
         <el-table-column  label="谈话类型"
                           width="180"
-        prop="users[0].mechanisms[0].mechanismName" v-if="false"
+                          prop="users[0].mechanisms[0].mechanismName" v-if="false"
         ></el-table-column>
         <el-table-column
           prop="users[0].name"
@@ -111,20 +111,20 @@
           :total="total">
         </el-pagination>
       </div> </el-form>
-<!--隐藏窗-->
-      <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
-        <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
-          <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
-            <br/>
-            <div align="right" ><el-form-item >
-              <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')"  >提交</el-button>
-              <el-button type="primary" class="el-icon-edit" @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
-              <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
-              <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>
-
-              <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
+    <!--隐藏窗-->
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
           <br/>
-          <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <div align="right" ><el-form-item >
+            <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')"  >提交</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>
+
+            <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
+        <br/>
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
 
           <el-form-item label="谈话对象单位" prop="punit">
@@ -170,7 +170,7 @@
             <el-input v-model="userInfo.duty" placeholder="请输入谈话对象职务" style="width: 400px"></el-input>
           </el-form-item><br/>
           <el-form-item label="谈话类型" prop="type">
-            <el-select v-model="userInfo.type" placeholder="谈话类型" style="width: 400px">
+            <el-select v-model="userInfo.type" placeholder="请选择谈话类型" style="width: 400px">
               <el-option label="例行廉政谈话" value="例行廉政谈话"></el-option>
               <el-option label="任前廉政谈话" value="任前廉政谈话"></el-option>
               <el-option label="提醒谈话" value="提醒谈话"></el-option>
@@ -179,24 +179,24 @@
           <el-form-item label="谈话地点" prop="site">
             <el-input v-model="userInfo.site" placeholder="请输入谈话地点" style="width: 400px"></el-input>
           </el-form-item>
-            <br/>
-            <el-form-item label="谈话提纲" prop="syllabus">
-          <el-input v-model="userInfo.syllabus"  type="textarea" placeholder="请输入400字符以内的谈话提纲" style="width: 1000px;" :rows="6"></el-input>
-        </el-form-item>
-            <br/>
-            <el-form-item label="谈话内容" prop="content">
-              <el-input v-model="userInfo.content" type="textarea" placeholder="请输入2000字符以内的谈话内容" style="width: 1000px" :rows="16"></el-input>
-            </el-form-item><br/>
+          <br/>
+          <el-form-item label="谈话提纲" prop="syllabus">
+            <el-input v-model="userInfo.syllabus"  type="textarea" placeholder="请输入400字符以内的谈话提纲" style="width: 1000px;" :rows="6"></el-input>
+          </el-form-item>
+          <br/>
+          <el-form-item label="谈话内容" prop="content">
+            <el-input v-model="userInfo.content" type="textarea" placeholder="请输入2000字符以内的谈话内容" style="width: 1000px" :rows="16"></el-input>
+          </el-form-item><br/>
           <el-form-item label="创建人" v-if="false">
             <el-input v-model="userInfo.createname" placeholder="创建人" disabled="disabled" style="width: 400px" v-if="false"></el-input>
           </el-form-item>
           <el-form-item label="创建时间" v-if="false">
             <el-date-picker v-model="userInfo.createtime" placeholder="创建时间" type="datetime"  style="width: 400px" disabled="disabled" ></el-date-picker>
           </el-form-item>
-          </div>
-        </el-form></el-main>
-      </div>
-   </div>
+        </div>
+      </el-form></el-main>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -208,7 +208,7 @@
     computed: {
       ...mapGetters([
         'nickname',
-        'userId', 'role'
+        'userId', 'role','mid'
       ])
     },
     created() {
@@ -216,13 +216,13 @@
     },
     methods:{
 
-  //设置表格内容居中
-  cellStyle({row, column, rowIndex, columnIndex}){
-    return 'text-align:center';
-  },
-  rowClass({row, rowIndex}){//设置表头居中
-    return 'text-align:center';
-  },
+      //设置表格内容居中
+      cellStyle({row, column, rowIndex, columnIndex}){
+        return 'text-align:center';
+      },
+      rowClass({row, rowIndex}){//设置表头居中
+        return 'text-align:center';
+      },
       submitUser(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -254,50 +254,50 @@
               createtime:this.userInfo.createtime,
               staus:0
             });
-            console.log("postdata"+postData)
+            //  console.log("postdata"+postData)
             add(postData).then((response)=>{
               this.ad='none',
-              this.tf=''
-            this.defaUnit='请选择谈话对象单位'
-            this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
+                this.tf=''
+              this.defaUnit='请选择谈话对象单位'
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
           } else {
             console.log('error submit!!');
-        return false;
-      }
-      });
+            return false;
+          }
+        });
 
       },
       handleItemChange(value){//点击选择时初始化谈话对象和记录人
         var checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
-      /*
-      console.log('zz'+ value.join(',')); //全路径value值
-       console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值*/
+        /*
+        console.log('zz'+ value.join(',')); //全路径value值
+         console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值*/
 
-       if(checkedNodes[0]!=undefined){
-         this.userInfo.punit=value
-         console.log('checkedNodes label'+checkedNodes[0].label)
-         let postdata=qs.stringify({
-           id:checkedNodes[0].value
-         })
-         initpersons(postdata).then((response)=>{
+        if(checkedNodes[0]!=undefined){
+          this.userInfo.punit=value
+          // console.log('checkedNodes label'+checkedNodes[0].label)
+          let postdata=qs.stringify({
+            id:checkedNodes[0].value
+          })
+          initpersons(postdata).then((response)=>{
 
-           this.options = response.list
+            this.options = response.list
 
-           console.log('记录人'+JSON.stringify(response))
+            //console.log('记录人'+JSON.stringify(response))
 
-         })
-       }
-       else{
-         this.options=[]
-       }
-      //
+          })
+        }
+        else{
+          this.options=[]
+        }
+        //
         /*       console.log(checkedNodes) // 获取当前点击的节点
                  console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
                  console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
@@ -320,8 +320,8 @@
         ,this.$refs[formName].resetFields()
         this.initList()
         this.tg='none'//通过按钮
-          this.bh='none'//驳回按钮
-           },
+        this.bh='none'//驳回按钮
+      },
       gxmethod(){//更新
 
         let endtime = new Date(this.userInfo.time).toJSON();
@@ -358,7 +358,7 @@
         console.log('gx'+this.userInfo.id)
       },//提交审核
       tjsh(index,row){
-      console.log('row'+JSON.stringify(row.id))
+        console.log('row'+JSON.stringify(row.id))
         let postData = qs.stringify({
           id:row.id
         });
@@ -374,7 +374,7 @@
               type: 'success',
               message: '提交成功!'
             });
-           this.initList()
+            this.initList()
           })
 
         }).catch(() => {
@@ -386,58 +386,58 @@
       },
       //通过还是驳回
       passtg(val){
-    if(val=='通过'){
-      let postData = qs.stringify({
-        id:this.userInfo.id,
-        status:2,
-        auditresult:val
-      });
-      passaudit(postData).then((response)=>{
-        this.$notify({
-          type: 'success',
-          message: '处理成功'
-        });})
-      this.ad='none'
-      this.tf=''
-        this.initList()
-    }else{
-
-      this.$confirm(`确定驳回吗?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(() => {
-
-       let postData = qs.stringify({
-          id:this.userInfo.id,
-          status:0,
-          auditresult:val
-        });
-        passaudit(postData).then((response)=>{
-          this.$notify({
-            type: 'success',
-            message: '驳回成功'
+        if(val=='通过'){
+          let postData = qs.stringify({
+            id:this.userInfo.id,
+            status:2,
+            auditresult:val
           });
- this.ad='none'
-        this.tf=''
+          passaudit(postData).then((response)=>{
+            this.$notify({
+              type: 'success',
+              message: '处理成功'
+            });})
+          this.ad='none'
+          this.tf=''
           this.initList()
-        })
+        }else{
 
-      }).catch(() => {
-        this.$notify({
-          type: 'info',
-          message: '已取消驳回'
-        });
-      })
-    }
+          this.$confirm(`确定驳回吗?`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }).then(() => {
+
+            let postData = qs.stringify({
+              id:this.userInfo.id,
+              status:0,
+              auditresult:val
+            });
+            passaudit(postData).then((response)=>{
+              this.$notify({
+                type: 'success',
+                message: '驳回成功'
+              });
+              this.ad='none'
+              this.tf=''
+              this.initList()
+            })
+
+          }).catch(() => {
+            this.$notify({
+              type: 'info',
+              message: '已取消驳回'
+            });
+          })
+        }
       },//审核
       sh(index,row){
-       this.tg='',//通过按钮
-        this.bh='',//驳回按钮
+        this.tg='',//通过按钮
+          this.bh='',//驳回按钮
 
-         this.userInfo={
-           punit:[]
-         }
+          this.userInfo={
+            punit:[]
+          }
 
         this.userInfo=row
 
@@ -463,11 +463,16 @@
         this.ad='',//隐藏窗
           this.tf='none'
       }
-,
+      ,
       //按标题查询
       onSearch() {
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
         let postData = qs.stringify({
-          title:this.search
+          title:this.search,
+          mid:mid
         });
         this.listLoading = true
         findbytitle(postData).then((response) =>{
@@ -477,7 +482,7 @@
           this.total=response.list.length
           this.listLoading=false
         })
-        },
+      },
       //删除
       del(){ var data = this.$refs.multipleTable.selection;
         if(JSON.stringify(data)=='[]'){
@@ -507,21 +512,21 @@
               duration: 2000
             })
           }else {
-          let postData = qs.stringify({
-            test:JSON.stringify(data)
-          });
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
 
-          console.debug('选中行数据'+JSON.stringify(data))
-          del(postData).then((response) =>{
-            this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
+            console.debug('选中行数据'+JSON.stringify(data))
+            del(postData).then((response) =>{
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
-        }}},   handleEdit(index, row) {
+          }}},   handleEdit(index, row) {
         this.userInfo={
           punit:[]
         }
@@ -548,18 +553,25 @@
         this.gx=''
         this.userInfo.zzmm=row.users[0].politicalAppearance
         this.userInfo.duty=row.users[0].posts[0].pname
-    /*    this.userInfo.name=[]
-        this.userInfo.name.push(row.pid)
-        this.userInfo.personname=[],
-          this.userInfo.personname.push(row.personid)*/
-        console.log('测试状态'+row.staus)
+        /*    this.userInfo.name=[]
+            this.userInfo.name.push(row.pid)
+            this.userInfo.personname=[],
+              this.userInfo.personname.push(row.personid)*/
+        //  console.log('测试状态'+row.staus)
 
       },
       //初始化页面
       initList() {
-    this.listLoading=true
-        list(this.listQuery).then(response =>{
-          console.log(response)
+        this.listLoading=true
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
+        let posdata=qs.stringify({
+          mid:mid
+        })
+        list(posdata).then(response =>{
+          // console.log(response)
           this.tableData = response.list
           this.total = response.list.length
           this.listLoading=false
@@ -568,12 +580,12 @@
         this.tf='none';
         this.ad=''
         this.bc=''//保存按钮
-          this.gx='none'
+        this.gx='none'
         this.dialogTitle = '增加';
         this.defaUnit='请选择谈话对象单位'
         this.userInfo={};
         this.userInfo.createname =this.nickname
-      //  console.debug('id='+this.id)
+        //  console.debug('id='+this.id)
         /* 动态赋值实时设置当前时间*/
         this.$set(this.userInfo,'createtime',new Date())
         //this.timer= setInterval(this.time, 1000 );
@@ -640,22 +652,22 @@
             let postData=qs.stringify({
               parent:parentId
             });
-          getFileGroup(postData).then((response)=>{
-            console.log('response.list'+JSON.stringify(response.list))
-            let nodes = level ===0?[]:[]
+            getFileGroup(postData).then((response)=>{
+              // console.log('response.list'+JSON.stringify(response.list))
+              let nodes = level ===0?[]:[]
 
-            if(response.list&&Array.isArray(response.list)){
+              if(response.list&&Array.isArray(response.list)){
 
-              for(let item of response.list){
-                nodes.push({
-                  value:item.mid,
-                  label: item.mechanismName
-                });
+                for(let item of response.list){
+                  nodes.push({
+                    value:item.mid,
+                    label: item.mechanismName
+                  });
+                }
               }
-            }
-            // 通过调用resolve将子节点数据返回，通知组件数据加载完成
-            resolve(nodes);
-          })
+              // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+              resolve(nodes);
+            })
 
 
           }

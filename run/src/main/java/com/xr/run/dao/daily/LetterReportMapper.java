@@ -2,6 +2,7 @@ package com.xr.run.dao.daily;
 
 import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ public interface LetterReportMapper {
     public List<LetterReport> list(LetterReport letterReport);
     /*新增*/
     public void addletter(LetterReport letterReport);
-/*删除*/
+    /*删除*/
     public void deletter(Integer lid);
     /*按条件查询*/
     public List<LetterReport> findbyName(LetterReport letterReport);
@@ -27,7 +28,7 @@ public interface LetterReportMapper {
     /*用户提交审核*/
     public void tjshme(Integer lid);
     /*转办部门*/
-    public void turndept(Integer lid);
+    public void turndept(@Param(value = "lid") Integer lid,@Param(value = "mid") Integer lmid);
     /*监察科自办结果*/
     public void kezhangbc(LetterReport letterReport);
     /*转办部门处理结果*/

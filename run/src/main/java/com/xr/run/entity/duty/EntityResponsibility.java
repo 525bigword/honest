@@ -21,4 +21,6 @@ public class EntityResponsibility {
     private Integer createid;
     private Integer staus;
     private String auditresult;
+    //业务属性
+    private Integer mid;
 }

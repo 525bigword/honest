@@ -15,5 +15,5 @@ public interface SysPermissionService extends IService<SysPermission> {
     Integer addSysPermission(SysPermission sysPermission) throws Exception;
     IPage<SysPermission> findSysPermissionPage(Page page,String name, Integer required) throws Exception;
     Integer delSysPermissionPage(SysPermission sysPermission);
-    void updateSysPermission(SysPermission sysPermission);
+    Integer updateSysPermission(SysPermission sysPermission);
 }

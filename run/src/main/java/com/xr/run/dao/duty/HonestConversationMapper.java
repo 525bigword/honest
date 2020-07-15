@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface HonestConversationMapper {
     /*初始化廉政谈话页面*/
-    public List<HonestConversation> list();
+    public List<HonestConversation> list(Integer mid);
     /*根据谈话类型标题查询*/
-    public List<HonestConversation> listBytitle(@Param(value = "type") String title);
+    public List<HonestConversation> listBytitle(@Param(value = "type") String title,@Param(value = "mid") Integer mid);
     /*新增谈话*/
     public void addHonestConversation(HonestConversation honestConversation);
     /*更新谈话*/
@@ -26,7 +26,7 @@ public interface HonestConversationMapper {
     /*删除谈话*/
     public void delHonestConversationt(Integer id);
     /*根据单位查用户*/
-   public List<SysStaff> findallduty(Integer id);
+    public List<SysStaff> findallduty(Integer id);
     /*根据部门id查所有部门*/
     public List<SysPpost> findalldept(Integer mid);
     /*根据职务查人*/

@@ -14,6 +14,8 @@ import java.util.List;
 
 @Repository
 public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
+
+
     @Select("select mechanism_name from sys_mechanism where mid=#{mid}")
     String findMechanismNameByMid(@Param("mid") Integer mid);
 

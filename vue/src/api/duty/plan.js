@@ -22,11 +22,11 @@ export function del(data){
   })
 }
 export function findbytitle(data) {
-return request({
-  url: '/duty/plan/findbytitle',
-  method:'post',
-  data
-})
+  return request({
+    url: '/duty/plan/findbytitle',
+    method:'post',
+    data
+  })
 }
 /*更新计划内容*/
 export function updatecontent(data) {

@@ -54,11 +54,11 @@ export function passaudit(data) {
 }
 /*级联选择框*/
 export function getFileGroup(data) {
-return request({
-  url:'/duty/talk/getFileGroup',
-  method:'post',
-  data
-})
+  return request({
+    url:'/duty/talk/getFileGroup',
+    method:'post',
+    data
+  })
 }
 /*select选择框*/
 export function initpersons(data) {

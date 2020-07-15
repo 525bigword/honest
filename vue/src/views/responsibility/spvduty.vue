@@ -598,9 +598,9 @@ export default {
       btotal:0,
       listLoading: true, // 是否使用动画
       pageNum: 1, // 分页需要的当前页
-      pageRow: 5, // 分页需要的每页显示多少
+      pageRow: 10, // 分页需要的每页显示多少
        bpageNum: 1, // 分页需要的当前页
-      bpageRow: 5, // 分页需要的每页显示多少
+      bpageRow: 10, // 分页需要的每页显示多少
       dutyTitle: "",
       dutyContent: "",
       backTitle: "",
@@ -1329,10 +1329,32 @@ export default {
 
           }) 
         })
+        }else{
+          this.$confirm('确定要将项目进行'+title+'吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 调用ajax去后台删除
+          updatestatusall(this.back).then((response) => {
+            // 刷新数据表格
+            this.getbList(this.temp.did)
+            // ajax去后台删除
+            this.$notify({
+              title: '成功',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.goback()
+            this.getList();
+
+          }) 
+        })
         }
         },
         handleImgChan(){
-          var path=this.virtualIp+this.back.bpdf
+          var path=this.virtualdutyIp+this.back.bpdf
           if(this.back.backAccessoryName!==null&&this.back.backAccessoryName!==''){
             window.open(path)
           }
@@ -1396,6 +1418,41 @@ export default {
       this.temp.tongbao=''
              this.getList();
           }) 
+          })
+          
+        })
+        }else{
+          this.$confirm('确定要进行项目通报吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 调用ajax去后台删除
+          let posdata=qs.stringify({
+            did: this.temp.did,
+            tongbao: this.temp.tongbao,
+            bCreateId: 0
+          })
+          
+          updatetong(posdata).then((response)=>{
+            updatestatusall(this.back).then((response) => {
+            // 刷新数据表格
+            this.getbList(this.temp.did)
+            // ajax去后台删除
+            this.$notify({
+              title: '成功',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.dis='inline-block'
+      this.dis2='none'
+      this.dis3='none'
+      this.dis4='none'
+      this.dis5='none'
+      this.temp.tongbao=''
+             this.getList();
+             }) 
           })
           
         })

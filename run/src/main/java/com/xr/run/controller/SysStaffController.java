@@ -31,6 +31,17 @@ public class SysStaffController {
     @Autowired
     private HomePageSevice homePageSevice;
 
+    @GetMapping("del/{id}")
+    public JSONObject yjDel(@PathVariable Integer id){
+        sysStaffService.yjDelSysStaffById(id);
+        return CommonUtil.successJson();
+    }
+    @GetMapping("hf/{id}")
+    public JSONObject hfSysStaff(@PathVariable Integer id){
+        sysStaffService.hfSysStaff(id);
+        return CommonUtil.successJson();
+    }
+
     @GetMapping("get/{sid}")
     public JSONObject getSysStaffBySid(@PathVariable Integer sid){
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
@@ -39,8 +50,8 @@ public class SysStaffController {
     @PostMapping("delete")
     @RequiresPermissions("staff:delete")
     public JSONObject delSysStaff(String str){
-        System.out.println(str);
         Integer integer = sysStaffService.delSysStaff(str);
+        System.out.println("=========================="+integer);
         return CommonUtil.successJson(integer);
     }
     @PostMapping("add")
@@ -54,6 +65,18 @@ public class SysStaffController {
     @GetMapping("/get")
     public JSONObject findstatffs(){
         List<SysStaff> sysStaffAll = sysStaffService.findSysStaffAll();
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
+    }
+    @GetMapping("gets/{pid}/{mid}")
+    public JSONObject findstatffByPidAndMid(@PathVariable Integer pid,@PathVariable Integer mid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid,mid);
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
+    }
+    @GetMapping("gets/{mid}")
+    public JSONObject findstatffByPid(@PathVariable Integer mid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByMid(mid);
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }

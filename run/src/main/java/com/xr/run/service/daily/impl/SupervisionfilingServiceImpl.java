@@ -13,13 +13,13 @@ public class SupervisionfilingServiceImpl implements SupervisionfilingService {
     @Autowired
     private SupervisionfilingMapper supervisionfilingMapper;
     @Override
-    public List<Supervisionfiling> list() {
-        return supervisionfilingMapper.list();
+    public List<Supervisionfiling> list(Integer sStatus) {
+        return supervisionfilingMapper.list(sStatus);
     }
 
     @Override
-    public List<Supervisionfiling> findbytitle(String sPaperItems) {
-        return supervisionfilingMapper.findbytitle(sPaperItems);
+    public List<Supervisionfiling> findbytitle(String sPaperItems,Integer sStatus) {
+        return supervisionfilingMapper.findbytitle(sPaperItems,sStatus);
     }
 
     @Override
@@ -43,12 +43,17 @@ public class SupervisionfilingServiceImpl implements SupervisionfilingService {
     }
 
     @Override
-    public List<Supervisionfiling> findbysFilingId(String sFilingId) {
-        return supervisionfilingMapper.findbysFilingId(sFilingId);
+    public List<Supervisionfiling> findbysFilingId(String sFilingId, Integer sStatus) {
+        return supervisionfilingMapper.findbysFilingId(sFilingId,sStatus);
     }
 
     @Override
     public void tgsh(Supervisionfiling supervisionfiling) {
         supervisionfilingMapper.tgsh(supervisionfiling);
+    }
+
+    @Override
+    public void signleader(Integer sid) {
+        supervisionfilingMapper.signleader(sid);
     }
 }

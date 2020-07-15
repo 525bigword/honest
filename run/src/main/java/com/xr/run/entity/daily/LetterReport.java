@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
 @Data
 public class LetterReport {
     private Integer lid;
@@ -42,4 +41,6 @@ public class LetterReport {
     private Integer lCreateId;
     private String lCreateName;
     private Integer lStatus;
+    //业务字段
+    private Integer mid;
 }

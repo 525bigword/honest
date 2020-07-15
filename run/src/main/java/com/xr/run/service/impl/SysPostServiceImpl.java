@@ -87,6 +87,7 @@ public class SysPostServiceImpl extends ServiceImpl<SysPostMapper,SysPost> imple
         for (int i = 0; i < arr.length; i++) {
             System.out.println(arr[i]);
             baseMapper.delSysPost(Integer.parseInt(arr[i]));
+            baseMapper.upSysPostPermissionStuasByPostId(Integer.parseInt(arr[i]));
         }
     }
 

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.xr.run.entity.inspect.Report;
 import com.xr.run.service.inspect.DcpReportService;
 import com.xr.run.util.ResponseResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ public class DcpReportAction {
     @Autowired
     private DcpReportService dcpReportService;
     @RequestMapping("list")
+    @RequiresPermissions("report:list")
     public ResponseResult list(){
         List<Report> list = dcpReportService.list();
         ResponseResult result=new ResponseResult();
@@ -24,6 +26,7 @@ public class DcpReportAction {
 
     }
     @RequestMapping("findwhere")
+    @RequiresPermissions("report:list")
     public ResponseResult findwhere(Report report){
         List<Report> list = dcpReportService.fintBywhere(report);
         ResponseResult result=new ResponseResult();
@@ -32,13 +35,15 @@ public class DcpReportAction {
 
     }
     @RequestMapping("addreport")
+    @RequiresPermissions("report:add")
     public ResponseResult addreport(Report report){
         dcpReportService.addreport(report);
         ResponseResult result=new ResponseResult();
-        result.getInfo().put("message","删除成功");
+        result.getInfo().put("message","新增成功");
         return result;
     }
     @RequestMapping("delReport")
+    @RequiresPermissions("report:delete")
     public ResponseResult delReport(String test){
         System.out.println("test"+test);
         List<Report> reports = JSON.parseArray(test, Report.class);
@@ -52,6 +57,7 @@ public class DcpReportAction {
         return result;
     }
     @RequestMapping("gxpost")
+    @RequiresPermissions("report:update")
     public ResponseResult gxpost(Report report){
         ResponseResult result=new ResponseResult();
         dcpReportService.gxpost(report);

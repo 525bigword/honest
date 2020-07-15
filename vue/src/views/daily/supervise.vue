@@ -78,77 +78,77 @@
       </div>
 
     </el-form>
-  <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
-    <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
-      <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px" :rules="rules" ref="ruleForm">
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
+          <br/>
+          <div align="right" ><el-form-item >
+            <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')||this.hasPerm('supervise:update')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
+            <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
+            <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:update')" align="right" @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
-        <div align="right" ><el-form-item >
-          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')||this.hasPerm('supervise:update')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
-          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')" align="right" @click="submitUser" v-bind:style="{display:bc}">保存</el-button>
-          <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:update')" align="right" @click="gxmethod" v-bind:style="{display:gx}">更新</el-button>
-          <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
-      <br/>
-      <div style="background-color: white;margin-top: 7px;z-index:3;">
-        <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
-        <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
-        <el-form-item label="备案编号">
+        <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
+          <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
+          <el-form-item label="备案编号">
 
-          <el-input v-model="userInfo.sfilingId" placeholder="备案编号" style="width: 300px" disabled="disabled"></el-input>
-        </el-form-item>
-        <el-form-item label="附件">
-          <el-upload
-            :action="doUpload"
-            :file-list="fileList"
-            :on-preview="handlePreview"
-            :on-change="handleChange"
-            :http-request="modeUpload"
-            v-model="userInfo.saccessory"
-          ><el-button size="small" type="primary">上传</el-button></el-upload>
-        </el-form-item><br/>
-        <el-form-item label="承办部门">
-          <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
-                       :placeholder="defaUnit"
-                       :props="props"
-                       :options="options_cascader"
-                       :expandTrigger="'hover'"
-                       clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
-        </el-form-item>
-        <el-form-item label="承办人">
-          <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px">
-            <el-option
-              v-for="item in options"
-              :key="item.sid"
-              :label="item.name"
-              :value="item.sid">
-            </el-option>
-          </el-select>
-        </el-form-item><br/>
-        <el-form-item label="事项摘要">
-          <el-input v-model="userInfo.spaperItems" placeholder="事项摘要" style="width: 300px"></el-input>
-        </el-form-item>
-        <el-form-item label="耗资">
-          <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number"></el-input>
-        </el-form-item><br/>
+            <el-input v-model="userInfo.sfilingId" placeholder="备案编号" style="width: 300px" disabled="disabled"></el-input>
+          </el-form-item>
+          <el-form-item label="附件">
+            <el-upload
+              :action="doUpload"
+              :file-list="fileList"
+              :on-preview="handlePreview"
+              :on-change="handleChange"
+              :http-request="modeUpload"
+              v-model="userInfo.saccessory"
+            ><el-button size="small" type="primary">上传</el-button></el-upload>
+          </el-form-item><br/>
+          <el-form-item label="承办部门" prop="sundertakerDeptId">
+            <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
+                         :placeholder="defaUnit"
+                         :props="props"
+                         :options="options_cascader"
+                         :expandTrigger="'hover'"
+                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
+          </el-form-item>
+          <el-form-item label="承办人" prop="sundertaker">
+            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px">
+              <el-option
+                v-for="item in options"
+                :key="item.sid"
+                :label="item.name"
+                :value="item.sid">
+              </el-option>
+            </el-select>
+          </el-form-item><br/>
+          <el-form-item label="事项摘要" prop="spaperItems">
+            <el-input v-model="userInfo.spaperItems" placeholder="请输入事项摘要" style="width: 300px"></el-input>
+          </el-form-item>
+          <el-form-item label="耗资" prop="scost">
+            <el-input v-model="userInfo.scost" placeholder="请输入耗资" style="width: 300px" type="Number"></el-input>
+          </el-form-item><br/>
 
-        <div>
-        <el-form-item label="实施方式">
-          <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.sstatus!=0&&dialogTitle!='增加'">
-            <div  v-html="userInfo.senforcementMode"></div>
-          </el-card>
-          <quill-editor v-if="dialogTitle=='增加'||userInfo.sstatus==0" id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" />
-        </el-form-item></div><br/><div>
-        <el-form-item label="状态" v-if="false">
-          <el-input v-model="userInfo.sstatus" placeholder="状态" style="width: 300px" disabled="disabled" ></el-input>
-        </el-form-item>
-        <el-form-item label="创建者姓名" v-if="false">
-          <el-input v-model="userInfo.screateName" placeholder="创建者姓名" style="width: 300px" disabled="disabled" ></el-input>
-        </el-form-item><br/>
-        <el-form-item label="创建时间" v-if="false">
-          <el-date-picker v-model="userInfo.screateTime" placeholder="创建时间" style="width: 300px" type="datetime"  disabled="disabled"></el-date-picker>
-        </el-form-item></div>
-      </div>
-    </el-form></el-main>
-  </div>
+          <div>
+            <el-form-item label="实施方式" prop="senforcementMode">
+              <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.sstatus!=0&&dialogTitle!='增加'">
+                <div  v-html="userInfo.senforcementMode"></div>
+              </el-card>
+              <quill-editor v-if="dialogTitle=='增加'||userInfo.sstatus==0" id="editer" ref="text" v-model="userInfo.senforcementMode" class="myQuillEditor" :options="editorOption" style="width: 830px; height: 400px; margin-bottom: 80px" />
+            </el-form-item></div><br/><div>
+          <el-form-item label="状态" v-if="false">
+            <el-input v-model="userInfo.sstatus" placeholder="状态" style="width: 300px" disabled="disabled" ></el-input>
+          </el-form-item>
+          <el-form-item label="创建者姓名" v-if="false">
+            <el-input v-model="userInfo.screateName" placeholder="创建者姓名" style="width: 300px" disabled="disabled" ></el-input>
+          </el-form-item><br/>
+          <el-form-item label="创建时间" v-if="false">
+            <el-date-picker v-model="userInfo.screateTime" placeholder="创建时间" style="width: 300px" type="datetime"  disabled="disabled"></el-date-picker>
+          </el-form-item></div>
+        </div>
+      </el-form></el-main>
+    </div>
   </div>
 </template>
 
@@ -179,11 +179,11 @@
         //点击选择时初始化谈话对象和记录人
         let checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
 
-      //  console.log('zz'+ value.join(',')); //全路径value值
-      //   console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值
-      /*  console.log(checkedNodes) // 获取当前点击的节点
-        console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
-        console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
+        //  console.log('zz'+ value.join(',')); //全路径value值
+        //   console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值
+        /*  console.log(checkedNodes) // 获取当前点击的节点
+          console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
+          console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
 
         if(checkedNodes[0]!=undefined){
           this.userInfo.sundertakerDeptId=value
@@ -219,8 +219,11 @@
         }else if (cellValue == 1){
           return '待审';
         }
+        else if (cellValue == 3){
+          return '待验收';
+        }
         else{
-          return '已审核'
+          return '验收完毕'
         }
       },
       //文件预览
@@ -248,7 +251,7 @@
         fileUpload(fd
         ).then(response => {
           this.$message.success(response.message)
-          this.fileList=[{name:this.file.name,url:response.url}]
+          this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
           this.userInfo.url=response.url
         })
       },
@@ -282,40 +285,48 @@
         this.search=''
 
       },//新增提交
-      submitUser(){
-        let endtime = new Date(this.userInfo.screateTime).toJSON();
-        this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-     console.log('擦擦擦' ,this.userInfo);
+      submitUser(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.screateTime).toJSON();
+            this.userInfo.screateTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            console.log('擦擦擦' ,this.userInfo);
 
-        let posdata=qs.stringify({
-          url:this.userInfo.url,
-          sFilingId:this.userInfo.sfilingId,
-          sPaperItems:this.userInfo.spaperItems,
-          sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
-          sAccessory:this.userInfo.saccessory,
-          sCost:this.userInfo.scost,
-          sUndertaker:this.userInfo.sundertaker,
-          sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
-          punit:this.userInfo.sundertakerDeptId.toString(),
-          sCreateTime:this.userInfo.screateTime,
-          sCreateName:this.nickname,
-          sStatus:0,
-          sCreateId:this.userId
-        })
-        addsuper(posdata).then((response)=>{
-          this.tf='';
-          this.ad='none'
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-        })
+            let posdata=qs.stringify({
+              url:this.userInfo.url,
+              sFilingId:this.userInfo.sfilingId,
+              sPaperItems:this.userInfo.spaperItems,
+              sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
+              sAccessory:this.userInfo.saccessory,
+              sCost:this.userInfo.scost,
+              sUndertaker:this.userInfo.sundertaker,
+              sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+              punit:this.userInfo.sundertakerDeptId.toString(),
+              sCreateTime:this.userInfo.screateTime,
+              sCreateName:this.nickname,
+              sStatus:0,
+              sCreateId:this.userId
+            })
+            addsuper(posdata).then((response)=>{
+              this.tf='';
+              this.ad='none'
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
       },//点击列编辑
       handleEdit(index, row){
         this.dialogTitle='编辑'
@@ -340,13 +351,13 @@
         })
         this.userInfo.sundertaker=Number(row.sundertaker)
         console.log('this.userInfo',this.userInfo)
-        this.fileList=[{name:row.saccessory,url:row.url}]
+        this.fileList=[{name:row.saccessory,url:this.uploadimage+row.url}]
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
 
         if(row.sstatus==0){
           this.tj=''//提交审核按钮
-            this.bc='none'//保存按钮隐藏
+          this.bc='none'//保存按钮隐藏
           this.gx=''//更新按钮显示
         }
         else if(row.sstatus==1){
@@ -360,8 +371,8 @@
           this.gx='none'//更新按钮显示
         }
         /* 赋值实时设置当前时间*/
-     //   this.$set(this.userInfo,'sCreateTime',row.sCreateTime)
-      //  this.userInfo.lCreateName=row.eid[0].name
+        //   this.$set(this.userInfo,'sCreateTime',row.sCreateTime)
+        //  this.userInfo.lCreateName=row.eid[0].name
       },
       tjshme(){
         let postData = qs.stringify({
@@ -380,82 +391,95 @@
         })
 
       },//更新数据
-      gxmethod(){
-        let posdata=qs.stringify({
-          url:this.userInfo.url,
-          sid:this.userInfo.sid,
-          sPaperItems:this.userInfo.spaperItems,
-          sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
-          sAccessory:this.userInfo.saccessory,
-          sCost:this.userInfo.scost,
-          sUndertaker:this.userInfo.sundertaker,
-          sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
-          punit:this.userInfo.sundertakerDeptId.toString()
-        })
-        gxme(posdata).then((response)=>{
-          this.initList();
-          this.tf=''//父页面隐藏
-          this.ad='none'
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
-          })
-        })
+      gxmethod(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let posdata=qs.stringify({
+              url:this.userInfo.url,
+              sid:this.userInfo.sid,
+              sPaperItems:this.userInfo.spaperItems,
+              sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
+              sAccessory:this.userInfo.saccessory,
+              sCost:this.userInfo.scost,
+              sUndertaker:this.userInfo.sundertaker,
+              sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+              punit:this.userInfo.sundertakerDeptId.toString()
+            })
+            gxme(posdata).then((response)=>{
+              this.initList();
+              this.tf=''//父页面隐藏
+              this.ad='none'
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
       },
-      back(){
+      back(formName){
         console.log(this.userInfo.senforcementMode)
         console.log(this.userInfo.cfil)
         this.tf=''//父页面隐藏
-        this.ad='none'},//删除
-    dele(){
-      var data = this.$refs.multipleTable.selection;
-      console.log("11"+data)
-      if(JSON.stringify(data)=='[]'){
-        this.$notify({
-          title: '温馨提示',
-          message: '请选择一行进行删除',
-          type: 'success',
-          duration: 2000
-        })
-      }
-      else {
-        var ids = data.map(item => { return { sstatus: item.sstatus } })
-        var ids1 =true
-        for(var i = 0; i < ids.length; i++) {
-          console.log('ids[i].sstatus'+ids[i].sstatus)
-          if(ids[i].sstatus=='1'){
-            ids1=false
-          }
-        }
-        console.log(ids1)
-        if(!ids1){//判断处于审核中的不能删除
+        this.ad='none'
+        this.$refs[formName].resetFields();
+        this.initList()
+      },//删除
 
+      dele(){
+        var data = this.$refs.multipleTable.selection;
+        console.log("11"+data)
+        if(JSON.stringify(data)=='[]'){
           this.$notify({
             title: '温馨提示',
-            message: '该记录处于审核中不能删除',
-            type: 'warning',
-            duration: 2000
-          })
-        }else {
-        let postData = qs.stringify({
-          test:JSON.stringify(data)
-        });
-
-        console.debug('选中行数据'+JSON.stringify(data))
-        dele(postData).then((response) =>{
-          this.initList();
-          this.$notify({
-            title: '成功',
-            message: response.message,
+            message: '请选择一行进行删除',
             type: 'success',
             duration: 2000
           })
-        })
-      }}
-    },
+        }
+        else {
+          var ids = data.map(item => { return { sstatus: item.sstatus } })
+          var ids1 =true
+          for(var i = 0; i < ids.length; i++) {
+            console.log('ids[i].sstatus'+ids[i].sstatus)
+            if(ids[i].sstatus=='1'||ids[i].sstatus=='3'){
+              ids1=false
+            }
+          }
+          console.log(ids1)
+          if(!ids1){//判断处于审核中的不能删除
+
+            this.$notify({
+              title: '温馨提示',
+              message: '该记录处于审核中不能删除',
+              type: 'warning',
+              duration: 2000
+            })
+          }else {
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
+
+            console.debug('选中行数据'+JSON.stringify(data))
+            dele(postData).then((response) =>{
+              this.initList();
+              this.$notify({
+                title: '成功',
+                message: response.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }}
+      },
       add(){
+        this.dialogTitle='增加'
         this.fileList=[]//清空upload
         this.userInfo={
 
@@ -483,7 +507,20 @@
     },
     data() {
 
-      return {
+      return {rules: {
+          sundertakerDeptId: [
+            {  required: true, message: '请选择承办部门', trigger: 'blur' }
+          ],sundertaker: [
+            {  required: true, message: '请选择承办人', trigger: 'blur' }
+          ],spaperItems: [
+            {  required: true, message: '请输入事项摘要', trigger: 'blur' }
+          ],scost: [
+            {  required: true, message: '请输入耗资', trigger: 'blur' }
+          ],senforcementMode: [
+            {  required: true, message: '请输入实施方式', trigger: 'blur' }
+          ]
+
+        },
         defaUnit:'请选择谈话对象单位',
         options_cascader:[],//级联选择器的options属性
         options:[],

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface SupervisionfilingService {
     /*查询*/
-    public List<Supervisionfiling> list();
+    public List<Supervisionfiling> list(Integer sStatus);
     /*按事项摘要查询*/
-    public List<Supervisionfiling> findbytitle(String sPaperItems);
+    public List<Supervisionfiling> findbytitle(String sPaperItems,Integer sStatus);
     /*新增*/
     public void addsupervisionfiling(Supervisionfiling supervisionfiling);
     /*删除*/
@@ -18,7 +18,9 @@ public interface SupervisionfilingService {
     /*更新*/
     public void updatesupervision(Supervisionfiling supervisionfiling);
     /*根据编号查询*/
-    public List<Supervisionfiling> findbysFilingId(String sFilingId);
+    public List<Supervisionfiling> findbysFilingId(String sFilingId, Integer sStatus);
     /*审核意见*/
     public void tgsh(Supervisionfiling supervisionfiling);
+    /*验收*/
+    public void signleader(Integer sid);
 }

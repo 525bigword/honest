@@ -124,7 +124,7 @@
         <el-form-item label="岗位名称" class="link-type" prop="pname">
           <el-input v-model="temp.pname" placeholder="岗位名称" />
         </el-form-item>
-        <el-form-item label="所属部门">
+        <el-form-item label="所属部门" prop="defaultvalue">
           <el-cascader
             :placeholder="placeholder"
             v-model="temp.defaultvalue"
@@ -157,17 +157,16 @@
               ref="dataForm"
               :rules="rules"
               :model="temp"
-              label-position="left"
-              label-width="70px"
-              style="width: 400px; margin-left:50px;"
+              label-position="right"
+              label-width="80px"
+              style="width:490px; margin-left:50px;"
             >
               <el-form-item label="岗位名称" class="link-type" prop="pname">
-                <el-input v-model="temp.pname" placeholder="岗位名称" />
+                <el-input style="width:280px" v-model="temp.pname" placeholder="岗位名称" />
               </el-form-item>
-              <el-form-item label="所属部门">
-               
+              <el-form-item label="所属部门" prop="defaultvalue">
                 <el-cascader
-                  style="width:100%"
+                  style="width:280px"
                   :placeholder="placeholder"
                   v-model="temp.defaultvalue"
                   :props="props"
@@ -177,16 +176,16 @@
                 ></el-cascader>
               </el-form-item>
               <el-form-item label="岗位描述" prop="message">
-                <el-input v-model="temp.message" placeholder="岗位描述" />
+                <el-input style="width:280px" v-model="temp.message" placeholder="岗位描述" />
               </el-form-item>
 
-              <!-- <div slot="footer" class="dialog-footer"> -->
-              <el-button
+              
+              <el-button  style="margin-left:60%;margin-top:10px"
                 type="primary"
                 @click="dialogStatus==='create'?createData():updateData()"
               >提交</el-button>
               <el-button @click="treeDisable = false">取消</el-button>
-              <!-- </div> -->
+           
             </el-form>
           </el-col>
           <!-- <el-col :span="10">
@@ -278,20 +277,12 @@ export default {
       dialogPvVisible: false,
       pvData: [],
       rules: {
-        type: [
-          { required: true, message: "type is required", trigger: "change" }
-        ],
-        timestamp: [
-          {
-            type: "date",
-            required: true,
-            message: "timestamp is required",
-            trigger: "change"
-          }
-        ],
-        title: [
-          { required: true, message: "title is required", trigger: "blur" }
-        ]
+        defaultvalue:[{
+          required:true,message:"请选择所属部门",trigger:'change'
+        }],
+        pname:[{
+          required:true,message:"岗位名称不能为空",trigger:['blur','change']
+        }]
       },
       downloadLoading: false
     };
@@ -479,14 +470,9 @@ export default {
     },
     createData() {
       this.temp.id = store.getters.userId;
-      console.log(this.temp);
-      console.log(this.default_checked);
-      if (!this.temp.pname || !this.temp.defaultvalue) {
-        this.$message({
-          type: "error",
-          message: "请将信息填写完整"
-        });
-      } else {
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
         let arr = this.default_checked.join(",");
         this.api({
           url: "SysPostPermission/add",
@@ -515,7 +501,7 @@ export default {
             this.treeDisable = false;
           }
         });
-      }
+      }})
     },
     handleUpdate(row) {
       this.placeholder = row.mname;
@@ -540,12 +526,9 @@ export default {
         closeOnPressEscape: false,
         callback: action => {
           if (action === "confirm") {
-            if (!this.temp.pname || !this.temp.pid || !this.temp.mid) {
-              this.$message({
-                type: "error",
-                message: "请将信息填写完整"
-              });
-            } else {
+            this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
               let arr = this.default_checked.join(",");
               console.log(arr);
               this.api({
@@ -565,7 +548,7 @@ export default {
                 this.getList();
                 this.treeDisable = false;
               });
-            }
+            }})
           }
         }
       });

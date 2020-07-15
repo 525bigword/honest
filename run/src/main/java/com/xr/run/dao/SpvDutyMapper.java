@@ -69,6 +69,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
 
     @Select("select sd.*,ss.name from spv_duty sd inner join sys_staff ss on sd.dCreateId = ss.sid where sd.status = 2 ORDER BY sd.NewTime desc limit 0,5")
     List<SpvDuty> findSpvDutyTopFive();
-
+    @Select("SELECT count(did) FROM (SELECT did,dCreateId FROM spv_duty WHERE `status` <> 0 and `status` <> -1 ) spv_duty WHERE dCreateId = #{sid}")
+    Integer findSpvDutyByWstatusToCount(@Param("sid")Integer sid);
 
 }

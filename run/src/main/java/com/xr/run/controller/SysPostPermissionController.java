@@ -21,6 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("SysPostPermission")
 public class SysPostPermissionController {
+    public static final String pname = "pname";
     @Autowired
     private SysPostPermissionService sysPostPermissionService;
     @Autowired
@@ -43,6 +44,15 @@ public class SysPostPermissionController {
         System.out.println(jsonObject.get("message"));
         System.out.println(jsonObject.get("pname"));
         System.out.println(jsonObject.get("mids"));
+        if(jsonObject.get("message")==null){
+            jsonObject.fluentPut("message","");
+        }
+        if(jsonObject.get("pname")==null){
+            jsonObject.fluentPut("pname","");
+        }
+        if(jsonObject.get("mids")==null){
+            jsonObject.fluentPut("mids","");
+        }
         pageNum=pageNum<0||null==pageNum?0:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;
         Page page=new Page(pageNum,pageRow);
@@ -57,6 +67,9 @@ public class SysPostPermissionController {
     @RequiresPermissions("ppost:add")
     public JSONObject add(@RequestBody SysPpost sysPpost){
         System.out.println(sysPpost);
+        if(sysPpost.getMessage()==null){
+            sysPpost.setMessage("");
+        }
         sysPpost.setCreateTime(DateUtil.getDate());
         sysPostPermissionService.add(sysPpost);
         return CommonUtil.successJson();
@@ -65,6 +78,9 @@ public class SysPostPermissionController {
     @RequiresPermissions("ppost:update")
     public JSONObject upSysPost(@RequestBody SysPpost sysPpost){
         System.out.println(sysPpost);
+        if(sysPpost.getMessage()==null){
+            sysPpost.setMessage("");
+        }
         sysPostPermissionService.upSysPost(sysPpost);
         return CommonUtil.successJson(1);
     }

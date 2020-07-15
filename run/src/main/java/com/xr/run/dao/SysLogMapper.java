@@ -9,10 +9,13 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface SysLogMapper extends BaseMapper<SysLog> {
-
+    //查询小于目标时间的信息
+    @Select("select id,sid,url,method,ip,data,terminal,type,time from sys_log where time<#{time}")
+    List<SysLog> findSysLogIdByLETime(@Param("time")String time);
     @Insert("insert into sys_log value(null,#{log.sid},#{log.url},#{log.method},#{log.ip},#{log.data},#{log.terminal},#{log.type},#{log.time})")
     void addSysLog(@Param("log") SysLog sysLog);
 //    @Select({"<script> " +
@@ -28,4 +31,7 @@ public interface SysLogMapper extends BaseMapper<SysLog> {
             @Result(column = "sid",property = "sname",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName"))
     })
     IPage<SysLog> findSysLog(Page page, @Param("begin") Date begin, @Param("end")Date end, @Param("ip")String ip, @Param("sid")Integer sid);
+    //根据Id删除日志信息
+    @Delete("delete from sys_log where id=#{id}")
+    void delSysLogById(@Param("id")Integer id);
 }

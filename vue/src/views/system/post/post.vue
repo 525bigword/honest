@@ -8,23 +8,6 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <!-- <el-form-item label="部门"> -->
-      <!-- //temp.parent -->
-      <!-- <el-cascader
-        placeholder="部门"
-        :props="props"
-        @change="Change"
-        :show-all-levels="false"
-        :options="bm"
-      ></el-cascader>
-      </el-form-item> 
-      <el-input
-        v-model="listQuery.message"
-        placeholder="部门描述"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      /> -->
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button
         v-if="hasPerm('post:add')"
@@ -42,19 +25,13 @@
         icon="el-icon-edit"
         @click="handleDelete"
       >删除</el-button>
-      <el-button
+      <!-- <el-button
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button>
-      <!-- <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >reviewer</el-checkbox>-->
+      >导出</el-button> -->
     </div>
 
     <el-table
@@ -289,7 +266,10 @@ export default {
         ],
         title: [
           { required: true, message: "title is required", trigger: "blur" }
-        ]
+        ],
+        pname:[{
+          required:true,message:"角色名不能为空",trigger:['blur','change']
+        }]
       },
       downloadLoading: false
     };
@@ -492,14 +472,17 @@ export default {
     },
     createData() {
       this.temp.id = store.getters.userId;
-      console.log(this.temp);
-      console.log(this.default_checked);
-      if (!this.temp.pname ) {
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
+          if (this.default_checked[0]===undefined) {
         this.$message({
           type: "error",
-          message: "请将信息填写完整"
+          message: "请选择角色的权限",
+          duration:2000
         });
-      } else {
+        return
+       }
         let arr = this.default_checked.join(",");
         this.api({
           url: "syspost/add",
@@ -514,21 +497,25 @@ export default {
         }).then(respone => {
           console.log(respone);
           if (respone === 0) {
-            this.$message({
-              type: "error",
-              message: "添加失败"
-            });
+             this.$notify({
+                  title: "成功",
+                  message: "添加失败",
+                  type: "success",
+                  duration: 2000
+                });
           } else {
-            this.$message({
-              type: "success",
-              message: "添加成功"
-            });
+            this.$notify({
+                  title: "成功",
+                  message: "添加成功",
+                  type: "success",
+                  duration: 2000
+                });
             this.temp.defaultvalue = [];
             this.getList();
             this.treeDisable = false;
           }
         });
-      }
+      }})
     },
     handleUpdate(row) {
       this.placeholder = row.mname;
@@ -547,18 +534,17 @@ export default {
     updateData() {
       console.log("temp", this.temp);
       console.log("this.default_checked", this.default_checked);
-      this.$alert("是否确定修改", "提示", {
-        showCancelButton: true,
-        showConfirmButton: true,
-        closeOnPressEscape: false,
-        callback: action => {
-          if (action === "confirm") {
-            if (!this.temp.pname || !this.temp.pid || !this.temp.mid) {
-              this.$message({
-                type: "error",
-                message: "请将信息填写完整"
-              });
-            } else {
+      this.$refs["dataForm"].validate(valid => {
+        // 表单校验通过
+        if (valid) {
+          if (this.default_checked[0]===undefined) {
+        this.$message({
+          type: "error",
+          message: "请选择角色的权限",
+          duration:2000
+        });
+        return
+       }
               let arr = this.default_checked.join(",");
               console.log(arr);
               this.api({
@@ -576,12 +562,16 @@ export default {
               }).then(res => {
                 this.temp.defaultvalue = [];
                 this.getList();
+                this.$notify({
+                  title: "成功",
+                  message: "修改成功",
+                  type: "success",
+                  duration: 2000
+                });
                 this.treeDisable = false;
               });
             }
-          }
-        }
-      });
+      })
     },
     handleDelete(row, index) {
       console.log(row, index);

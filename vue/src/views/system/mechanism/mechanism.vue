@@ -62,13 +62,13 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >添加</el-button>
-      <el-button
+      <!-- <el-button
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button>
+      >导出</el-button> -->
       <!-- <el-checkbox
         v-model="showReviewer"
         class="filter-item"
@@ -109,7 +109,7 @@
           <span>{{ row.author }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="branchName" label="分管领导"></el-table-column>
+      <!-- <el-table-column align="center" prop="branchName" label="分管领导"></el-table-column> -->
       <!-- <el-table-column prop="permissionName" label="权限名" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.author }}</span>
@@ -118,41 +118,6 @@
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
       <el-table-column align="center" prop="createName" label="创建人"></el-table-column>
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
-      <!-- <el-table-column prop="requiredPermission" label="是否必选" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="权限名" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in + row.importance"
-            :key="n"
-            icon-class="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="是否必须" align="center" width="95">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleFetchPv(row.pageviews)"
-          >{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
-        </template>
-      </el-table-column>-->
       <el-table-column
         v-if="hasPerm('permission:delete')"
         label="操作"
@@ -189,6 +154,7 @@
     <el-dialog
       @close="closefase"
       :title="textMap[dialogStatus]"
+      width="40%"
       :visible.sync="dialogFormVisible"
     >
     <!-- style="width: 400px; margin-left:50px;" -->
@@ -197,25 +163,12 @@
         :rules="rules"
         :model="temp"
         label-position="right"
-        label-width="20%"
+        label-width="30%"
         
       >
-        <el-form-item  label="部门名称" prop="menuName">
-          <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="栏目名" />
-        </el-form-item>
-        <el-form-item label="负责人">
-          <el-select style="width:45%;margin-left:10px" v-model="temp.region"  placeholder="负责人">
-            <el-option
-              v-for="(item,index) in staff"
-              :label="item.name"
-              :value="item.sid"
-              :key="index"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="父级部门">
+      <el-form-item label="父级部门" prop="defaultvalue">
           <!-- //temp.parent -->
-          <el-cascader  style="width:45%;margin-left:10px"
+          <el-cascader  style="width:60%;margin-left:10px"
             :placeholder="placeholder"
             v-model="defaultvalue"
             :props="props"
@@ -224,15 +177,34 @@
             :options="bm"
           ></el-cascader>
         </el-form-item>
-        <el-form-item label="分管领导">
-          <el-select style="width:45%;margin-left:10px" v-model="temp.ld" @change="ldchange" placeholder="分管领导">
-            <el-option  v-for="(item,index) in ld" :label="item.name" :value="item.sid" :key="index"></el-option>
+        <el-form-item  label="部门名称" prop="menuName">
+          <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="部门名称" />
+        </el-form-item>
+        <el-form-item label="部门" prop="defaultvalue">
+          <!-- //temp.parent -->
+          <el-cascader  style="width:60%;margin-left:10px"
+            placeholder="部门"
+            v-model="bmfzr"
+            :props="props"
+            @change="MChange"
+            :show-all-levels="false"
+            :options="bm"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="负责人" prop="region">
+          <el-select style="width:60%;margin-left:10px" v-model="temp.region"  placeholder="负责人">
+            <el-option
+              v-for="(item,index) in staff"
+              :label="item.name"
+              :value="item.sid"
+              :key="index"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer" >
-        <el-button  type="primary" style="margin-right:1%" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
-        <el-button style="margin-right:5%" @click="clicen">取消</el-button>
+      <div slot="footer" class="dialog-footer" align="center" >
+        <el-button  type="primary"  @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
+        <el-button  @click="clicen">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -249,7 +221,8 @@ const calendarTypeOptions = [
 export default {
   data() {
     return {
-      defaultvalue: ["1"],
+      bmfzr:undefined,
+      defaultvalue: [1],
       props: {
         value: "mid",
         label: "mechanismName",
@@ -284,7 +257,7 @@ export default {
         id: undefined,
         menuName: "",
         menuCode: "",
-        region: "",
+        region: 0,
         parent: [],
         ld: "",
         status: "published"
@@ -302,20 +275,17 @@ export default {
       dialogPvVisible: true,
       pvData: [],
       rules: {
-        type: [
-          { required: true, message: "type is required", trigger: "change" }
-        ],
-        timestamp: [
-          {
-            type: "date",
-            required: true,
-            message: "timestamp is required",
-            trigger: "change"
-          }
-        ],
-        title: [
-          { required: true, message: "title is required", trigger: "blur" }
-        ]
+        menuName: [
+          { required: true, message: "部门名称不能为空", trigger: ["change","blur"] }],
+          region:[{
+          required:true,message:"请选择负责人",trigger:'change'
+        }],
+        /* defaultvalue:[{
+          required:true,message:"请选择父级部门",trigger:'change'
+        }], */
+        ld:[{
+          required:true,message:"请选择分管领导",trigger:'change'
+        }],
       },
       bm: [],
       downloadLoading: false
@@ -324,7 +294,7 @@ export default {
   created() {
     this.getList();
     this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-    this.getAllStaff();
+    //this.getAllStaff();
     this.getSysmechanismAll();  
     });
     
@@ -333,7 +303,7 @@ export default {
     closefase() {
       console.log("123");
       this.placeholder = "";
-      this.defaultvalue = [];
+      this.defaultvalue = [1];;
     },
     clicen() {
       this.dialogFormVisible = false;
@@ -429,20 +399,39 @@ export default {
         type: ""
       };
     },
-    getAllStaff() {
+    getAllStaff(mid) {
       this.api({
-        url: "SysStaff/get",
+        url: "SysStaff/gets/10/"+mid,
         method: "get"
       }).then(res => {
-        console.log(res);
+        console.log(res,"负责人列表");
+        this.staff=[]
         res.filter(item => {
           this.staff.push(item);
+        });
+      });
+    },
+    getAllld(mid) {
+      this.api({
+        url: "SysStaff/gets/7/"+mid,
+        method: "get"
+      }).then(res => {
+        console.log(res,"负责人列表");
+        this.ld=[]
+        res.filter(item => {
           this.ld.push(item);
         });
       });
     },
+    MChange(val){
+      console.log(val)
+      this.getAllStaff(val)
+    },
     Change(val) {
-      console.log(val);
+     this.defaultvalue=[]
+      this.defaultvalue.push(val);
+    //  this.getAllStaff(val)
+    //  this.getAllld(val)
     },
     getSysmechanismAll(val=0) {
       this.api({
@@ -455,6 +444,8 @@ export default {
         res.filter(item => {
           this.bm.push(item);
         });
+        this.getAllStaff(res[0].mid)
+        // this.getAllld(res[0].mid)
         console.log(this.bm);
       });
     },
@@ -467,28 +458,15 @@ export default {
       });
     },
     createData() {
-      console.log(store.getters.userId);
-      console.log(this.temp);
-      if (
-        !store.getters.userId == null ||
-        !this.temp.menuName == null ||
-        !this.temp.region == null ||
-        !this.temp.ld == null
-      ) {
-        this.$notify({
-          title: "error",
-          message: "请将信息填写完整",
-          type: "error",
-          duration: 2000
-        });
-      } else {
+      this.$refs["dataForm"].validate(valid => {
+        if(valid){
         this.api({
           url: "sysmechanism/add",
           method: "post",
           params: {
             mechanismName: this.temp.menuName,
             sid: this.temp.region,
-            parent: this.defaultvalue,
+            parent: this.defaultvalue[0],
             branch: this.temp.ld,
             createId: store.getters.userId
           }
@@ -497,13 +475,15 @@ export default {
           this.getList()
           this.temp.parent = this.defaultvalue;
           console.log(res);
-          this.$message({
-            type: "success",
-            title: "成功"
-          });
+          this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
           this.dialogFormVisible = false;
         });
-      }
+      }})
     },
     handleUpdate(row) {
       console.log("row", row);
@@ -511,20 +491,33 @@ export default {
       this.temp.menuName = row.mechanismName; // = Object.assign({}, row); // copy obj
       this.temp.region = row.sid;
       this.defaultvalue = [];
-      this.defaultvalue.push(row.parent);
+      this.defaultvalue=row.parent
       console.log("this.defaultvalue", this.defaultvalue);
-      this.placeholder = row.parentName;
+      // this.placeholder = row.parentName;
       this.temp.ld = row.branch;
       console.log(this.temp);
+      // bmfzr
+      this.api({
+        url:'sysmechanism/getmname/'+this.temp.region,
+        method:'get'
+      }).then(res=>{
+        console.log("部门Id:",res)
+        this.bmfzr=res
+        this.getAllStaff(res)
+      })
       this.temp.timestamp = new Date(this.temp.timestamp);
       this.dialogStatus = "update";
       this.dialogFormVisible = true;
+      
       this.$nextTick(() => {
         this.$refs["dataForm"].clearValidate();
       });
     },
     updateData() {
-      console.log(this.temp, this.defaultvalue);
+      this.$refs["dataForm"].validate(valid => {
+        if(valid){
+          console.log("this.temp",this.temp)
+          console.log(this.defaultvalue,"this.defaultvalue123")
       this.api({
         url:'sysmechanism/update',
         method:'put',
@@ -532,12 +525,20 @@ export default {
           mid:this.temp.id,
           mechanismName:this.temp.menuName,
           sid:this.temp.region,
-          parent:this.defaultvalue[0],
+          parent:this.defaultvalue,
+          branch:this.temp.ld
         }
       }).then(res=>{
         this.getList();
+        this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
         this.dialogFormVisible = false;
       })
+        }})
     },
     handleDelete(row, index) {
       console.log("delete", row, index);

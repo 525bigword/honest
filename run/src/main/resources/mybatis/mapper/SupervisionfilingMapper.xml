@@ -3,23 +3,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.daily.SupervisionfilingMapper">
     <select id="list" resultType="com.xr.run.entity.daily.Supervisionfiling">
-select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
+        select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling where sStatus!=-1
+        <if test="sStatus != null and !sStatus.equals('')">
+            and sStatus=#{sStatus}</if>
+        <if test="sStatus ==1">
+            or sStatus=3</if>
     </select>
     <select id="findbytitle" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-    select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
-   where  sPaperItems like CONCAT('%',#{sPaperItems},'%')
+        select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
+        where sStatus!=-1 and   sPaperItems like CONCAT('%',#{sPaperItems},'%')
+        <if test="sStatus != null and !sStatus.equals('')">
+            and sStatus=#{sStatus}</if>
     </select>
     <select id="findbysFilingId" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-     select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
-   where  sFilingId like CONCAT('%',#{sFilingId},'%')
+        select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
+        where sStatus!=-1 and   sFilingId like CONCAT('%',#{sFilingId},'%')
+        <if test="sStatus != null and !sStatus.equals('')">
+            and sStatus=#{sStatus}</if>
     </select>
     <insert id="addsupervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
         insert into daily_supervisionFiling(sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sCreateTime,sCreateName,sCreateId,sStatus,url,punit)
         values(#{sFilingId},#{sPaperItems},#{sAccessory},#{sEnforcementMode},#{sCost},#{sUndertaker},#{sUndertakerDeptId},#{sCreateTime},#{sCreateName},#{sCreateId},#{sStatus},#{url},#{punit})
     </insert>
-    <delete id="delesupervision" parameterType="Integer">
-        delete from daily_supervisionFiling where sid=#{sid}
-    </delete>
+    <update id="delesupervision" parameterType="Integer">
+        update  daily_supervisionFiling set sStatus=-1 where sid=#{sid}
+    </update>
     <update id="tjshme" parameterType="Integer">
         update daily_supervisionFiling set sStatus=1 where sid=#{sid}
     </update>
@@ -29,6 +37,10 @@ select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,s
     </update>
     <!--审核意见-->
     <update id="tgsh" parameterType="com.xr.run.entity.daily.Supervisionfiling">
-        update daily_supervisionFiling set sStatus=2 ,sauditOpinion=#{sAuditOpinion},auditorrole=#{auditorrole} where sid=#{sid}
+        update daily_supervisionFiling set sStatus=3 ,sauditOpinion=#{sAuditOpinion},auditorrole=#{auditorrole} where sid=#{sid}
+    </update>
+    <!--验收signleader-->
+    <update id="signleader" parameterType="com.xr.run.entity.daily.Supervisionfiling">
+        update daily_supervisionFiling set sStatus=2 where sid=#{sid}
     </update>
 </mapper>

@@ -56,5 +56,6 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
                     one = @One(select = "com.xr.run.dao.SpvDutyMapper.getTongzhi",fetchType = FetchType.DEFAULT))
     })
     IPage<SpvBack> findSpvBackByDid(Page page, int did);
-
+    @Select("SELECT count(sid) FROM (SELECT sid,bCreateId,`status` FROM spv_back WHERE `status` <> 4 and `status` <>-1) spv_back WHERE bCreateId = #{sid}")
+    Integer findspvBackByWstatusToCount(@Param("sid")Integer sid);
 }

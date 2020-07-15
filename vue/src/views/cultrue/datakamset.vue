@@ -198,7 +198,7 @@ import { mapGetters } from 'vuex'
         total: 0, // 总记录数
         listLoading: true, // 是否使用动画
           pageNum: 1, // 分页需要的当前页
-          pageRow:5, // 分页需要的每页显示多少
+          pageRow:10, // 分页需要的每页显示多少
           dtitle: '',
           dstatus: 1,
           dpdf:'',
@@ -587,7 +587,7 @@ import { mapGetters } from 'vuex'
       },
       shipin(row){
         if(row.dvideo!==null&&row.dvideo!==''){
-          this.he='http://localhost:4031/hoonest/vido'+row.dvideo
+          this.he=this.videoIp+row.dvideo
         }else{
           this.he='#'
         }

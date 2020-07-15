@@ -69,7 +69,8 @@
         <el-table-column label="操作" fixed="right" align="center"  prop="lstatus" >
           <template slot-scope="scope">
             <el-button v-if="scope.row.sstatus==1" v-bind:style="{display:( hasPerm('reference:audit')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">审核</el-button>
-                </template>
+            <el-button v-if="scope.row.sstatus==3" v-bind:style="{display:( hasPerm('reference:leadersign')?'':'none')}" type="primary" size="small" @click="handleEdit(scope.$index, scope.row)">验收</el-button>
+          </template>
         </el-table-column>
       </el-table>
       <div class="block" align="center">
@@ -86,17 +87,18 @@
 
     </el-form>
     <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;" >
-      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px">
+      <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px"  :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
           <br/>
           <div align="right" ><el-form-item >
-            <el-button type="primary" class="el-icon-edit" align="right" @click="tgsh(2)">通过</el-button>
-            <el-button type="primary" class="el-icon-edit" align="right" @click="tgsh(-2)" >不通过</el-button>
+            <el-button type="primary" class="el-icon-edit" align="right" @click="signleader()" v-if=" hasPerm('reference:leadersign')&& userInfo.sstatus==3">验收</el-button>
+            <el-button type="primary" class="el-icon-edit" align="right" @click="tgsh('ruleForm')" v-if=" hasPerm('reference:audit')&& userInfo.sstatus==1">保存</el-button>
             <el-button type="primary" class="el-icon-back" @click="back">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.url" placeholder="地址" type="hidden"></el-input>
           <el-input v-model="userInfo.sid" placeholder="编号" type="hidden" ></el-input>
+          <el-input v-model="userInfo.sstatus" type="hidden"></el-input>
           <el-form-item label="备案编号">
 
             <el-input v-model="userInfo.sfilingId" placeholder="备案编号" style="width: 300px" disabled="disabled"></el-input>
@@ -117,10 +119,10 @@
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
+                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange" disabled="disabled"  style="width: 300px"></el-cascader>
           </el-form-item>
           <el-form-item label="承办人">
-            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px">
+            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px" disabled="disabled">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -129,10 +131,10 @@
               </el-option>
             </el-select>
           </el-form-item><br/>
-          <el-form-item label="事项摘要">
+          <el-form-item label="事项摘要" disabled="disabled">
             <el-input v-model="userInfo.spaperItems" placeholder="事项摘要" style="width: 300px" disabled="disabled"></el-input>
           </el-form-item>
-          <el-form-item label="耗资">
+          <el-form-item label="耗资" disabled="disabled">
             <el-input v-model="userInfo.scost" placeholder="耗资" style="width: 300px" type="Number" disabled="disabled"></el-input>
           </el-form-item><br/><div>
           <el-form-item label="实施方式">
@@ -143,8 +145,8 @@
            -->  </el-form-item></div><br/><div><el-form-item label="审核人角色" v-if="false">
           <el-input v-model="userInfo.auditorrole" placeholder="审核人角色"  style="width: 300px" ></el-input>
         </el-form-item>
-          <el-form-item label="审核意见">
-            <el-input v-model="userInfo.sauditOpinion" placeholder="审核意见"  style="width: 300px" ></el-input>
+          <el-form-item label="审核意见" prop="sauditOpinion">
+            <el-input v-model="userInfo.sauditOpinion" placeholder="请填写审核意见"  style="width: 300px" :disabled="userInfo.sstatus==1?false:'disabled'" ></el-input>
           </el-form-item>
           <el-form-item label="状态" v-if="false">
             <el-input v-model="userInfo.sstatus" placeholder="状态" style="width: 300px" disabled="disabled" ></el-input>
@@ -162,7 +164,7 @@
 </template>
 
 <script>
-  import { fileUpload,list,findbytitle,addsuper,dele,tgshme,gxme,findbysFilingId } from '@/api/daily/supervise'
+  import { fileUpload,list,findbytitle,addsuper,dele,tgshme,gxme,findbysFilingId,signleader } from '@/api/daily/supervise'
   import {getFileGroup,initpersons} from '@/api/duty/talk'
   import qs from 'qs'
   import { quillEditor } from 'vue-quill-editor'
@@ -185,19 +187,8 @@
 
         //点击选择时初始化谈话对象和记录人
         let checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
-
-        //  console.log('zz'+ value.join(',')); //全路径value值
-        //   console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值
-        /*  console.log(checkedNodes) // 获取当前点击的节点
-          console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
-          console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
-
         if(checkedNodes[0]!=undefined){
           this.userInfo.sundertakerDeptId=value
-          console.log('zz '+  this.userInfo.sundertakerDeptId); //全路径value值
-          console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
-          console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组
-          console.log('checkedNodes label'+checkedNodes[0].label)
           let postdata=qs.stringify({
             id:checkedNodes[0].value
           })
@@ -225,13 +216,15 @@
         }else if (cellValue == 1){
           return '待审';
         }
+        else if (cellValue == 3){
+          return '待验收'
+        }
         else{
-          return '已审核'
+          return '验收完毕'
         }
       },
       //文件预览
       handlePreview(file) {
-        console.log('file'+JSON.stringify(file))
         const userAgent = navigator.userAgent;
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
           alert('推荐谷歌进行文件预览')
@@ -241,34 +234,40 @@
       },
       handleChange(file, fileList) {
         this.userInfo.saccessory=file.name
-        console.log('localFile'+JSON.stringify(file.name))
 
       },
       modeUpload: function(item) {
-        // console.log(item.file);
+
         this.file = item.file
-        console.log('ce是'+this.file)
-        console.log('this.file'+JSON.stringify(item))
+
         const fd = new FormData()
         fd.append('filename', this.file)
         fileUpload(fd
         ).then(response => {
           this.$message.success(response.message)
-          this.fileList=[{name:this.file.name,url:response.url}]
+          this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
           this.userInfo.url=response.url
         })
       },
 
       //按标题查询
       onSearch() {
+      let sta=1;
+      if(this.hasPerm('reference:leadersign'&&this.userInfo.sStatus==3)){
+        sta=3
+      }
+      else if(this.hasPerm('reference:audit'&&this.userInfo.sStatus==2)){
+        sta=1;
+      }
         let postData = qs.stringify({
-          sFilingId:this.search
+          sFilingId:this.search,
+          sStatus: sta
+
         });
         this.listLoading = true
         findbysFilingId(postData).then((response) =>{
           this.currentPage = 1
           this.tableData = response.list
-          console.debug(this.tableData)
           this.total=response.list.length
           this.listLoading=false
         })
@@ -276,9 +275,11 @@
       //初始化页面
       initList() {
         this.listLoading=true
-        list(this.listQuery).then(response =>{
+        let posdata=qs.stringify({
+          sStatus:1
+        })
+        list(posdata).then(response =>{
 
-          console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
           this.listLoading=false
@@ -309,8 +310,7 @@
           this.options = response.list
         })
         this.userInfo.sundertaker=Number(row.sundertaker)
-        console.log('this.userInfo',this.userInfo)
-        this.fileList=[{name:row.saccessory,url:row.url}]
+        this.fileList=[{name:row.saccessory,url:this.uploadimage+row.url}]
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
         if(row.sstatus==0){
@@ -323,48 +323,68 @@
 
         }
       },
-      tgsh(val){
+      tgsh(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let postData = qs.stringify({
+              sid:this.userInfo.sid,
+              sAuditOpinion:this.userInfo.sauditOpinion,
+              auditorrole:this.role
+            });
+
+            tgshme(postData).then((response)=>{
+              this.initList();
+              this.tf=''//父页面隐藏
+              this.ad='none'
+              this.$notify({
+                title: '审核结果',
+                message: '审核完成',
+                type: 'success',
+                duration: 2000
+              })
+            })
+
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+
+      },signleader(){
         let postData = qs.stringify({
           sid:this.userInfo.sid,
-          sAuditOpinion:this.userInfo.sauditOpinion,
-        auditorrole:this.role
         });
-        var resu;
-        if(val==2){
-          resu='审核通过'
-        }else{
-          resu='审核不通过'
-        }
-        tgshme(postData).then((response)=>{
+
+        signleader(postData).then((response)=>{
           this.initList();
           this.tf=''//父页面隐藏
           this.ad='none'
           this.$notify({
-            title: '审核结果',
-            message: resu,
+            title: '验收结果',
+            message: '验收完毕',
             type: 'success',
             duration: 2000
           })
         })
-
       },
       back(){
-        console.log(this.userInfo.sEnforcementMode)
-        console.log(this.userInfo.cfil)
         this.tf=''//父页面隐藏
         this.ad='none'},
       handleSizeChange(size) {
         this.pageSize = size;
-        console.log(this.pageSize)
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
-        console.log(this.currentPage)  //点击第几页
       }
     },
     data() {
 
-      return {    defaUnit:'请选择谈话对象单位',
+      return { rules: {
+          sauditOpinion: [
+            {  required: true, message: '请填写审核意见', trigger: 'blur' }
+          ]
+
+        },   defaUnit:'请选择谈话对象单位',
         options_cascader:[],//级联选择器的options属性
         options:[],
         isShowAddressInfo:true,
@@ -379,7 +399,6 @@
               parent:parentId
             });
             getFileGroup(postData).then((response)=>{
-              console.log('response.list'+JSON.stringify(response.list))
               let nodes = level ===0?[]:[]
 
               if(response.list&&Array.isArray(response.list)){
@@ -419,7 +438,7 @@
         pageSize:10,
         total:0,
         currentPage:1,
-listLoading:true,
+        listLoading:true,
         tableData: []
       }
     }

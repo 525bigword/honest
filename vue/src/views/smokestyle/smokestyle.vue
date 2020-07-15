@@ -42,7 +42,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle' :header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="smoid"
@@ -72,9 +72,9 @@
         <el-table-column
           prop="surl"
           label="路径" v-if="false"></el-table-column>
-          <el-table-column
-            prop="smoimage"
-            label="图片" v-if="false">
+        <el-table-column
+          prop="smoimage"
+          label="图片" v-if="false">
         </el-table-column>
       </el-table>
       <div class="block" align="center">
@@ -112,7 +112,7 @@
               <el-checkbox label="幻灯" name="smoproperty"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item label="文章缩略图">
+          <el-form-item label="图片">
             <el-upload
               class="upload-demo"
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -203,7 +203,7 @@
             duration: 2000
 
           })
-          this.fileList=[{name:this.file.name,url:response.url}]
+          this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
           this.userInfo.surl=response.url
         })
         console.log('ce是'+JSON.stringify(this.file))
@@ -237,7 +237,7 @@
           console.debug(response.info)
           this.tableData = response.list
           this.total = response.list.length
-        this.listLoading=false
+          this.listLoading=false
         })
       },add(){
         this.fileList=[]//清空upload
@@ -245,41 +245,41 @@
         this.ad=''
         this.bc=''
         this.gx='none'
-          this.$set(this.userInfo,'smocreatetime',new Date())
+        this.$set(this.userInfo,'smocreatetime',new Date())
 
       },
       //返回
       back(formName){this.ad='none',this.tf='',   this.$refs[formName].resetFields(), this.initList();
       },//新增提交
       submitUser(formName){
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              let endtime = new Date(this.userInfo.smocreatetime).toJSON();
-              this.userInfo.smocreatetime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-                .toISOString()
-                .replace(/T/g, " ")
-                .replace(/\.[\d]{3}Z/, "")
-              let posdata=qs.stringify({
-                smotitle:this.userInfo.smotitle,
-                smoproperty:this.userInfo.smoproperty.toString(),
-                smoimage:this.userInfo.smoimage,
-                surl:this.userInfo.surl,
-                smosource:this.userInfo.smosource,
-                smoauthor:this.userInfo.smoauthor,
-                smocreatetime:this.userInfo.smocreatetime,
-                smodescrion:this.userInfo.smodescrion,
-                smocontent:this.userInfo.smocontent,
-                smocreateids:this.userId,
-                smocreatename:this.nickname,
-                sstatus:0
-              })
-              addSmokestyle(posdata).then((response)=>{
-                this.tf='';
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let endtime = new Date(this.userInfo.smocreatetime).toJSON();
+            this.userInfo.smocreatetime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let posdata=qs.stringify({
+              smotitle:this.userInfo.smotitle,
+              smoproperty:this.userInfo.smoproperty.toString(),
+              smoimage:this.userInfo.smoimage,
+              surl:this.userInfo.surl,
+              smosource:this.userInfo.smosource,
+              smoauthor:this.userInfo.smoauthor,
+              smocreatetime:this.userInfo.smocreatetime,
+              smodescrion:this.userInfo.smodescrion,
+              smocontent:this.userInfo.smocontent,
+              smocreateids:this.userId,
+              smocreatename:this.nickname,
+              sstatus:0
+            })
+            addSmokestyle(posdata).then((response)=>{
+              this.tf='';
               this.ad='none'
               this.bc='',//保存按钮显示
                 this.gx='none',//更新按钮不显示
                 this.$refs[formName].resetFields()
-                this.initList();
+              this.initList();
               this.$notify({
                 title: '成功',
                 message: '新增成功',
@@ -287,10 +287,10 @@
                 duration: 2000
               })
             })
-            } else {
-              console.log('error submit!!');
-          return false;
-        }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
         });
 
       },//点击列编辑
@@ -301,7 +301,7 @@
         this.gx=''//更新按钮显示
         this.userInfo=row
         console.log('this.ursInfo.surl'+this.userInfo.surl)
-        this.fileList=[{name:row.smoimage,url:row.surl}]
+        this.fileList=[{name:row.smoimage,url:this.uploadimage+row.surl}]
         console.log('属性',row.smoproperty.split(','));
         this.userInfo.smoproperty=row.smoproperty.split(',')
         /* 赋值实时设置当前时间*/

@@ -14,38 +14,38 @@ public class WorkDeploymentServiceImpl implements WorkDeploymentService {
     private WorkDeploymentMapper workDeploymentMapper;
 
     @Override
-    public List<WorkDeployment> list() {
-        return workDeploymentMapper.list();
+    public List<WorkDeployment> list(Integer mid) {
+        return workDeploymentMapper.list(mid);
     }
 
     @Override
-    public List<WorkDeployment> listBytitle(String title) {
-        return workDeploymentMapper.listBytitle(title);
+    public List<WorkDeployment> listBytitle(String title,Integer mid) {
+        return workDeploymentMapper.listBytitle(title,mid);
     }
 
     @Override
     public Integer addDeployment(WorkDeployment workDeployment) {
-workDeploymentMapper.addDeployment(workDeployment);
-return workDeployment.getId();
+        workDeploymentMapper.addDeployment(workDeployment);
+        return workDeployment.getId();
     }
 
     @Override
     public void updateDeployment(WorkDeployment workDeployment) {
-workDeploymentMapper.updateDeployment(workDeployment);
+        workDeploymentMapper.updateDeployment(workDeployment);
     }
 
     @Override
     public void subauditDeployment(Integer id) {
-workDeploymentMapper.subauditDeployment(id);
+        workDeploymentMapper.subauditDeployment(id);
     }
 
     @Override
     public void passauditDeployment(WorkDeployment workDeployment) {
-workDeploymentMapper.passauditDeployment(workDeployment);
+        workDeploymentMapper.passauditDeployment(workDeployment);
     }
 
     @Override
     public void delDeployment(Integer id) {
-workDeploymentMapper.delDeployment(id);
+        workDeploymentMapper.delDeployment(id);
     }
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.SysMechanism;
+import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysMechanismService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.ResponseResult;
@@ -37,7 +38,12 @@ public class SysMechanismController {
         List<SysMechanism> sysMechanismAll = sysMechanismService.findSysMechanismAll();
         return CommonUtil.successJson(sysMechanismAll);
     }
-
+    //根据用户查询部门ID
+    @GetMapping("getmname/{id}")
+    public JSONObject getSysmechanismNameById(@PathVariable Integer id){
+        SysStaff sysMechanismNameById = sysMechanismService.findSysMechanismNameById(id);
+        return CommonUtil.successJson(sysMechanismNameById.getMid());
+    }
     @RequestMapping("/findSysMechanisms")
     public JSONObject findSysMechanisms() {
         List<SysMechanism> sysMechanisms = sysMechanismService.findSysMechanisms();

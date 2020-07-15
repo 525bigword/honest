@@ -4,9 +4,8 @@ import qs from 'qs'
  * 自定义上传
  * @param {*} fileobj
  */
-export function
-fileUpload(data){
- // let param = new FormData();
+export function fileUpload(data){
+  // let param = new FormData();
   // 上传文件对象 名称file与后台控制器参数要一致
 //  param.append('filename',fileobj.filename);
   return request({
@@ -22,6 +21,13 @@ export function list(data){
   return request({
     method: 'post',
     url: '/daily/supervisionfiling/list',
+    data
+  });
+}
+export function signleader(data){
+  return request({
+    method: 'post',
+    url: '/daily/supervisionfiling/signleader',
     data
   });
 }
