@@ -189,6 +189,7 @@
     <el-dialog
       @close="closefase"
       :title="textMap[dialogStatus]"
+      width="40%"
       :visible.sync="dialogFormVisible"
     >
     <!-- style="width: 400px; margin-left:50px;" -->
@@ -197,25 +198,16 @@
         :rules="rules"
         :model="temp"
         label-position="right"
-        label-width="20%"
+        label-width="30%"
         
       >
         <el-form-item  label="部门名称" prop="menuName">
           <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="栏目名" />
         </el-form-item>
-        <el-form-item label="负责人" prop="region">
-          <el-select style="width:45%;margin-left:10px" v-model="temp.region"  placeholder="负责人">
-            <el-option
-              v-for="(item,index) in staff"
-              :label="item.name"
-              :value="item.sid"
-              :key="index"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+        
         <el-form-item label="父级部门" prop="defaultvalue">
           <!-- //temp.parent -->
-          <el-cascader  style="width:45%;margin-left:10px"
+          <el-cascader  style="width:60%;margin-left:10px"
             :placeholder="placeholder"
             v-model="defaultvalue"
             :props="props"
@@ -224,15 +216,25 @@
             :options="bm"
           ></el-cascader>
         </el-form-item>
+        <el-form-item label="负责人" prop="region">
+          <el-select style="width:60%;margin-left:10px" v-model="temp.region"  placeholder="负责人">
+            <el-option
+              v-for="(item,index) in staff"
+              :label="item.name"
+              :value="item.sid"
+              :key="index"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="分管领导" prop="ld">
-          <el-select style="width:45%;margin-left:10px" v-model="temp.ld" @change="ldchange" placeholder="分管领导">
+          <el-select style="width:60%;margin-left:10px" v-model="temp.ld" @change="ldchange" placeholder="分管领导">
             <el-option  v-for="(item,index) in ld" :label="item.name" :value="item.sid" :key="index"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer" >
-        <el-button  type="primary" style="margin-right:1%" @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
-        <el-button style="margin-right:5%" @click="clicen">取消</el-button>
+      <div slot="footer" class="dialog-footer" align="center" >
+        <el-button  type="primary"  @click="dialogStatus==='create'?createData():updateData()">提交</el-button>
+        <el-button  @click="clicen">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -321,7 +323,7 @@ export default {
   created() {
     this.getList();
     this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-    this.getAllStaff();
+    //this.getAllStaff();
     this.getSysmechanismAll();  
     });
     
@@ -428,12 +430,24 @@ export default {
     },
     getAllStaff() {
       this.api({
-        url: "SysStaff/gets/10",
+        url: "SysStaff/gets/10/",
         method: "get"
       }).then(res => {
         console.log(res,"负责人列表");
+        this.staff=[]
         res.filter(item => {
           this.staff.push(item);
+        });
+      });
+    },
+    getAllld(mid) {
+      this.api({
+        url: "SysStaff/gets/7/"+mid,
+        method: "get"
+      }).then(res => {
+        console.log(res,"负责人列表");
+        this.ld=[]
+        res.filter(item => {
           this.ld.push(item);
         });
       });
@@ -441,6 +455,8 @@ export default {
     Change(val) {
      this.defaultvalue=[]
       this.defaultvalue.push(val);
+     this.getAllStaff(val)
+     this.getAllld(val)
     },
     getSysmechanismAll(val=0) {
       this.api({
@@ -453,6 +469,8 @@ export default {
         res.filter(item => {
           this.bm.push(item);
         });
+        this.getAllStaff(res[0].mid)
+        this.getAllld(res[0].mid)
         console.log(this.bm);
       });
     },
@@ -498,9 +516,9 @@ export default {
       this.temp.menuName = row.mechanismName; // = Object.assign({}, row); // copy obj
       this.temp.region = row.sid;
       this.defaultvalue = [];
-      this.defaultvalue.push(row.parent);
+      this.defaultvalue=row.parent
       console.log("this.defaultvalue", this.defaultvalue);
-      this.placeholder = row.parentName;
+      // this.placeholder = row.parentName;
       this.temp.ld = row.branch;
       console.log(this.temp);
       this.temp.timestamp = new Date(this.temp.timestamp);
