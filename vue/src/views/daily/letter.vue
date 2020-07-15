@@ -552,8 +552,9 @@
       },
       //初始化页面
       initList() {
+        console.log('测试mid',this.mid);
         let status;
-        let mid;
+        let mids;
         if(this.hasPerm('letter:sencondaudit')){
           //  status=2
         }
@@ -561,15 +562,11 @@
           //status=1
         }
         else if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
-          mid:this.mid
+          mids=this.mid
           status=3
         }
-        /*
-                if(this.role.includes('单位/部门负责人')){
-                  mid=this.mid;
-                }*/
         let posdata=qs.stringify({
-          mid:mid,
+          mid:mids,
           lStatus:status
         })
         this.listLoading=true
@@ -754,9 +751,18 @@
       },//多条件查询
         //按标题查询
       onSearch() {
+        let status;
+        let mids;
+
+        if(this.hasPerm('letter:zbaudit')&&this.role.includes('单位/部门负责人')){
+          mids=this.mid
+          status=3
+        }
         let postData = qs.stringify({
           lComplainantName:this.search,
-          lPersonBeReported:this.besearch
+          lPersonBeReported:this.besearch,
+          lStatus:status,
+          mid:mids
         });
         this.listLoading = true
         findbyName(postData).then((response) =>{
