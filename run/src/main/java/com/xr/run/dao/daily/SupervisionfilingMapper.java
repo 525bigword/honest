@@ -25,7 +25,7 @@ public interface SupervisionfilingMapper {
     /*更新*/
     public void updatesupervision(Supervisionfiling supervisionfiling);
     /*根据编号查询*/
-    public List<Supervisionfiling> findbysFilingId(String sFilingId);
+    public List<Supervisionfiling> findbysFilingId(@Param(value = "sFilingId") String sFilingId,@Param(value = "sStatus") Integer sStatus);
     /*审核意见*/
     public void tgsh(Supervisionfiling supervisionfiling);
     /*验收*/

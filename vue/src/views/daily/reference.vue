@@ -187,19 +187,8 @@
 
         //点击选择时初始化谈话对象和记录人
         let checkedNodes = this.$refs['cascaderUnit'].getCheckedNodes()//选择的值
-
-        //  console.log('zz'+ value.join(',')); //全路径value值
-        //   console.log('cc'+this.$refs.cascaderUnit.getCheckedNodes()[0].pathLabels); //全路径label值
-        /*  console.log(checkedNodes) // 获取当前点击的节点
-          console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
-          console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组*/
-
         if(checkedNodes[0]!=undefined){
           this.userInfo.sundertakerDeptId=value
-          console.log('zz '+  this.userInfo.sundertakerDeptId); //全路径value值
-          console.log(checkedNodes[0].data.label) // 获取当前点击的节点的label
-          console.log(checkedNodes[0].pathLabels) // 获取由 label 组成的数组
-          console.log('checkedNodes label'+checkedNodes[0].label)
           let postdata=qs.stringify({
             id:checkedNodes[0].value
           })
@@ -227,13 +216,15 @@
         }else if (cellValue == 1){
           return '待审';
         }
+        else if (cellValue == 3){
+          return '待验收'
+        }
         else{
-          return '已审核'
+          return '验收完毕'
         }
       },
       //文件预览
       handlePreview(file) {
-        console.log('file'+JSON.stringify(file))
         const userAgent = navigator.userAgent;
         if (!!window.ActiveXObject || "ActiveXObject" in window) {
           alert('推荐谷歌进行文件预览')
@@ -243,14 +234,12 @@
       },
       handleChange(file, fileList) {
         this.userInfo.saccessory=file.name
-        console.log('localFile'+JSON.stringify(file.name))
 
       },
       modeUpload: function(item) {
-        // console.log(item.file);
+
         this.file = item.file
-        console.log('ce是'+this.file)
-        console.log('this.file'+JSON.stringify(item))
+
         const fd = new FormData()
         fd.append('filename', this.file)
         fileUpload(fd
@@ -263,16 +252,22 @@
 
       //按标题查询
       onSearch() {
+      let sta=1;
+      if(this.hasPerm('reference:leadersign'&&this.userInfo.sStatus==3)){
+        sta=3
+      }
+      else if(this.hasPerm('reference:audit'&&this.userInfo.sStatus==2)){
+        sta=1;
+      }
         let postData = qs.stringify({
           sFilingId:this.search,
-          sStatus: 1
+          sStatus: sta
 
         });
         this.listLoading = true
         findbysFilingId(postData).then((response) =>{
           this.currentPage = 1
           this.tableData = response.list
-          console.debug(this.tableData)
           this.total=response.list.length
           this.listLoading=false
         })
@@ -285,7 +280,6 @@
         })
         list(posdata).then(response =>{
 
-          console.debug(response)
           this.tableData = response.list
           this.total = response.list.length
           this.listLoading=false
@@ -316,7 +310,6 @@
           this.options = response.list
         })
         this.userInfo.sundertaker=Number(row.sundertaker)
-        console.log('this.userInfo',this.userInfo)
         this.fileList=[{name:row.saccessory,url:"http://localhost:8080/upload/"+row.url}]
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
@@ -375,17 +368,13 @@
         })
       },
       back(){
-        console.log(this.userInfo.sEnforcementMode)
-        console.log(this.userInfo.cfil)
         this.tf=''//父页面隐藏
         this.ad='none'},
       handleSizeChange(size) {
         this.pageSize = size;
-        console.log(this.pageSize)
       },
       handleCurrentChange(currentPage) {
         this.currentPage = currentPage;
-        console.log(this.currentPage)  //点击第几页
       }
     },
     data() {
@@ -410,7 +399,6 @@
               parent:parentId
             });
             getFileGroup(postData).then((response)=>{
-              console.log('response.list'+JSON.stringify(response.list))
               let nodes = level ===0?[]:[]
 
               if(response.list&&Array.isArray(response.list)){

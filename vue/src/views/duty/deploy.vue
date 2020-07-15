@@ -257,8 +257,12 @@
       //初始化页面
       initList() {
         this.listLoading=true
+        let mid;
+        if(this.role.includes('单位/部门负责人')){
+          mid=this.mid;
+        }
         let posdata=qs.stringify({
-          mid:this.mid
+          mid:mid
         })
         list(posdata).then(response =>{
           console.debug(response)
