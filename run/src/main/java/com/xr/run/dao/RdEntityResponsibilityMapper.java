@@ -14,8 +14,8 @@ import java.util.List;
 
 @Repository
 public interface RdEntityResponsibilityMapper extends BaseMapper<RdEntityResponsibility> {
-    @Select("select id,title,content,create_time,create_id,staus from rd_entity_responsibility" +
-            " where staus <> -1 and staus = CONCAT(#{staus})  and  title like CONCAT('%',#{title},'%') order by id desc")
+    @Select("select rd.id,rd.title,rd.content,rd.create_time,rd.create_id,rd.staus,ss.name from rd_entity_responsibility rd" +
+            " inner join sys_staff ss on rd.create_id= ss.sid  where rd.staus <> -1 and rd.staus = CONCAT(#{staus})  and  rd.title like CONCAT('%',#{title},'%') order by rd.id desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",
@@ -26,4 +26,7 @@ public interface RdEntityResponsibilityMapper extends BaseMapper<RdEntityRespons
     List<RdEntityResponsibility> findRdEntityResponsibilityAll(@Param("title") String title);
 
 
+    @Select("select rd.*,ss.name from  rd_entity_responsibility rd inner join sys_staff ss on rd.create_id= ss.sid " +
+            " where rd.id =#{id}")
+    RdEntityResponsibility findRdEntityResponsibilityById(@Param("id") Integer id);
 }

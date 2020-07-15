@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -376,6 +376,8 @@
     <div class="cut-page margin-center page_div" id="page">
 
     </div>
+    <input type="hidden" id="typeOne" />
+    <input type="hidden" id ="idOne"/>
     <script type="text/javascript">
         $(function () {
             listData();
@@ -384,11 +386,15 @@
         /*请求成功时调用
             getData: 返回的数据
         */
-        function insertContent(getData){
+        function insertContent(getData,pageNo){
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/185/"+data.type+"/"+data.id+".html";//a链接地址
+                if(pageNo==1){
+                    $("#typeOne").val(getData[0].type);
+                    $("#idOne").val(getData[0].id);
+                }
+                var url = "http://localhost:4031/ms-mcms/html/2/185/" +$("#typeOne").val() + "/" + $("#idOne").val() + ".html?id="+data.id+"&type="+data.type;//a链接地址
                 var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
@@ -420,7 +426,7 @@
                             //没有数据的时候
                             insertError();
                         } else {
-                            insertContent(data.rows);
+                            insertContent(data.rows,pageNo);
                         }
                         $("#page").paging({
                             pageNum: pageNo, // 当前页面

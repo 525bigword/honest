@@ -10,8 +10,13 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 public interface RdEntityResponsibilityService extends IService<RdEntityResponsibility> {
     IPage<RdEntityResponsibility> findRdEntityResponsibilityIndex(Page page, String title,Integer staus);
+
+    RdEntityResponsibility findRdEntityResponsibilityById(Integer parseInt);
+
+    List<RdEntityResponsibility> findRdEntityResponsibilityAll(String title);
 }

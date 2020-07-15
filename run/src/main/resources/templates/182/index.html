@@ -332,10 +332,10 @@
                 <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
+                        <span  onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/1/index.html','_self')"><label><a>清风文苑</a></label></span>
                     </li>
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
+                        <span  onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/0/index.html','_self')"><label><a>资料集锦</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -347,16 +347,14 @@
             <label>
                 <a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
                 &gt;
-                <a href="http://localhost:4031/ms-mcms/html/2/185/index.html">责任纪实</a>
+                <a href="http://localhost:4031/ms-mcms/html/2/185/index.html">廉政文化</a>
             </label>
         </p>
+        <input type="hidden" id="typeOne" />
+        <input type="hidden" id ="idOne"/>
         <div id="box">
-            <form id="searchDataForm" action="http://localhost:4031/ms-mcms/cms/9/search.do" method="post">
-                <input type="hidden" name="categoryId" value="185" label="栏目编号"/>
-                <input type="hidden" name="categoryIds" value="185" label="栏目编号"/>
-                <input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
-                <div id="search" onclick="submit();">搜索</div>
-            </form>
+             <input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
+             <div id="search" onclick="submit();">搜索</div>
         </div>
     </div>
 
@@ -378,13 +376,17 @@
         /*请求成功时调用
             getData: 返回的数据
         */
-        function insertContent(getData){
+        function insertContent(getData,pageNo){
             console.log("getData",getData)
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
-                var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/182/183/"+data.wid+".html";//a链接地址
-                var title = data.wTitle;		//标题
+                var data = getData[i];
+                if(pageNo==1) {
+                    $("#typeOne").val(getData[0].type);
+                    $("#idOne").val(getData[0].id);
+                }//获取一条数据
+                var url = "http://localhost:4031/ms-mcms/html/2/182/"+$("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id+"&type="+data.type;//a链接地址
+                var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
             $(".content-list ul").html(htmlContent);
@@ -416,7 +418,7 @@
                             //没有数据的时候
                             insertError();
                         } else {
-                            insertContent(data.records);
+                            insertContent(data.rows,pageNo);
                         }
                         $("#page").paging({
                             pageNum: pageNo, // 当前页面

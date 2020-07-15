@@ -18,7 +18,7 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
             @Result(column = "dCreateId",property = "sysStaff",
             one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
-    IPage<Datacollection> findDataConllection(Page page, String dTitle);
+    IPage<Datacollection> findDataConllection(Page page,@Param("dTitle") String dTitle);
 
     @Update("update datacollection set dTitle=#{dTitle},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus},dPdf=#{dPdf} where did=#{did}")
     void updateDataConllectionByDid(Datacollection datacollection);
@@ -48,6 +48,14 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Select("select count(did) from datacollection where dCreateId=#{sid} and dStatus=1 ")
     Integer findDatacollectionByStatusAndSidToCount(@Param("sid")Integer sid);
     //根据ID查询
-    @Select("select did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName from datacollection where did=#{did}")
+    @Select("select da.did,da.dTitle,da.dFileName,da.dFile,da.dCreateTime,da.dCreateId,da.dStatus,da.dPdf,da.dVideo,da.dVideoName,ss.name as cname from datacollection da" +
+            " inner join sys_staff ss on da.dCreateId = ss.sid where da.did=#{did}")
     Datacollection findDatacollectionById(@Param("did") int did);
+
+    @Select("SELECT da.did,da.dTitle,da.dFileName,da.dFile,da.dCreateTime,da.dCreateId,da.dStatus,da.dPdf,da.dVideo,da.dVideoName,ss.name as cname from datacollection da inner join sys_staff ss on da.dCreateId=ss.sid where da.dStatus=3 and da.dTitle like CONCAT('%',#{dTitle},'%') order by da.did desc")
+    @Results({
+            @Result(column = "dCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
+    })
+    IPage<Datacollection> findDataConllection1(Page page,@Param("dTitle") String dTitle);
 }

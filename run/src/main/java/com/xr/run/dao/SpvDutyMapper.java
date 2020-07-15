@@ -58,14 +58,16 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Update("update spv_duty set tongbao=#{tongbao} where did=#{did}")
     void updateTongBaoByDid(SpvDuty spvDuty);
 
-    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status` from spv_duty where did=#{did} and `status`<>-1 ")
+    @Select("select sd.did,sd.dnumId,sd.dutyType,sd.dutyTitle,sd.dutyContent,sd.bid,sd.dutyAccessory," +
+            " sd.dutyAccessoryName,sd.newTime,sd.dCreateId,sd.`status`,ss.name from spv_duty sd inner join sys_staff ss on sd.dCreateId = ss.sid" +
+            " where sd.did=#{did} and sd.`status`<>-1 ")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
     })
     SpvDuty findSpvDutyByDid(int did);
 
-    @Select("select * from spv_duty where status = 2 ORDER BY NewTime desc limit 0,5")
+    @Select("select sd.*,ss.name from spv_duty sd inner join sys_staff ss on sd.dCreateId = ss.sid where sd.status = 2 ORDER BY sd.NewTime desc limit 0,5")
     List<SpvDuty> findSpvDutyTopFive();
 
 

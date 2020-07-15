@@ -34,4 +34,9 @@ public class WindServiceImpl extends ServiceImpl<WindMapper, Wind> implements Wi
     public Wind findWindByWid(int wid) {
         return baseMapper.findWindByWid(wid);
     }
+
+    @Override
+    public IPage<Wind> findWind1(Page page, String title) {
+        return baseMapper.findWind1(page,title);
+    }
 }

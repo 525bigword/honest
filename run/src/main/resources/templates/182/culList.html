@@ -8,6 +8,13 @@
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
     <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+    <!--网络请求框架-->
+    <script src="http://localhost:4031/ms-mcms/static/plugins/axios/0.18.0/axios.min.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/qs/6.6.0/qs.min.js"></script>
+    <!--铭飞-->
+    <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.http.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.util.js"></script>
     <style type="text/css">
         .ms-menue-content-model >div:last-child >div:first-child{
             text-align: center;
@@ -107,17 +114,17 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2//182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2//207/index.html','_blank')"><a>监督责任</a></li>
+        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/1/index.html','_self')"><a>首页</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//195/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1//207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
 <script type="text/javascript">
     var url = window.location.href;
-    if(url == 'http://localhost:4031/ms-mcms/html/2/index.html'){
+    if(url == 'http://localhost:4031/ms-mcms/html/1/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>		<div class="margin-center ms-menue-content-model">
@@ -131,10 +138,10 @@
                 <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_self')"><label><a>清风文苑</a></label></span>
+                        <span th:class="${cultures.type==1}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/182/0/index.html" >清风文苑</a></label></span>
                     </li>
                     <li>
-                        <span class="active-span-title" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/184/index.html','_self')"><label><a>资料集锦</a></label></span>
+                        <span th:class="${cultures.type==0}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/182/1/index.html" >资料集锦</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -145,40 +152,83 @@
 
         <div>
             <div>
-                <label th:text="${title}"></label>
+                <label th:text="${cultures.title}"></label>
             </div>
             <div>
-                <span>上传者：<label th:text="${name}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>来源：<label ></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${time}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
+                <span>上传者：<label th:text="${cultures.cname}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${#dates.format(cultures.createTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>&nbsp;&nbsp;&nbsp;
             </div>
         </div>
-        <hr style="background: #F7F7F7"/>
         <div>
-            <span th:text="'[文件名]：'+${dFileName}" style="color: #000000">
-            </span>&nbsp;&nbsp;&nbsp;
-            <span th:if="${dPdf}==null"><a th:href="'http://localhost:8080/uploadimg/'+${dFile}">预览</a></span>
-            <span style="border:none;background-color: white;height: 2px" th:if="${dPdf}!=null"><a th:href="'http://localhost:8080/uploadimg/'+${dPdf}">预览</a></span>
-        </div>
-        <div>
-            <label class="ms-relative" style="top:-3px;"></label>
-        </div>
-        <div>
-			  <span >
-                  <a  >上一篇</a>&nbsp;&nbsp;
-			  <label   class="ms-relative" style="top:-3px;">|</label>
-			  &nbsp;&nbsp;<a  >下一篇</a>
-              </span>
+			<span style="font-size: 14px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="color: #000000"  th:utext="${cultures.content}">
 
-            <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
+			    </span>
+                <a th:if="${cultures.type==0}" th:href="${cultures.url}" >预览</a>
+            </span><br />
+        </div>
+        <div>
+            <span class="ms-right" id="goback">
+                <a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a>
+            </span>
         </div>
     </div>
 </div>
+﻿<script type="text/javascript">
+
+    /*请求成功时调用
+        getData: 返回的数据
+    */
+
+    function insertContent(getData) {
+        var htmlContent = "";	//插入的列表内容
+        //标题
+        var title = getData.title;
+        var content = getData.content;		//内容
+        htmlContent += '<div> <label>' + title + '</label> </div>' +
+            '<div> <span>上传者：<label>'
+            + getData.cname + '</label></span>&nbsp;&nbsp;&nbsp; ' +
+            ' <span>时间：<label>' + getData.createTime + '</label></span></div> ';	//文章标题等信息
+
+        $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
+
+        if (getData.type == 0) {
+            $(".content-list").children("div").eq(1).html(content + "<a href=\"" + getData.url + "\">预览</a>");			//添加文章内容
+        } else {
+            $(".content-list").children("div").eq(1).html(content);			//添加文章内容
+        }
+    }
+
+    /*请求失败时调用 */
+    function insertError() {
+
+    }
+    var type = ms.util.getParameter("type");
+    var id = ms.util.getParameter("id");
+    var URL = "http://localhost:8080/qt/qtwind/getCulById?id="+id+"&type="+type;
+    var getData = [];	//请求返回的数据
+    $.ajax({
+        async: true,
+        url: URL,
+        type: "get",
+        data: [],
+        success: function (da) {
+            if(da!="null") {
+                var data = eval("(" + da + ")");
+                if (data != null) {
+                    $("#goback").append("&nbsp;&nbsp;<a href=\"http://localhost:4031/ms-mcms/html/2/182/index.html\">返回上一页</a>")
+                }
+                insertContent(data);
+            }
+        },
+        error: function (data) {
+            insertError();
+        }
+    });
+</script>
 ﻿<!--底部内容-->
 <div class="footer max-width margin-center">
     主 管：湘潭市烟草专卖局 主 办：湘潭市烟草专卖局纪检监察科<br/>
     版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
 </div>
 </body>
-</html>

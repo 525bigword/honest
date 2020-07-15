@@ -19,6 +19,15 @@ public interface WindMapper extends BaseMapper<Wind> {
     })
     IPage<Wind> findWind(Page page,@Param("wTitle") String wTitle);
 
+    @Select("select w.wid,w.wTitle,w.wContent,w.wContributor,w.wCreateTime,w.wCreateId,w.wStatus,ss.name as cname from Wind w inner join sys_staff ss on w.wCreateId=ss.sid where w.wStatus =3 and  w.wTitle like CONCAT('%',#{wTitle},'%') order by w.wid desc")
+    @Results({
+            @Result(column = "wContributor",property = "wnew",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "wCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
+    })
+    IPage<Wind> findWind1(Page page,@Param("wTitle") String wTitle);
+
     @Update("update Wind set wTitle=#{wTitle},wContent=#{wContent},wContributor=#{wContributor},wStatus=#{wStatus} where wid=#{wid}")
     void updateWindByWid(Wind wind);
 
@@ -32,7 +41,9 @@ public interface WindMapper extends BaseMapper<Wind> {
     @Select("select count(wid) from wind where wCreateId=#{sid} and wStatus=1")
     Integer findWindByWstatusToCount(@Param("sid")Integer sid);
 
-    @Select("select wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus from Wind where wid=#{wid}")
+    @Select("select ww.wid,ww.wTitle,ww.wContent,ww.wContributor,ww.wCreateTime,ww.wCreateId,ww.wStatus,ss.name as cname from " +
+            " Wind ww inner join sys_staff ss on ww.wCreateId=" +
+            " ss.sid  where ww.wid=#{wid}")
     @Results({
             @Result(column = "wContributor",property = "wnew",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT)),

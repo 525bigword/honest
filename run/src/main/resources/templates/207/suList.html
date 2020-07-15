@@ -152,14 +152,32 @@
                 </div>
                 <span><label>监督责任</label></span>
                 <ul class="list-style-none">
+                    <li>
+                        <span ><label><a href="http://localhost:4031/ms-mcms/html/2/207/index.html" >监督责任</a></label></span>
+                    </li>
                 </ul>
             </li>
         </ul>
     </div>
     <div></div>
     <div class="content-list">
-        <div th:text="${DutyTitle}"></div>
-        <div th:utext="${DutyContent}"></div>
+        <div>
+            <div>
+                <label th:text="${dutyTitle}"></label>
+            </div>
+            <div>
+                <span>上传者：<label th:text="${name}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${#dates.format(newTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>责任监督类型：<label th:text="${dutyType}"></label></span>&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+
+        <div>
+	           <span style="font-size: 14px"><span style="color: #000000">
+                   <span style="font-family: 宋体" th:utext="${dutyContent}">　　
+
+                  </span></span></span><br />
+        </div>
         <div>
             <span class="ms-right" id="goback">
                 <a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a>
@@ -173,27 +191,13 @@
         getData: 返回的数据
     */
 
-    function formatDate(now) {
-        var year=now.getFullYear();  //取得4位数的年份
-        var month=now.getMonth()+1;  //取得日期中的月份，其中0表示1月，11表示12月
-        var date=now.getDate();      //返回日期月份中的天数（1到31）
-        var hour=now.getHours();     //返回日期中的小时数（0到23）
-        var minute=now.getMinutes(); //返回日期中的分钟数（0到59）
-        var second=now.getSeconds(); //返回日期中的秒数（0到59）
-        return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
-    }
-
 
     function insertContent(getData) {
         var htmlContent = "";	//插入的列表内容
-        //标题
-        var title = getData.dutyTitle;
-
-        var d = new Date(getData.newTime);
-        var time = formatDate(d);		//时间
-
-        var content = getData.dutyContent;		//内容
-        htmlContent += '<div><label>' + title + '</label></div><div>&nbsp;&nbsp;&nbsp;<span>时间：<label>' + time + '</label></span>&nbsp;&nbsp;&nbsp;' +
+        var title = getData.dutyTitle; //标题
+        var content = getData.dutyContent;	//内容
+        htmlContent += '<div><label>' + title + '</label></div><div>&nbsp;&nbsp;&nbsp;' +
+            '<span>上传者：<label>'+getData.name+'</label></span>&nbsp;&nbsp;&nbsp;<span>时间：<label>' + getData.newTime + '</label></span>&nbsp;&nbsp;&nbsp;' +
             '<span>责任监督类型:<label>' + getData.dutyType + '</label></span></div>';	//文章标题等信息
         $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
         $(".content-list").children("div").eq(1).html(content);			//添加文章内容
@@ -213,11 +217,13 @@
         type: "get",
         data: [],
         success: function (da) {
+            if(da!="null"){
             var data = eval("(" + da + ")");
             if(data!=null){
-                $("#goback").append("<a href=\"http://localhost:4031/ms-mcms/html/2/207/index.html\">返回上一页</a>")
+                $("#goback").append("&nbsp;<a href=\"http://localhost:4031/ms-mcms/html/2/207/index.html\">返回上一页</a>")
             }
             insertContent(data);
+            }
         },
         error: function (data) {
             insertError();

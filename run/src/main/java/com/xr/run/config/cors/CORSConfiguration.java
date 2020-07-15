@@ -19,12 +19,12 @@ public class CORSConfiguration {
         //用户是否可以发送、处理cookie
         config.setAllowCredentials(true);
         //允许该请求访问
-        //config.addAllowedOrigin("http://localhost:9527/api");
-        //config.addAllowedOrigin("http://localhost:9527/honest_war");
-        config.addAllowedOrigin("http://192.168.21.1:9527");
+        config.addAllowedOrigin("http://192.168.21.1:9520");
+        config.addAllowedOrigin("http://localhost:9520");
         config.addAllowedOrigin("http://localhost:4031");
-        config.addAllowedOrigin("*");
+        //config.addAllowedOrigin("*");
         config.addAllowedOrigin("http://127.0.0.1:4031");
+        config.setAllowCredentials(true);
         config.addAllowedOrigin("null");
         config.addAllowedHeader("*");//服务器允许使用的字段
         config.addAllowedMethod("*");//真实请求允许的方法

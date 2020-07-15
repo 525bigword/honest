@@ -10,6 +10,7 @@ import com.xr.run.dao.RdHonestConversationMapper;
 import com.xr.run.dao.SysStaffMapper;
 import com.xr.run.dao.WindMapper;
 import com.xr.run.entity.SysStaff;
+import com.xr.run.entity.SystemMessage;
 import com.xr.run.service.SysPermissionService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
@@ -60,6 +61,7 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         String password = jsonObject.getString("password");
         JSONObject info = new JSONObject();
         Subject currentUser = SecurityUtils.getSubject();
+        System.out.println("登录============="+currentUser.getSession().getId());
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             currentUser.login(token);
@@ -92,7 +94,7 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     public JSONObject getInfo() {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
-        System.out.println(session.getId());
+        System.out.println("sessionId="+session.getId());
         SysStaff userInfo = (SysStaff) SecurityUtils.getSubject().getSession().getAttribute(Constants.SESSION_USER_INFO);
         String username = userInfo.getUsername();
         JSONObject info = new JSONObject();

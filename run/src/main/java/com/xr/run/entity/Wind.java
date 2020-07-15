@@ -31,4 +31,5 @@ public class Wind {
         return sysStaff.getSid();
     }
     private int wStatus;
+    private String cname;
 }

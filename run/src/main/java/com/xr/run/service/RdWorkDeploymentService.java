@@ -10,8 +10,13 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 public interface RdWorkDeploymentService extends IService<RdWorkDeployment> {
     IPage<RdWorkDeployment> findRdWorkDeploymentIndex(Page page, String title,Integer staus);
+
+    RdWorkDeployment findRdWorkDeployementById(Integer id);
+
+    List<RdWorkDeployment> findRdWorkDeploymentAll(String title);
 }

@@ -10,8 +10,13 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 
 public interface RdWorkPlanService extends IService<RdWorkPlan> {
     IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, String title,Integer staus);
+
+    List<RdWorkPlan> findRdWorkPlanAll(String title);
+
+    RdWorkPlan findRdWorkPlanById(Integer parseInt);
 }
