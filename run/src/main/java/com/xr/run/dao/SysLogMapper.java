@@ -14,11 +14,8 @@ import java.util.List;
 @Repository
 public interface SysLogMapper extends BaseMapper<SysLog> {
     //查询小于目标时间的信息
-    @Select("select id from sys_log where time<#{time} limit 1,#{size}")
-    List<Integer> findSysLogIdByLETime(@Param("time")String time,@Param("size")Integer size);
-    //查询小于目标时间信息的数量
-    @Select("select count(id) from sys_log where time<#{time}")
-    Integer findSysLogCountByLETime(@Param("time")String time);
+    @Select("select id,sid,url,method,ip,data,terminal,type,time from sys_log where time<#{time}")
+    List<SysLog> findSysLogIdByLETime(@Param("time")String time);
     @Insert("insert into sys_log value(null,#{log.sid},#{log.url},#{log.method},#{log.ip},#{log.data},#{log.terminal},#{log.type},#{log.time})")
     void addSysLog(@Param("log") SysLog sysLog);
 //    @Select({"<script> " +
