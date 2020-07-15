@@ -1,6 +1,6 @@
 server:
-  # servlet:
-    #context-path: /honest
+  servlet:
+    context-path: /honest
   port: 8080
 logging:
   level:

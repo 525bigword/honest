@@ -84,12 +84,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
     public Integer updateSysPermission(SysPermission sysPermission) {
         System.out.println(sysPermission);
         sysPermission.setPermissionCode(sysPermission.getMenuCode()+":"+sysPermission.getPermissionCode());
-        Integer sysPermissionCountByMenuCodeOrPermissionCode = baseMapper.findSysPermissionCountByMenuCodeOrPermissionCode(sysPermission.getMenuCode(), sysPermission.getPermissionCode());
-        if(sysPermissionCountByMenuCodeOrPermissionCode==1){
+//        Integer sysPermissionCountByMenuCodeOrPermissionCode = baseMapper.findSysPermissionCountByMenuCodeOrPermissionCode(sysPermission.getMenuCode(), sysPermission.getPermissionCode());
+//        if(sysPermissionCountByMenuCodeOrPermissionCode==1){
             baseMapper.upSysPermission(sysPermission);
             return 1;
-        }
-        return 0;
+//        }
+//        return 0;
     }
 
     /**

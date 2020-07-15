@@ -31,7 +31,7 @@
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button> -->
+      >导出</el-button>-->
     </div>
 
     <el-table
@@ -156,7 +156,8 @@
               </el-form-item>
 
               <!-- <div slot="footer" class="dialog-footer"> -->
-              <el-button style="margin-left:59%"
+              <el-button
+                style="margin-left:59%"
                 type="primary"
                 @click="dialogStatus==='create'?createData():updateData()"
               >提交</el-button>
@@ -267,9 +268,13 @@ export default {
         title: [
           { required: true, message: "title is required", trigger: "blur" }
         ],
-        pname:[{
-          required:true,message:"角色名不能为空",trigger:['blur','change']
-        }]
+        pname: [
+          {
+            required: true,
+            message: "角色名不能为空",
+            trigger: ["blur", "change"]
+          }
+        ]
       },
       downloadLoading: false
     };
@@ -282,15 +287,18 @@ export default {
   methods: {
     submit() {},
     treeClose() {
+      
       console.log(this.default_checked);
+      this.$refs.tree.setCheckedKeys([]);
       this.default_checked = [];
-
+      this.temp.defaultvalue=[];
+      this.getList();
       // setCheckedKeys
-      this.placeholder = "所属部门";
-      this.default_checked.filter(value => {
-        this.$refs.tree.setChecked(value, false, true); //利用这个方法就可以获取到父节点
-      });
-      console.log(this.default_checked);
+      // this.default_checked.filter(value => {
+      //   this.$refs.tree.setChecked(value, false, true); //利用这个方法就可以获取到父节点
+      // });
+      // console.log(this.default_checked);
+      
       // this.default_checked
     },
     treecheck(leafOnly, includeHalfChecked) {
@@ -374,24 +382,16 @@ export default {
     },
     getList() {
       //查询列表
-      // if (!this.hasPerm('staff:list')) {
-      //   return
-      // }
-      console.log(this.listQuery.bm);
-      console.log("this.temp.defaultvalue", this.temp.defaultvalue);
-      // let mids = this.listQuery.bm.join(",");
-      // console.log(mids);
+      if (!this.hasPerm('staff:list')) {
+        return
+      }
       this.listLoading = true;
       this.api({
         url: "syspost/get/" + this.listQuery.page + "/" + this.listQuery.limit,
         method: "post",
         data: {
           pname: this.listQuery.name,
-          message: this.listQuery.message,
-          mids:
-            this.temp.defaultvalue.length === 0
-              ? this.temp.defaultvalue[0]
-              : this.temp.defaultvalue
+          message: this.listQuery.message
         }
       }).then(response => {
         console.log("getlist", response);
@@ -475,47 +475,48 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
-          if (this.default_checked[0]===undefined) {
-        this.$message({
-          type: "error",
-          message: "请选择角色的权限",
-          duration:2000
-        });
-        return
-       }
-        let arr = this.default_checked.join(",");
-        this.api({
-          url: "syspost/add",
-          method: "post",
-          data: {
-            pname: this.temp.pname,
-            mid: this.temp.defaultvalue,
-            message: this.temp.message,
-            createId: this.temp.id,
-            arr: arr
+          if (this.default_checked[0] === undefined) {
+            this.$message({
+              type: "error",
+              message: "请选择角色的权限",
+              duration: 2000
+            });
+            return;
           }
-        }).then(respone => {
-          console.log(respone);
-          if (respone === 0) {
-             this.$notify({
-                  title: "成功",
-                  message: "添加失败",
-                  type: "success",
-                  duration: 2000
-                });
-          } else {
-            this.$notify({
-                  title: "成功",
-                  message: "添加成功",
-                  type: "success",
-                  duration: 2000
-                });
-            this.temp.defaultvalue = [];
-            this.getList();
-            this.treeDisable = false;
-          }
-        });
-      }})
+          let arr = this.default_checked.join(",");
+          this.api({
+            url: "syspost/add",
+            method: "post",
+            data: {
+              pname: this.temp.pname,
+              mid: this.temp.defaultvalue,
+              message: this.temp.message,
+              createId: this.temp.id,
+              arr: arr
+            }
+          }).then(respone => {
+            console.log(respone);
+            if (respone === 0) {
+              this.$notify({
+                title: "成功",
+                message: "添加失败",
+                type: "success",
+                duration: 2000
+              });
+            } else {
+              this.$notify({
+                title: "成功",
+                message: "添加成功",
+                type: "success",
+                duration: 2000
+              });
+              this.temp.defaultvalue = [];
+              // this.getList();
+              this.treeDisable = false;
+            }
+          });
+        }
+      });
     },
     handleUpdate(row) {
       this.placeholder = row.mname;
@@ -537,41 +538,41 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
-          if (this.default_checked[0]===undefined) {
-        this.$message({
-          type: "error",
-          message: "请选择角色的权限",
-          duration:2000
-        });
-        return
-       }
-              let arr = this.default_checked.join(",");
-              console.log(arr);
-              this.api({
-                url: "syspost/update",
-                method: "post",
-                data: {
-                  pid: this.temp.pid,
-                  mid: this.temp.mid,
-                  pname: this.temp.pname,
-                  message: this.temp.message,
-                  createId: store.getters.userId,
-                  createTime: this.temp.createTime,
-                  arr: arr
-                }
-              }).then(res => {
-                this.temp.defaultvalue = [];
-                this.getList();
-                this.$notify({
-                  title: "成功",
-                  message: "修改成功",
-                  type: "success",
-                  duration: 2000
-                });
-                this.treeDisable = false;
-              });
+          if (this.default_checked[0] === undefined) {
+            this.$message({
+              type: "error",
+              message: "请选择角色的权限",
+              duration: 2000
+            });
+            return;
+          }
+          let arr = this.default_checked.join(",");
+          console.log(arr);
+          this.api({
+            url: "syspost/update",
+            method: "post",
+            data: {
+              pid: this.temp.pid,
+              mid: this.temp.mid,
+              pname: this.temp.pname,
+              message: this.temp.message,
+              createId: store.getters.userId,
+              createTime: this.temp.createTime,
+              arr: arr
             }
-      })
+          }).then(res => {
+            this.temp.defaultvalue = [];
+            // this.getList();
+            this.$notify({
+              title: "成功",
+              message: "修改成功",
+              type: "success",
+              duration: 2000
+            });
+            this.treeDisable = false;
+          });
+        }
+      });
     },
     handleDelete(row, index) {
       console.log(row, index);
@@ -601,10 +602,14 @@ export default {
               if (res === 0) {
                 this.$message({
                   type: "error",
-                  message: "请保证该岗位没有员工"
+                  message: "请保证该角色下没有员工"
                 });
                 return;
               }
+              this.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
               this.getList();
               // this.getList();
             });
