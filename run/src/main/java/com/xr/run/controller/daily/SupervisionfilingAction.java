@@ -41,8 +41,8 @@ public class SupervisionfilingAction {
         return result;
     }
     @RequestMapping("findbysFilingId")
-    public ResponseResult findbysFilingId(String sFilingId){
-        List<Supervisionfiling> list = supervisionfilingService.findbysFilingId(sFilingId);
+    public ResponseResult findbysFilingId(String sFilingId, Integer sStatus){
+        List<Supervisionfiling> list = supervisionfilingService.findbysFilingId(sFilingId,sStatus);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("list",list);
         return result;

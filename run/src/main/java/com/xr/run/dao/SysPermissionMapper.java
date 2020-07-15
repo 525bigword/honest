@@ -14,6 +14,9 @@ import java.util.Set;
 
 @Repository
 public interface SysPermissionMapper extends BaseMapper<SysPermission> {
+    //根据栏目名查询数量
+    @Select("select count(id) from sys_permission where permission_code=#{permissionCode}")
+    Integer findSysPermissionCountByMenuCodeOrPermissionCode(@Param("menuCode")String menuCode,@Param("permissionCode") String permissionCode);
     /**
      * 查询用户的角色 菜单 权限
      */

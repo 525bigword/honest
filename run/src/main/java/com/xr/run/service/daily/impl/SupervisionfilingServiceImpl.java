@@ -43,8 +43,8 @@ public class SupervisionfilingServiceImpl implements SupervisionfilingService {
     }
 
     @Override
-    public List<Supervisionfiling> findbysFilingId(String sFilingId) {
-        return supervisionfilingMapper.findbysFilingId(sFilingId);
+    public List<Supervisionfiling> findbysFilingId(String sFilingId, Integer sStatus) {
+        return supervisionfilingMapper.findbysFilingId(sFilingId,sStatus);
     }
 
     @Override
