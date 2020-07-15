@@ -346,8 +346,7 @@
 				<a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
 				&gt;
 				<a href="http://localhost:4031/ms-mcms/html/2/195/index.html">风险防控</a>
-				&gt;
-				<a href="http://localhost:4031/ms-mcms/html/2/195/287/index.html">岗位风险梳理</a>
+
 			</label>
 		</p>
 		<div id="box">
@@ -373,7 +372,7 @@
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/195/287/490.html?id="+data.id;			//a链接地址
+                var url = "http://localhost:4031/ms-mcms/html/2/195/"+data.firstPage+"/"+data.firstType+".html?id="+data.id;			//a链接地址
                 var title = data.prProject;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
@@ -386,9 +385,7 @@
         }
         function submit() {
             var title = $("input[name='basic_title']").val();
-            if(title){
-                listData(title);
-            }
+            listData(title);
         }
         function listData(title,pageNo) {
             if(!title){
@@ -408,7 +405,7 @@
                     insertContent(data.rows);
                     $("#page").paging({
                         pageNum: pageNo, // 当前页面
-                        totalNum: Math.round(data.total/10), // 总页码
+                        totalNum: data.pages, // 总页码
                         totalList: data.total, // 记录总数量
                         callback: function (num) { //回调函数
                             listData(title,num);

@@ -45,10 +45,10 @@ public class RiskVo implements Serializable {
 
 
     //第一种类型
-    private String firstType;
+    private Integer firstType;
 
     //第一页
-    private String firstPage;
+    private Integer firstPage;
 
 
 

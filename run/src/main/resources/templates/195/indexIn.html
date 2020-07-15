@@ -330,10 +330,10 @@
 				<span><label>风险防控</label></span>
 				<ul class="list-style-none">
 					<li>
-						<span style="background-color: #3D7D53;" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/287/index.html','_self')"><label><a>岗位风险梳理</a></label></span>
+						<span th:class="${type==0}?'active-span-title':''" style="background-color: #3D7D53;" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/287/index.html','_self')"><label><a>岗位风险梳理</a></label></span>
 					</li>
 					<li>
-						<span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_self')"><label><a>流程风险梳理</a></label></span>
+						<span th:class="${type==1}?'active-span-title':''" class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_self')"><label><a>流程风险梳理</a></label></span>
 					</li>
 				</ul>
 			</li>
@@ -345,9 +345,10 @@
 			<label>
 				<a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
 				&gt;
-				<a href="http://localhost:4031/ms-mcms/html/2/195/index.html">风险防控</a>
+				<a  href="http://localhost:4031/ms-mcms/html/2/195/index.html">风险防控</a>
 				&gt;
-				<a href="http://localhost:4031/ms-mcms/html/2/195/287/index.html">岗位风险梳理</a>
+				<a th:if="${type==0}" href="http://localhost:4031/ms-mcms/html/2/195/0/index.html">岗位风险梳理</a>
+				<a th:if="${type==1}" href="http://localhost:4031/ms-mcms/html/2/195/1/index.html">流程风险梳理</a>
 			</label>
 		</p>
 		<div id="box">
@@ -373,7 +374,7 @@
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/195/287/490.html?id="+data.id;			//a链接地址
+                var url = "http://localhost:4031/ms-mcms/html/2/195/"+data.firstPage+"/"+data.firstType+".html?id="+data.id;			//a链接地址
                 var title = data.prProject;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }

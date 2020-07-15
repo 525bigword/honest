@@ -577,6 +577,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex(new Page(), "");
         IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(), "");
         List<RiskVo> list = new ArrayList<>();
+        int i0 =0;
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
             RiskVo riskVo = new RiskVo();
             riskVo.setCreateTime(postriskcombing.getPCreateTime());
@@ -587,7 +588,12 @@ public class HomePageSeviceImpl implements HomePageSevice {
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);
+            if(i0<6){
+
+            }
+            i0++;
         }
+        int i1 =0;
         for (Processrick processrick : processrickAll.getRecords()) {
             RiskVo riskVo = new RiskVo();
             String s = processrick.getProInfomation();
@@ -599,6 +605,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
             //状态
             riskVo.setType(1); //岗位风险
             list.add(riskVo);
+            if(i1<6){
+
+            }
+            i1++;
         }
         listSortriskVos(list);
         if (list.size() != 0) {
@@ -694,7 +704,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             //文件夹存在就删除
            file.delete();
         }
-         file.mkdirs();
+        file.mkdirs();
 
         // 输出流
         //创建index.html页面，"rdList.html"
