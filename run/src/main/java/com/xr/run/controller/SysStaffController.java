@@ -68,9 +68,15 @@ public class SysStaffController {
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }
-    @GetMapping("gets/{pid}")
-    public JSONObject findstatffByPid(@PathVariable Integer pid){
-        List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid);
+    @GetMapping("gets/{pid}/{mid}")
+    public JSONObject findstatffByPidAndMid(@PathVariable Integer pid,@PathVariable Integer mid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid,mid);
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
+    }
+    @GetMapping("gets/{mid}")
+    public JSONObject findstatffByPid(@PathVariable Integer mid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByMid(mid);
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }

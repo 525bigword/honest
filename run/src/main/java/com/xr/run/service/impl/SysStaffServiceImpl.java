@@ -51,8 +51,13 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     private SupervisionfilingMapper supervisionfilingMapper;
 
     @Override
-    public List<SysStaff> findstatffByPid(Integer pid) {
-        return baseMapper.findstatffByPid(pid);
+    public List<SysStaff> findstatffByPid(Integer pid,Integer mid) {
+        return baseMapper.findstatffByPid(pid,mid);
+    }
+
+    @Override
+    public List<SysStaff> findstatffByMid(Integer mid) {
+        return baseMapper.findstatffByMid(mid);
     }
 
     @Override

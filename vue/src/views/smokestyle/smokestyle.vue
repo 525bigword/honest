@@ -42,7 +42,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle' :header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           prop="smoid"
