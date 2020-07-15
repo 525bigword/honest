@@ -40,6 +40,26 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     private WindMapper windMapper;
 
     @Override
+    public List<SysStaff> findstatffByPid(Integer pid, Integer mid) {
+        return null;
+    }
+
+    @Override
+    public List<SysStaff> findstatffByMid(Integer mid) {
+        return null;
+    }
+
+    @Override
+    public void hfSysStaff(Integer id) {
+
+    }
+
+    @Override
+    public void yjDelSysStaffById(Integer id) {
+
+    }
+
+    @Override
     public IPage<SysStaff> findSysStaffAll(Page<SysStaff> page,String name, Integer staus,Integer mid) {
         IPage<SysStaff> sysStaffAll=null;
         if(mid!=null){
