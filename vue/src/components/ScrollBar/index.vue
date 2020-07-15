@@ -45,7 +45,6 @@ export default {
 @import '../../styles/variables.scss';
 
 .scroll-container {
-
   position: relative;
   width: 100%;
   height: 100%;
