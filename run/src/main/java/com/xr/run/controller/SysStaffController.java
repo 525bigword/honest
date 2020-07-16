@@ -68,9 +68,15 @@ public class SysStaffController {
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }
-    @GetMapping("gets/{pid}")
-    public JSONObject findstatffByPid(@PathVariable Integer pid){
-        List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid);
+    @GetMapping("gets/{pid}/{mid}")
+    public JSONObject findstatffByPidAndMid(@PathVariable Integer pid,@PathVariable Integer mid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid,mid);
+        return CommonUtil.successJson(sysStaffAll);
+        //return sysStaffAll;
+    }
+    @GetMapping("gets/{mid}")
+    public JSONObject findstatffByPid(@PathVariable Integer mid){
+        List<SysStaff> sysStaffAll = sysStaffService.findstatffByMid(mid);
         return CommonUtil.successJson(sysStaffAll);
         //return sysStaffAll;
     }
@@ -105,9 +111,9 @@ public class SysStaffController {
     public JSONObject authLogin(@RequestBody JSONObject requestJson) {
         CommonUtil.hasAllRequired(requestJson, "username,password");
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
-
         //创建首页
         homePageSevice.loading();
+        System.out.println("==================jsonObject="+jsonObject);
         return jsonObject;
     }
     /**
@@ -124,6 +130,7 @@ public class SysStaffController {
     public JSONObject getInfo() {
         return sysStaffService.getInfo();
     }
+
     @PutMapping("update")
     @RequiresPermissions("staff:update")
     public JSONObject updateSysStaff(@RequestBody SysStaff sysStaff){

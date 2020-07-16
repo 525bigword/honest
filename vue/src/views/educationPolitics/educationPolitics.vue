@@ -83,7 +83,13 @@
           prop="time"
           label="发布时间">
         </el-table-column>
-
+        <el-table-column
+          prop="surl"
+          label="路径" v-if="false"></el-table-column>
+        <el-table-column
+          prop="smoimage"
+          label="图片" v-if="false">
+        </el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -107,23 +113,39 @@
             <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
+          <el-input v-model="userInfo.surl" placeholder="地址" type="hidden"></el-input>
           <el-input v-model="userInfo.id" placeholder="序号" type="hidden"></el-input>
           <el-form-item label="资讯标题" prop="title">
-            <el-input v-model="userInfo.title" placeholder="请输入资讯标题" style="width: 400px"></el-input>
-          </el-form-item><br/>
+            <el-input v-model="userInfo.title" placeholder="请输入资讯标题" style="width: 350px"></el-input>
+          </el-form-item>
           <el-form-item label="资讯来源" prop="source">
-            <el-input v-model="userInfo.source" placeholder="请输入资讯来源" style="width: 400px"></el-input>
+            <el-input v-model="userInfo.source" placeholder="请输入资讯来源" style="width: 350px"></el-input>
           </el-form-item><br/>
           <el-form-item label="资讯类型" prop="type">
-            <el-select v-model="userInfo.type" placeholder="请选择资讯类型" style="width: 400px">
+            <el-select v-model="userInfo.type" placeholder="请选择资讯类型" style="width: 350px">
               <el-option label="警钟长鸣" value="警钟长鸣"></el-option>
               <el-option label="领导讲话" value="领导讲话"></el-option>
               <el-option label="文件制度" value="文件制度"></el-option>
               <el-option label="廉政要闻" value="廉政要闻"></el-option>
             </el-select>
-          </el-form-item><br/>
+          </el-form-item>
+          <el-form-item label="资讯插图">
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-change="handleChange"
+              :on-preview="handlePreview"
+              accept=".jpg,.gif,.png"
+              :http-request="modeUpload"
+              :limit="1"
+              :file-list="fileList">
+              <el-button size="small" type="primary">上传图片</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传单个图片，且不超过50M</div>
+            </el-upload>
+          </el-form-item>
+          <br/>
           <el-form-item label="资讯发布时间" prop="time">
-            <el-date-picker v-model="userInfo.time" type="datetime" placeholder="请选择资讯发布时间" style="width: 400px"></el-date-picker>
+            <el-date-picker v-model="userInfo.time" type="datetime" placeholder="请选择资讯发布时间" style="width: 350px"></el-date-picker>
           </el-form-item>
           <el-form-item label="创建时间" v-if="false">
             <el-date-picker v-model="userInfo.createTime" type="datetime" placeholder="请选择资讯发布时间" style="width: 300px"></el-date-picker>
@@ -142,6 +164,7 @@
 <script>
   import qs from 'qs'
   import { mapGetters } from 'vuex'
+  import { fileUpload } from '@/api/daily/supervise'
   import {findAllEducation,addEcucation,delEcucation,updateEducation,findwhereEducation} from '@/api/educationpolitics/educationpolitics'
   export default {
     computed: {
@@ -222,6 +245,8 @@
               .replace(/T/g, " ")
               .replace(/\.[\d]{3}Z/, "")
             let posdata=qs.stringify({
+              smoimage:this.userInfo.smoimage,
+              surl:this.userInfo.surl,
               title:this.userInfo.title,
               source:this.userInfo.source,
               type:this.userInfo.type,
@@ -259,6 +284,8 @@
         this.bc='none'//保存按钮隐藏
         this.gx=''//更新按钮显示
         this.userInfo=row
+        this.fileList=[{name:row.smoimage,url:this.uploadimage+row.surl}]
+
       },//删除
       del(){
         var data = this.$refs.multipleTable.selection;
@@ -287,6 +314,37 @@
             })
           })
         }
+      },
+      //文件预览
+      handlePreview(file) {
+        console.log('file'+JSON.stringify(file))
+        const userAgent = navigator.userAgent;
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+          alert('推荐谷歌进行文件预览')
+        }else{
+          window.open(file.url) //blob格式地址
+        }
+      },handleChange(file, fileList) {
+        this.userInfo.smoimage=file.name
+      },
+      modeUpload: function(item) {
+        // console.log(item.file);
+        this.file = item.file
+        const fd = new FormData()
+        fd.append('filename', this.file)
+        fileUpload(fd
+        ).then(response => {
+          this.$message({
+          title: '成功',
+          message: response.message,
+          type: 'success',
+          duration: 2000
+
+        })
+        this.fileList=[{name:this.file.name,url:this.uploadimage+response.url}]
+        this.userInfo.surl=response.url
+      })
+        console.log('ce是'+JSON.stringify(this.file))
       },//更新
       gxMethod(){
 
@@ -302,6 +360,8 @@
           type:this.userInfo.type,
           time:this.userInfo.time,
           content:this.userInfo.content,
+          smoimage:this.userInfo.smoimage,
+          surl:this.userInfo.surl,
         })
         updateEducation(posdata).then((response)=>{
           this.initList();
@@ -340,6 +400,7 @@
             { required: true, message: '请输入资讯内容', trigger: 'change' }
           ]
         },
+
         editorOption: {},
         fileList:[],
         tf:'',//父页面

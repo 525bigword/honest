@@ -15,4 +15,9 @@ public class DcpReportServiceImpl  extends ServiceImpl<DcpReportMapper, DcpRepor
     public IPage<DcpReport> findDcpReportIndex(Page page, String report) {
         return baseMapper.findDcpReportIndex(page,report);
     }
+
+    @Override
+    public DcpReport findDcpReportById(Integer id) {
+        return baseMapper.findDcpReportById(id);
+    }
 }

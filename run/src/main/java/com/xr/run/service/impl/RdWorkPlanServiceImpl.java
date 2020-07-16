@@ -9,11 +9,23 @@ import com.xr.run.entity.RdWorkPlan;
 import com.xr.run.service.RdWorkPlanService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RdWorkPlanServiceImpl extends ServiceImpl<RdWorkPlanMapper,RdWorkPlan> implements RdWorkPlanService {
 
     @Override
     public IPage<RdWorkPlan> findRdWorkPlanIndex(Page page, String title,Integer staus) {
         return baseMapper.findRdWorkPlanIndex(page,title,staus);
+    }
+
+    @Override
+    public List<RdWorkPlan> findRdWorkPlanAll(String title) {
+        return baseMapper.findRdWorkPlanAll(title);
+    }
+
+    @Override
+    public RdWorkPlan findRdWorkPlanById(Integer id) {
+        return baseMapper.findRdWorkPlanById(id);
     }
 }

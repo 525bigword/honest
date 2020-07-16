@@ -23,11 +23,17 @@ public class SchedulingConfigurer {
     /**
      * 没个月最后一天凌晨1一点开始每个小时执行一次
      */
-    @Scheduled(cron = "1 1 1/1 L * ? ")//* * 1/5 L * ? 1 1 1/1 L * ?
-    //@Scheduled(cron = "*/20 * * * * *")  //每个月31号执行
+//    @Scheduled(cron = "1 1 1/1 L *")//* * 1/5 L * ? 1 1 1/1 L * ?
     //或直接指定时间间隔，例如：5秒
     //@Scheduled(fixedRate=5000)
+//    @Scheduled(cron = "0/20 * * * * ?")
+    @Scheduled(cron = "0 30 23 28-31 * ?")  //每个月31号执行
     private void configureTasks() {
+        final Calendar calendar = Calendar.getInstance();
+        //如果不是最后一天
+        if (!(calendar.get(Calendar.DATE) == calendar.getActualMaximum(Calendar.DATE))) {
+            return;
+        }
         sysLogService.delSysLogByTimeSixMonth();
         log.info("当前北京时间："+ LocalDateTime.now()+"已经完成对10天前日志的删除");
     }

@@ -14,7 +14,8 @@ import java.util.List;
 
 @Repository
 public interface RdWorkDeploymentMapper extends BaseMapper<RdWorkDeployment> {
-    @Select("select id,title,content,create_time,create_id,staus from rd_work_deployment where staus <> -1 and staus = CONCAT(#{staus}) and  title like CONCAT('%',#{title},'%') order by id desc")
+    @Select("select rd.id,rd.title,rd.content,rd.create_time,rd.create_id,rd.staus,ss.name  from rd_work_deployment rd inner join sys_staff ss on rd.create_id = ss.sid where rd.staus <> -1 " +
+            " and rd.staus = CONCAT(#{staus}) and  rd.title like CONCAT('%',#{title},'%') order by rd.id desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",
@@ -24,6 +25,8 @@ public interface RdWorkDeploymentMapper extends BaseMapper<RdWorkDeployment> {
 
     List<RdWorkDeployment> findRdWorkDeploymentAll(@Param("title") String title);
 
-    @Select("SELECT count(id) FROM ( SELECT id,create_id FROM rd_work_deployment WHERE staus <> 2 and staus <> -1 ) rd_work_deployment WHERE create_id = #{sid}")
-    Integer findrdRdWorkDeploymentByWstatusToCount(@Param("sid") Integer sid);
+
+    @Select("select rd.id,rd.title,rd.content,rd.create_time,rd.create_id,rd.staus,ss.name  from rd_work_deployment rd inner join sys_staff ss on rd.create_id = ss.sid " +
+            " where rd.staus <> -1 and rd.id= #{id}  order by rd.id desc ")
+    RdWorkDeployment findRdWorkDeployementById(@Param("id") Integer id);
 }

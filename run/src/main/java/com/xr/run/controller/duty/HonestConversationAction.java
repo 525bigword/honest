@@ -121,8 +121,8 @@ public class HonestConversationAction {
         result.getInfo().put("list",findallunit);
         return result;
     }
-    // @Value("${files.uploadFolder}")
-    private String realBasePath="D://IDE/";
+     @Value("${file.uploadFolders}")
+    private String realBasePath;
     @Value("${file.staticAccessPaths}")
     private String accessPath;
     SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");

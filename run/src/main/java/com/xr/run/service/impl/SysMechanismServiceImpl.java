@@ -9,6 +9,7 @@ import com.xr.run.dao.SysMechanismMapper;
 import com.xr.run.dao.SysPostMapper;
 import com.xr.run.dao.SysStaffMapper;
 import com.xr.run.entity.SysMechanism;
+import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysMechanismService;
 import com.xr.run.service.SysPostService;
 import com.xr.run.util.DateUtil;
@@ -87,6 +88,11 @@ public class SysMechanismServiceImpl extends ServiceImpl<SysMechanismMapper,SysM
     @Override
     public List<SysMechanism> findAllSysMechanism() {
         return baseMapper.findSysMechanism();
+    }
+
+    @Override
+    public SysStaff findSysMechanismNameById(Integer id) {
+        return sysStaffMapper.findSysStaffBySid(id);
     }
 
     @Override

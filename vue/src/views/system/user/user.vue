@@ -75,7 +75,7 @@
     ></el-pagination>
 
     <el-dialog @closed="Close" :title="textMap[dialogStatus]" :visible.sync="dialogTableVisible">
-     <el-form ref="dataForm" :rules="rules" :model="form" label-width="80px">
+      <el-form ref="dataForm" :rules="rules" :model="form" label-width="80px">
         <el-row>
           <el-col style="width:45%">
             <el-form-item label="员工名" prop="name">
@@ -114,12 +114,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-          <el-form-item label="电话号码" style="width:91.5%" prop="phone">
+        <el-form-item label="电话号码" style="width:91.5%" prop="phone">
           <el-input v-model="form.phone" placeholder="电话号码"></el-input>
         </el-form-item>
         <el-row>
           <el-col style="width:45%">
-          <el-form-item label="所属部门" prop="mid">
+            <el-form-item label="所属部门" prop="mid">
               <el-cascader
                 placeholder="部门"
                 :props="props"
@@ -134,9 +134,9 @@
           <el-col style="margin-left:10px;width:45%">
             <el-form-item label="性别" prop="sex">
               <el-radio-group v-model="form.sex">
-            <el-radio   label="男">男</el-radio>
-            <el-radio label="女">女</el-radio>
-            </el-radio-group>
+                <el-radio label="男">男</el-radio>
+                <el-radio label="女">女</el-radio>
+              </el-radio-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -151,7 +151,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col style="margin-left:10px;width:45%" >
+          <el-col style="margin-left:10px;width:45%">
             <el-form-item label="登录密码" prop="password">
               <el-input
                 type="password"
@@ -264,65 +264,87 @@ export default {
         ppid: undefined,
         mid: undefined
       },
-      rules:{
-        name: [{
+      rules: {
+        name: [
+          {
             required: true,
             message: "员工名不能为空",
             trigger: ["blur", "change"]
-          }],
-          age: [{
+          }
+        ],
+        age: [
+          {
             required: true,
             message: "年龄不能为空",
-            trigger: ["blur", "change"]
-          }],
-          educationalBackground: [{
+            trigger: ["blur"]
+          }
+        ],
+        educationalBackground: [
+          {
             required: true,
             message: "请选择学历",
-            trigger: [ "change"]
-          }],
-          politicalAppearance: [{
+            trigger: ["change"]
+          }
+        ],
+        politicalAppearance: [
+          {
             required: true,
             message: "请选择政治面貌",
-            trigger: [ "change"]
-          }],
-          phone: [{
+            trigger: ["change"]
+          }
+        ],
+        phone: [
+          {
             required: true,
             message: "电话号码不能为空",
             trigger: ["blur", "change"]
-          }],
-          mid: [{
+          }
+        ],
+        mid: [
+          {
             required: true,
             message: "请选择所属部门",
             trigger: "change"
-          }],
-          sex: [{
+          }
+        ],
+        sex: [
+          {
             required: true,
             message: "请选择员工性别",
             trigger: ["change"]
-          }],
-          username: [{
+          }
+        ],
+        username: [
+          {
             required: true,
             message: "登录名不能为空",
             trigger: ["blur", "change"]
-          }],
-          password: [{
+          }
+        ],
+        password: [
+          {
             required: true,
             message: "登录密码不能为空",
             trigger: ["blur", "change"]
-          }],
-          ppid: [{
+          }
+        ],
+        ppid: [
+          {
             required: true,
             message: "请选择岗位",
-            trigger: [ "change"]
-          }],
-          pid: [{
+            trigger: ["change"]
+          }
+        ],
+        pid: [
+          {
             required: true,
             message: "请选择角色",
             trigger: ["change"]
-          }],
-      deleteList: []
-    }
-    }
+          }
+        ],
+        deleteList: []
+      }
+    };
   },
   components: {
     // add
@@ -365,7 +387,8 @@ export default {
       console.log(this.form.mid);
       console.log(val);
       this.form.pname = "";
-      this.form.pid = undefined;
+      // this.form.pid = undefined;
+      this.form.ppid = undefined;
       this.api({
         url: "SysPostPermission/getPpost/" + val,
         method: "get"
@@ -392,32 +415,39 @@ export default {
           message: "请先勾选需要删除的用户"
         });
       } else {
-        let arr = [];
-        this.deleteList.filter(item => {
-          arr.push(item.sid);
-        });
-        let str = arr.join(",");
-        console.log(str);
-        this.api({
-          url: "SysStaff/delete",
-          method: "post",
-          params: {
-            str: str
-          }
-        }).then(res => {
-          if (res == 2) {
-            this.$message({
-              type: "error",
-              message: "请确保该员工当前没有进行中的任务或业务"
+        this.$alert("是否确定删除", "提示", {
+          showCancelButton: true,
+          showConfirmButton: true,
+          closeOnPressEscape: false,
+          callback: action => {
+            let arr = [];
+            this.deleteList.filter(item => {
+              arr.push(item.sid);
             });
-          } else {
-            {
-              this.$message({
-                type: "suucess",
-                message: "删除成功"
-              });
-              this.getList();
-            }
+            let str = arr.join(",");
+            console.log(str);
+            this.api({
+              url: "SysStaff/delete",
+              method: "post",
+              params: {
+                str: str
+              }
+            }).then(res => {
+              if (res == 2) {
+                this.$message({
+                  type: "error",
+                  message: "请确保该员工当前没有进行中的任务或业务"
+                });
+              } else {
+                {
+                  this.$message({
+                    type: "success",
+                    message: "删除成功"
+                  });
+                  this.getList();
+                }
+              }
+            });
           }
         });
       }
@@ -478,27 +508,28 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
-        this.api({
-          url: "SysStaff/add",
-          method: "post",
-          data: this.form
-        }).then(res => {
-          console.log(res);
-          if (res === 1) {
-            this.$message({
-              type: "success",
-              message: "添加成功"
-            });
-            this.getList();
-            this.dialogTableVisible = false;
-          } else {
-            this.$message({
-              type: "error",
-              message: "添加失败，该登录名重复"
-            });
-          }
-        });
-      }})
+          this.api({
+            url: "SysStaff/add",
+            method: "post",
+            data: this.form
+          }).then(res => {
+            console.log(res);
+            if (res === 1) {
+              this.$message({
+                type: "success",
+                message: "添加成功"
+              });
+              this.getList();
+              this.dialogTableVisible = false;
+            } else {
+              this.$message({
+                type: "error",
+                message: "添加失败，该登录名重复"
+              });
+            }
+          });
+        }
+      });
     },
     init(id) {
       this.form.id = id || 0;
@@ -592,7 +623,7 @@ export default {
       // this.form = {};
       // this.postList = [];
       this.getList();
-      this.form={
+      this.form = {
         staus: "",
         name: "",
         sex: "男",
@@ -603,12 +634,12 @@ export default {
         username: "",
         password: "",
         phone: "",
-        pname:"",
+        pname: "",
         createId: store.getters.userId,
         pid: undefined,
-        ppid:undefined,
+        ppid: undefined,
         mid: undefined
-      }
+      };
     },
     showUpdate(scope, $index) {
       console.log(scope);
@@ -623,35 +654,42 @@ export default {
         });
         console.log(this.postList);
       });
-      
+
       //显示修改对话框
       this.form = scope.row;
-      this.form.mid=scope.row.mid
+      this.form.mid = scope.row.mid;
       this.form.pid = parseInt(scope.row.pid);
       this.dialogStatus = "update";
       this.dialogTableVisible = true;
-      this.$refs["dataForm"].clearValidate();
+      // this.$refs["dataForm"].clearValidate();
     },
     update() {
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
-        this.api({
-          url: "SysStaff/update",
-          method: "put",
-          data: this.form
-        }).then(res => {
-          console.log(res);
-          if (res === 1) {
-            this.$message({
-              type: "success",
-              message: "添加成功"
-            });
-            this.dialogTableVisible = false;
-          }
-        });
-      }
-      })
+          this.$alert("是否确定修改", "提示", {
+            showCancelButton: true,
+            showConfirmButton: true,
+            closeOnPressEscape: false,
+            callback: action => {
+              this.api({
+                url: "SysStaff/update",
+                method: "put",
+                data: this.form
+              }).then(res => {
+                console.log(res);
+                if (res === 1) {
+                  this.$message({
+                    type: "success",
+                    message: "修改成功"
+                  });
+                  this.dialogTableVisible = false;
+                }
+              });
+            }
+          });
+        }
+      });
     },
     createArticle() {
       //保存新文章

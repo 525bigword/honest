@@ -5,17 +5,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.*;
+import com.xr.run.entity.vo.CultureVo;
 import com.xr.run.entity.vo.RdWorkVo;
 import com.xr.run.service.DatacollectionService;
 import com.xr.run.service.WindService;
 import com.xr.run.util.CommonUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/qt/qtwind")
@@ -26,10 +27,159 @@ public class FontWindController {
     private WindService windService;
 
     @GetMapping("get")
-    public String getQfwyList(String title, Integer pageNo, Integer pageSize){
-        Page page = new Page(pageNo,pageSize);
-        IPage<Wind> wind = windService.findWind(page, title);
-        String string = JSON.toJSONString(wind);
-        return string;
+    public String getQfwyList(String title, Integer pageNo, Integer pageSize) {
+        List<CultureVo> list = new ArrayList<>();
+        IPage<Wind> winds = windService.findWind1(new Page(), title);
+        IPage<Datacollection> dataConllections = datacollectionService.findDataConllection1(new Page(), title);
+        for (Datacollection record : dataConllections.getRecords()) {
+            CultureVo cultureVo = new CultureVo();
+            cultureVo.setId(record.getDid());
+            cultureVo.setContent(record.getDFileName());
+            cultureVo.setTitle(record.getDTitle());
+            cultureVo.setCname(record.getCname());
+            cultureVo.setType(0); //资料集锦
+            cultureVo.setCreateTime(record.getDCreateTime());
+            list.add(cultureVo);
+        }
+        for (Wind record : winds.getRecords()) {
+            CultureVo cultureVo = new CultureVo();
+            cultureVo.setId(record.getWid());
+            cultureVo.setContent(record.getWContent());
+            cultureVo.setTitle(record.getWTitle());
+            cultureVo.setCname(record.getCname());
+            cultureVo.setType(1); //清风文苑
+            cultureVo.setCreateTime(record.getWCreateTime());
+            list.add(cultureVo);
+        }
+        //排序
+        cultrueVoSort(list);
+        //分页
+        Integer count = list.size(); //记录总数
+        Integer pageCount = 0; //页数
+        if (count % pageSize == 0) {
+            pageCount = count / pageSize;
+        } else {
+            pageCount = count / pageSize + 1;
+        }
+
+        int fromIndex = 0; //开始索引
+        int toIndex = 0; //结束索引
+
+        if (pageNo > pageCount) {
+            pageNo = pageCount;
+        }
+        if (!pageNo.equals(pageCount)) {
+            fromIndex = (pageNo - 1) * pageSize;
+            toIndex = fromIndex + pageSize;
+        } else {
+            fromIndex = (pageNo - 1) * pageSize;
+            toIndex = count;
+        }
+        if (list.size() != 0) {
+            List<CultureVo> pageList = list.subList(fromIndex, toIndex);
+            String jsonString = JSON.toJSONString(pageList);
+            String jso = "{\"total\":" + count + ",\"pages\":" + pageCount + ",\"rows\":" + jsonString + "}";
+            return jso;
+        } else {
+            //没查找到返回
+            return "null";
+        }
     }
+
+    @RequestMapping("/getByType")
+    public String getByType(Integer type, String title, Integer pageNo, Integer pageSize) {
+        if (type == 0) {
+            //资料集锦
+            List<CultureVo> list = new ArrayList<>();
+            IPage<Datacollection> dataConllections = datacollectionService.findDataConllection1(new Page(pageNo, pageSize), title);
+            for (Datacollection record : dataConllections.getRecords()) {
+                CultureVo cultureVo = new CultureVo();
+                cultureVo.setId(record.getDid());
+                cultureVo.setContent(record.getDFileName());
+                cultureVo.setTitle(record.getDTitle());
+                cultureVo.setCname(record.getCname());
+                cultureVo.setType(0); //资料集锦
+                cultureVo.setCreateTime(record.getDCreateTime());
+                list.add(cultureVo);
+            }
+            return "{\"total\":" + dataConllections.getTotal() + ",\"pages\":" + dataConllections.getPages() + ",\"rows\":" + JSON.toJSONString(list) + "}";
+        } else {
+            //清风文苑
+            List<CultureVo> list = new ArrayList<>();
+            IPage<Wind> winds = windService.findWind1(new Page(pageNo, pageSize), title);
+            for (Wind record : winds.getRecords()) {
+                CultureVo cultureVo = new CultureVo();
+                cultureVo.setId(record.getWid());
+                cultureVo.setContent(record.getWContent());
+                cultureVo.setTitle(record.getWTitle());
+                cultureVo.setCname(record.getCname());
+                cultureVo.setType(1); //清风文苑
+                cultureVo.setCreateTime(record.getWCreateTime());
+                list.add(cultureVo);
+            }
+            return "{\"total\":" + winds.getTotal() + ",\"pages\":" + winds.getPages() + ",\"rows\":" + JSON.toJSONString(list) + "}";
+        }
+    }
+
+
+    @RequestMapping("/getCulById")
+    public String getCulById(String type, String id) {
+        if (id != null && !id.equals("null") && !id.equals("") && type != null && !type.equals("null") && !type.equals("")) {
+            if (Integer.parseInt(type) == 0) {
+                //资料集锦
+                Datacollection datacollection = datacollectionService.findDatacollectionById(Integer.parseInt(id));
+                CultureVo cultureVo = new CultureVo();
+                cultureVo.setId(datacollection.getDid());
+                cultureVo.setContent(datacollection.getDFileName());
+                cultureVo.setTitle(datacollection.getDTitle());
+                cultureVo.setCname(datacollection.getCname());
+                cultureVo.setType(0); //资料集锦
+                cultureVo.setUrl(datacollection.getDFile());
+                cultureVo.setCreateTime(datacollection.getDCreateTime());
+                return JSON.toJSONString(cultureVo);
+            } else {
+                //清风文苑
+                Wind windByWid = windService.findWindByWid(Integer.parseInt(id));
+                CultureVo cultureVo = new CultureVo();
+                cultureVo.setId(windByWid.getWid());
+                cultureVo.setContent(windByWid.getWContent());
+                cultureVo.setTitle(windByWid.getWTitle());
+                cultureVo.setCname(windByWid.getCname());
+                cultureVo.setType(1); //清风文苑
+                cultureVo.setCreateTime(windByWid.getWCreateTime());
+                return JSON.toJSONString(cultureVo);
+            }
+        }
+        return"null";
+}
+
+
+    private void cultrueVoSort(List<CultureVo> list) {
+        //Collections的sort方法默认是升序排列，如果需要降序排列时就需要重写compare方法
+        Collections.sort(list, new Comparator<CultureVo>() {
+            @Override
+            public int compare(CultureVo o1, CultureVo o2) {
+                try {
+                    //获取体检日期，并把其类型由String转成Date，便于比较。
+                    Date dt1 = o1.getCreateTime();
+                    Date dt2 = o2.getCreateTime();
+                    //以下代码决定按日期降序排序，若将return“-1”与“1”互换，即可实现升序。
+                    //getTime 方法返回一个整数值，这个整数代表了从 1970 年 1 月 1 日开始计算到 Date 对象中的时间之间的毫秒数。
+                    if (dt1.getTime() > dt2.getTime()) {
+                        return -1;
+                    } else if (dt1.getTime() < dt2.getTime()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+
+                } catch (Exception e) {
+                }
+                return 0;
+            }
+        });
+
+    }
+
+
 }

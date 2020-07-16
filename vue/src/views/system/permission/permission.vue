@@ -139,7 +139,7 @@
       :total="total"
     ></el-pagination>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog @close="close" :title="dialogStatus==='create'?'新增权限':'修改权限'" :visible.sync="dialogFormVisible">
       <el-form
         ref="temp"
         :rules="rules"
@@ -240,8 +240,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: "",
       textMap: {
-        update: "修改",
-        create: "新增"
+        update: "修改权限",
+        create: "增加权限"
       },
 
       listLoading: true,
@@ -253,12 +253,16 @@ export default {
   },
   computed: {},
   created() {
+    console.log('重置')
     this.getList();
   },
   methods: {
     swchange(val) {
       console.log(val);
       this.temp.requiredPermission = val ? 1 : 2;
+    },
+    close(){
+      this.getList();
     },
     handleCurrentChange(val) {
       //改变页码
@@ -379,7 +383,6 @@ export default {
                 message: "添加成功"
               });
               this.dialogFormVisible = false;
-              this.getList();
             }
           });
         } else {
@@ -389,6 +392,7 @@ export default {
     },
     handleUpdate(row){
       console.log(row)
+      this.dialogStatus='update'
       this.temp=row
       this.temp.permissionCode=this.temp.permissionCode.substring(this.temp.menuCode.length+1)
       this.dialogFormVisible = true
@@ -419,7 +423,6 @@ export default {
                   type: "success",
                   message: "修改成功"
                 });
-                this.getList();
                 this.dialogFormVisible = false;
               }else if(res===0){
                 this.$message({
@@ -434,7 +437,7 @@ export default {
     },
     handleDelete(row, index) {
       console.log(row, index);
-      this.$alert("将会会同时删除相关岗位下的此权限", "是否确定删除？", {
+      this.$alert("将会同时删除相关角色下的此权限", "是否确定删除？", {
         showCancelButton: true,
         showConfirmButton: true,
         closeOnPressEscape: false,

@@ -15,8 +15,6 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import moment from 'moment'
-import VueResource from 'vue-resource'
-Vue.use(VueResource)
 Vue.filter('comverTime', function(data, format) {
     return moment(data).format(format);
 });
@@ -27,11 +25,11 @@ Vue.prototype.api = api
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.mom = moment
     //全局的常量
-
-Vue.prototype.virtualIp = 'http://localhost:8080/uploadimg/' /* tmp */
-Vue.prototype.virtualdutyIp = 'http://localhost:8080/uploadimg/' /* 'http://localhost:4031/hoonest/duty' */
-Vue.prototype.virtualimgIp = 'http://localhost:8080/uploadimg/' /* 'http://localhost:4031/hoonest/img' */
-Vue.prototype.videoIp = 'http://localhost:4031/hoonest/vido' /* 'http://localhost:4031/hoonest/vido' */
+Vue.prototype.virtualIp = 'http://localhost:4031/hoonest/tmp'
+Vue.prototype.virtualdutyIp = 'http://localhost:4031/hoonest/duty'
+Vue.prototype.virtualimgIp = 'http://localhost:4031/hoonest/img'
+Vue.prototype.videoIp='http://localhost:4031/hoonest/vido'
+Vue.prototype.uploadimage='http://localhost:8080/upload'
     //生产环境时自动设置为 false 以阻止 vue 在启动时生成生产提示。
 Vue.config.productionTip = (process.env.NODE_ENV != 'production')
 new Vue({

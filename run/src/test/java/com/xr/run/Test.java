@@ -10,6 +10,11 @@
  */
 package com.xr.run;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xr.run.dao.SystemMessageMapper;
+import com.xr.run.entity.SystemMessage;
+import com.xr.run.service.SystemMessageService;
 import com.xr.run.service.impl.HomePageSeviceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +32,16 @@ public class Test {
 
     @Autowired
     private HomePageSeviceImpl homePageSevice;
+    @Autowired
+    private SystemMessageMapper systemMessageMapper;
 
     @org.junit.jupiter.api.Test
     public void htmlDestTest(){
         homePageSevice.a();
+    }
+    @org.junit.jupiter.api.Test
+    public void test(){
+        IPage<SystemMessage> systemMessage = systemMessageMapper.findSystemMessage(new Page(1, 5), "", "");
+        System.out.println(systemMessage.getSize());
     }
 }

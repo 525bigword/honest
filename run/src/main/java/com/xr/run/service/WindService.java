@@ -40,4 +40,5 @@ public interface WindService extends IService<Wind> {
     Wind findWindByWid(int wid);
 
 
+    IPage<Wind> findWind1(Page page, String title);
 }

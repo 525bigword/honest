@@ -28,4 +28,5 @@ public class SystemMessage {
         }
         return sysStaff.getSid();
     }
+    private String cname;
 }

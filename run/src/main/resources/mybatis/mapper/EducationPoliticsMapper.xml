@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xr.run.dao.educationPolitics.EducationPoliticsMapper">
     <resultMap id="basemap" type="com.xr.run.entity.educationpolitics.EducationPolitics">
-        <result column="id" property="id"></result>
+    <result column="id" property="id"></result>
         <result column="title" property="title"></result>
         <result column="source" property="source"></result>
         <result column="type" property="type"></result>
@@ -20,8 +20,8 @@ select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.cre
     </select>
     <!--多条件查询廉政教育-->
     <select id="findwhereEducation" resultMap="basemap">
-        select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname  from Education_politics ep
-        where ep.staus!=-1
+       select ep.id,ep.title,ep.source,ep.type,ep.content,ep.time,ep.create_time,ep.create_id,ep.staus,ep.createname  from Education_politics ep
+       where ep.staus!=-1
         <if test="title != null and !title.equals('')">
             and ep.title like CONCAT('%',#{title},'%')</if>
         <if test="content != null and !content.equals('')">

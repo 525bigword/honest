@@ -248,7 +248,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import qs from 'qs'
-  import {list,add,del,findbyName,shbc,turndept,kezhangbc,deptbc,leaderbc,zzbc,finddb} from '@/api/daily/letter'
+  import {list,add,del,findbyName,finddb} from '@/api/daily/loginletter'
   import {initdept,initemploy,letterreporter} from '@/api/nologin/nologin'
   import {getFileGroup} from '@/api/duty/talk'
   export default {  computed: {
@@ -258,8 +258,30 @@
       ])
     },
     created() {
+    let posdata=qs.stringify({nickname:this.nickname})
+    this.userInfo={}
 
-        this.initList();
+    letterreporter().then((response)=>{
+      this.userInfo.letterId=response.letterid
+    this.userInfo.lcreateName =this.nickname
+    this.userInfo.lcomplainantName=this.nickname
+    finddb(posdata).then((response)=>{
+      // console.log('测试',response.list.mname)
+      this.userInfo.lpostId=response.list.pname
+    this.userInfo.ldeptId=response.list.mname
+    this.$set(this.userInfo,'lcreateTime',new Date())
+    this.tf='none';
+    this.ad=''
+    this.tj='',//提交按钮
+      this.bjbc='none'//编辑保存按钮隐藏
+    this.ysnr=false//原始信访内容
+    this.beunit=false//被反映人单位
+    this.beduty=false//被反映人职务
+    this.bename=false//被反映人姓名
+  })
+
+  })
+
     },
     methods:{//设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
@@ -267,46 +289,8 @@
       },
       rowClass({row, rowIndex}){//设置表头居中
         return 'text-align:center';
-      },//提交审核
-      tjsh(){
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid})
-        tjshme(posdata).then((response)=>{
-          this.tf='';
-        this.ad='none'
-        this.initList();
-        this.$notify({
-          title: '成功',
-          message: response.message,
-          type: 'success',
-          duration: 2000
-        })
-      })
       },//新增
       add(){
-        let posdata=qs.stringify({nickname:this.nickname})
-this.userInfo={}
-
-        letterreporter().then((response)=>{
-          this.userInfo.letterId=response.letterid
-        this.userInfo.lcreateName =this.nickname
-        this.userInfo.lcomplainantName=this.nickname
-        finddb(posdata).then((response)=>{
-         // console.log('测试',response.list.mname)
-        this.userInfo.lpostId=response.list.pname
-        this.userInfo.ldeptId=response.list.mname
-        this.$set(this.userInfo,'lcreateTime',new Date())
-        this.tf='none';
-        this.ad=''
-        this.tj='',//提交按钮
-          this.bjbc='none'//编辑保存按钮隐藏
-        this.ysnr=false//原始信访内容
-        this.beunit=false//被反映人单位
-        this.beduty=false//被反映人职务
-        this.bename=false//被反映人姓名
-      })
-
-      })
 
 
       },
@@ -327,7 +311,7 @@ this.userInfo={}
         return '已审核'
       }
     },
-      bjbcmethod(){},//重置
+    //重置
      onrest(){
         this.search=''
        this.besearch=''
@@ -405,14 +389,7 @@ this.userInfo={}
       initList() {
         let status;
         let mid;
-        let createid;
-      if(this.role.includes('普通用户')){
-        lCreateId:this.userId
-        }
-/*
-        if(this.role.includes('单位/部门负责人')){
-          mid=this.mid;
-        }*/
+        let createid=this.userId
         let posdata=qs.stringify({
           mid:mid,
           lStatus:status,
@@ -445,23 +422,6 @@ this.userInfo={}
         setTimeout(() => {
           this.isShowAddressInfo = true;
       }, 10);
-
-       /* let postdata=qs.stringify({
-          mid:row.puni.split(',').map(Number)[row.puni.split(',').map(Number).length-1]
-        })
-        initdept(postdata).then((response)=>{
-
-            this.options = response.list
-        let postsdata=qs.stringify({
-          ppid:this.userInfo.lpbrPostId
-        })
-        initemploy(postsdata).then((response)=>{
-
-          this.optionss = response.list
-
-       // console.log('职务'+JSON.stringify(response))
-
-      })*/
 
         this.tf='none';
         this.ad=''//编辑/审核页面出来,
@@ -549,7 +509,8 @@ this.userInfo={}
       onSearch() {
         let postData = qs.stringify({
           lComplainantName:this.search,
-          lPersonBeReported:this.besearch
+          lPersonBeReported:this.besearch,
+          lCreateId:this.userId
         });
         this.listLoading = true
         findbyName(postData).then((response) =>{
