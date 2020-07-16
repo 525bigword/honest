@@ -5,13 +5,12 @@ import com.xr.run.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,30 +32,31 @@ public class Upload {
     @Value("${file.uploadImage}")
     private String imagePth;
     @PostMapping("/import")
-    public JSONObject importData(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importData(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, realBasePath);
         return CommonUtil.successJson(filePath);
     }
     @RequestMapping("/importDuty")
-    public JSONObject importDuty(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importDuty(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, dutyPath);
         return CommonUtil.successJson(filePath);
     }
 
     @RequestMapping("/image")
-    public JSONObject importImage(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importImage(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, imagePth);
         return CommonUtil.successJson(filePath);
     }
 
     @RequestMapping("/vido")
-    public JSONObject uploadfile(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject uploadfile(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
+        System.out.println("anndfs===========");
         Map filePath = getFilePath(file, req, accessPath, vidoPath);
         return CommonUtil.successJson(filePath);
     }
 
 
-    public Map getFilePath(MultipartFile file, HttpServletRequest req,String netPath,String thisPath)throws IOException{
+    public Map getFilePath(MultipartFile file, HttpServletRequest req, String netPath, String thisPath)throws IOException{
         String format = sdf.format(new Date());
         // 域名访问的相对路径（通过浏览器访问的链接-虚拟路径）
         String saveToPath = netPath + format;

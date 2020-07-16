@@ -4,6 +4,8 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.unit.DataSize;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.MultipartConfigElement;
 
@@ -18,4 +20,5 @@ public class FileConfig {
         factory.setMaxRequestSize(DataSize.parse("500MB"));
         return factory.createMultipartConfig();
     }
+
 }

@@ -2,6 +2,7 @@ server:
   servlet:
     context-path: /honest
   port: 8080
+  max-http-header-size: 102400000000
 logging:
   level:
     root: debug
@@ -9,8 +10,9 @@ logging.level.com.xr.run.dao: debug
 spring:
   servlet:
     multipart:
-      max-request-size: 500MB
-      max-file-size: 500MB
+      enabled: true
+      max-request-size: 2000MB
+      max-file-size: 2000MB
   mvc:
     static-path-pattern: /**
   resources:
