@@ -375,7 +375,8 @@
 			</label>
 		</p>
 		<div id="box">
- 				<input type="hidden" id="firstPage">
+			    <input type="hidden" id="typeOne" />
+			    <input type="hidden" id ="idOne"/>
  				<input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
 				<div id="search" onclick="submit();">搜索</div>
  		</div>
@@ -399,12 +400,24 @@
         /*请求成功时调用
             getData: 返回的数据
         */
-        function insertContent(getData){
+        function insertContent(getData,pageNo){
             console.log("getData")
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/181/"+data.firstPage+".html?id="+data.id;//a链接地址
+                if(pageNo===1) {
+                    if(getData[0].type=="廉政要闻"){
+                        $("#typeOne").val(0);
+					}else if(getData[0].type=="文件制度"){
+                        $("#typeOne").val(1);
+					}else if(getData[0].type=="领导讲话"){
+                        $("#typeOne").val(2);
+					}else {
+                        $("#typeOne").val(3);
+					}
+                    $("#idOne").val(getData[0].id);
+                }//获取一条数据
+                var url = "http://localhost:4031/ms-mcms/html/2/181/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id;//a链接地址
                 var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
@@ -422,7 +435,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "http://localhost:8080/qt/educations/get";
+            var URL = "http://localhost:8080/honest/qt/educations/get";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,
@@ -437,7 +450,7 @@
                             //没有数据的时候
                             insertError();
                         } else {
-                            insertContent(data.records);
+                            insertContent(data.records,pageNo);
                         }
                         $("#page").paging({
                             pageNum: pageNo, // 当前页面

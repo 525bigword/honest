@@ -78,7 +78,7 @@
           <br/>
           <div align="right">
             <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
-            <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary"  @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
             <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
             <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
             <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
@@ -157,14 +157,16 @@
           return '已审核'
         }
       },
-      gxmethod(){
-        let postData = qs.stringify({
-          id:this.userInfo.id,
-          title:this.userInfo.title,
-          content:this.userInfo.content
-        });
-        updatecontent(postData).then((responese)=>{
-          this.ad='none'//编辑页面隐藏
+      gxmethod(formName){
+        this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let postData = qs.stringify({
+            id:this.userInfo.id,
+            title:this.userInfo.title,
+            content:this.userInfo.content
+          });
+          updatecontent(postData).then((responese)=>{
+            this.ad='none'//编辑页面隐藏
           this.tf=''//表格页面显示
           this.initList()
           this.$notify({
@@ -174,7 +176,12 @@
             duration: 2000
           })
         })
-        console.log('gx'+this.userInfo.id)
+          console.log('gx'+this.userInfo.id)
+        } else {
+        return false;
+      }
+      });
+
       },
       tjshmethod(formName){
         if(this.dialogTitle=="增加"){
@@ -218,21 +225,36 @@
           });
 
         }else{
-          let postData = qs.stringify({
-            id:this.userInfo.id
-          });
-          console.log('tjsh'+this.userInfo.id)
-          subaudit(postData).then((response)=>{
-            this.ad='none'//编辑页面隐藏
-            this.tf=''//表格页面显示
-            this.initList()
-            this.$notify({
-              title: '成功',
-              message: '提交成功',
-              type: 'success',
-              duration: 2000
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              let postData = qs.stringify({
+                id:this.userInfo.id,
+                title:this.userInfo.title,
+                content:this.userInfo.content
+              });
+              updatecontent(postData).then((responese)=>{
+                let postData = qs.stringify({
+                  id:this.userInfo.id
+                });
+              console.log('tjsh'+this.userInfo.id)
+              subaudit(postData).then((response)=>{
+                this.ad='none'//编辑页面隐藏
+              this.tf=''//表格页面显示
+              this.initList()
+              this.$notify({
+                title: '成功',
+                message: '提交成功',
+                type: 'success',
+                duration: 2000
+              })
             })
-          })}
+            })
+              console.log('gx'+this.userInfo.id)
+            } else {
+              return false;
+        }
+        });
+   }
       },//提交审核的方法
       tgmethod(val){
 
@@ -282,7 +304,12 @@
           })
         }
         else {
-          var ids = data.map(item => { return { status: item.status } })
+          this.$confirm('请确认是否删除?', '温馨提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            var ids = data.map(item => { return { status: item.status } })
           var ids1 =true
           for(var i = 0; i < ids.length; i++) {
             console.log('ids[i].status'+ids[i].status)
@@ -306,14 +333,22 @@
             //删除的方法
             del(postData).then((response) =>{
               this.initList();
-              this.$notify({
-                title: '成功',
-                message: response.message,
-                type: 'success',
-                duration: 2000
-              })
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
             })
-          }}
+          })
+          }
+        }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+            this.initList();
+        });
+   }
       },//打开新增页面
       add() {
         this.nr=false

@@ -24,7 +24,6 @@ public class EducationPolitics {
   private Integer createId;
   private String staus;
   private String cname;
-  private Integer prev;
   private Integer next;
 
 }

@@ -13,7 +13,9 @@ package com.xr.run.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.*;
+import com.xr.run.dao.tam.SmokestyleMapper;
 import com.xr.run.entity.*;
+import com.xr.run.entity.tam.Smokestyle;
 import com.xr.run.entity.vo.CultureVo;
 import com.xr.run.entity.vo.RdWorkVo;
 import com.xr.run.entity.vo.RiskVo;
@@ -99,8 +101,8 @@ public class HomePageSeviceImpl implements HomePageSevice {
     private SystemMessageMapper systemMessageMapper;
 
     //潭烟风貌
-    //private
-
+    @Autowired
+    private SmokestyleMapper smokestyleMapper;
 
     //查询前五的责任监督
     public void loadDuty(Map map) {
@@ -113,9 +115,9 @@ public class HomePageSeviceImpl implements HomePageSevice {
             list0.add(su);
             mo.put("dutyTitle", su.getDutyTitle()); //标题
             mo.put("dutyContent", su.getDutyContent()); //内容
-            mo.put("newTime",su.getNewTime());
-            mo.put("name",su.getName());
-            mo.put("dutyType",su.getDutyType());
+            mo.put("newTime", su.getNewTime());
+            mo.put("name", su.getName());
+            mo.put("dutyType", su.getDutyType());
             createIndexHtml(destPath + "/207/", "207/suList", (289 + i0) + ".html", mo);
             i0++;
         }
@@ -129,7 +131,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             map.put("duContent", s);
         }
         map.put("supervise", list0);
-     }
+    }
 
     //责任纪实
     public void loadRdWork(Map map) {
@@ -146,7 +148,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
         //将查询出来数据存在list1，按照时间降序进行排序
         //工作计划
-        int i0=0;
+        int i0 = 0;
         for (RdWorkPlan rdWorkPlan : rdWorkPlans) {
             //去除html标签
             RdWorkVo rdWorkVo = new RdWorkVo();
@@ -157,9 +159,9 @@ public class HomePageSeviceImpl implements HomePageSevice {
             rdWorkVo.setId(rdWorkPlan.getRdid());
             rdWorkVo.setName(rdWorkPlan.getName());
             list1.add(rdWorkVo);
-            Map map1= new HashMap();
+            Map map1 = new HashMap();
             map1.put("rdWorkVo", rdWorkVo);
-            if(i0<5){
+            if (i0 == 0) {
                 createIndexHtml(destPath + "/185/0/", "185/rdList", rdWorkVo.getId() + ".html", map1);
             }
             i0++;
@@ -167,7 +169,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
 
         //工作部署
-        int i1=0;
+        int i1 = 0;
         for (RdWorkDeployment rdWorkDeployment : rdWorkDeployments) {
             //去除html标签
             RdWorkVo rdWorkVo = new RdWorkVo();
@@ -178,15 +180,15 @@ public class HomePageSeviceImpl implements HomePageSevice {
             rdWorkVo.setId(rdWorkDeployment.getId());
             rdWorkVo.setName(rdWorkDeployment.getName());
             list1.add(rdWorkVo);
-            Map map1= new HashMap();
+            Map map1 = new HashMap();
             map1.put("rdWorkVo", rdWorkVo);
-            if(i1<5){
+            if (i1 == 0) {
                 createIndexHtml(destPath + "/185/1/", "185/rdList", rdWorkVo.getId() + ".html", map1);
             }
             i1++;
         }
         //廉政谈话
-        int i2=0;
+        int i2 = 0;
         for (RdHonestConversation rdHonestConversation : rdHonestConversations) {
             //去除html标签
             RdWorkVo rdWorkVo = new RdWorkVo();
@@ -197,15 +199,15 @@ public class HomePageSeviceImpl implements HomePageSevice {
             rdWorkVo.setId(rdHonestConversation.getId());
             rdWorkVo.setName(rdHonestConversation.getName());
             list1.add(rdWorkVo);
-            Map map1= new HashMap();
+            Map map1 = new HashMap();
             map1.put("rdWorkVo", rdWorkVo);
-            if(i2<5){
+            if (i2 == 0) {
                 createIndexHtml(destPath + "/185/2/", "185/rdList", rdWorkVo.getId() + ".html", map1);
             }
             i2++;
         }
         //主体责任
-        int i3 =0;
+        int i3 = 0;
         for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities) {
             //去除html标签
             RdWorkVo rdWorkVo = new RdWorkVo();
@@ -216,9 +218,9 @@ public class HomePageSeviceImpl implements HomePageSevice {
             rdWorkVo.setId(rdEntityResponsibility.getId());
             rdWorkVo.setName(rdEntityResponsibility.getName());
             list1.add(rdWorkVo);
-            Map map1= new HashMap();
+            Map map1 = new HashMap();
             map1.put("rdWorkVo", rdWorkVo);
-            if(i3<5){
+            if (i3 == 0) {
                 createIndexHtml(destPath + "/185/3/", "185/rdList", rdWorkVo.getId() + ".html", map1);
             }
             i3++;
@@ -232,6 +234,20 @@ public class HomePageSeviceImpl implements HomePageSevice {
                 list1 = list1.subList(0, list1.size());
             } else {
                 list1 = list1.subList(0, 5);
+            }
+            for (RdWorkVo rdWorkVo : list1) {
+                Map map1 = new HashMap();
+                map1.put("rdWorkVo", rdWorkVo);
+                if (rdWorkVo.getType() == 0) {
+                    createIndexHtml(destPath + "/185/0/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                } else if (rdWorkVo.getType() == 1) {
+                    createIndexHtml(destPath + "/185/1/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+
+                } else if (rdWorkVo.getType() == 2) {
+                    createIndexHtml(destPath + "/185/2/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                } else {
+                    createIndexHtml(destPath + "/185/3/", "185/rdList", rdWorkVo.getId() + ".html", map1);
+                }
             }
 
         } else {
@@ -277,12 +293,48 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
     //廉政教育
     private void loadEducation(Map map) {
+        Map map0 = new HashMap();
         //查找
+        EducationPolitics allEducation = educationPoliticsMapper.findAllEducationsByType("廉政要闻");
+        map0.put("education", allEducation);
+        createIndexHtml(destPath + "/181/0/", "181/eduList", allEducation.getId() + ".html", map0);
+
+        Map map1 = new HashMap();
+        //查找
+        EducationPolitics allEducation1 = educationPoliticsMapper.findAllEducationsByType("文件制度");
+        map1.put("education", allEducation1);
+        createIndexHtml(destPath + "/181/1/", "181/eduList", allEducation1.getId() + ".html", map1);
+
+        Map map2 = new HashMap();
+        //查找
+        EducationPolitics allEducation2 = educationPoliticsMapper.findAllEducationsByType("领导讲话");
+        map2.put("education", allEducation2);
+        createIndexHtml(destPath + "/181/2/", "181/eduList", allEducation2.getId() + ".html", map2);
+
+        Map map3 = new HashMap();
+        //查找
+        EducationPolitics allEducation3 = educationPoliticsMapper.findAllEducationsByType("警钟长鸣");
+        map3.put("education", allEducation3);
+        createIndexHtml(destPath + "/181/3/", "181/eduList", allEducation3.getId() + ".html", map3);
+
         List<EducationPolitics> educationPolitics = educationPoliticsMapper.findAllEducationsTopNine();
+
         for (EducationPolitics education : educationPolitics) {
-            Map map1 = new HashMap();
-            map1.put("education", education);
-            createIndexHtml(destPath + "/181/", "181/eduList", education.getId() + ".html", map1);
+            Map map4 = new HashMap();
+            map4.put("education", education);
+            if (education.getType().equals("廉政要闻")) {
+                education.setNext(0);
+                createIndexHtml(destPath + "/181/0/", "181/eduList", education.getId() + ".html", map4);
+            } else if (education.getType().equals("文件制度")) {
+                education.setNext(1);
+                createIndexHtml(destPath + "/181/1/", "181/eduList", education.getId() + ".html", map4);
+            } else if (education.getType().equals("领导讲话")) {
+                education.setNext(2);
+                createIndexHtml(destPath + "/181/2/", "181/eduList", education.getId() + ".html", map4);
+            } else {
+                education.setNext(3);
+                createIndexHtml(destPath + "/181/3/", "181/eduList", education.getId() + ".html", map4);
+            }
         }
         if (educationPolitics.size() == 0) {
             EducationPolitics e = new EducationPolitics();
@@ -350,8 +402,8 @@ public class HomePageSeviceImpl implements HomePageSevice {
         getMoreEducation();
         //获得不同的廉政教育
         getDifferentEducation();
-        
-        
+
+
         //TODO 通知公告
         loadSystemMsg(map);
 
@@ -364,20 +416,20 @@ public class HomePageSeviceImpl implements HomePageSevice {
         loadTam(map);
 
 
-
         createIndexHtml(destPath, "HomePage", "index.html", map);
     }
 
     //潭烟风貌
     private void loadTam(Map map) {
 
+        List<Smokestyle> allSmokestyle = smokestyleMapper.findAllSmokestyle();
 
 
     }
 
     //不同廉政文化
     private void getDifferentCultrue() {
-       //资料集锦
+        //资料集锦
         Map map0 = new HashMap();
         map0.put("type", 0);
         createIndexHtml(destPath + "/182/0/", "182/indexIn", "index.html", map0);
@@ -389,13 +441,13 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
     //廉政文化、更多
     private void getMoreCultrue() {
-        createIndexHtml(destPath+"/182/", "182/index", "index.html", null);
+        createIndexHtml(destPath + "/182/", "182/index", "index.html", null);
     }
 
 
     //纪检报表更多
     private void getMoreReport() {
-        createIndexHtml(destPath+"/189/", "189/index", "index.html", null);
+        createIndexHtml(destPath + "/189/", "189/index", "index.html", null);
     }
 
     //生成不同的风险防控模块
@@ -416,12 +468,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
     }
 
 
-
-
     //通知公告
     private void loadSystemMsg(Map map) {
         List<SystemMessage> list = new ArrayList();
-        IPage<SystemMessage> systemMessage = systemMessageMapper.findSystemMessage(new Page(1,7),"", "");
+        IPage<SystemMessage> systemMessage = systemMessageMapper.findSystemMessage(new Page(1, 7), "", "");
         for (SystemMessage record : systemMessage.getRecords()) {
             list.add(record);
         }
@@ -430,7 +480,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             map.put("msgContent", s);
             for (SystemMessage message : list) {
                 Map map1 = new HashMap();
-                map1.put("message",message);
+                map1.put("message", message);
                 createIndexHtml(destPath + "/211/", "211/msgList", message.getAid() + ".html", map1);
             }
         } else {
@@ -477,7 +527,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         IPage<Wind> winds = windMapper.findWind1(new Page(), "");
 
         List<CultureVo> list = new ArrayList<>();
-        int i0 =0;
+        int i0 = 0;
         for (Datacollection record : dataConllections.getRecords()) {
             CultureVo cultureVo = new CultureVo();
             cultureVo.setId(record.getDid());
@@ -489,13 +539,13 @@ public class HomePageSeviceImpl implements HomePageSevice {
             cultureVo.setUrl(record.getDFile());
             list.add(cultureVo);
             Map map1 = new HashMap();
-            map1.put("cultures",cultureVo);
-            if(i0<6){
-                createIndexHtml(destPath + "/182/"+cultureVo.getType()+"/", "182/culList", cultureVo.getId() + ".html", map1);
+            map1.put("cultures", cultureVo);
+            if (i0 == 0) {
+                createIndexHtml(destPath + "/182/" + cultureVo.getType() + "/", "182/culList", cultureVo.getId() + ".html", map1);
             }
             i0++;
         }
-        int i1= 0;
+        int i1 = 0;
         for (Wind record : winds.getRecords()) {
             CultureVo cultureVo = new CultureVo();
             cultureVo.setId(record.getWid());
@@ -506,9 +556,9 @@ public class HomePageSeviceImpl implements HomePageSevice {
             cultureVo.setCreateTime(record.getWCreateTime());
             list.add(cultureVo);
             Map map1 = new HashMap();
-            map1.put("cultures",cultureVo);
-            if(i1<6){
-                createIndexHtml(destPath + "/182/"+cultureVo.getType()+"/", "182/culList", cultureVo.getId() + ".html", map1);
+            map1.put("cultures", cultureVo);
+            if (i1 == 0) {
+                createIndexHtml(destPath + "/182/" + cultureVo.getType() + "/", "182/culList", cultureVo.getId() + ".html", map1);
             }
             i1++;
         }
@@ -524,13 +574,13 @@ public class HomePageSeviceImpl implements HomePageSevice {
             }
             for (CultureVo cultureVo : list) {
                 Map map1 = new HashMap();
-                map1.put("cultures",cultureVo);
-                if(cultureVo.getType()==0){
+                map1.put("cultures", cultureVo);
+                if (cultureVo.getType() == 0) {
                     //清风文苑
-                    createIndexHtml(destPath + "/182/"+cultureVo.getType()+"/", "182/culList", cultureVo.getId() + ".html", map1);
-                }else{
+                    createIndexHtml(destPath + "/182/" + cultureVo.getType() + "/", "182/culList", cultureVo.getId() + ".html", map1);
+                } else {
                     //资料集锦
-                    createIndexHtml(destPath + "/182/"+cultureVo.getType()+"/", "182/culList", cultureVo.getId() + ".html", map1);
+                    createIndexHtml(destPath + "/182/" + cultureVo.getType() + "/", "182/culList", cultureVo.getId() + ".html", map1);
                 }
             }
         } else {
@@ -577,6 +627,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex(new Page(), "");
         IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(), "");
         List<RiskVo> list = new ArrayList<>();
+        int i0 = 0;
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
             RiskVo riskVo = new RiskVo();
             riskVo.setCreateTime(postriskcombing.getPCreateTime());
@@ -587,7 +638,15 @@ public class HomePageSeviceImpl implements HomePageSevice {
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);
+            Map map1 = new HashMap();
+            map1.put("riskVo", riskVo);
+            if (i0 == 0) {
+                createIndexHtml(destPath + "/195/0/", "195/riList", riskVo.getId() + ".html", map1);
+            }
+            i0++;
+
         }
+        int i1 = 0;
         for (Processrick processrick : processrickAll.getRecords()) {
             RiskVo riskVo = new RiskVo();
             String s = processrick.getProInfomation();
@@ -597,8 +656,14 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setId(processrick.getProid());
             riskVo.setCname(processrick.getProCreateName());
             //状态
-            riskVo.setType(1); //岗位风险
+            Map map1 = new HashMap();
+            map1.put("riskVo", riskVo);
+            riskVo.setType(1); //流程风险
             list.add(riskVo);
+            if (i1 == 0) {
+                createIndexHtml(destPath + "/195/1/", "195/riList", riskVo.getId() + ".html", map1);
+            }
+            i1++;
         }
         listSortriskVos(list);
         if (list.size() != 0) {
@@ -614,7 +679,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
                 map1.put("riskVo", riskVo);
                 if (riskVo.getType() == 0) {
                     createIndexHtml(destPath + "/195/0/", "195/riList", riskVo.getId() + ".html", map1);
-                }else{
+                } else {
                     createIndexHtml(destPath + "/195/1/", "195/riList", riskVo.getId() + ".html", map1);
                 }
             }
@@ -690,12 +755,14 @@ public class HomePageSeviceImpl implements HomePageSevice {
         Context context = new Context();
         context.setVariables(map);
         File file = new File(path);
-        if(file.exists()){
+        if (file.exists()) {
             //文件夹存在就删除
-           file.delete();
+            System.out.println("文件夹存在");
+            file.delete();
+        } else {
+            System.out.println("文件夹不存在");
+            file.mkdirs();
         }
-         file.mkdirs();
-
         // 输出流
         //创建index.html页面，"rdList.html"
         File dest = new File(path, child);

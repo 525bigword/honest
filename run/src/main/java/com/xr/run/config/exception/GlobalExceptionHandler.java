@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.ErrorEnum;
 import com.xr.run.util.model.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
@@ -23,9 +24,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice
 @ResponseBody
+@Slf4j
 public class GlobalExceptionHandler {
-	private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-
 	@ExceptionHandler(value = Exception.class)
 	public JSONObject defaultErrorHandler(HttpServletRequest req, Exception e) {
 		String errorPosition = "";
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
 		JSONObject errorObject = new JSONObject();
 		errorObject.put("errorLocation", e.toString() + "    错误位置:" + errorPosition);
 		jsonObject.put("info", errorObject);
-		logger.error("异常", e);
+		log.error("异常", e);
 		return jsonObject;
 	}
 

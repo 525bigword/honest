@@ -330,10 +330,10 @@
 				<span><label>风险防控</label></span>
 				<ul class="list-style-none">
 					<li>
-						<span style="background-color: #3D7D53;" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/287/index.html','_self')"><label><a>岗位风险梳理</a></label></span>
+						<span th:class="${type==0}?'active-span-title':''"  onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/0/index.html','_self')"><label><a>岗位风险梳理</a></label></span>
 					</li>
 					<li>
-						<span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_self')"><label><a>流程风险梳理</a></label></span>
+						<span th:class="${type==1}?'active-span-title':''"  onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/1/index.html','_self')"><label><a>流程风险梳理</a></label></span>
 					</li>
 				</ul>
 			</li>
@@ -345,12 +345,16 @@
 			<label>
 				<a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
 				&gt;
-				<a href="http://localhost:4031/ms-mcms/html/2/195/index.html">风险防控</a>
+				<a  href="http://localhost:4031/ms-mcms/html/2/195/index.html">风险防控</a>
 				&gt;
-				<a href="http://localhost:4031/ms-mcms/html/2/195/287/index.html">岗位风险梳理</a>
+				<a th:if="${type==0}" href="http://localhost:4031/ms-mcms/html/2/195/0/index.html">岗位风险梳理</a>
+				<a th:if="${type==1}" href="http://localhost:4031/ms-mcms/html/2/195/1/index.html">流程风险梳理</a>
 			</label>
 		</p>
 		<div id="box">
+			<input type="hidden" id="typeOne" />
+			<input type="hidden" id ="idOne"/>
+			<input type="hidden" th:value="${type}" id="type"/>
 			<input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
 			<div id="search" onclick="submit();">搜索</div>
 		</div>
@@ -369,12 +373,16 @@
         /*请求成功时调用
             getData: 返回的数据
         */
-        function insertContent(getData){
+        function insertContent(getData,pageNo){
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/195/287/490.html?id="+data.id;			//a链接地址
-                var title = data.prProject;		//标题
+                if(pageNo==1) {
+                    $("#typeOne").val(getData[0].type);
+                    $("#idOne").val(getData[0].id);
+                }//获取一条数据
+                var url = "http://localhost:4031/ms-mcms/html/2/195/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id+"&type="+data.type;			//a链接地址
+                var title = data.project;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
             $(".content-list ul").html(htmlContent);
@@ -386,9 +394,7 @@
         }
         function submit() {
             var title = $("input[name='basic_title']").val();
-            if(title){
-                listData(title);
-            }
+            listData(title);
         }
         function listData(title,pageNo) {
             if(!title){
@@ -397,18 +403,25 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "http://localhost:4031/ms-mcms/yancao/postRisk/list.do";
+            var type = $("#type").val();
+            var URL = "http://localhost:8080/honest/qt/risk/getRiskByType";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,
                 url: URL,
                 type: "get",
-                data: {prProject: title,pageNo: pageNo,pageSize: 10},
-                success: function(data) {
-                    insertContent(data.rows);
+                data: {prProject: title,pageNo: pageNo,pageSize: 10,type:type},
+                success: function(da) {
+                    var data = eval("("+da+")");
+                    if(data.total===0){
+                        //没有数据的时候
+                        insertError();
+                    }else {
+                        insertContent(data.rows,pageNo);
+                    }
                     $("#page").paging({
                         pageNum: pageNo, // 当前页面
-                        totalNum: Math.round(data.total/10), // 总页码
+                        totalNum: data.pages, // 总页码
                         totalList: data.total, // 记录总数量
                         callback: function (num) { //回调函数
                             listData(title,num);

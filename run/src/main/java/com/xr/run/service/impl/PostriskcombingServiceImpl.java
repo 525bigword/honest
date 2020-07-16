@@ -62,4 +62,9 @@ public class PostriskcombingServiceImpl  extends ServiceImpl<PostriskcombingMapp
     public Postriskcombing findByPid(Integer pid) {
         return baseMapper.findPostriskcombingByPid(pid);
     }
+
+    @Override
+    public IPage<Postriskcombing> findPostriskCombingIndex1(Page page, String prProject) {
+        return postriskcombingMapper.findPostriskCombingIndex1(page,prProject);
+    }
 }
