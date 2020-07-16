@@ -752,10 +752,11 @@ export default {
     },
     // 显示添加的对话框
     handleCreate() {
-      this.$refs['dataForm'].clearValidate()
-      // 重置表单数据
       this.resetTemp();
       this.xianshi();
+      this.$refs["dataForm"].clearValidate();
+      // 重置表单数据
+      
       this.temp.dnumId = this.mom(new Date()).format("YYMMDDHHmmss");
       this.temp.sysStaff.name = this.nickname;
       this.temp.sysStaff.sid = this.userId;
@@ -1119,7 +1120,7 @@ export default {
     },
     handleStatusUpdate(row){
       this.temp=row
-      if(this.temp.bid!==''&&this.temp.bid!=='1,'){
+      if(this.temp.bid===''||this.temp.bid===null||this.temp.bid===0){
           this.$message({
           showClose: true,
           message: "请在编辑通知里选择部门",
@@ -1155,6 +1156,7 @@ export default {
       this.sid = null;
       this.resetTemp();
       this.fileList=[]
+      this.$refs["dataForm"].clearValidate();
     },
     fileRemove(file, fileList) {
       this.file = {};
@@ -1305,7 +1307,7 @@ export default {
         })
         this.back.backType = this.back.backType.substring(
             0,
-            this.back.backType.length - 1
+            this.back.backType.length
           );
            this.back.bid=this.temp.did //父id
            this.back.status=bstatus //子部门状态
@@ -1388,13 +1390,21 @@ export default {
         })
         this.back.backType = this.back.backType.substring(
             0,
-            this.back.backType.length - 1
+            this.back.backType.length
           );
            this.back.bid=this.temp.did //父id
            this.back.status=bstatus //子部门状态
            this.back.sid=dstatus //父窗口状态
            console.debug(this.back)
         if(i!==this.blist.length){
+          if(this.temp.tongbao===''||this.temp.tongbao===null){
+            this.$message({
+              message: '通报内容不能为空',
+              type: 'warning',
+              duration: 2000
+            })
+            return
+          }
           this.$confirm('还有子部门未反馈信息，确定要进行项目通报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -1430,12 +1440,21 @@ export default {
           
         })
         }else{
+          if(this.temp.tongbao===''||this.temp.tongbao===null){
+            this.$message({
+              message: '通报内容不能为空',
+              type: 'warning',
+              duration: 2000
+            })
+            return
+          }
           this.$confirm('确定要进行项目通报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
+          
           let posdata=qs.stringify({
             did: this.temp.did,
             tongbao: this.temp.tongbao,

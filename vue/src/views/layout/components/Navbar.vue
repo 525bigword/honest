@@ -13,7 +13,7 @@
           </el-dropdown-item>
         <router-link class="inlineBlock" to="/workorders">
        
-          <el-dropdown-item v-if="hasPerm('back:list')||hasPerm('back:update')||hasPerm('back:delete')">
+          <el-dropdown-item v-if="hasPerm('back:list')">
             <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>
         </router-link>
