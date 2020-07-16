@@ -98,6 +98,7 @@ public class SysStaffController {
      * 生成前台首页
      */
     @GetMapping("/createIndex")
+    @RequiresPermissions("index:add")
     public JSONObject createIndex(){
         try {
             homePageSevice.loading();
