@@ -55,7 +55,7 @@
       </el-table-column>
       <el-table-column label="视频" prop="sysStaff"   align="center" width="160px">
         <template slot-scope="scope">
-          <a style="color:#1890ff" :href="he" @click="shipin(scope.row)">{{ scope.row.dvideo===null||scope.row.dvideo===''?'未上传视频':'查看视频' }}</a>
+          <a style="color:#1890ff" href="#" @click="shipin(scope.row)">{{ scope.row.dvideo===null||scope.row.dvideo===''?'未上传视频':'查看视频' }}</a>
         </template>
       </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="120px">
@@ -133,12 +133,12 @@
   action="https://localhost:8080/imp/import"
   :on-remove="fileRemove1"
   :on-change="handleImgChange"
-  accept=".mp4,.flv,.avi,.rm,.rmvb,.wmv,.ogg"
+  accept=".mp4,webm,.ogg"
   :file-list="viList"
   :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-  <div slot="tip"  class="el-upload__tip">只能上传单个mp4|flv|avi|rm|rmvb|wmv|ogg文件，且不超过500M</div>
+  <div slot="tip"  class="el-upload__tip">只能上传单个mp4|webm|ogg文件，且不超过200M</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime" >
@@ -176,10 +176,15 @@
         </el-button>
       </div>
     </el-dialog>
+    <el-dialog @close="Close" :visible.sync="dialogVideo" >
+        <video :src="he" controls="controls" style="width:100%;height:300px">
+        </video>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import { add, update, list, deleteDatakamset,imp,vimp } from '@/api/culture/datakamset'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
@@ -231,6 +236,7 @@ import { mapGetters } from 'vuex'
         vfile:{},
         title: '添加', // 对话框显示的提示 根据dialogStatus create
         dialogFormVisible: false, // 是否显示对话框
+        dialogVideo:false,
         dialogStatus: '', // 表示表单是添加还是修改的
         rules: {
           // 校验规则
@@ -310,7 +316,8 @@ import { mapGetters } from 'vuex'
         this.fileAgin=''
         this.vfileAgin=''
         this.yincang()
-        this.dialogFormVisible = false
+        this.dialogFormVisible = false,
+        this.isShow=false
       },
       // 显示添加的对话框
       handleCreate () {
@@ -422,6 +429,23 @@ import { mapGetters } from 'vuex'
         /* if (!this.hasPerm('datacollection:update')) {
           return
         } */
+         /* const url = '/honest/imp/vido'
+        let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
+            axios({
+           method: 'post',
+           timeout: 900000, //这个就是重点
+           url: url,
+           headers: config,
+           data: this.vformData
+         }).then(res=>{
+            console.debug(res)
+         }).catch((error) => {
+                console.log(error);
+            }); */
         this.$refs['dataForm'].validate((valid) => {})
         console.debug(this.fileList)
         console.debug(this.viList)
@@ -441,9 +465,10 @@ import { mapGetters } from 'vuex'
           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
+            this.isShow=true
             imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
-            this.isShow=true
+            
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -468,12 +493,13 @@ import { mapGetters } from 'vuex'
           this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
               if (valid) {
+               this.isShow=true
         imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
             console.debug(this.temp)
-            this.isShow=true
             vimp(this.vformData).then((resp)=>{
           this.temp.dvideo=resp.dFile
+           
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
@@ -499,9 +525,10 @@ import { mapGetters } from 'vuex'
            this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
+             this.isShow=true
           vimp(this.vformData).then((resp)=>{
            this.temp.dvideo=resp.dFile
-            this.isShow=true
+           
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -588,8 +615,10 @@ import { mapGetters } from 'vuex'
       shipin(row){
         if(row.dvideo!==null&&row.dvideo!==''){
           this.he=this.videoIp+row.dvideo
+          this.dialogVideo=true
         }else{
-          this.he='#'
+          this.he=""
+          this.dialogVideo=false
         }
       }
       ,
@@ -671,11 +700,11 @@ import { mapGetters } from 'vuex'
        
     },
     handleImgChange(file, fileList, name){
-      const isLt2M = file.size / 1024/1024  < 500;
+      const isLt2M = file.size / 1024/1024  < 300;
       if(!isLt2M){
         this.$message({
           showClose:true,
-          message:'文件不能超过500M',
+          message:'文件不能超过300M',
           type: 'warning'
         })
         if(fileList.length==2){
@@ -683,6 +712,7 @@ import { mapGetters } from 'vuex'
         }else{
           this.viList=fileList.slice(1)
         }
+        return
       }else{
          this.vfile=file.raw
         if(fileList){
@@ -745,6 +775,9 @@ import { mapGetters } from 'vuex'
     },
     indexMethod(val){
       return ++val
+    },
+    Close(){
+      this.he=''
     }
     }
   }

@@ -150,14 +150,14 @@
                 action="https://localhost:8080/imp/importDuty"
                 :on-remove="fileRemove"
                 :on-change="handleImgChange1"
-                accept=".jpg"
+                accept=".jpg,.png"
                 list-type="picture"
                 :file-list="fileList"
                 :limit="2"
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个jpg文件，且不超过10M</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个png/jpg文件，且不超过10M</div>
               </el-upload>
             </el-form-item>
           </el-col>
