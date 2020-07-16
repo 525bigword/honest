@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,6 +49,7 @@ public class LetterReportAction {
         return result;
     }
     @RequestMapping("findbyName")
+    @RequiresPermissions("letter:list")
     public ResponseResult findbyName(LetterReport letterReport){
         System.out.println("letterRport"+letterReport);
         ResponseResult result=new ResponseResult();
@@ -75,8 +79,12 @@ public class LetterReportAction {
         return result;
     }
     @RequestMapping("turndept")
-    public ResponseResult turndept(Integer lid,Integer lmid){
-        letterReportService.turndept(lid,lmid);
+    public ResponseResult turndept(Integer lid, Integer lmid, String lSupervisionComments, String lSupervisionCommentsTime) throws ParseException {
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = sdf.parse(lSupervisionCommentsTime);
+        letterReportService.turndept(lid,lmid,lSupervisionComments,date);
         ResponseResult result=new ResponseResult();
         result.getInfo().put("message","转办部门成功");
         return result;

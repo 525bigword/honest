@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -28,7 +29,7 @@ public interface LetterReportMapper {
     /*用户提交审核*/
     public void tjshme(Integer lid);
     /*转办部门*/
-    public void turndept(@Param(value = "lid") Integer lid,@Param(value = "mid") Integer lmid);
+    public void turndept(@Param(value = "lid") Integer lid,@Param(value = "mid") Integer lmid,@Param(value = "lSupervisionComments") String lSupervisionComments,@Param(value = "lSupervisionCommentsTime") Date lSupervisionCommentsTime);
     /*监察科自办结果*/
     public void kezhangbc(LetterReport letterReport);
     /*转办部门处理结果*/

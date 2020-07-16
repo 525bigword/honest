@@ -41,6 +41,7 @@ public class SupervisionfilingAction {
         return result;
     }
     @RequestMapping("findbysFilingId")
+    @RequiresPermissions("supervise:list")
     public ResponseResult findbysFilingId(String sFilingId, Integer sStatus){
         List<Supervisionfiling> list = supervisionfilingService.findbysFilingId(sFilingId,sStatus);
         ResponseResult result=new ResponseResult();
@@ -72,6 +73,7 @@ public class SupervisionfilingAction {
     }
     /*提交审核*/
     @RequestMapping("tjshme")
+    @RequiresPermissions("supervise:add")
     public ResponseResult tjshme(Integer sid){
         supervisionfilingService.tjshme(sid);
         ResponseResult result=new ResponseResult();
@@ -88,6 +90,7 @@ public class SupervisionfilingAction {
         return result;
     }
     @RequestMapping("tgsh")
+    @RequiresPermissions("reference:audit")
     public ResponseResult tgsh(Supervisionfiling supervisionfiling){
         supervisionfilingService.tgsh(supervisionfiling);
         ResponseResult result=new ResponseResult();
