@@ -10,6 +10,6 @@
         <if test="title != null and title!=''">
             and rd.syllabus like "%"#{title}"%"
         </if>
-        order by rd.create_time desc
+        order by rd.id desc
     </select>
 </mapper>

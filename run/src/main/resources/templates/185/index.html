@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -311,7 +311,7 @@
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
@@ -357,13 +357,9 @@
             </label>
         </p>
         <div id="box">
-            <form id="searchDataForm" action="http://localhost:4031/ms-mcms/cms/9/search.do" method="post">
-                <input type="hidden" name="categoryId" value="185" label="栏目编号"/>
-                <input type="hidden" name="categoryIds" value="185" label="栏目编号"/>
                 <input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
                 <div id="search" onclick="submit();">搜索</div>
-            </form>
-        </div>
+         </div>
     </div>
 
     <div class="content-list">
@@ -376,6 +372,8 @@
     <div class="cut-page margin-center page_div" id="page">
 
     </div>
+    <input type="hidden" id="typeOne" />
+    <input type="hidden" id ="idOne"/>
     <script type="text/javascript">
         $(function () {
             listData();
@@ -384,11 +382,15 @@
         /*请求成功时调用
             getData: 返回的数据
         */
-        function insertContent(getData){
+        function insertContent(getData,pageNo){
             var htmlContent = "";	//插入的列表内容
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/185/"+data.type+"/"+data.id+".html";//a链接地址
+                if(pageNo==1){
+                    $("#typeOne").val(getData[0].type);
+                    $("#idOne").val(getData[0].id);
+                }
+                var url = "http://localhost:4031/ms-mcms/html/2/185/" +$("#typeOne").val() + "/" + $("#idOne").val() + ".html?id="+data.id+"&type="+data.type;//a链接地址
                 var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
@@ -406,7 +408,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "http://localhost:8080/qt/duty/rdWorkList";
+            var URL = "http://localhost:8080/honest/qt/duty/rdWorkList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,
@@ -420,7 +422,7 @@
                             //没有数据的时候
                             insertError();
                         } else {
-                            insertContent(data.rows);
+                            insertContent(data.rows,pageNo);
                         }
                         $("#page").paging({
                             pageNum: pageNo, // 当前页面

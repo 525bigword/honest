@@ -8,6 +8,13 @@
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
     <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+    <!--网络请求框架-->
+    <script src="http://localhost:4031/ms-mcms/static/plugins/axios/0.18.0/axios.min.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/qs/6.6.0/qs.min.js"></script>
+    <!--铭飞-->
+    <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.http.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.util.js"></script>
     <style type="text/css">
         .ms-menue-content-model >div:last-child >div:first-child{
             text-align: center;
@@ -154,10 +161,14 @@
                 <label th:text="${rdWorkVo.title}"></label>
             </div>
             <div>
-                 <span>上传者：<label th:text="${rdWorkVo.name}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>上传者：<label th:text="${rdWorkVo.name}"></label></span>&nbsp;&nbsp;&nbsp;
+<!--
                 <span>来源：<label ></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(rdWorkVo.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
+-->
+                <span>时间：<label th:text="${#dates.format(rdWorkVo.createTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>&nbsp;&nbsp;&nbsp;
+<!--
                 <span>点击：<label ><script type='text/javascript' src='http://localhost:4031/ms-mcms/basic/428/hit.do'></script></label></span>
+-->
             </div>
         </div>
         <div>
@@ -168,10 +179,67 @@
             </span>
         </div>
         <div>
-            <span class="ms-right"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
+            <span class="ms-right" id="goback"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    /*请求成功时调用
+        getData: 返回的数据
+    */
+    function formatDate(now) {
+        var year=now.getFullYear();  //取得4位数的年份
+        var month=now.getMonth()+1;  //取得日期中的月份，其中0表示1月，11表示12月
+        var date=now.getDate();      //返回日期月份中的天数（1到31）
+        var hour=now.getHours();     //返回日期中的小时数（0到23）
+        var minute=now.getMinutes(); //返回日期中的分钟数（0到59）
+        var second=now.getSeconds(); //返回日期中的秒数（0到59）
+        return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+    }
+
+
+    function insertContent(getData) {
+        var htmlContent = "";	//插入的列表内容
+        //标题
+        var title = getData.title;
+        var d = new Date(getData.createTime);
+        var time = formatDate(d);		//时间
+        var content = getData.content;		//内容
+        htmlContent += '<div> <label>'+title+'</label>' +
+            ' </div> <div><span>上传者：<label>'+getData.name+'</label></span>&nbsp;&nbsp;&nbsp; ' +
+            ' <span>时间：<label>'+time+'</label></span> </div>';	//文章标题等信息
+        $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
+        $(".content-list").children("div").eq(1).html(content);			//添加文章内容
+    }
+
+    /*请求失败时调用 */
+    function insertError() {
+
+    }
+
+    var id = ms.util.getParameter("id");
+    var type = ms.util.getParameter("type");
+    var URL = "http://localhost:8080/honest/qt/duty/getRdDutyByTyId?id="+id+"&type="+type;
+    var getData = [];	//请求返回的数据
+    $.ajax({
+        async: true,
+        url: URL,
+        type: "get",
+        data: [],
+        success: function (da) {
+            if(da!="null") {
+                var data = eval("(" + da + ")");
+                if (data != null) {
+                    $("#goback").append("&nbsp;&nbsp;<a href=\"http://localhost:4031/ms-mcms/html/2/185/index.html\">返回上一页</a> ")
+                }
+                insertContent(data);
+            }
+        },
+        error: function (data) {
+            insertError();
+        }
+    });
+</script>
 ﻿<!--底部内容-->
 <div class="footer max-width margin-center">
     主 管：湘潭市烟草专卖局 主 办：湘潭市烟草专卖局纪检监察科<br/>

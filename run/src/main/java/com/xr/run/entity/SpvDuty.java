@@ -30,5 +30,6 @@ public class SpvDuty {
   }
   private int status;
   private String tongbao;
+  private String name;
 
 }

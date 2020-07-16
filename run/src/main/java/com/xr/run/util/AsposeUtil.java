@@ -3,6 +3,8 @@ package com.xr.run.util;
 import com.aspose.words.Document;
 import com.aspose.words.License;
 
+import com.aspose.words.Document;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

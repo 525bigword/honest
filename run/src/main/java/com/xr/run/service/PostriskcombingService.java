@@ -79,4 +79,7 @@ public interface PostriskcombingService extends IService<Postriskcombing> {
      * @return
      */
     Postriskcombing findByPid(Integer pid);
+
+
+    IPage<Postriskcombing> findPostriskCombingIndex1(Page page, String prProject);
 }

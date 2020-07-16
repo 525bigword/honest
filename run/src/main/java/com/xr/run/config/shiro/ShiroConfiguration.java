@@ -23,7 +23,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfiguration {
 	@Value("${server.servlet.context-path}")
-	private String path;
+	private String path="";
 	/**
 	 * Shiro的Web过滤器Factory 命名:shiroFilter
 	 */

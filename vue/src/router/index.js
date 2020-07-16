@@ -30,20 +30,6 @@ export default new Router({
     routes: constantRouterMap
 })
 export const asyncRouterMap = [
-    // {
-    //     path: '/system',
-    //     component: Layout,
-    //     redirect: '/system/article',
-    //     name: '功能模块',
-    //     meta: { title: '功能模块', icon: 'tree' },
-    //     children: [{
-    //         path: 'article',
-    //         name: '文章',
-    //         component: _import('article/article'),
-    //         meta: { title: '文章', icon: 'example' },
-    //         menu: 'article'
-    //     }, ]
-    // },
     {
         path: '/system',
         component: Layout,
@@ -66,9 +52,9 @@ export const asyncRouterMap = [
             },
             {
                 path: 'staff',
-                name: '用户列表',
+                name: '员工管理',
                 component: _import('system/user/user'),
-                meta: { title: '用户列表', icon: 'user' },
+                meta: { title: '员工管理', icon: 'user' },
                 menu: 'staff'
             },
             {
@@ -110,7 +96,7 @@ export const asyncRouterMap = [
     {
         path: '/duty',
         component: Layout,
-        redirect: '/user/',
+        redirect: '/duty/',
         name: '责任纪实',
         meta: { title: '责任纪实', icon: 'form' },
         children: [{

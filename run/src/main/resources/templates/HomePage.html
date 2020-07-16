@@ -17,6 +17,7 @@
     <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
     <!--通用样式引用-->
     <link rel="stylesheet" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css">
+    <!--图片轮播-->
     <script type="text/javascript"
             src="http://localhost:4031/ms-mcms/templets/1/yancao/js/SuperSlide.2.1.3/jquery1.42.min.js"></script>
     <script type="text/javascript"
@@ -239,7 +240,7 @@
 
     <style type="text/css">
         /* 本例子css */
-        .slideBox {
+        .slideBox0 {
             width: 330px;
             height: 273px;
             overflow: hidden;
@@ -247,7 +248,7 @@
             border: 1px solid #ddd;
         }
 
-        .slideBox .hd {
+        .slideBox0 .hd {
             width: 100%;
             height: 30px;
             background: rgba(92, 92, 92, 0.6);
@@ -258,14 +259,14 @@
             z-index: 1;
         }
 
-        .slideBox .hd ul {
+        .slideBox0 .hd ul {
             overflow: hidden;
             zoom: 1;
             right: 0;
             bottom: calc(50% - 5px);
         }
 
-        .slideBox .hd ul li {
+        .slideBox0 .hd ul li {
             float: left;
             margin-right: 9px;
             width: 8px;
@@ -277,23 +278,23 @@
             cursor: pointer;
         }
 
-        .slideBox .hd ul li.on {
+        .slideBox0 .hd ul li.on {
             width: 16px;
             border-radius: 4px;
         }
 
-        .slideBox .bd {
+        .slideBox0 .bd {
             position: relative;
             height: 100%;
             z-index: 0;
         }
 
-        .slideBox .bd li {
+        .slideBox0 .bd li {
             zoom: 1;
             vertical-align: middle;
         }
 
-        .slideBox .bd img {
+        .slideBox0 .bd img {
             object-fit: cover;
             width: 330px;
             height: 273px;
@@ -312,6 +313,43 @@
         .hand {
             cursor: pointer
         }
+
+
+
+
+       /* !* css 重置 *!
+        *{margin:0; padding:0; list-style:none; }
+        body{ background:#fff; font:normal 12px/22px 宋体;  }
+        img{ border:0;  }
+        a{ text-decoration:none; color:#333;  }
+        a:hover{ color:#1974A1;  }
+        .js{width:90%; margin:10px auto 0 auto; }
+        .js p{ padding:5px 0; font-weight:bold; overflow:hidden;  }
+        .js p span{ float:right; }
+        .js p span a{ color:#f00; text-decoration:underline;   }
+        .js textarea{ height:100px;  width:98%; padding:5px; border:1px solid #ccc; border-top:2px solid #aaa;  border-left:2px solid #aaa;  }
+
+*/
+
+        /* 本例子css */
+        .slideGroup{ width:1400px; border:0px ; text-align:left;  }
+        .slideGroup .parHd{ height:30px; line-height:30px; background:#f4f4f4; padding:0 20px; border-bottom:1px solid #ddd;  position:relative;  }
+        .slideGroup .parHd ul{ float:left; position:absolute; left:20px; top:-1px; height:32px;   }
+        .slideGroup .parHd ul li{ float:left; padding:0 15px; cursor:pointer;  }
+        .slideGroup .parHd ul li.on{ height:30px;  background:#fff; border:1px solid #ddd; border-bottom:2px solid #fff; }
+        .slideGroup .parBd{ padding:10px; zoom:1;  }
+        .slideGroup .slideBox{ overflow:hidden; zoom:1; }
+
+        .slideGroup .sPrev,.slideGroup .sNext{ display:block; width:10px; height:120px; float:left;  border:1px solid white; background:url(../../upload/icon/icoLeft.gif) center center no-repeat white; }
+        .slideGroup .sNext{ background:url(../../upload/icon/icoRight.gif) center center no-repeat white;  }
+        .slideGroup .sPrev:hover,.slideGroup .sNext:hover{ border-color:green;  }
+        .slideGroup .parBd .tempWrap{ float:left;  }
+        .slideGroup .parBd ul{ overflow:hidden; zoom:1; float:left;  }
+        .slideGroup .parBd ul li{ margin:0 8px; float:left; _display:inline; overflow:hidden; text-align:center;  }
+        .slideGroup .parBd ul li .pic{ text-align:center; }
+        .slideGroup .parBd ul li .pic img{ width:210px; height:120px; display:block;  padding:2px; border:1px solid #ccc; }
+        .slideGroup .parBd ul li .pic a:hover img{ border-color:#999;  }
+        .slideGroup .parBd ul li .title{ line-height:24px;   }
     </style>
 
 </head>
@@ -380,7 +418,7 @@
         </li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a>
         </li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a>
         </li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a>
         </li>
@@ -400,7 +438,7 @@
             <a th:if="${educations[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/181/index.html" target="_blank">更多</a>
         </div>
         <div class="ms-news">
-            <div class="slideBox">
+            <div class="slideBox0">
                 <div class="hd">
                     <ul class="ms-absolute list-style-none">
                         <li index-num="1"></li>
@@ -447,7 +485,7 @@
                 </h5>
                 <ul class="new-all">
                     <li th:each="edu:${educations}">
-                        <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${edu.id}+'.html'" th:text="${edu.title}" target="_blank"></a>
+                        <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${edu.next}+'/'+${edu.id}+'.html'" th:text="${edu.title}" target="_blank"></a>
                         <span th:text="${#dates.format(edu.createTime,'MM-dd')}"></span>
                     </li>
                 </ul>
@@ -457,8 +495,8 @@
     <div class="right-content" id="indexForm">
         <div id="login-form">
             <form v-if="isLogin">
-                <input type="text" name="account" value="" v-model="form.managerName" placeholder="账号">
-                <input v-model="form.managerPassword" type="password" name="password" value="" placeholder="密码">
+                <input type="text" name="account" value="" v-model="form.username" placeholder="账号">
+                <input v-model="form.password" type="password" name="password" value="" placeholder="密码">
                 <span @click="login" class="hand">登录</span>
             </form>
             <p v-if="!isLogin" style="line-height: 20px;">
@@ -473,37 +511,14 @@
         <div class="announcements">
             <div class="title-model">
                 <h5>通知公告</h5>
-                <a href="http://localhost:4031/ms-mcms/html/2//211/index.html" target="_blank">更多</a>
+                <a th:if="${sysMessage[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/211/index.html" target="_blank">更多</a>
             </div>
             <ul class="list-style-none news-list-model new-all">
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/254.html" target="_blank">四川省烟草公司德阳市公司热敏标签纸采购项目（第二次）招标公告</a>
-                    <span>05-28</span>
+                <li th:each="msg:${sysMessage}">
+                    <a th:text="${msg.articletitle}" class="right" th:href="'http://localhost:4031/ms-mcms/html/2/211/'+${msg.aid}+'.html'" target="_blank"></a>
+                    <span th:text="${#dates.format(msg.createTime,'MM-dd')}"></span>
                 </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/258.html" target="_blank">国家烟草专卖局关于批准发布烟草田间作业机械选型测试规程等12项烟草行业标准的通知</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/259.html" target="_blank">国务院办公厅关于成立国务院就业工作领导小组的通知</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/282.html" target="_blank">黑龙江省烟草公司哈尔滨烟叶公司视频监控系统设计中标公示</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/283.html" target="_blank">2019年攀枝花市公司-内网认证准入系统结果公示</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/298.html" target="_blank">2019年烟草行业安全生产电视电话会议在北京召开</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//211/299.html" target="_blank">国家局科技司传达学习2019年全国烟草工作会议精神</a>
-                    <span>05-28</span>
-                </li>
+
             </ul>
         </div>
     </div>
@@ -623,41 +638,22 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>廉政文化</h5>
-                <a href="http://localhost:4031/ms-mcms/html/2//182/index.html" target="_blank">更多</a>
+                <a th:if="${cultures[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/182/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
                 <img src="http://localhost:4031/ms-mcms//upload/1//article/1.jpg" alt="">
                 <div>
-                    <span class="title ms-text-ellipsis">中共中央办公厅 国务院办公厅印</span>
+                    <span class="title ms-text-ellipsis" th:text="${cultures[0].title}"></span>
                     <div class="content">
-                        <label>《关于统筹推进自然资源资产产权制度改革的指导意见》</label>
-                        <a href="http://localhost:4031/ms-mcms/html/2//182/183/264.html" target="_blank">详情>></a>
+                        <label th:text="${#strings.abbreviate(cuContent,30)}"></label>
+                        <a th:if="${cultures[0].content!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/182/'+${cultures[0].type}+'/'+${cultures[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//182/184/224.html" target="_blank">中共中央办公厅
-                        国务院办公厅印发《大运河文化保护传承利用规划纲要》</a>
-                    <span>05-20</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//182/183/260.html" target="_blank">中共中央办公厅
-                        国务院办公厅印发《国家生态文明试验区（海南）实施方案》</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//182/184/261.html" target="_blank">中共中央办公厅印发《关于加强和改进城市基层党的建设工作的意见》</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//182/184/262.html" target="_blank">中共中央办公厅印发《党政领导干部考核工作条例》</a>
-                    <span>05-28</span>
-                </li>
-                <li>
-                    <a class="right" href="http://localhost:4031/ms-mcms/html/2//182/184/263.html" target="_blank">中共中央办公厅
-                        国务院办公厅印发《关于完善仲裁制度提高仲裁公信力的若干意见》</a>
-                    <span>05-28</span>
+                <li th:each="cu:${cultures}">
+                    <a  class="right" th:href="'http://localhost:4031/ms-mcms/html/2/182/'+${cu.type}+'/'+${cu.id}+'.html'" target="_blank" th:text="${cu.title}"></a>
+                    <span th:text="${#dates.format(cu.createTime,'MM-dd')}"></span>
                 </li>
             </ul>
         </div>
@@ -667,40 +663,87 @@
 <div class="content-footer body-model body-content margin-center">
     <div class="title-model">
         <h5>潭烟风貌</h5>
-        <a href="http://localhost:4031/ms-mcms/html/2//212/index.html" target="_blank">更多</a>
+        <a href="http://localhost:4031/ms-mcms/html/2/212/index.html" target="_blank">更多</a>
     </div>
-    <ul class="list-style-none">
-        <li><a href="http://localhost:4031/ms-mcms/html/2//212/284.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2//212/285.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-02.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2//212/286.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-03.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2//212/287.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-04.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2//212/288.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-05.png" alt=""></a></li>
-    </ul>
+    <div class="slideGroup" style="margin:0 auto">
+        <div class="parBd">
+
+            <div class="slideBox">
+                <a class="sPrev" href="javascript:void(0)"></a>
+                <ul>
+                    <li>
+                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
+                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png" alt=""></a></div>
+                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.1</a></div>
+                    </li>
+                    <li>
+                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
+                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-02.png" alt=""></a></div>
+                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.2</a></div>
+                    </li>
+                    <li>
+                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
+                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-03.png" alt=""></a></div>
+                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.3</a></div>
+                    </li>
+                    <li>
+                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
+                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-04.png" alt=""></a></div>
+                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.4</a></div>
+                    </li>
+                    <li>
+                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
+                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-05.png" alt=""></a></div>
+                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.5</a></div>
+                    </li>
+                </ul>
+                <a class="sNext" href="javascript:void(0)"></a>
+            </div><!-- slideBox End -->
+
+        </div><!-- parBd End -->
+    </div>
+
 </div>
+
+<!-- <ul class="list-style-none">
+
+        <li><a href="http://localhost:4031/ms-mcms/html/2/212/284.html" target="_blank"><img
+                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png" alt=""></a></li>
+        <li><a href="http://localhost:4031/ms-mcms/html/2/212/285.html" target="_blank"><img
+                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-02.png" alt=""></a></li>
+        <li><a href="http://localhost:4031/ms-mcms/html/2/212/286.html" target="_blank"><img
+                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-03.png" alt=""></a></li>
+        <li><a href="http://localhost:4031/ms-mcms/html/2/212/287.html" target="_blank"><img
+                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-04.png" alt=""></a></li>
+        <li><a href="http://localhost:4031/ms-mcms/html/2/212/288.html" target="_blank"><img
+                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-05.png" alt=""></a></li>
+    </ul>-->
+
 ﻿<!--底部内容-->
 <div class="footer max-width margin-center">
     主 管：湘潭市烟草专卖局 主 办：长沙市烟草专卖局纪检监察科<br/>
     版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
 </div>
 </body>
-
 </html>
 <script id="jsID" type="text/javascript">
-    function delHtmlTag(str){
-        return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
-    }
-    jQuery(".slideBox").slide({mainCell: ".bd ul", autoPlay: true});
+    /*
+                SuperSlide组合注意：
+                1、内外层mainCell、targetCell、prevCell、nextCell等对象不能相同，除非特殊应用；
+                2、注意书写顺序，通常先写内层js调用，再写外层js调用
+                */
+
+    /* 内层图片滚动切换 */
+    jQuery(".slideGroup .slideBox").slide({ mainCell:"ul",vis:5,prevCell:".sPrev",nextCell:".sNext",effect:"leftLoop"});
+
+
+    jQuery(".slideBox0").slide({mainCell: ".bd ul", autoPlay: true});
     var indexVue = new Vue({
         el: '#indexForm',
         data: {
             form: {
-                managerName: "",  //名称
-                managerPassword: "", //描述
+                username: "",  //名称
+                password: "", //描述
             },
             isLogin: true,//是否显示表单
             userName: "",
@@ -709,55 +752,56 @@
             //登录
             login: function () {
                 var that = this;
-                ms.http.post("http://localhost:4031/ms-mcms/checkYanCaoLogin.do", {
-                    managerName: that.form.managerName,
-                    managerPassword: that.form.managerPassword,
-                }).then(function (data) {
-                    if (data.result) {
-                        that.isLogin = false;
-                        var man = $.parseJSON(data.resultMsg);
-                        that.userName = man.managerNickName;
-                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
+                ms.http.post("http://localhost:8080/honest/SysStaff/auth", {
+                    username: that.form.username,
+                    password: that.form.password
+                },{headers: {'Content-Type': 'application/json'},xhrFields:{withCredentials: true}}).then(function (data) {
+                    if(data.info.result==="success"){
                         location.reload();
-                    } else {
+                        that.isLogin = false;
+                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
+                    }else{
                         alert("登录失败");
                     }
                 }).catch(function (err) {
                     console.log(err);
                 });
+                this.managerGet();
             },
             //退出
             loginOut: function () {
                 var that = this;
-                ms.http.get("http://localhost:8080/tobacco/dust/loginOut", "")
+                ms.http.get("http://localhost:8080/honest/SysStaff/logout", "")
                     .then(function (data) {
                         location.reload();
-                    }, (err) = > {
+                    }, (err) => {
                     location.reload();
             })
             },
             //获取管理员信息
             managerGet() {
                 var that = this;
-                ms.http.get("http://localhost:8080/tobacco/dust/isLogin", "").then(function (data) {
-                    if (data.result) {
-                        that.isLogin = false;
-                        var man = $.parseJSON(data.resultMsg);
-                        that.userName = man.managerNickName;
-                        if (that.userName) {
-                            $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
-                        } else {
-                            $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
-                        }
-                    }
+                ms.http.post("http://localhost:8080/honest/SysStaff/getInfo", "",{xhrFields:{withCredentials: true}}).then(function (data) {
+                    alert(data.msg)
+                    /*that.isLogin = false;
+
+                    alert(data.info.userPermission)
+                    alert(man.info.userPermission)
+                    that.userName = man.info.userPermission.menuList.username;
+                    if (that.userName) {
+                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
+                    } else {
+                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
+                    }*/
+
                 }).catch(function (err) {
                     $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
                     console.log(err);
                 });
-            },
+            }
         },
         mounted() {
-            this.managerGet();
-        },
+            //this.managerGet();
+        }
     });
 </script>

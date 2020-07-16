@@ -7,9 +7,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xr.run.dao.*;
 import com.xr.run.dao.daily.SupervisionfilingMapper;
-import com.xr.run.entity.SpvDuty;
 import com.xr.run.entity.SysStaff;
-import com.xr.run.service.*;
+import com.xr.run.entity.SystemMessage;
+import com.xr.run.service.SysPermissionService;
+import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
 import com.xr.run.util.constants.Constants;
@@ -92,6 +93,7 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         String password = jsonObject.getString("password");
         JSONObject info = new JSONObject();
         Subject currentUser = SecurityUtils.getSubject();
+        System.out.println("登录============="+currentUser.getSession().getId());
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             currentUser.login(token);
@@ -124,7 +126,7 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     public JSONObject getInfo() {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
-        System.out.println(session.getId());
+        System.out.println("sessionId="+session.getId());
         SysStaff userInfo = (SysStaff) SecurityUtils.getSubject().getSession().getAttribute(Constants.SESSION_USER_INFO);
         String username = userInfo.getUsername();
         JSONObject info = new JSONObject();

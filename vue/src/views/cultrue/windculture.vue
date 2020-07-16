@@ -40,24 +40,19 @@
         </template> -->
       </el-table-column>
       
-        <el-table-column label="标题" prop="wtitle"  align="center" width="300px">
+        <el-table-column label="标题" prop="wtitle"  align="center" width="310px">
         <template slot-scope="scope">
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
         </template>
         </el-table-column>
-        <el-table-column label="投稿人" prop="wnew"   align="center" width="180px">
+        <el-table-column label="投稿人" prop="wnew"   align="center" width="200px">
         <template slot-scope="scope">
           <span>{{ scope.row.wnew.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建人" prop="sysStaff"   align="center" width="180px">
+      <el-table-column label="创建人" prop="sysStaff"   align="center" width="200px">
         <template slot-scope="scope">
           <span>{{ scope.row.sysStaff.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="状态" prop="wstatus"   align="center" width="160px">
-        <template slot-scope="scope">
-          <span>{{ (scope.row.wstatus===1?'创建':(scope.row.wstatus===2?'待审核':'已审核'))}}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" sortable prop="wcreateTime" align="center">
@@ -90,14 +85,8 @@
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
         <!--        数据校验要求prop值和temp.属性名一致-->
        <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
-          <el-button :disabled="isShow" type="success" class="el-icon-top"  v-show="btnShowTj"  @click="dialogStatus==='update'?updateData(2):createData(2)">
-          提交审核
-        </el-button>
-        <el-button type="success" :disabled="isShow" class="el-icon-top" v-show="btnShowTs" @click="updateData(3)">
-          通过审核
-        </el-button>
-        <el-button type="success" :disabled="isShow" class="el-icon-top"   @click="dialogStatus==='update'?updateData(0):createData(0)">
-          更新
+        <el-button type="success" :disabled="isShow" class="el-icon-top"   @click="dialogStatus==='update'?updateData(3):createData(3)">
+          保存
         </el-button>
          <el-button class="el-icon-back" plain @click="out()">
           返回
@@ -121,14 +110,7 @@
              :props="{ expandTrigger: 'hover',checkStrictly: true }"
              :show-all-levels="false"
                clearable></el-cascader>
-          <!-- <el-select v-model="temp.wnew.mid" placeholder="请选择部门"  v-cloak  >
-              <el-option
-             v-for="item in melist"
-            :key="item.mid"
-            :label="item.mechanismName"
-           :value="item.mid">
-            </el-option>
-           </el-select> -->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <el-select v-model="temp.sid" :style="{'display':dis3}" placeholder="请选择投稿人" v-cloak style="width:23%;">
               <el-option
              v-for="item in stafflist"
@@ -156,9 +138,6 @@
         </el-form-item>
         <el-form-item style="font-weight: bold;" label="创建人" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:50%"/>
-        </el-form-item>
-        <el-form-item style="font-weight: bold;" label="审核状态" prop="status">
-          <el-input v-model="temp.status" disabled="disabled" style="width:50%"></el-input>
         </el-form-item>
          <el-form-item style="margin-top:10px"></el-form-item>
          </div>
@@ -214,7 +193,6 @@ import { mapGetters } from 'vuex'
             sid: 0
           },
           wCreateTime:new Date(),
-          status: '',
           wstatus:1,
           sid:null
         },
@@ -230,8 +208,6 @@ import { mapGetters } from 'vuex'
           sid:[{required:true,message:'请选择投稿人',trigger:['change']}]
         },
         isShow:false,
-        btnShowTs:false,
-        btnShowTj:false,
           wew:{},
         multipleSelection:[],
         deleteid:[],
@@ -312,7 +288,6 @@ import { mapGetters } from 'vuex'
             mid:0
           },
           wCreateTime:new Date(),
-          status: '',
           wstatus:1,
           sid:null
         }
@@ -324,13 +299,6 @@ import { mapGetters } from 'vuex'
         // 重置表单数据
         this.resetTemp()
         this.xianshi()
-        if(this.temp.wstatus===1){
-          this.temp.status='创建'
-        }else if(this.temp.wstatus===2){
-          this.temp.status='待审'
-        }else{
-          this.temp.status='已审核'
-        }
         this.temp.sysStaff.name=this.nickname
         this.temp.sysStaff.sid=this.userId
         // 点击确定时，是执行添加操作
@@ -348,10 +316,7 @@ import { mapGetters } from 'vuex'
         if (!this.hasPerm('wind:add')) {
           return
         }
-        if(val!==0){
             this.temp.wstatus=val;
-        }
-            console.debug(this.temp)
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
@@ -370,6 +335,7 @@ import { mapGetters } from 'vuex'
               // 关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格里的数据
+              this.pageNum=1
               this.getList()
               // 显示一个通知
               this.$notify({
@@ -416,23 +382,15 @@ import { mapGetters } from 'vuex'
           }
           
         });
-        console.debug(sz)
       this.value=sz;
         this.temp = row;
         this.xianshi()
-        if((this.temp.wstatus===2||this.temp.wstatus===3)&&!this.hasPerm('wind:update')){
+        if(!this.hasPerm('wind:update')){
           this.dis='inline-block'
         this.dis2='none'
           return
       }
       this.getStaffList()
-        if(this.temp.wstatus===1){
-          this.temp.status='创建'
-        }else if(this.temp.wstatus===2){
-          this.temp.status='待审'
-        }else{
-          this.temp.status='已审核'
-        }
         this.temp.wCreateTime=row.wcreateTime
         this.temp.sid=row.wnew.sid
         console.debug(this.temp)
@@ -566,19 +524,11 @@ import { mapGetters } from 'vuex'
     xianshi(){
       this.dis='none'
       this.dis2='inline-block'
-      if(this.temp.wstatus===1){
-        this.btnShowTj=true;
-      }
-      if(this.temp.wstatus===2&&this.hasPerm('wind:update')){
-        this.btnShowTs=true;
-      }
       
     },
     yincang(){
       this.dis='inline-block'
         this.dis2='none'
-        this.btnShowTj=false;
-        this.btnShowTs=false;
         this.temp.wstatus=1;
         this.sid=null
         this.dis3='none'

@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ProcessrickMapper extends BaseMapper<Processrick> {
     @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
-            " where  proName like CONCAT('%',#{proName},'%') order by proid desc")
+            " where prostatus = 1 and proName like CONCAT('%',#{proName},'%') order by proid desc")
     @Results({
             @Result(column = "proCreateId",property = "proCreateId"),
             @Result(column = "proCreateId",property = "sysStaff",
@@ -65,5 +65,6 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
     List<Processrick> getListBy(@Param("proName") String proName, @Param("proYear") String proYear);
 
 
-
+    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick where proid=#{id} ")
+    Processrick findProcessrickById(@Param("id") Integer id);
 }

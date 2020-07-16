@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.SysMechanism;
+import com.xr.run.entity.SysStaff;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ public interface SysMechanismService extends IService<SysMechanism> {
     void unDelSysMechanism(Integer mid);
     void upSysmechanism(SysMechanism sysMechanism);
     List<SysMechanism> findAllSysMechanism();
+    //根据用户查询部门ID
+    SysStaff findSysMechanismNameById(Integer id);
     /**
      * 查询所有的部门
      */

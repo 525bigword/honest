@@ -19,7 +19,7 @@ public class FontDatacollectionController {
     @GetMapping("get")
     public String getQfwyList(String title, Integer pageNo, Integer pageSize){
         Page page = new Page(pageNo,pageSize);
-        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection(page, title);
+        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection1(page, title);
         String string = JSON.toJSONString(dataConllection);
         return string;
     }
