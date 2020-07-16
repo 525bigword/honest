@@ -123,7 +123,7 @@
   :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-  <div slot="tip"  class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
+  <div slot="tip"  class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过5M</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="视频文件" prop="dvideoName">
@@ -630,12 +630,12 @@ import { mapGetters } from 'vuex'
       },
       handleImgChange1(file, fileList, name) {
         
-        const isLt2M = file.size / 1024/1024  < 10;
+        const isLt2M = file.size / 1024/1024  < 5;
       if(!isLt2M){
         console.debug(this.dfileName)
         this.$message({
           showClose:true,
-          message:'文件不能超过10M',
+          message:'文件不能超过5M',
           type: 'warning'
         })
         if(fileList.length==2){

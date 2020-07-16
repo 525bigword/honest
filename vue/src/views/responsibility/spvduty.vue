@@ -214,7 +214,7 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过5M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -1066,12 +1066,12 @@ export default {
       }
     },
     handleImgChange1(file, fileList, name) {
-      const isLt2M = file.size / 1024/1024  < 10;
+      const isLt2M = file.size / 1024/1024  < 5;
       if (!isLt2M) {
         console.debug(this.dutyAccessoryName);
         this.$message({
           showClose: true,
-          message: "文件不能超过500k",
+          message: "文件不能超过5M",
           type: "warning"
         });
         if (fileList.length == 2) {
@@ -1119,6 +1119,14 @@ export default {
     },
     handleStatusUpdate(row){
       this.temp=row
+      if(this.temp.bid!==''&&this.temp.bid!=='1,'){
+          this.$message({
+          showClose: true,
+          message: "请在编辑通知里选择部门",
+          type: "warning"
+        });
+        return
+      }
       if(this.temp.status===1){
         this.temp.status+=1
       }else if(this.temp.status===6){
