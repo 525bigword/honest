@@ -55,11 +55,14 @@ mybatis-plus:
 file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
-  uploadFolder: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/tmp/
-  uploadDuty: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/duty/
-  uploadImage: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
-  uploadVideo: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/vido
-  #uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
+  #uploadFolder: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/tmp/
+  uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
+  #uploadDuty: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/duty/
+  uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
+  #uploadImage: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
+  uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
+  #uploadVideo: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/vido
+  uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
   accessPaths: /upload
   staticAccessPaths: /upload/**
   uploadFolders: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
