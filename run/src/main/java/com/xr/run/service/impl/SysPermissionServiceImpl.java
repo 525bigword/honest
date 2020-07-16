@@ -98,18 +98,18 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
     private JSONObject getUserPermissionFromDB(String username) {
         JSONObject userPermission = new JSONObject();//baseMapper.getUserPermission(username);
         SysStaff sysStaffByUserName = baseMapper.getSysStaffByUserName(username);
-        //管理员角色ID为1
-        String adminRoleId = "1";
-        //如果是管理员
-        String roleIdKey = "roleId";
-        if (adminRoleId.equals(sysStaffByUserName.getPid()) ) {
-            //查询所有菜单  所有权限
-            Set<String> menuList = baseMapper.getAllMenu();
-            Set<String> permissionList = baseMapper.getAllPermission();
-            userPermission.put("menuList", menuList);
-            userPermission.put("permissionList", permissionList);
-            userPermission.put("sysStaffByUserName",sysStaffByUserName);
-        }else{
+//        //管理员角色ID为1
+//        String adminRoleId = "1";
+//        //如果是管理员
+//        String roleIdKey = "roleId";
+//        if (adminRoleId.equals(sysStaffByUserName.getPid()) ) {
+//            //查询所有菜单  所有权限
+//            Set<String> menuList = baseMapper.getAllMenu();
+//            Set<String> permissionList = baseMapper.getAllPermission();
+//            userPermission.put("menuList", menuList);
+//            userPermission.put("permissionList", permissionList);
+//            userPermission.put("sysStaffByUserName",sysStaffByUserName);
+//        }else{
             //TODO 非超级用户读取相关信息
             System.out.println(userPermission.getInteger("roleId"));
             List<SysPostPermission> syspostpermissions = sysPostPermissionMapper.findSysPostPermissionByPostId(Integer.parseInt(sysStaffByUserName.getPid()));
@@ -117,8 +117,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
             for (SysPostPermission syspostpermission : syspostpermissions) {
                 ids+=syspostpermission.getPid()+",";
             }
-
-            ids=ids.substring(0,ids.length()-1);
+            if(!ids.equals("(")){
+                ids=ids.substring(0,ids.length()-1);
+            }
             ids+=")";
             System.out.println(ids);
             Set<String> menuList = sysPermissionMapper.findSysPermissionNameById(ids);
@@ -126,8 +127,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper,Sy
             userPermission.put("menuList", menuList);
             userPermission.put("permissionList", permissionList);
             userPermission.put("sysStaffByUserName",sysStaffByUserName);
-        }
-
+//        }
         return userPermission;
     }
 }

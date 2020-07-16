@@ -9,10 +9,10 @@
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/workorders">
-        <el-dropdown-item>
+        <el-dropdown-item v-if="hasPerm('index:add')">
             <span @click="createIndex" style="display:block;">生成首页</span>
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item v-if="hasPerm('back:list')||hasPerm('back:update')||hasPerm('back:delete')">
             <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>
         </router-link>

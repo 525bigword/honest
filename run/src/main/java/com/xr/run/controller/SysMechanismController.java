@@ -9,6 +9,8 @@ import com.xr.run.service.SysMechanismService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.ResponseResult;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,7 @@ public class SysMechanismController {
 
 
     @GetMapping("get/{pageNum}/{pageRow}")
+    @RequiresPermissions("mechanism:list")
     @ApiOperation(value = "部门查询", notes = "查询部门")
     public JSONObject getSysmechanismPage(@PathVariable Integer pageNum, @PathVariable Integer pageRow, String mechanism, String principal, String staus) {
         pageNum = pageNum < 0 ? 0 : pageNum;
@@ -34,6 +37,7 @@ public class SysMechanismController {
     }
 
     @GetMapping("get")
+    @RequiresPermissions(value ={"mechanism:list","mechanism:add","mechanism:update","staff:update","staff:add","staff:list","ppost:add","ppost:update","ppost:list"},logical = Logical.OR)
     public JSONObject getSysmechanismAll() {
         List<SysMechanism> sysMechanismAll = sysMechanismService.findSysMechanismAll();
         return CommonUtil.successJson(sysMechanismAll);
@@ -51,12 +55,14 @@ public class SysMechanismController {
     }
 
     @PostMapping("add")
+    @RequiresPermissions("mechanism:add")
     public JSONObject addSysmechanism(SysMechanism sysMechanism) {
         sysMechanismService.addSysMechanism(sysMechanism);
         return CommonUtil.successJson();
     }
 
     @DeleteMapping("del/{mid}")
+    @RequiresPermissions("mechanism:delete")
     public JSONObject delSysmechanism(@PathVariable Integer mid) {
         System.out.println(mid);
         Integer i = sysMechanismService.delSysMechanism(mid);
@@ -67,12 +73,14 @@ public class SysMechanismController {
     }
 
     @PutMapping("update/{mid}")
+    @RequiresPermissions("mechanism:update")
     public JSONObject upSysmechanismStaus(@PathVariable Integer mid) {
         sysMechanismService.unDelSysMechanism(mid);
         return CommonUtil.successJson(1);
     }
 
     @PutMapping("update")
+    @RequiresPermissions("mechanism:update")
     public JSONObject upSysmechanism(SysMechanism sysMechanism) {
         System.out.println(sysMechanism);
         sysMechanismService.upSysmechanism(sysMechanism);

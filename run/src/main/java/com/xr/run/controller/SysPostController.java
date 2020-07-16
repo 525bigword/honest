@@ -9,6 +9,7 @@ import com.xr.run.service.SysPostService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import org.apache.ibatis.annotations.Delete;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -108,6 +109,7 @@ public class SysPostController {
         }
     }
     @GetMapping("get")
+    @RequiresPermissions(value = {"staff:add","staff:update"},logical = Logical.OR)
     public JSONObject getAllSysPost(){
 
         List<SysPost> sysPost = sysPostService.getSysPost();
