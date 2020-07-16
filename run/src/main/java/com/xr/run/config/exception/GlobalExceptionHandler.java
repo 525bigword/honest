@@ -1,5 +1,6 @@
 package com.xr.run.config.exception;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.ErrorEnum;
@@ -69,8 +70,8 @@ public class GlobalExceptionHandler {
 	 * 权限不足报错拦截
 	 */
 	@ExceptionHandler(UnauthorizedException.class)
-	public Result unauthorizedExceptionHandler() {
-		return new Result().loign();
+	public JSONObject unauthorizedExceptionHandler() {
+		return CommonUtil.errorJson(ErrorEnum.E_502);
 	}
 
 	/**

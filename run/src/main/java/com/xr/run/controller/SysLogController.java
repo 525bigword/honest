@@ -8,6 +8,8 @@ import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysLogService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ public class SysLogController {
     @Autowired
     private SysLogService sysLogService;
     @GetMapping("get/{pageNum}/{pageRow}")
+    @RequiresPermissions(value ={"log:list"},logical = Logical.OR)
     public JSONObject get(@PathVariable Integer pageNum, @PathVariable Integer pageRow, String begin,String end,String ip,String username){
         System.out.println(pageNum);
         System.out.println(pageRow);

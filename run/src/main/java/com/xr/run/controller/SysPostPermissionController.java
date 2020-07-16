@@ -10,6 +10,7 @@ import com.xr.run.service.SysPostPermissionService;
 import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class SysPostPermissionController {
     @Autowired
     private SysStaffService sysStaffService;
     @GetMapping("get")
+    @RequiresPermissions(value = {"post:add","post:update"},logical = Logical.OR)
     public JSONObject get(){
         List<SysPermission> treeSysPost = sysPostPermissionService.findTreeSysPost();
         return CommonUtil.successJson(treeSysPost);
@@ -37,7 +39,7 @@ public class SysPostPermissionController {
         return CommonUtil.successJson(sysPostPermissionByPostIdToPid);
     }
     @PostMapping("get/{pageNum}/{pageRow}")
-//    @RequiresPermissions("ppost:list")
+    @RequiresPermissions("ppost:list")
     public JSONObject getPage(@PathVariable Integer pageNum, @PathVariable Integer pageRow,  @RequestBody JSONObject jsonObject){
         System.out.println(pageNum);
         System.out.println(pageRow);
@@ -100,6 +102,7 @@ public class SysPostPermissionController {
         }
     }
     @GetMapping("getPpost/{mid}")
+    @RequiresPermissions(value = {"staff:add","staff:update"},logical = Logical.OR)
     public JSONObject getSysPpost(@PathVariable Integer mid){
         List<SysPpost> sysPpostByMid = sysPostPermissionService.findSysPpostByMid(mid);
         return CommonUtil.successJson(sysPpostByMid);

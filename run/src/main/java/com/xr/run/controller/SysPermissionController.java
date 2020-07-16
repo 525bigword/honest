@@ -7,6 +7,7 @@ import com.xr.run.entity.SysPermission;
 import com.xr.run.service.SysPermissionService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.constants.ErrorEnum;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class SysPermissionController {
         return CommonUtil.successJson(1);
     }
     @PostMapping("add")
+    @RequiresPermissions(value ={"permission:add"})
     public JSONObject addSysPermission(@RequestBody SysPermission sysPermission){
         try {
             System.out.println(sysPermission);
@@ -46,6 +48,7 @@ public class SysPermissionController {
         return null;
     }
     @GetMapping("get/{pageNum}/{pageRow}")
+    @RequiresPermissions(value ={"permission:list"},logical = Logical.OR)
     public JSONObject addSysPermission(@PathVariable Integer pageNum, @PathVariable Integer pageRow, String name, String re){
         try {
             pageNum=pageNum<1?1:pageNum;
@@ -68,6 +71,7 @@ public class SysPermissionController {
 
     }
     @PutMapping("update")
+    @RequiresPermissions(value ={"permission:update"},logical = Logical.OR)
     public JSONObject updateSysPermission(SysPermission sysPermission){
         System.out.println(sysPermission);
         Integer i = sysPermissionService.updateSysPermission(sysPermission);
