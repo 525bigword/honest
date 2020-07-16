@@ -55,7 +55,7 @@
       </el-table-column>
       <el-table-column label="视频" prop="sysStaff"   align="center" width="160px">
         <template slot-scope="scope">
-          <a style="color:#1890ff" :href="he" @click="shipin(scope.row)">{{ scope.row.dvideo===null||scope.row.dvideo===''?'未上传视频':'查看视频' }}</a>
+          <a style="color:#1890ff" href="#" @click="shipin(scope.row)">{{ scope.row.dvideo===null||scope.row.dvideo===''?'未上传视频':'查看视频' }}</a>
         </template>
       </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="120px">
@@ -103,7 +103,8 @@
           rules:校验规则
           model:数据绑定
       -->
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 80%; margin-left:40px;margin-top:-10px">
+      <div v-loading="load" >
+      <el-form  ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 80%; margin-left:40px;margin-top:-10px">
         <!--        数据校验要求prop值和temp.属性名一致-->
         
         <el-form-item label="标题" prop="dtitle"  >
@@ -133,12 +134,12 @@
   action="https://localhost:8080/imp/import"
   :on-remove="fileRemove1"
   :on-change="handleImgChange"
-  accept=".mp4,.flv,.avi,.rm,.rmvb,.wmv,.ogg"
+  accept=".mp4,webm,.ogg"
   :file-list="viList"
   :limit="2"
   :auto-upload="false">
   <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-  <div slot="tip"  class="el-upload__tip">只能上传单个mp4|flv|avi|rm|rmvb|wmv|ogg文件，且不超过500M</div>
+  <div slot="tip"  class="el-upload__tip">只能上传单个mp4|webm|ogg文件，且不超过500M</div>
   </el-upload>
         </el-form-item>
         <el-form-item label="创建时间" prop="dcreateTime" >
@@ -152,34 +153,26 @@
         <el-form-item label="创建人" prop="sysStaff" >
           <el-input v-model="temp.sysStaff.name" disabled="disabled" style="width:80%"/>
         </el-form-item>
-        <el-form-item label="审核状态" prop="status">
-          <el-input v-model="temp.status" disabled="disabled" style="width:80%"></el-input>
-        </el-form-item>
       </el-form>
-      <div slot="footer" style="margin-top:-23px" class="dialog-footer">
-       
-        <!--
-          dialogStatus==='create'?createData():updateData()
-          dialogStatus需要我们根据情况去改变
-        -->
-        <el-button type="primary" :disabled="isShow"  v-show="btnShowTj"  @click="dialogStatus==='update'?updateData(2):createData(2)">
-          提交审核
-        </el-button>
-        <el-button type="primary" :disabled="isShow" v-show="btnShowTs" @click="updateData(3)">
-          通过审核
-        </el-button>
-        <el-button type="primary" :disabled="isShow" v-show="btnGX"  @click="dialogStatus==='update'?updateData(0):createData(0)">
-          更新
+      <div slot="footer" class="dialog-footer">
+        <el-button style="margin-left:70%;margin-top:7px" type="primary"  @click="dialogStatus==='update'?updateData(3):createData(3)">
+          保存
         </el-button>
          <el-button @click="resetTemp">
           取消
         </el-button>
       </div>
+      </div>
+    </el-dialog>
+    <el-dialog @close="Close" :visible.sync="dialogVideo" >
+        <video :src="he" controls="controls" style="width:100%;height:300px">
+        </video>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import { add, update, list, deleteDatakamset,imp,vimp } from '@/api/culture/datakamset'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
@@ -212,7 +205,6 @@ import { mapGetters } from 'vuex'
             sid: 0
           },
           dCreateTime:new Date(),
-          status: '',
           dstatus:1,
           fileList: null,
           viList:null,
@@ -223,14 +215,13 @@ import { mapGetters } from 'vuex'
         i:0,
         isShow:false,
         btnShowTs:false,
-        btnShowTj:false,
-        btnGX:true,
         fileList: null,
         viList:null,
         file:{},
         vfile:{},
         title: '添加', // 对话框显示的提示 根据dialogStatus create
         dialogFormVisible: false, // 是否显示对话框
+        dialogVideo:false,
         dialogStatus: '', // 表示表单是添加还是修改的
         rules: {
           // 校验规则
@@ -245,7 +236,8 @@ import { mapGetters } from 'vuex'
         fileAgin:null,
         vfileAgin:null,
         hre:'',
-        he:''
+        he:'',
+        load:false
       }
     },
     // 创建实例时的钩子函数
@@ -296,7 +288,6 @@ import { mapGetters } from 'vuex'
             sid: 0
           },
           dCreateTime:new Date(),
-          status: '',
           dstatus:1,
           dvideo:'',
           dvide:'',
@@ -310,7 +301,9 @@ import { mapGetters } from 'vuex'
         this.fileAgin=''
         this.vfileAgin=''
         this.yincang()
-        this.dialogFormVisible = false
+        this.dialogFormVisible = false,
+        this.isShow=false
+        this.load=false
       },
       // 显示添加的对话框
       handleCreate () {
@@ -319,14 +312,6 @@ import { mapGetters } from 'vuex'
         this.fileList=[]
         this.viList=[]
         this.i=3
-        this.xianshi()
-        if(this.temp.dstatus===1){
-          this.temp.status='创建'
-        }else if(this.temp.dstatus===2){
-          this.temp.status='待审'
-        }else{
-          this.temp.status='已审核'
-        }
         this.temp.sysStaff.name=this.nickname
         this.temp.sysStaff.sid=this.userId
         console.debug(this.temp)
@@ -345,17 +330,17 @@ import { mapGetters } from 'vuex'
         if (!this.hasPerm('datacollection:add')) {
           return
         }
-        if(val!==0){
             this.temp.dstatus=val;
-        }
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
               if (valid) {
+                this.isShow=true
+                this.load=true
         imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
             console.debug(this.temp)
-            this.isShow=true
+            
             vimp(this.vformData).then((resp)=>{
           this.temp.dvideo=resp.dFile
         
@@ -375,6 +360,7 @@ import { mapGetters } from 'vuex'
               })
               this.isShow=false
               this.yincang()
+              this.isShow=false
               this.i=0;
               this.resetTemp()
           })
@@ -389,13 +375,6 @@ import { mapGetters } from 'vuex'
          this.fileAgin=row.dfileName
          this.vfileAgin=row.dvideoName
         this.temp = row;
-        if(this.temp.dstatus===1){
-          this.temp.status='创建'
-        }else if(this.temp.dstatus===2){
-          this.temp.status='待审'
-        }else{
-          this.temp.status='已审核'
-        }
         if(row.dfileName!==null&&row.dfileName!==''){
           this.fileList=[{name:row.dfileName,url:row.dfile}];
         }
@@ -403,9 +382,7 @@ import { mapGetters } from 'vuex'
           this.viList=[{name:row.dvideoName,url:row.dvideo}];
         }
         
-        this.temp.dCreateTime=row.dcreateTime
-        this.xianshi()
-        
+        this.temp.dCreateTime=row.dcreateTime        
         // 将对话框里的确定点击时，改为执行修改操作
         this.dialogStatus = 'update'
         // 修改标题
@@ -419,12 +396,10 @@ import { mapGetters } from 'vuex'
       },
       // 执行修改操作
       updateData(val) {
-        /* if (!this.hasPerm('datacollection:update')) {
+        if (!this.hasPerm('datacollection:update')) {
           return
-        } */
+        }
         this.$refs['dataForm'].validate((valid) => {})
-        console.debug(this.fileList)
-        console.debug(this.viList)
           if(this.fileList!==null&&this.viList!==null&&this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
           this.i=6
         }else if( this.fileList!==null&&this.fileAgin!==this.fileList[0].name){//换文件
@@ -432,18 +407,18 @@ import { mapGetters } from 'vuex'
         }else if(this.viList!==null&&this.vfileAgin!==this.viList[0].name){//换视频
           this.i=2
         }
-      if(val!==0){//判断状态
             this.temp.dstatus=val;
-            }
       console.debug(this.i)
         if(this.i===1){
           this.temp.dvideo='1'
           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
+            this.isShow=true
+            this.load=true
             imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
-            this.isShow=true
+            
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -459,6 +434,7 @@ import { mapGetters } from 'vuex'
               })
               this.isShow=false
               this.yincang()
+              this.load=false
             })
           
         })
@@ -468,12 +444,14 @@ import { mapGetters } from 'vuex'
           this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
               if (valid) {
+               this.isShow=true
+               this.load=true
         imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
             console.debug(this.temp)
-            this.isShow=true
             vimp(this.vformData).then((resp)=>{
           this.temp.dvideo=resp.dFile
+           
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
@@ -488,6 +466,7 @@ import { mapGetters } from 'vuex'
               })
               this.isShow=false
               this.yincang()
+              this.load=false
             })
           })
           })
@@ -499,9 +478,11 @@ import { mapGetters } from 'vuex'
            this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
+             this.isShow=true
+             this.load=true
           vimp(this.vformData).then((resp)=>{
            this.temp.dvideo=resp.dFile
-            this.isShow=true
+           
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -516,6 +497,7 @@ import { mapGetters } from 'vuex'
                 duration: 2000
               })
               this.isShow=false
+              this.load=false
               this.yincang()
             })
          
@@ -529,6 +511,7 @@ import { mapGetters } from 'vuex'
           // 表单校验通过
           if (valid) {
             this.isShow=true
+            this.load=true
             // 进行ajax提交
             update(this.temp).then((response) => {
               // 提交完毕，关闭对话框
@@ -544,6 +527,7 @@ import { mapGetters } from 'vuex'
               })
               this.isShow=false
               this.yincang()
+              this.load=false
             })
           }
           this.temp.dfile=''
@@ -551,7 +535,6 @@ import { mapGetters } from 'vuex'
         })
         }
         this.i=0;
-        /* this.resetTemp() */
       },
       handleOutFile(){
         if (!this.hasPerm('datacollection:out')) {
@@ -588,8 +571,10 @@ import { mapGetters } from 'vuex'
       shipin(row){
         if(row.dvideo!==null&&row.dvideo!==''){
           this.he=this.videoIp+row.dvideo
+          this.dialogVideo=true
         }else{
-          this.he='#'
+          this.he=""
+          this.dialogVideo=false
         }
       }
       ,
@@ -683,6 +668,7 @@ import { mapGetters } from 'vuex'
         }else{
           this.viList=fileList.slice(1)
         }
+        return
       }else{
          this.vfile=file.raw
         if(fileList){
@@ -695,22 +681,8 @@ import { mapGetters } from 'vuex'
         this.$refs['dataForm'].validate((valid) => {})
         
     },
-    xianshi(){
-      if(this.temp.dstatus===1){
-        this.btnShowTj=true;
-      }
-      if(this.temp.dstatus===2&&this.hasPerm('datacollection:update')){
-        this.btnShowTs=true;
-      }
-      console.debug(this.temp.dstatus)
-      if((this.temp.dstatus===2||this.temp.dstatus===3)&&!this.hasPerm('datacollection:update')){
-        this.btnGX=false
-      }
-    },
     yincang(){
-        this.btnShowTj=false;
         this.btnShowTs=false;
-        this.btnGX=true
         this.temp.dstatus=1;
         this.viList=[]
         this.fileList=[]
@@ -745,6 +717,9 @@ import { mapGetters } from 'vuex'
     },
     indexMethod(val){
       return ++val
+    },
+    Close(){
+      this.he=''
     }
     }
   }

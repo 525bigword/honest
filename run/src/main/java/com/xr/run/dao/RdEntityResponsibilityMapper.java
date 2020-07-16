@@ -29,4 +29,7 @@ public interface RdEntityResponsibilityMapper extends BaseMapper<RdEntityRespons
     @Select("select rd.*,ss.name from  rd_entity_responsibility rd inner join sys_staff ss on rd.create_id= ss.sid " +
             " where rd.id =#{id}")
     RdEntityResponsibility findRdEntityResponsibilityById(@Param("id") Integer id);
+    @Select("SELECT count(id) FROM (SELECT id,create_id FROM rd_entity_responsibility WHERE staus <> 2 and staus<>-1) rd_entity_responsibility WHERE create_id = #{sid}")
+    Integer findrdRdEntityResponsibilityByWstatusToCount(@Param("sid") Integer sid) ;
+
 }

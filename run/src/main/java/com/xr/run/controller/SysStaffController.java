@@ -11,6 +11,7 @@ import com.xr.run.util.constants.Constants;
 import com.xr.run.util.constants.ErrorEnum;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +70,7 @@ public class SysStaffController {
         //return sysStaffAll;
     }
     @GetMapping("gets/{pid}/{mid}")
+    @RequiresPermissions(value = {"mechanism:list","mechanism:add","mechanism:update"},logical = Logical.OR)
     public JSONObject findstatffByPidAndMid(@PathVariable Integer pid,@PathVariable Integer mid){
         List<SysStaff> sysStaffAll = sysStaffService.findstatffByPid(pid,mid);
         return CommonUtil.successJson(sysStaffAll);
@@ -96,6 +98,7 @@ public class SysStaffController {
      * 生成前台首页
      */
     @GetMapping("/createIndex")
+    @RequiresPermissions("index:add")
     public JSONObject createIndex(){
         try {
             homePageSevice.loading();
@@ -112,7 +115,7 @@ public class SysStaffController {
         CommonUtil.hasAllRequired(requestJson, "username,password");
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
         //创建首页
-        homePageSevice.loading();
+//        homePageSevice.loading();
         System.out.println("==================jsonObject="+jsonObject);
         return jsonObject;
     }
