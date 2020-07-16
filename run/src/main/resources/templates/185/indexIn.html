@@ -327,7 +327,7 @@
         </li>
         <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a>
         </li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/196/index.html','_blank')"><a>风险防控</a>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a>
         </li>
         <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a>
         </li>
@@ -385,12 +385,8 @@
             </label>
         </p>
         <div id="box">
-            <form id="searchDataForm" action="http://localhost:4031/ms-mcms/cms/9/search.do" method="post">
-                <input type="hidden" name="categoryId" value="185" label="栏目编号"/>
-                <input type="hidden" name="categoryIds" value="185" label="栏目编号"/>
                 <input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
                 <div id="search" onclick="submit();">搜索</div>
-            </form>
         </div>
     </div>
 
@@ -442,7 +438,7 @@
                 pageNo = 1;
             }
             var type = $("#type").val();
-            var URL = "http://localhost:8080/qt/duty/rdWorkDetailList";
+            var URL = "http://localhost:8080/honest/qt/duty/rdWorkDetailList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

@@ -1,6 +1,6 @@
 server:
-  # servlet:
-    #context-path: /honest
+  servlet:
+    context-path: /honest
   port: 8080
 logging:
   level:
@@ -62,4 +62,5 @@ file:
   staticAccessPaths: /upload/**
   uploadFolders: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
 html:
-  destPath: D:\IDE\nginx-1.8.1\html\ms-mcms\html\2
+  #destPath: D:\IDE\nginx-1.8.1\html\ms-mcms\html\2
+  destPath: F:\tobacco\ms-mcms\html\2

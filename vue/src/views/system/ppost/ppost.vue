@@ -42,13 +42,13 @@
         icon="el-icon-edit"
         @click="handleDelete"
       >删除</el-button>
-      <el-button
+      <!-- <el-button
         :loading="downloadLoading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >导出</el-button>
+      >导出</el-button> -->
       <!-- <el-checkbox
         v-model="showReviewer"
         class="filter-item"
@@ -545,6 +545,10 @@ export default {
                 }
               }).then(res => {
                 this.temp.defaultvalue = [];
+                this.$message({
+                  type: "success",
+                  message: "修改成功"
+                });
                 this.getList();
                 this.treeDisable = false;
               });
@@ -585,7 +589,11 @@ export default {
                 });
                 return;
               }
-            //   this.getList();
+              this.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
+              this.getList();
               // this.getList();
             });
           }

@@ -37,7 +37,7 @@ public interface EducationPoliticsMapper {
             "create_time, " +
             "create_id, " +
             "staus, " +
-            "createname from education_politics where staus=0 and title like CONCAT('%',#{title},'%') order by create_time desc")
+            "createname from education_politics where staus=0 and title like CONCAT('%',#{title},'%') order by id desc")
     IPage<EducationPolitics> findwhereEducationIndex(Page page, @Param("title") String title);
 
     @Select("select id, " +
@@ -49,7 +49,7 @@ public interface EducationPoliticsMapper {
             "create_time, " +
             "create_id, " +
             "staus, " +
-            "createname  from education_politics where staus=0 and type = #{type} and title like CONCAT('%',#{title},'%') order by create_time desc")
+            "createname  from education_politics where staus=0 and type = #{type} and title like CONCAT('%',#{title},'%') order by id desc")
     IPage<EducationPolitics> findEducationIndexByType(Page page, @Param("title") String title, @Param("type") String type);
 
     @Select("select ep.id, " +
@@ -61,6 +61,6 @@ public interface EducationPoliticsMapper {
             "ep.create_time, " +
             "ep.create_id, " +
             "ep.staus, " +
-            "ep.createname,ss.name as cname  from education_politics ep inner join sys_staff ss on ep.create_id=ss.sid where ep.id = #{id} order by ep.create_time desc")
+            "ep.createname,ss.name as cname  from education_politics ep inner join sys_staff ss on ep.create_id=ss.sid where ep.id = #{id} order by ep.id desc")
     EducationPolitics finsEduById(@Param("id") Integer id);
 }

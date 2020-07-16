@@ -41,57 +41,44 @@ public class FrontEducationsController {
     @Autowired
     private EducationPoliticsService educationPoliticsService;
 
+    public IPage<EducationPolitics> getList(Page page,String title){
+        return  educationPoliticsService.findwhereEducationIndex(page,title);
+    }
+
     //所有廉政教育内容
     @GetMapping("get")
     public String getList(String title, Integer pageNo, Integer pageSize){
         Page page = new Page(pageNo,pageSize);
-        IPage<EducationPolitics> educationPoliticsIPage = educationPoliticsService.findwhereEducationIndex(page,title);
-         for (EducationPolitics record : educationPoliticsIPage.getRecords()) {
-            record.setFirstPage(educationPoliticsIPage.getRecords().get(0).getId());
-        }
+        IPage<EducationPolitics> educationPoliticsIPage = getList(page, title);
         String jsonString = JSON.toJSONString(educationPoliticsIPage);
         return jsonString;
     }
 
     @GetMapping("/getEduList")
     public String getEduList(String type,String title, Integer pageNo, Integer pageSize){
-        IPage<EducationPolitics> educationPoliticsIPage = educationPoliticsService.findwhereEducationIndex(new Page(1,1),title);
-        Integer first = educationPoliticsIPage.getRecords().get(0).getId();
         if(type!=null&&!type.equals("")&&!type.equals("null")) {
             if (Integer.parseInt(type) == 0) {
                 //廉政要闻
                 Page page = new Page(pageNo, pageSize);
                 IPage<EducationPolitics> educationPolitics = educationPoliticsService.findEducationIndexByType(page, title, "廉政要闻");
-                for (EducationPolitics record : educationPolitics.getRecords()) {
-                    record.setFirstPage(first);
-                }
                 String jsonString = JSON.toJSONString(educationPolitics);
                 return jsonString;
             } else if (Integer.parseInt(type) == 1) {
                 //文件制度
                 Page page = new Page(pageNo, pageSize);
                 IPage<EducationPolitics> educationPolitics = educationPoliticsService.findEducationIndexByType(page, title, "文件制度");
-                for (EducationPolitics record : educationPolitics.getRecords()) {
-                    record.setFirstPage(first);
-                }
                 String jsonString = JSON.toJSONString(educationPolitics);
                 return jsonString;
             } else if (Integer.parseInt(type) == 2) {
                 //领导讲话
                 Page page = new Page(pageNo, pageSize);
                 IPage<EducationPolitics> educationPolitics = educationPoliticsService.findEducationIndexByType(page, title, "领导讲话");
-                for (EducationPolitics record : educationPolitics.getRecords()) {
-                    record.setFirstPage(first);
-                }
                 String jsonString = JSON.toJSONString(educationPolitics);
                 return jsonString;
             } else {
                 //警钟长鸣
                 Page page = new Page(pageNo, pageSize);
                 IPage<EducationPolitics> educationPolitics = educationPoliticsService.findEducationIndexByType(page, title, "警钟长鸣");
-                for (EducationPolitics record : educationPolitics.getRecords()) {
-                    record.setFirstPage(first);
-                }
                 String jsonString = JSON.toJSONString(educationPolitics);
                 return jsonString;
             }
