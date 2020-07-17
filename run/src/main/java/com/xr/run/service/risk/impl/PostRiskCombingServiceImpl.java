@@ -17,7 +17,7 @@ public class PostRiskCombingServiceImpl implements PostRiskCombingService {
     @Autowired
     private PostRiskCombingMapper postRiskCombingMapper;
     @Override
-    public IPage<PostRiskCombing2> list(Page page) {
+    public IPage<Postriskcombing> list(Page page) {
         return postRiskCombingMapper.list(page);
     }
     @Override

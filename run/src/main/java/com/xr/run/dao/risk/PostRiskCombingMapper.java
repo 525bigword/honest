@@ -21,7 +21,12 @@ public interface PostRiskCombingMapper {
      * @param page
      * @return
      */
-    public IPage<PostRiskCombing2> list(Page page);
+    @Select("SELECT pc.pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue," +
+            "        pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname" +
+            "        from postriskcombing pc LEFT JOIN sys_mechanism m on pc.pDeptId=m.mid LEFT JOIN  sys_post p on pc.pInfomationId=p.pid" +
+            "        where pStatus=1" +
+            "        order by pc.pid desc")
+    public IPage<Postriskcombing> list(Page page);
     // 条件查询
     /**
      * @param pInfomationId
