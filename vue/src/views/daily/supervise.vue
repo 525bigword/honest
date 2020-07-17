@@ -111,10 +111,10 @@
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px" :disabled="userInfo.sstatus!=0"></el-cascader>
+                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px" :disabled="userInfo.sstatus!=0&&dialogTitle!='增加'"></el-cascader>
           </el-form-item>
           <el-form-item label="承办人" prop="sundertaker">
-            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px" :disabled="userInfo.sstatus!=0">
+            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px" :disabled="userInfo.sstatus!=0&&dialogTitle!='增加'">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -124,10 +124,10 @@
             </el-select>
           </el-form-item><br/>
           <el-form-item label="事项摘要" prop="spaperItems">
-            <el-input v-model="userInfo.spaperItems" placeholder="请输入事项摘要" style="width: 300px" :disabled="userInfo.sstatus!=0"></el-input>
+            <el-input v-model="userInfo.spaperItems" placeholder="请输入事项摘要" style="width: 300px" :disabled="userInfo.sstatus!=0&&dialogTitle!='增加'"></el-input>
           </el-form-item>
           <el-form-item label="耗资" prop="scost">
-            <el-input v-model="userInfo.scost" placeholder="请输入耗资" style="width: 300px" type="Number" :disabled="userInfo.sstatus!=0"></el-input>
+            <el-input v-model="userInfo.scost" placeholder="请输入耗资" style="width: 300px" type="Number" :disabled="userInfo.sstatus!=0&&dialogTitle!='增加'"></el-input>
           </el-form-item><br/>
 
           <div>
