@@ -73,31 +73,27 @@ public class ShiroConfiguration {
 		return securityManager;
 	}
 
+
 	/**
 	 * Shiro Realm 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的
 	 */
 	@Bean
 	public UserRealm userRealm() {
 		UserRealm userRealm = new UserRealm();
+		// 加入自定义的加密规则
+		userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
 		return userRealm;
 	}
 
-	/**
-	 * 凭证匹配器
-	 * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
-	 * 所以我们需要修改下doGetAuthenticationInfo中的代码;
-	 * ）
-	 * 可以扩展凭证匹配器，实现 输入密码错误次数后锁定等功能，下一次
-	 */
-	@Bean(name = "credentialsMatcher")
+
+	@Bean
 	public HashedCredentialsMatcher hashedCredentialsMatcher() {
 		HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
 		//散列算法:这里使用MD5算法;
 		hashedCredentialsMatcher.setHashAlgorithmName("md5");
-		//散列的次数，比如散列两次，相当于 md5(md5(""));
+//		//散列的次数，比如散列两次，相当于 md5(md5("")) 和插入或修改时的加密次数一致
 		hashedCredentialsMatcher.setHashIterations(2);
-		//storedCredentialsHexEncoded默认是true，此时用的是密码加密用的是Hex编码；false时用Base64编码
-		hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
+//		hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
 		return hashedCredentialsMatcher;
 	}
 
