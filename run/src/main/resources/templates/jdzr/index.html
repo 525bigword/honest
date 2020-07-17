@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>责任纪实</title>
+    <title>监督责任</title>
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
-    <script type="text/javascript" src="http://localhost:4031/ms-mcms/templets/1/yancao/js/Paging/jquery.min.js"></script>
-    <!--分页插件  -->
-    <script type="text/javascript" src="http://localhost:4031/ms-mcms/templets/1/yancao/js/Paging/pageMe.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
     <style type="text/css">
         .ms-menue-content-model p{
             font-weight:500;
@@ -188,65 +186,32 @@
             background: #285e3a;
         }
     </style>
-    <style>
-        /*分页样式  */
-        /* 外面盒子样式---自己定义 */
-        .page_div {
-            color: #666
-        }
-        /* 页数按钮样式 */
-        .page_div button {
-            display: inline-block;
-            min-width: 30px;
-            height: 28px;
-            cursor: pointer;
-            color: #666;
-            font-size: 13px;
-            line-height: 28px;
-            background-color: #f9f9f9;
-            border: 1px solid #dce0e0;
-            text-align: center;
-            margin: 0 4px;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        #firstPage, #lastPage, #nextPage, #prePage {
-            width: 50px;
-            color: black;
-            border: 1px solid rgba(238, 238, 238, 1)
-        }
-
-        #nextPage, #prePage {
-            width: 70px
-        }
-
-        .page_div .current {
-            background-color: #0073A9;
-            border-color: #0073A9;
-            color: #FFF
-        }
-        /* 页面数量 */
-        .totalPages {
-            margin: 0 10px
-        }
-
-        .totalPages span, .totalSize span {
-            color: #0073A9;
-            margin: 0 5px
-        }
-        /*button禁用*/
-        .page_div button:disabled {
-            opacity: .5;
-            cursor: no-drop
-        }
-    </style>
 </head>
 <script type="text/javascript">
+    var that = this;
+    var departments = []; //部门
+    var jobs = []; //岗位
+    var names = []; //姓名
+    function resquestMethod(type, url, data, getData) {
+        $.ajax({
+            async: true,
+            url: url,
+            type: type,
+            data: data,
+            success: function(data) {
+                getData = data.rows;
+                console.log(getData);
+            },
+            error: function(data) {
+                console.log("失败了");
+            }
+        })
+    }
     function submit() {
         var title = $("input[name='basic_title']").val();
-        listData(title);
+        if(title){
+            document.getElementById("searchDataForm").submit();
+        }
     }
 </script>
 
@@ -306,17 +271,17 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/datacollection','_self')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/rdworkplan','_self')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/dcpreport','_self')"><a>纪检报表</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/postriskcombing','_self')"><a>风险防控</a></li>
+        <li class="active-li" onclick="window.open('http://localhost:8080/th/spvduty','_self')"><a>监督责任</a></li>
+        <li class="" onclick="window.open('http://localhost:8080/th/letterreporter','_self')"><a>信访举报</a></li>
     </ul>
 </div>
 <script type="text/javascript">
     var url = window.location.href;
-    if(url == 'http://localhost:4031/ms-mcms/html/2/index.html'){
+    if(url == 'http://localhost:4031/ms-mcms/html/1/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>
@@ -328,125 +293,34 @@
                 <div class="shape-circular ms-absolute">
                     <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/箭头@2x.png" />
                 </div>
-                <span><label>责任纪实</label></span>
+                <span><label>风险防控</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/0/index.html','_self')"><label><a>工作计划</a></label></span>
-                    </li>
-                    <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/1/index.html','_self')"><label><a>工作部署</a></label></span>
-                    </li>
-                    <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/2/index.html','_self')"><label><a>廉政谈话</a></label></span>
-                    </li>
-                    <li>
-                        <span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/3/index.html','_self')"><label><a>主体责任</a></label></span>
+                        <span class="active-span-title" onclick="window.open('http://localhost:8080/th/spvduty','_self')"><label><a>监督责任</a></label></span>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
     <div class="search" style="width: 888px;">
-        <p style="width: 50%;float: left;">
-            <span>当前位置：</span>
-            <label>
-                <a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
-                &gt;
-                <a href="http://localhost:4031/ms-mcms/html/2/185/index.html">责任纪实</a>
-            </label>
-        </p>
-        <div id="box">
-                <input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
-                <div id="search" onclick="submit();">搜索</div>
-         </div>
+
     </div>
 
     <div class="content-list">
         <div>
             <ul>
-
+                <li th:each="list,iterStat : ${list}">
+                    <a th:href="'http://localhost:4031/hoonest/'+${list.dutyTitle}+'.html'" th:text="${list.dutyTitle}"></a>
+                </li>
             </ul>
         </div>
     </div>
-    <div class="cut-page margin-center page_div" id="page">
-
-    </div>
-    <input type="hidden" id="typeOne" />
-    <input type="hidden" id ="idOne"/>
-    <script type="text/javascript">
-        $(function () {
-            listData();
-        });
-
-        /*请求成功时调用
-            getData: 返回的数据
-        */
-        function insertContent(getData,pageNo){
-            var htmlContent = "";	//插入的列表内容
-            for(var i = 0; i < getData.length; i++){
-                var data = getData[i];		//获取一条数据
-                if(pageNo==1){
-                    $("#typeOne").val(getData[0].type);
-                    $("#idOne").val(getData[0].id);
-                }
-                var url = "http://localhost:4031/ms-mcms/html/2/185/" +$("#typeOne").val() + "/" + $("#idOne").val() + ".html?id="+data.id+"&type="+data.type;//a链接地址
-                var title = data.title;		//标题
-                htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
-            }
-            $(".content-list ul").html(htmlContent);
-        }
-
-        /*请求失败时调用 */
-        function insertError(){
-            $(".content-list ul").html("<center style='margin-top: 140px;'>暂无数据内容，请添加！</center>");
-        }
-        function listData(title,pageNo){
-            if(!title){
-                title = "";
-            }
-            if(!pageNo){
-                pageNo = 1;
-            }
-            var URL = "http://localhost:8080/honest/qt/duty/rdWorkList";
-            var getData = [];	//请求返回的数据
-            $.ajax({
-                async: true,
-                url: URL,
-                type: "get",
-                data: {title:title,pageNo: pageNo,pageSize: 10},
-                success: function(da) {
-                    if(da!=="null") {
-                        var data = eval("(" + da + ")");
-                        if (data.total === 0) {
-                            //没有数据的时候
-                            insertError();
-                        } else {
-                            insertContent(data.rows,pageNo);
-                        }
-                        $("#page").paging({
-                            pageNum: pageNo, // 当前页面
-                            totalNum: data.pages, // 总页码
-                            totalList: data.total, // 记录总数量
-                            callback: function (num) { //回调函数
-                                listData(title, num);
-                            }
-                        });
-                    }else{
-                        //没有数据的时候
-                        insertError();
-                    }
-                },
-                error: function(da) {
-                    insertError();
-                }
-            });
-        }
-    </script>
 
 </div>
-﻿<!--底部内容-->
+<!--底部内容-->
 <div class="footer max-width margin-center">
-    主 管：湘潭市烟草专卖局 主 办：湘潭市烟草专卖局纪检监察科<br/>
-    版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
+    主 管：xxxxxxxxxxxxxxxxxxx 主 办：xxxxxxxxxxxx<br/>
+    版权所有：xxxxxxxxxx专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
+    备案序号：湘ICP备xxxxxxxx号<br/>
 </div>	</body>
 </html>
