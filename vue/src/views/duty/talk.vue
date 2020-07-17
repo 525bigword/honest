@@ -118,7 +118,7 @@
           <br/>
           <div align="right" ><el-form-item >
             <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')"  >提交</el-button>
-            <el-button type="primary" class="el-icon-edit" @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
             <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
             <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>
 
@@ -224,39 +224,47 @@
         return 'text-align:center';
       },
       submitUser(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let endtime = new Date(this.userInfo.createtime).toJSON();
-            this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-              .toISOString()
-              .replace(/T/g, " ")
-              .replace(/\.[\d]{3}Z/, "")
-            let endtime1 = new Date(this.userInfo.time).toJSON();
-            this.userInfo.time = new Date(+new Date(endtime1) + 8 * 3600 * 1000)
-              .toISOString()
-              .replace(/T/g, " ")
-              .replace(/\.[\d]{3}Z/, "")
+        if(this.userInfo.pid==this.userInfo.personid){
+          this.$notify({
+            title: '温馨提示',
+            message: "记录人和谈话对象不能是同一个人",
+            type: 'warning',
+            duration: 2000
+          })
+        }else {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              let endtime = new Date(this.userInfo.createtime).toJSON();
+              this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "")
+              let endtime1 = new Date(this.userInfo.time).toJSON();
+              this.userInfo.time = new Date(+new Date(endtime1) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "")
 
-            let postData = qs.stringify({
-              punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
-              dept:this.userInfo.punit.toString(),
-              pid:this.userInfo.pid,//谈话对象姓名
-              personid:this.userInfo.personid,//记录人
-              time:this.userInfo.time,
-              politcs:this.userInfo.zzmm,
-              pduty:this.userInfo.duty,//谈话对象职务
-              type:this.userInfo.type,//谈话类型
-              site:this.userInfo.site,
-              syllabus:this.userInfo.syllabus,
-              content:this.userInfo.content,
-              createid:this.userId,
-              createname:this.userInfo.createname,
-              createtime:this.userInfo.createtime,
-              staus:0
-            });
-            //  console.log("postdata"+postData)
-            add(postData).then((response)=>{
-              this.ad='none',
+              let postData = qs.stringify({
+                punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
+                dept:this.userInfo.punit.toString(),
+                pid:this.userInfo.pid,//谈话对象姓名
+                personid:this.userInfo.personid,//记录人
+                time:this.userInfo.time,
+                politcs:this.userInfo.zzmm,
+                pduty:this.userInfo.duty,//谈话对象职务
+                type:this.userInfo.type,//谈话类型
+                site:this.userInfo.site,
+                syllabus:this.userInfo.syllabus,
+                content:this.userInfo.content,
+                createid:this.userId,
+                createname:this.userInfo.createname,
+                createtime:this.userInfo.createtime,
+                staus:0
+              });
+              //  console.log("postdata"+postData)
+              add(postData).then((response)=>{
+                this.ad='none',
                 this.tf=''
               this.defaUnit='请选择谈话对象单位'
               this.initList();
@@ -267,11 +275,13 @@
                 duration: 2000
               })
             })
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
+            } else {
+              console.log('error submit!!');
+          return false;
+        }
         });
+
+        }
 
       },
       handleItemChange(value){//点击选择时初始化谈话对象和记录人
@@ -322,40 +332,56 @@
         this.tg='none'//通过按钮
         this.bh='none'//驳回按钮
       },
-      gxmethod(){//更新
-
-        let endtime = new Date(this.userInfo.time).toJSON();
-        this.userInfo.time = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-
-        let postData = qs.stringify({
-          id:this.userInfo.id,
-          punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
-          dept:this.userInfo.punit.toString(),
-          pid:this.userInfo.pid,//谈话对象姓名
-          personid:this.userInfo.personid,//记录人
-          time:this.userInfo.time,
-          politcs:this.userInfo.zzmm,
-          pduty:this.userInfo.duty,//谈话对象职务
-          type:this.userInfo.type,//谈话类型
-          site:this.userInfo.site,
-          syllabus:this.userInfo.syllabus,
-          content:this.userInfo.content,
-        });
-        updatecontent(postData).then((responese)=>{
-          this.ad='none',//隐藏窗
-            this.tf=''
-          this.initList()
+      gxmethod(formName){//更新
+        if(this.userInfo.pid==this.userInfo.personid){
           this.$notify({
-            title: '成功',
-            message: responese.message,
-            type: 'success',
+            title: '温馨提示',
+            message: "记录人和谈话对象不能是同一个人",
+            type: 'warning',
             duration: 2000
           })
-        })
-        console.log('gx'+this.userInfo.id)
+        }else {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              let endtime = new Date(this.userInfo.time).toJSON();
+              this.userInfo.time = new Date(new Date(endtime) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "")
+
+              let postData = qs.stringify({
+                id:this.userInfo.id,
+                punit:this.userInfo.punit[this.userInfo.punit.length-1],//谈话对象单位
+                dept:this.userInfo.punit.toString(),
+                pid:this.userInfo.pid,//谈话对象姓名
+                personid:this.userInfo.personid,//记录人
+                time:this.userInfo.time,
+                politcs:this.userInfo.zzmm,
+                pduty:this.userInfo.duty,//谈话对象职务
+                type:this.userInfo.type,//谈话类型
+                site:this.userInfo.site,
+                syllabus:this.userInfo.syllabus,
+                content:this.userInfo.content,
+              });
+              updatecontent(postData).then((responese)=>{
+                this.ad='none',//隐藏窗
+                this.tf=''
+              this.initList()
+              this.$notify({
+                title: '成功',
+                message: responese.message,
+                type: 'success',
+                duration: 2000
+              })
+            })
+            } else {
+              console.log('error submit!!');
+          return false;
+        }
+        });
+
+        }
+
       },//提交审核
       tjsh(index,row){
         console.log('row'+JSON.stringify(row.id))
@@ -494,7 +520,12 @@
           })
         }
         else {
-          var ids = data.map(item => { return { staus: item.staus } })
+          this.$confirm('请确认是否删除?', '温馨提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            var ids = data.map(item => { return { staus: item.staus } })
           var ids1 =true
           for(var i = 0; i < ids.length; i++) {
             console.log('ids[i].staus'+ids[i].staus)
@@ -519,14 +550,22 @@
             console.debug('选中行数据'+JSON.stringify(data))
             del(postData).then((response) =>{
               this.initList();
-              this.$notify({
-                title: '成功',
-                message: response.message,
-                type: 'success',
-                duration: 2000
-              })
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
             })
-          }}},   handleEdit(index, row) {
+          })
+          }
+        }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+          this.initList();
+        });
+  }},   handleEdit(index, row) {
         this.userInfo={
           punit:[]
         }

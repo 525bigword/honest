@@ -5,22 +5,31 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.*;
 import com.xr.run.service.*;
+import com.xr.run.service.risk.PostRiskCombingService;
 import com.xr.run.util.ResponseResult;
 import com.xr.run.util.constants.Constants;
+import io.swagger.models.auth.In;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,35 +56,130 @@ public class PostRiskCombingController {
     @Autowired
     private RiskpointassessmentService riskpointassessmentService;
 
-
+    // 依赖注入业务类
+    @Autowired
+    private PostRiskCombingService postRiskCombingService;
     @RequestMapping("getList")
     @RequiresPermissions("postRiskCombing:list")
-    public ResponseResult list() {
-        List<Postriskcombing> list = postriskcombingService.getList();
+    public ResponseResult list(Integer pageNum, Integer pageSize) {
+        //System.out.println(pageNum+"    "+pageSize);
+        //从session获取用户信息
+        Session session = SecurityUtils.getSubject().getSession();
+        SysStaff loginStaff = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
+        // 分页查询
+        Page page=new Page(pageNum,pageSize);
+        IPage<PostRiskCombing2> resultPage = postRiskCombingService.list(page);
+        //System.out.println(resultPage.getRecords());
         ResponseResult result = new ResponseResult();
-        result.getInfo().put("list", list);
-        result.getInfo().put("total", list.size());
+        result.getInfo().put("list",resultPage.getRecords());
+        result.getInfo().put("total", resultPage.getTotal());
+        result.getInfo().put("loginStaff", loginStaff);
+        return result;
+    }
+
+    @RequestMapping("add")
+    @PostMapping("postRiskCombing:add")
+    public ResponseResult addPostRiskCombing(Postriskcombing postriskcombingOld,HttpServletRequest req, HttpServletResponse resp) {
+        // 如果部门和岗位为空说明是公共风险
+        // 添加数据
+        postRiskCombingService.add(postriskcombingOld);
+        Postriskcombing postRiskCombing=new Postriskcombing();//岗位风险
+        Riskpointassessment riskPointAssessment=new Riskpointassessment();// 风险点统计
+        //从session获取用户信息
+        Session session = SecurityUtils.getSubject().getSession();
+        SysStaff loginStaff = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
+        riskPointAssessment.setRiskCreateId(loginStaff.getSid());
+        riskPointAssessment.setRiskCreateName(loginStaff.getName());
+        //查询所有部门
+        List<SysMechanism> smList=sysMechanismService.getAll();
+        // 查询是否有未统计的部门
+        List<SysMechanism> notUpdateList=riskpointassessmentService.notUpdatedDept(riskPointAssessment);
+        if(notUpdateList.size()>0) {// 有未统计的则添加统计数据
+            for (SysMechanism sm : notUpdateList) {
+                // 统计风险等级数量
+                postRiskCombing.setPDeptId(sm.getMid());
+                postRiskCombing.setPGrade("一级风险");
+                Integer num1 = postRiskCombingService.findByGrade(postRiskCombing);
+                postRiskCombing.setPGrade("二级风险");
+                Integer num2 = postRiskCombingService.findByGrade(postRiskCombing);
+                postRiskCombing.setPGrade("三级风险");
+                Integer num3 = postRiskCombingService.findByGrade(postRiskCombing);
+                // 风险点赋值
+                riskPointAssessment.setRiskImfomation(sm.getMid());
+                riskPointAssessment.setNumberOneRisks(num1);
+                riskPointAssessment.setNumberTwoRisks(num2);
+                riskPointAssessment.setNumberThreeRisks(num3);
+                // 添加统计数据
+                //System.out.println(riskPointAssessment);
+                riskpointassessmentService.add(riskPointAssessment);
+            }
+        }else{
+            // 统计风险等级数量
+            postRiskCombing.setPDeptId(postriskcombingOld.getPDeptId());
+            postRiskCombing.setPGrade("一级风险");
+            Integer num1 = postRiskCombingService.findByGrade(postRiskCombing);
+            postRiskCombing.setPGrade("二级风险");
+            Integer num2 = postRiskCombingService.findByGrade(postRiskCombing);
+            postRiskCombing.setPGrade("三级风险");
+            Integer num3 = postRiskCombingService.findByGrade(postRiskCombing);
+            // 风险点赋值
+            riskPointAssessment.setRiskImfomation(postRiskCombing.getPDeptId());
+            riskPointAssessment.setNumberOneRisks(num1);
+            riskPointAssessment.setNumberTwoRisks(num2);
+            riskPointAssessment.setNumberThreeRisks(num3);
+            //System.out.println("riskPointAssessment:"+riskPointAssessment);
+            // 更新数据
+            riskpointassessmentService.update(riskPointAssessment);
+        }
+        ResponseResult result=new ResponseResult();
+        result.getInfo().put("message", "添加成功");
         return result;
     }
 
     @RequestMapping("delete")
-    @RequiresPermissions("postRiskCombing:delete")
-    public ResponseResult deletePostRiskCombing(String test) {
-        List<Postriskcombing> postriskcombingList = JSON.parseArray(test, Postriskcombing.class);
-        for (Postriskcombing postriskcombing : postriskcombingList) {
-            postriskcombingService.deleteById(postriskcombing.getPid());
+    //@RequiresPermissions("postRiskCombing:delete") //访问权限
+    public ResponseResult deleteById(String pcid){
+        List<String> resultID= Arrays.asList(pcid.split(","));
+        List<Integer> list=new ArrayList<>();
+        for (String s: resultID){
+            list.add(Integer.parseInt(s));
+        }
+        /*System.out.println(pcid);
+        System.out.println(resultID);
+        System.out.println(list);*/
+        postRiskCombingService.deleteById(list);
+        Postriskcombing postRiskCombing=new Postriskcombing();//岗位风险
+        Riskpointassessment riskPointAssessment=new Riskpointassessment();// 风险点统计
+        for (Integer deptid:list) {
+            // 统计风险等级数量
+            postRiskCombing.setPDeptId(deptid);
+            postRiskCombing.setPGrade("一级风险");
+            Integer num1 = postRiskCombingService.findByGrade(postRiskCombing);
+            postRiskCombing.setPGrade("二级风险");
+            Integer num2 = postRiskCombingService.findByGrade(postRiskCombing);
+            postRiskCombing.setPGrade("三级风险");
+            Integer num3 = postRiskCombingService.findByGrade(postRiskCombing);
+            // 风险点赋值
+            riskPointAssessment.setRiskImfomation(postRiskCombing.getPDeptId());
+            riskPointAssessment.setNumberOneRisks(num1);
+            riskPointAssessment.setNumberTwoRisks(num2);
+            riskPointAssessment.setNumberThreeRisks(num3);
+            //System.out.println("riskPointAssessment:"+riskPointAssessment);
+            // 更新数据
+            riskpointassessmentService.update(riskPointAssessment);
         }
         ResponseResult result = new ResponseResult();
-        result.getInfo().put("message", "删除成功");
+        result.getInfo().put("message","删除成功");
         return result;
     }
 
     @RequestMapping("update")
     @RequiresPermissions("postRiskCombing:update")
     public ResponseResult updatePostRiskCombing(Postriskcombing postriskcombing) {
+        System.out.println(postriskcombing);
         ResponseResult result = new ResponseResult();
         if (postriskcombing != null) {
-            postriskcombingService.updateByPid(postriskcombing);
+            postRiskCombingService.update(postriskcombing);
             result.getInfo().put("message", "修改成功");
         } else {
             result.getInfo().put("message", "修改失败");
@@ -83,61 +187,19 @@ public class PostRiskCombingController {
         return result;
     }
 
-    @RequestMapping("add")
-    @RequiresPermissions("postRiskCombing:add")
-    public ResponseResult addPostRiskCombing(Postriskcombing postriskcombing,HttpServletRequest req, HttpServletResponse resp) {
-        ResponseResult result = new ResponseResult();
-        if (postriskcombing == null) {
-            result.getInfo().put("message", "需要添加的数据为NULL");
-            return result;
-        }
-
-        String pGrade = "";
-        //从session获取用户信息
-        Session session = SecurityUtils.getSubject().getSession();
-        SysStaff userInfo = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
-        //随机岗位风险编号
-        postriskcombing.setPRiskId(RandomUtil.randomInt(100, 1999999999));
-        postriskcombing.setPYear(DateUtil.date());
-        postriskcombing.setPCreateTime(DateUtil.date());
-        int pDeptId = postriskcombing.getPDeptId();
-        Riskpointassessment riskpointassessment = riskpointassessmentService.getOneByRiskImfomation(pDeptId);
-        Integer num = 0;
-        //根据c值与L值计算风险等级
-        String cValue = postriskcombing.getPCValue();
-        String lValue = postriskcombing.getPProbableLValue();
-        if (cValue.contains("大") && lValue.contains("大")) {
-            pGrade = "一级风险";
-            num = riskpointassessment.getNumberOneRisks() + 1;
-        } else if (cValue.contains("小") && lValue.contains("小")) {
-            pGrade = "三级风险";
-            num = riskpointassessment.getNumberThreeRisks() + 1;
-        } else {
-            pGrade = "二级风险";
-            num = riskpointassessment.getNumberTwoRisks() + 1;
-        }
-        postriskcombing.setPGrade(pGrade);
-        //根据部门ID更新对应部门的风险汇总信息
-        riskpointassessmentService.updateByRiskImfomation(pDeptId, pGrade, num);
-        postriskcombing.setPDValue("D值");
-        postriskcombing.setPCreateName(userInfo.getName());
-        postriskcombing.setPCreateId(userInfo.getSid());
-        postriskcombing.setPStatus(1);
-        postriskcombingService.addPostriskcombing(postriskcombing);
-        thymeleafPostriskcombing(postriskcombing,req,resp);
-        result.getInfo().put("message", "添加成功");
-        return result;
-    }
-
 
     @RequestMapping("findBy")
-    public ResponseResult findBy(String pInfomationId, String pDeptId, String pGrade) {
+    public ResponseResult findBy( String pinfomationid,String pdeptid, String pgrade,Integer pageNum, Integer pageSize) {
+        System.out.println(pinfomationid+"  "+pdeptid+"  ");
         ResponseResult responseResult = new ResponseResult();
-        Integer infomationId = pInfomationId != null ? Integer.parseInt(pInfomationId) : 0;
-        Integer deptId = pDeptId != null ? Integer.parseInt(pDeptId) : 0;
-        List<Postriskcombing> list = postriskcombingService.getListBy(infomationId, deptId, pGrade);
-        responseResult.getInfo().put("list", list);
-        responseResult.getInfo().put("total", list.size());
+        Integer infomationId = StringUtils.isEmpty(pinfomationid) ? 0:Integer.parseInt(pinfomationid);
+        Integer deptId = StringUtils.isEmpty(pdeptid) ? 0:Integer.parseInt(pdeptid) ;
+        // 分页查询
+        Page page=new Page(pageNum,pageSize);
+        IPage<Postriskcombing> resultPage = postRiskCombingService.getListBy(infomationId, deptId, pgrade,page);
+        System.out.println("list:"+resultPage.getRecords());
+        responseResult.getInfo().put("list", resultPage.getRecords());
+        responseResult.getInfo().put("total", resultPage.getTotal());
         return responseResult;
     }
 
@@ -170,11 +232,13 @@ public class PostRiskCombingController {
 
 
     @RequestMapping("getSysPostByMid")
-    public ResponseResult getSysPostByMid(String mid) {
+    public ResponseResult getSysPostByMid(String pdeptid) {
+        if(pdeptid.contains("=")) {
+            pdeptid = pdeptid.split("=")[1];
+        }
         ResponseResult responseResult = new ResponseResult();
-        List<SysPost> list = sysPostService.getSysPostByMid(Integer.parseInt(mid));
+        List<SysPost> list = sysPostService.getSysPostByMid(Integer.parseInt(pdeptid));
         responseResult.getInfo().put("list", list);
-        responseResult.getInfo().put("total", list.size());
         return responseResult;
     }
     public void thymeleafPostriskcombing(Postriskcombing postriskcombing, HttpServletRequest req, HttpServletResponse resp){

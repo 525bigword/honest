@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -64,12 +65,10 @@ public class UserRealm extends AuthorizingRealm {
 		String loginName = (String) authcToken.getPrincipal();
 		// 获取用户密码
 		String password = new String((char[]) authcToken.getCredentials());
-		SysStaff user = sysStaffService.getUser(loginName, password);
+			SysStaff user = sysStaffService.getUser(loginName, password);
 		if (user == null) {
 			//没找到帐号
 			throw new UnknownAccountException();
-		}if("12".equals(user.getPid())){
-
 		}
 		System.out.println(user);
 		//交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
@@ -79,10 +78,16 @@ public class UserRealm extends AuthorizingRealm {
 				//ByteSource.Util.bytes("salt"), salt=username+salt,采用明文访问时，不需要此句
 				getName()
 		);
+
 		//session中不需要保存密码
 		user.setPassword("");
 		//将用户信息放入session中
 		SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_INFO, user);
 		return authenticationInfo;
+	}
+
+	public static void main(String[] args) {
+		SimpleHash md5 = new SimpleHash("md5", "123456", null, 2);
+		System.out.println(md5);
 	}
 }

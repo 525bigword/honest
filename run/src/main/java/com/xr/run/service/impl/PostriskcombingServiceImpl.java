@@ -49,8 +49,8 @@ public class PostriskcombingServiceImpl  extends ServiceImpl<PostriskcombingMapp
     }
 
     @Override
-    public List<Postriskcombing> getListBy(Integer pInfomationId, Integer pDeptId, String pGrade) {
-        return postriskcombingMapper.getListBy(pInfomationId, pDeptId, pGrade);
+    public List<Postriskcombing> getListBy(Integer infomationId, Integer deptId, String pgrade) {
+        return postriskcombingMapper.getListBy(infomationId, deptId, pgrade);
     }
 
     @Override

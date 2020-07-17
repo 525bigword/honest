@@ -7,6 +7,7 @@ import com.xr.run.service.daily.LetterReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -55,8 +56,8 @@ public class LetterReporyServiceImpl implements LetterReportService {
     }
 
     @Override
-    public void turndept(Integer lid,Integer lmid) {
-        letterReportMapper.turndept(lid,lmid);
+    public void turndept(Integer lid, Integer lmid, String lSupervisionComments, Date lSupervisionCommentsTime) {
+        letterReportMapper.turndept(lid,lmid,lSupervisionComments,lSupervisionCommentsTime);
     }
 
     @Override

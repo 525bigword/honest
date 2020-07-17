@@ -76,7 +76,7 @@
           <br/>
           <div align="right">
             <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
-            <el-button type="primary"  @click="gxmethod()" v-bind:style="{display:gx}">更新</el-button>
+            <el-button type="primary"  @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
             <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
             <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
             <el-button type="primary"  @click="tgmethod('不通过')"v-bind:style="{display:btg}">不通过</el-button>
@@ -152,24 +152,32 @@
           return '已审核'
         }
       },
-      gxmethod(){
-        let postData = qs.stringify({
-          id:this.userInfo.id,
-          title:this.userInfo.title,
-          content:this.userInfo.content
-        });
-        updatecontent(postData).then((responese)=>{
-          this.ad='none'//新增页面隐藏
-          this.tf=''//表格页面显示
-          this.initList()
-          this.$notify({
-            title: '成功',
-            message: '更新成功',
-            type: 'success',
-            duration: 2000
+      gxmethod(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let postData = qs.stringify({
+              id:this.userInfo.id,
+              title:this.userInfo.title,
+              content:this.userInfo.content
+            });
+            updatecontent(postData).then((responese)=>{
+              this.ad='none'//新增页面隐藏
+            this.tf=''//表格页面显示
+            this.initList()
+            this.$notify({
+              title: '成功',
+              message: '更新成功',
+              type: 'success',
+              duration: 2000
+            })
           })
-        })
-        console.log('gx'+this.userInfo.id)
+
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
+
       },
       tjshmethod(formName){
 
@@ -216,21 +224,37 @@
 
         }
         else {
-          let postData = qs.stringify({
-            id:this.userInfo.id
-          });
-          console.log('tjsh'+this.userInfo.id)
-          subaudit(postData).then((response)=>{
-            this.ad='none'//新增页面出现
-            this.tf=''//表格页面隐藏
-            this.initList()
-            this.$notify({
-              title: '成功',
-              message: '提交成功',
-              type: 'success',
-              duration: 2000
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              let postData = qs.stringify({
+                id:this.userInfo.id,
+                title:this.userInfo.title,
+                content:this.userInfo.content
+              });
+              updatecontent(postData).then((responese)=>{
+                let postData = qs.stringify({
+                  id:this.userInfo.id
+                });
+              console.log('tjsh'+this.userInfo.id)
+              subaudit(postData).then((response)=>{
+                this.ad='none'//新增页面出现
+              this.tf=''//表格页面隐藏
+              this.initList()
+              this.$notify({
+                title: '成功',
+                message: '提交成功',
+                type: 'success',
+                duration: 2000
+              })
             })
-          })
+            })
+
+            } else {
+              console.log('error submit!!');
+          return false;
+        }
+        });
+
         }},
       tgmethod(val){
         let postData = qs.stringify({
@@ -338,7 +362,11 @@
             duration: 2000
           })
         }
-        else {
+        else {      this.$confirm('请确认是否删除?', '温馨提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           var ids = data.map(item => { return { staus: item.staus } })
           var ids1 =true
           for(var i = 0; i < ids.length; i++) {
@@ -364,14 +392,22 @@
             console.debug('选中行数据'+JSON.stringify(data))
             del(postData).then((response) =>{
               this.initList();
-              this.$notify({
-                title: '成功',
-                message: response.message,
-                type: 'success',
-                duration: 2000
-              })
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
             })
-          }}
+          })
+          }
+        }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+            this.initList();
+        });
+ }
       },
       //按标题查询
       onSearch() {
@@ -404,7 +440,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let endtime = new Date(this.userInfo.createtime).toJSON();
-            this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+            this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
               .toISOString()
               .replace(/T/g, " ")
               .replace(/\.[\d]{3}Z/, "")

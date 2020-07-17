@@ -214,7 +214,7 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">选取文件</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过10M</div>
+                <div slot="tip" class="el-upload__tip">只能上传单个doc/docx/pdf文件，且不超过5M</div>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -752,10 +752,11 @@ export default {
     },
     // 显示添加的对话框
     handleCreate() {
-      this.$refs['dataForm'].clearValidate()
-      // 重置表单数据
       this.resetTemp();
       this.xianshi();
+      this.$refs["dataForm"].clearValidate();
+      // 重置表单数据
+      
       this.temp.dnumId = this.mom(new Date()).format("YYMMDDHHmmss");
       this.temp.sysStaff.name = this.nickname;
       this.temp.sysStaff.sid = this.userId;
@@ -1032,6 +1033,20 @@ export default {
           type: "warning"
         });
       } else {
+        let r=0;
+        this.multipleSelection.filter(row => {
+          console.debug(row)
+          if(row.status!==6&&row.status!==0&&row.status!==1)
+            r=1
+          });
+          if(r===1){
+            this.$message({
+          showClose: true,
+          message: '不能含有非刚创建、未通报或未结束的通知',
+          type: 'warning'
+        });
+        return;
+          }
         if (this.multipleSelection.length == 1) {
           title = this.multipleSelection[0].dutyTitle;
           this.deleteid.push(this.multipleSelection[0].did);
@@ -1066,12 +1081,12 @@ export default {
       }
     },
     handleImgChange1(file, fileList, name) {
-      const isLt2M = file.size / 1024/1024  < 10;
+      const isLt2M = file.size / 1024/1024  < 5;
       if (!isLt2M) {
         console.debug(this.dutyAccessoryName);
         this.$message({
           showClose: true,
-          message: "文件不能超过500k",
+          message: "文件不能超过5M",
           type: "warning"
         });
         if (fileList.length == 2) {
@@ -1119,6 +1134,14 @@ export default {
     },
     handleStatusUpdate(row){
       this.temp=row
+      if(this.temp.bid===''||this.temp.bid===null||this.temp.bid===0){
+          this.$message({
+          showClose: true,
+          message: "请在编辑通知里选择部门",
+          type: "warning"
+        });
+        return
+      }
       if(this.temp.status===1){
         this.temp.status+=1
       }else if(this.temp.status===6){
@@ -1147,6 +1170,7 @@ export default {
       this.sid = null;
       this.resetTemp();
       this.fileList=[]
+      this.$refs["dataForm"].clearValidate();
     },
     fileRemove(file, fileList) {
       this.file = {};
@@ -1297,7 +1321,7 @@ export default {
         })
         this.back.backType = this.back.backType.substring(
             0,
-            this.back.backType.length - 1
+            this.back.backType.length
           );
            this.back.bid=this.temp.did //父id
            this.back.status=bstatus //子部门状态
@@ -1380,13 +1404,21 @@ export default {
         })
         this.back.backType = this.back.backType.substring(
             0,
-            this.back.backType.length - 1
+            this.back.backType.length
           );
            this.back.bid=this.temp.did //父id
            this.back.status=bstatus //子部门状态
            this.back.sid=dstatus //父窗口状态
            console.debug(this.back)
         if(i!==this.blist.length){
+          if(this.temp.tongbao===''||this.temp.tongbao===null){
+            this.$message({
+              message: '通报内容不能为空',
+              type: 'warning',
+              duration: 2000
+            })
+            return
+          }
           this.$confirm('还有子部门未反馈信息，确定要进行项目通报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -1422,12 +1454,21 @@ export default {
           
         })
         }else{
+          if(this.temp.tongbao===''||this.temp.tongbao===null){
+            this.$message({
+              message: '通报内容不能为空',
+              type: 'warning',
+              duration: 2000
+            })
+            return
+          }
           this.$confirm('确定要进行项目通报吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
+          
           let posdata=qs.stringify({
             did: this.temp.did,
             tongbao: this.temp.tongbao,

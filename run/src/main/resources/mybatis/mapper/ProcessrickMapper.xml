@@ -3,7 +3,8 @@
 <mapper namespace="com.xr.run.dao.ProcessrickMapper">
     <select id="getListBy" resultType="com.xr.run.entity.Processrick">
         select
-        proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus,proAccessoryName
+        proid,proName,proYear,proAccessory,proAccessoryName,proInfomation,
+        proMeasures,proGrade,proCreateTime,proCreateId,proCreateName,proStatus,proAccessoryName
         from processrick
         <where>
             <if test="proName != null and proName!=''">
@@ -12,6 +13,10 @@
             <if test="proYear != null">
                 and proYear like CONCAT(#{proYear},'%')
             </if>
+            <if test="proGrade != null">
+                and proGrade like CONCAT(#{proGrade},'%')
+            </if>
         </where>
+        ORDER BY proCreateTime desc
     </select>
 </mapper>

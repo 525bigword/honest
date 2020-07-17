@@ -275,8 +275,12 @@
       //初始化页面
       initList() {
         this.listLoading=true
+        let sta=1;
+        if(this.hasPerm('reference:leadersign')){
+          sta=3
+        }
         let posdata=qs.stringify({
-          sStatus:1
+          sStatus:sta
         })
         list(posdata).then(response =>{
 

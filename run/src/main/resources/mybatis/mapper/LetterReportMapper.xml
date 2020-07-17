@@ -46,11 +46,11 @@ select lr.lid,lr.letterid,lr.ltime,lr.lComplainantName, lr.lDeptId, lr.lPostId,l
     </update>
     <!--转办部门-->
     <update id="turndept" parameterType="com.xr.run.entity.daily.LetterReport">
-        update daily_letterreport set lStatus=3,lmid=#{mid} where lid=#{lid}
+        update daily_letterreport set lStatus=3,lSupervisionComments=#{lSupervisionComments},lSupervisionCommentsTime=#{lSupervisionCommentsTime} ,lmid=#{mid} where lid=#{lid}
     </update>
     <!--监察科自办-->
     <update id="kezhangbc" parameterType="com.xr.run.entity.daily.LetterReport">
-  update daily_letterreport set lStatus=4,lSupervisionResutl=#{lSupervisionResutl},lSupervisionResultTime=#{lSupervisionResultTime},lSupervisionComments=#{lSupervisionComments},lSupervisionCommentsTime=#{lSupervisionCommentsTime}  where lid=#{lid}
+  update daily_letterreport set lStatus=4,lSupervisionResutl=#{lSupervisionResutl},lSupervisionResultTime=#{lSupervisionResultTime} where lid=#{lid}
        </update>
     <!--转办部门处理结果-->
     <update id="deptbc" parameterType="com.xr.run.entity.daily.LetterReport">

@@ -48,7 +48,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper,SysLog> implemen
     @Override
     public void delSysLogByTimeSixMonth() {
         LocalDateTime now = LocalDateTime.now();
-        now = now.minus(6, ChronoUnit.DAYS);
+        now = now.minus(6, ChronoUnit.MONTHS);
 
         System.out.println(now.toString());
         //查询6个月之前的信息

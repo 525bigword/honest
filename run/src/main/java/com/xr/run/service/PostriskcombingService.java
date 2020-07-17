@@ -58,11 +58,12 @@ public interface PostriskcombingService extends IService<Postriskcombing> {
     /**
      * 多条件查询列表
      *
-     * @param pInfomationId
-     * @param pDeptId
+     * @param infomationId
+     * @param deptId
+     * @param pgrade
      * @return
      */
-    List<Postriskcombing> getListBy(Integer pInfomationId, Integer pDeptId, String pGrade);
+    List<Postriskcombing> getListBy(Integer infomationId, Integer deptId, String pgrade);
 
 
     /**
@@ -79,7 +80,6 @@ public interface PostriskcombingService extends IService<Postriskcombing> {
      * @return
      */
     Postriskcombing findByPid(Integer pid);
-
 
     IPage<Postriskcombing> findPostriskCombingIndex1(Page page, String prProject);
 }

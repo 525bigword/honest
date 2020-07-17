@@ -1,9 +1,10 @@
 import api from '@/utils/api'
 
-export function list() {
+export function list(pageNum,pageSize) {
   return api({
     url: '/postRiskCombing/getList',
-    method: 'post'
+    method: 'post',
+    params: { pageNum, pageSize }
   })
 }
 
@@ -16,11 +17,11 @@ export function add(data) {
   })
 }
 
-export function del(data) {
+export function del(pcid) {
   return api({
     url: '/postRiskCombing/delete',
     method: 'post',
-    data
+    params:{pcid}
   })
 }
 
@@ -38,6 +39,11 @@ export function findBy(data) {
     url: '/postRiskCombing/findBy',
     method: 'post',
     data
+    /* params: {
+       pdeptid: data.pdeptid,
+       pinfomationid: data.pinfomationid,
+       pgrade: data.pgrade}*/
+
   })
 }
 
@@ -70,11 +76,11 @@ export function getAllMechanismByParent(data) {
   })
 }
 
-export function getSysPostByMid(data) {
+export function getSysPostByMid(pdeptid) {
   return api({
     url: '/postRiskCombing/getSysPostByMid',
     method: 'post',
-    data
+    params: {pdeptid}
   })
 }
 

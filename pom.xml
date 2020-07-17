@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-<!--             移除嵌入式tomcat插件-->
+<!--            移除嵌入式tomcat插件&ndash;&gt;-->
             <!--<exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -129,12 +129,12 @@
                 </exclusion>
             </exclusions>-->
         </dependency>
-        <!--<dependency>
+       <!-- <dependency>
 &lt;!&ndash;            （此时运行会报错，把<scope>provided</scope>去掉才能运行）&ndash;&gt;
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
-&lt;!&ndash;            <scope>provided</scope>&ndash;&gt;
+            <scope>provided</scope>
         </dependency>-->
         <!-- mysql -->
         <dependency>

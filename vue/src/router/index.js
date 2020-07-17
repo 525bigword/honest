@@ -10,6 +10,7 @@ export const constantRouterMap = [
     { path: '/login', component: _import('login/index'), hidden: true },
   { path: '/userReport', component: _import('userReport'), hidden: true },
     { path: '/404', component: _import('404'), hidden: true },
+  { path: '/loginletter', component: _import('login/loginletter'), hidden: true },
     {
         path: '/',
         component: Layout,
@@ -145,13 +146,13 @@ export const asyncRouterMap = [
             component: _import('risk/processRick'),
             meta: { title: '流程风险梳理', icon: 'user' },
             menu: 'processRick'
-        }, {
+        }/*, {
             path: 'riskPointAssessment',
             name: '风险指数评定',
             component: _import('risk/riskpointassessment'),
             meta: { title: '风险指数评定', icon: 'user' },
             menu: 'riskpointassessment'
-        }]
+        }*/]
     }, {
         path: '/evaluate',
         component: Layout,

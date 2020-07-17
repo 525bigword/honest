@@ -50,7 +50,7 @@ public class WorkPlanAction {
         return result;
     }
     @RequestMapping("updatecontent")
-    @RequiresPermissions("workdeployment:update")
+    @RequiresPermissions("workplan:update")
     public ResponseResult updateWorkPlan(WorkPlan workPlan) {
         workPlanService.updateWorkPlan(workPlan);
         ResponseResult result=new ResponseResult();
@@ -59,6 +59,7 @@ public class WorkPlanAction {
     }
     /*提交审核*/
     @RequestMapping("subaudit")
+    @RequiresPermissions("workplan:add")
     public ResponseResult subaudit(Integer id) {
         workPlanService.subaudit(id);
         ResponseResult result=new ResponseResult();
@@ -67,6 +68,7 @@ public class WorkPlanAction {
     }
     /*通过审核*/
     @RequestMapping("passaudit")
+    @RequiresPermissions("workplan:audit")
     public ResponseResult passaudit(WorkPlan workPlan) {
         workPlanService.passaudit(workPlan);
         ResponseResult result=new ResponseResult();

@@ -487,7 +487,7 @@ export default {
       if (!isLt2M) {
         this.$message({
           showClose: true,
-          message: "文件不能超过500k",
+          message: "文件不能超过10M",
           type: "warning"
         });
         if (fileList.length == 2) {

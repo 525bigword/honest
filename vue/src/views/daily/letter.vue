@@ -321,11 +321,7 @@
       },
       //监察科自办
       kezhangbc(){
-        let endtime = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
-        this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
+
         let stime = new Date(this.userInfo.lsupervisionResultTime).toJSON();
         this.userInfo.lsupervisionResultTime = new Date(+new Date(stime) + 8 * 3600 * 1000)
           .toISOString()
@@ -334,8 +330,6 @@
 
         let posdata=qs.stringify({
           lid:this.userInfo.lid,
-          lSupervisionComments:this.userInfo.lsupervisionComments,//监察科部门意见
-          lSupervisionCommentsTime:this.userInfo.lsupervisionCommentsTime,//监察科部门意见签署时间
           lSupervisionResutl:this.userInfo.lsupervisionResutl,//监察科自办结果
           lSupervisionResultTime:this.userInfo.lsupervisionResultTime//监察科自办时间
         })
@@ -353,6 +347,7 @@
       },
       //转办部门处理
       deptbc(){
+
         let endtime = new Date(this.userInfo.lresultTime).toJSON();
         this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
           .toISOString()
@@ -362,7 +357,7 @@
         let posdata=qs.stringify({
           lid:this.userInfo.lid,
           lResult:this.userInfo.lresult,
-          lResultTime:this.userInfo.lresultTime
+          lResultTime:this.userInfo.lresultTime,
         })
         deptbc(posdata).then((response)=>{
           this.tf='';
@@ -459,9 +454,17 @@
               type: 'warning',
               duration: 2000
             })
-          }else {  let posdata=qs.stringify({
+          }else {
+            let endtime1 = new Date(this.userInfo.lsupervisionCommentsTime).toJSON();
+            this.userInfo.lsupervisionCommentsTime = new Date(+new Date(endtime1) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "")
+            let posdata=qs.stringify({
             lid:this.userInfo.lid,
-            lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString()
+            lmid:this.userInfo.deptname[this.userInfo.deptname.length-1].toString(),
+            lSupervisionComments:this.userInfo.lsupervisionComments,//监察科部门意见
+            lSupervisionCommentsTime:this.userInfo.lsupervisionCommentsTime,//监察科部门意见签署时间
           })
             turndept(posdata).then((response)=>{
               this.tf='';

@@ -33,6 +33,27 @@ public class RiskpointassessmentServiceImpl extends ServiceImpl<Riskpointassessm
 
 
     @Override
+    public void add(Riskpointassessment riskPointAssessment) {
+        riskpointassessmentMapper.add(riskPointAssessment);
+    }
+
+    @Override
+    public void update(Riskpointassessment riskPointAssessment) {
+        riskpointassessmentMapper.update(riskPointAssessment);
+    }
+
+    @Override
+    public List<SysMechanism> notUpdatedDept(Riskpointassessment riskpointassessment) {
+        return riskpointassessmentMapper.notUpdatedDept(riskpointassessment);
+    }
+
+    @Override
+    public Riskpointassessment findBy(Integer riskImfomation) {
+        return riskpointassessmentMapper.findBy(riskImfomation);
+    }
+
+
+    @Override
     public void syncRiskpointassessment() {
         List<SysMechanism> sysMechanismList = sysMechanismService.getAll();
         //从session获取用户信息

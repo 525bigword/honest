@@ -62,6 +62,7 @@ public class WorkDeploymentAction {
     }
     /*提交审核*/
     @RequestMapping("subauditDeployment")
+    @RequiresPermissions("workdeployment:add")
     public ResponseResult subauditDeployment(Integer id){
         workDeploymentService.subauditDeployment(id);
         ResponseResult result=new ResponseResult();
@@ -70,6 +71,7 @@ public class WorkDeploymentAction {
     }
     /*审核通过*/
     @RequestMapping("passauditDeployment")
+    @RequiresPermissions("workdeployment:audit")
     public ResponseResult passauditDeployment(WorkDeployment workDeployment){
         workDeploymentService.passauditDeployment(workDeployment);
         ResponseResult result=new ResponseResult();
