@@ -179,11 +179,11 @@
             </el-row>
             <el-row style="margin-left:5%">
               <el-col :span="12" style="width:43%">
-                <el-form-item style="font-weight: bold;" label="部门" prop="defaultvalue2">
+                <el-form-item style="font-weight: bold;" label="部门" prop="pdeptId">
                   <el-cascader
                     style="width: 350px"
                     placeholder="部门"
-                    v-model="userInfo.pdeptid"
+                    v-model="userInfo.pdeptId"
                     :props="props2"
                     @change="Change2"
                     :show-all-levels="false"
@@ -196,7 +196,7 @@
                   <el-select
                     @change="selectSystemChanged"
                     style="width: 350px"
-                    v-model="userInfo.pinfomationid"
+                    v-model="userInfo.pinfomationId"
                     placeholder="岗位"
                   >
                     <el-option
@@ -624,10 +624,15 @@ export default {
     onSearch() {
       let deptId = this.$route.query.pDeptId;
       let grade = this.$route.query.pGrade;
-      console.log(deptId+"---------"+grade)
+      //console.log(deptId+"---------"+grade)
       if (deptId != undefined && grade != undefined) {
         this.search.pdeptid = deptId;
         this.search.pgrade = grade;
+      }
+      if(this.search.pdeptid===undefined&&this.search.pinfomationid===undefined&&this.search.pgrade===undefined){
+        this.initList()
+        //alert("initList")
+        return
       }
       let postData = qs.stringify({
         pdeptid: this.search.pdeptid,
@@ -673,7 +678,7 @@ export default {
         pid: this.userInfo.pid,
         pYear: this.userInfo.pyear,
         pDeptId: this.userInfo.pdeptid,
-        pInfomationId: this.userInfo.pinfomationid,
+        pInfomationId: this.userInfo.pinfomationId,
         pProject: this.userInfo.pproject,
         pRiskPointDescription: this.userInfo.priskPointDescription,
         pProbableLValue: this.userInfo.pprobableLValue,
@@ -839,14 +844,14 @@ export default {
           });
           let detp={
             mid:0,
-            mechanismName:"公共组件",
+            mechanismName:"公共风险",
             chilrenMechanism:this.bm
           }
           this.parentDept.push(detp)
           /*this.getAllStaff(res[0].mid);*/
           // this.getAllld(res[0].mid)
           console.log(this.bm,"this.bm");
-          this.onSearch(); // 加载数据列表
+          this.initList(); // 加载数据列表
           resolve()
         });
       });
@@ -862,7 +867,7 @@ export default {
         parent: val
       });
       getAllMechanismByParent(postData).then(response => {
-        console.log(response, "response.postData");
+        //console.log(response, "response.postData");
         this.postList2 = [];
         this.search.pinfomationid = undefined;
         this.getPostByMid(response.list);

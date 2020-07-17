@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PostRiskCombingSQL {
-    public String getListBy(Integer pInfomationId,  Integer pDeptId,String pGrade, Page page){
+    public String getListBy(@Param("pInfomationId") Integer pInfomationId, @Param("pDeptId") Integer pDeptId, @Param("pGrade") String pGrade, Page page){
         StringBuffer sql = new StringBuffer();
 //        SELECT pc.pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,
 //                pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname
@@ -28,7 +28,7 @@ public class PostRiskCombingSQL {
         if(!StringUtils.isEmpty(pGrade)){
             sql.append(" and pGrade='"+pGrade+"'");
         }
-        sql.append(" order by pc.pid");
+        sql.append(" order by pc.pid desc");
         return sql.toString();
     }
 }
