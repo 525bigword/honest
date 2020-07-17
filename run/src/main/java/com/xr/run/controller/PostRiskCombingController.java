@@ -68,7 +68,7 @@ public class PostRiskCombingController {
         SysStaff loginStaff = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
         // 分页查询
         Page page=new Page(pageNum,pageSize);
-        IPage<PostRiskCombing2> resultPage = postRiskCombingService.list(page);
+        IPage<Postriskcombing> resultPage = postRiskCombingService.list(page);
         //System.out.println(resultPage.getRecords());
         ResponseResult result = new ResponseResult();
         result.getInfo().put("list",resultPage.getRecords());
