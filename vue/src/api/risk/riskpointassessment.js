@@ -7,6 +7,14 @@ export function list() {
   })
 }
 
+export function findBy(data) {
+  return api({
+    url: '/riskPointAssessment/findBy',
+    method: 'post',
+    data
+  })
+}
+
 
 export function sync() {
   return api({

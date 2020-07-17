@@ -43,7 +43,7 @@ public class ProcessRickController {
     @RequestMapping("add")
     @RequiresPermissions("processRick:add")
     public ResponseResult add(Processrick processrick) {
-        System.out.println(processrick);
+        //processrick.setProYear(processrick.getProYear().substring(0,4));
         ResponseResult result = new ResponseResult();
         if (processrick == null) {
             result.getInfo().put("message", "需要添加的数据为NULL");
@@ -53,13 +53,9 @@ public class ProcessRickController {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
         SysStaff userInfo = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
-
-        //随机岗位风险编号
-        processrick.setProcessId(RandomUtil.randomInt(100, 1999999999));
-        processrick.setProCreateTime(DateUtil.date());
         processrick.setProCreateId(userInfo.getSid());
         processrick.setProCreateName(userInfo.getName());
-        processrick.setProStatus(1);
+        //System.out.println(processrick);
         processrickService.addProcessrick(processrick);
         result.getInfo().put("message", "新增成功");
         return result;
@@ -80,7 +76,8 @@ public class ProcessRickController {
     @RequestMapping("update")
     @RequiresPermissions("processRick:update")
     public ResponseResult updatePostRiskCombing(Processrick processrick) {
-        System.out.println(processrick);
+       // System.out.println(processrick);
+        processrick.setProYear(processrick.getProYear().substring(0,4));
         ResponseResult result = new ResponseResult();
         if (processrick != null) {
             processrickService.updateByProid(processrick);
@@ -92,9 +89,12 @@ public class ProcessRickController {
     }
 
     @RequestMapping("findBy")
-    public ResponseResult findBy(String proName, String proYear) {
+    public ResponseResult findBy(String proName, String proYear,String proGrade) {
+        if(proYear!=null){
+            proYear=proYear.substring(0,4);
+        }
         ResponseResult responseResult = new ResponseResult();
-        List<Processrick> list = processrickService.getListBy(proName, proYear);
+        List<Processrick> list = processrickService.getListBy(proName, proYear,proGrade);
         responseResult.getInfo().put("list", list);
         responseResult.getInfo().put("total", list.size());
         return responseResult;

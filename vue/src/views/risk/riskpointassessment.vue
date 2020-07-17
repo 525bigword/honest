@@ -2,7 +2,7 @@
   <div>
     <el-form :inline="true" class="demo-form-inline">
       <div align="center" style="margin-top: 30px">
-        <el-form-item label="父级部门">
+        <el-form-item label="部门">
           <el-cascader
             :placeholder="placeholder"
             v-model="defaultvalue"
@@ -35,28 +35,34 @@
         border
         style="width: 100%" ref="multipleTable">
         <el-table-column type="selection" width="50px"></el-table-column>
+        <el-table-column  label="序号" type="index" align="center"  width="60px"></el-table-column>
         <el-table-column
-          prop="riskid"
-          label="编号">
-        </el-table-column>
-        <el-table-column
+          align="center"
           prop="riskImfomation"
           label="部门名称"
           :formatter="deptFormat">
         </el-table-column>
         <el-table-column
+          align="center"
+          width="160px"
           prop="numberOneRisks"
           label="一级风险数">
         </el-table-column>
         <el-table-column
+          align="center"
+          width="160px"
           prop="numberTwoRisks"
           label="二级风险数">
         </el-table-column>
         <el-table-column
+          align="center"
+          width="160px"
           prop="numberThreeRisks"
           label="三级风险数">
         </el-table-column>
         <el-table-column
+          align="center"
+          width="230px"
           prop="riskCreateTime"
           label="创建时间"
           :formatter="dateFormat">
@@ -71,7 +77,7 @@
         <!--</template>-->
         <!--</el-table-column>-->
       </el-table>
-      <div class="block" align="center">
+      <div style="margin-top: 30px" class="block" align="center">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -89,6 +95,7 @@
 <script>
   import {list, sync, findByPDeptId, getOne} from '@/api/risk/riskpointassessment'
   import {getAll, getAllMechanismByParent, getSysPostByMid} from '@/api/risk/postRiskCombing'
+  import {myGetList} from "@/api/evaluate/riskEvaluate"
   import {mapGetters} from 'vuex'
   import moment from 'moment'
   import qs from 'qs'
@@ -105,8 +112,20 @@
       //this.getAllPost();
       this.getAllMechanism();
       this.getSysmechanismAll();
+
+      //this.MyInitList();
+
     },
     methods: {
+      /*MyInitList() {
+        myGetList().then(response => {
+          this.eChartList = response.list
+          this.sumOne=response.sumOne
+          this.sumTwo=response.sumTwo
+          this.sumThree=response.sumThree
+          console.log(sumOne+"  "+sumTwo+"  "+sumThree)
+        })
+      },*/
       Change(val) {
         this.search.pDeptId = val;
       },
@@ -172,7 +191,10 @@
       deptFormat(row, column) {
         for (var i = 0; i < this.mechanismList.length; i++) {
           if (row.riskImfomation == this.mechanismList[i].mid) {
+            //pname=this.mechanismList[i].mechanismName;
             return this.mechanismList[i].mechanismName;
+          }else if(row.riskImfomation===0){
+            return "公共风险"
           }
         }
 
@@ -210,6 +232,12 @@
     },
     data() {
       return {
+        eChartList:[],// 图表需要的数据集合
+        sumOne:0,
+        sumTwo:0,
+        sumThree:0,
+
+
         placeholder: "",
         bm: [],
         defaultvalue: ["1"],

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xr.run.dao.PostriskcombingMapper">
+<!--<mapper namespace="com.xr.run.dao.PostriskcombingMapper">
 
     <select id="getListBy" resultType="com.xr.run.entity.Postriskcombing">
         select
@@ -19,4 +19,182 @@
 
         </where>
     </select>
+</mapper>-->
+<mapper namespace="com.xr.run.dao.risk.PostRiskCombingMapper">
+    <resultMap id="BaseResultMap" type="com.xr.run.entity.PostRiskCombing2">
+        <id column="pid" jdbcType="INTEGER" property="pid" />
+        <result column="pRiskId" jdbcType="INTEGER" property="priskid" />
+        <result column="pYear" jdbcType="VARCHAR" property="pyear" />
+        <result column="pDeptId" jdbcType="INTEGER" property="pdeptid" />
+        <result column="pInfomationId" jdbcType="INTEGER" property="pinfomationid" />
+        <result column="pProject" jdbcType="VARCHAR" property="pproject" />
+        <result column="pRiskPointDescription" jdbcType="VARCHAR" property="priskpointdescription" />
+        <result column="pProbableLValue" jdbcType="VARCHAR" property="pprobablelvalue" />
+        <result column="pCValue" jdbcType="VARCHAR" property="pcvalue" />
+        <result column="pDValue" jdbcType="VARCHAR" property="pdvalue" />
+        <result column="pGrade" jdbcType="VARCHAR" property="pgrade" />
+        <result column="pMeasures" jdbcType="VARCHAR" property="pmeasures" />
+        <result column="pCreateTime" jdbcType="TIMESTAMP" property="pcreatetime" />
+        <result column="pCreateId" jdbcType="INTEGER" property="pcreateid" />
+        <result column="pCreateName" jdbcType="VARCHAR" property="pcreatename" />
+        <result column="pStatus" jdbcType="INTEGER" property="pstatus" />
+    </resultMap>
+    <resultMap id="List" type="com.xr.run.entity.PostRiskCombing2">
+        <id column="pid" jdbcType="INTEGER" property="pcid" />
+        <result column="pRiskId" jdbcType="VARCHAR" property="priskid" />
+        <result column="pYear" jdbcType="VARCHAR" property="pyear" />
+        <result column="pDeptId" jdbcType="INTEGER" property="pdeptid" />
+        <result column="pInfomationId" jdbcType="INTEGER" property="pinfomationid" />
+        <result column="pProject" jdbcType="VARCHAR" property="pproject" />
+        <result column="pRiskPointDescription" jdbcType="VARCHAR" property="priskpointdescription" />
+        <result column="pProbableLValue" jdbcType="VARCHAR" property="pprobablelvalue" />
+        <result column="pCValue" jdbcType="VARCHAR" property="pcvalue" />
+        <result column="pDValue" jdbcType="VARCHAR" property="pdvalue" />
+        <result column="pGrade" jdbcType="VARCHAR" property="pgrade" />
+        <result column="pMeasures" jdbcType="VARCHAR" property="pmeasures" />
+        <result column="pCreateTime" jdbcType="TIMESTAMP" property="pcreatetime" />
+        <result column="pCreateId" jdbcType="INTEGER" property="pcreateid" />
+        <result column="pCreateName" jdbcType="VARCHAR" property="pcreatename" />
+        <result column="pStatus" jdbcType="INTEGER" property="pstatus" />
+        <collection  property="sysMechanism" ofType="com.xr.run.entity.SysMechanism">
+            <id column="mid" property="mid" />
+            <result column="mechanism_name" jdbcType="VARCHAR" property="mechanismName" />
+            <result column="sid" jdbcType="INTEGER" property="sid" />
+            <result column="parent" jdbcType="INTEGER" property="parent" />
+            <result column="branch" jdbcType="INTEGER" property="branch" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="create_id" jdbcType="INTEGER" property="createId" />
+            <result column="staus" jdbcType="VARCHAR" property="staus" />
+        </collection >
+        <collection property="sysPost" javaType="com.xr.run.entity.SysPost">
+            <result column="pid" jdbcType="INTEGER" property="pid" />
+            <result column="pname" jdbcType="VARCHAR" property="pname" />
+            <result column="mid" jdbcType="INTEGER" property="mid" />
+            <result column="message" jdbcType="VARCHAR" property="message" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="create_id" jdbcType="INTEGER" property="createId" />
+            <result column="staus" jdbcType="VARCHAR" property="staus" />
+        </collection >
+    </resultMap>
+    <resultMap id="ListWhere" type="com.xr.run.entity.PostRiskCombing2">
+        <id column="pid" jdbcType="INTEGER" property="pcid" />
+        <result column="pRiskId" jdbcType="VARCHAR" property="priskid" />
+        <result column="pYear" jdbcType="VARCHAR" property="pyear" />
+        <result column="pDeptId" jdbcType="INTEGER" property="pdeptid" />
+        <result column="pInfomationId" jdbcType="INTEGER" property="pinfomationid" />
+        <result column="pProject" jdbcType="VARCHAR" property="pproject" />
+        <result column="pRiskPointDescription" jdbcType="VARCHAR" property="priskpointdescription" />
+        <result column="pProbableLValue" jdbcType="VARCHAR" property="pprobablelvalue" />
+        <result column="pCValue" jdbcType="VARCHAR" property="pcvalue" />
+        <result column="pDValue" jdbcType="VARCHAR" property="pdvalue" />
+        <result column="pGrade" jdbcType="VARCHAR" property="pgrade" />
+        <result column="pMeasures" jdbcType="VARCHAR" property="pmeasures" />
+        <result column="pCreateTime" jdbcType="TIMESTAMP" property="pcreatetime" />
+        <result column="pCreateId" jdbcType="INTEGER" property="pcreateid" />
+        <result column="pCreateName" jdbcType="VARCHAR" property="pcreatename" />
+        <result column="pStatus" jdbcType="INTEGER" property="pstatus" />
+        <collection  property="sysMechanism" ofType="com.xr.run.entity.SysMechanism">
+            <id column="mid" property="mid" />
+            <result column="mechanism_name" jdbcType="VARCHAR" property="mechanismName" />
+            <result column="sid" jdbcType="INTEGER" property="sid" />
+            <result column="parent" jdbcType="INTEGER" property="parent" />
+            <result column="branch" jdbcType="INTEGER" property="branch" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="create_id" jdbcType="INTEGER" property="createId" />
+            <result column="staus" jdbcType="VARCHAR" property="staus" />
+        </collection >
+        <collection property="sysPost" javaType="com.xr.run.entity.SysPost">
+            <result column="pid" jdbcType="INTEGER" property="pid" />
+            <result column="pname" jdbcType="VARCHAR" property="pname" />
+            <result column="mid" jdbcType="INTEGER" property="mid" />
+            <result column="message" jdbcType="VARCHAR" property="message" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="create_id" jdbcType="INTEGER" property="createId" />
+            <result column="staus" jdbcType="VARCHAR" property="staus" />
+        </collection >
+    </resultMap>
+    <resultMap id="ByPcIDMap" type="com.xr.run.entity.PostRiskCombing2">
+        <id column="pid" jdbcType="INTEGER" property="pcid" />
+        <result column="pRiskId" jdbcType="VARCHAR" property="priskid" />
+        <result column="pYear" jdbcType="VARCHAR" property="pyear" />
+        <result column="pDeptId" jdbcType="INTEGER" property="pdeptid" />
+        <result column="pInfomationId" jdbcType="INTEGER" property="pinfomationid" />
+        <result column="pProject" jdbcType="VARCHAR" property="pproject" />
+        <result column="pRiskPointDescription" jdbcType="VARCHAR" property="priskpointdescription" />
+        <result column="pProbableLValue" jdbcType="VARCHAR" property="pprobablelvalue" />
+        <result column="pCValue" jdbcType="VARCHAR" property="pcvalue" />
+        <result column="pDValue" jdbcType="VARCHAR" property="pdvalue" />
+        <result column="pGrade" jdbcType="VARCHAR" property="pgrade" />
+        <result column="pMeasures" jdbcType="VARCHAR" property="pmeasures" />
+        <result column="pCreateTime" jdbcType="TIMESTAMP" property="pcreatetime" />
+        <result column="pCreateId" jdbcType="INTEGER" property="pcreateid" />
+        <result column="pCreateName" jdbcType="VARCHAR" property="pcreatename" />
+        <result column="pStatus" jdbcType="INTEGER" property="pstatus" />
+        <collection  property="sysMechanism" ofType="com.xr.run.entity.SysMechanism">
+            <id column="mid" property="mid" />
+            <result column="mechanism_name" jdbcType="VARCHAR" property="mechanismName" />
+            <result column="sid" jdbcType="INTEGER" property="sid" />
+            <result column="parent" jdbcType="INTEGER" property="parent" />
+            <result column="branch" jdbcType="INTEGER" property="branch" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="create_id" jdbcType="INTEGER" property="createId" />
+            <result column="staus" jdbcType="VARCHAR" property="staus" />
+        </collection >
+        <collection property="sysPost" javaType="com.xr.run.entity.SysPost">
+            <result column="pid" jdbcType="INTEGER" property="pid" />
+            <result column="pname" jdbcType="VARCHAR" property="pname" />
+            <result column="mid" jdbcType="INTEGER" property="mid" />
+            <result column="message" jdbcType="VARCHAR" property="message" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="create_id" jdbcType="INTEGER" property="createId" />
+            <result column="staus" jdbcType="VARCHAR" property="staus" />
+        </collection >
+    </resultMap>
+    <select id="list" parameterType="com.xr.run.entity.PostRiskCombing2" resultMap="List">
+        SELECT pc.pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,
+        pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname
+        from postriskcombing pc LEFT JOIN sys_mechanism m on pc.pDeptId=m.mid LEFT JOIN  sys_post p on pc.pInfomationId=p.pid
+        where pStatus=1
+        order by pCreateTime desc
+    </select>
+<!--    <select id="getListBy" parameterType="com.xr.run.entity.PostRiskCombing2" resultMap="ListWhere">-->
+<!--        SELECT pc.pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,-->
+<!--        pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname-->
+<!--        from postriskcombing pc LEFT JOIN sys_mechanism m on pc.pDeptId=m.mid LEFT JOIN  sys_post p on pc.pInfomationId=p.pid-->
+<!--        where pStatus=1-->
+<!--        <if test='pdeptid!= null '>-->
+<!--             and  pdeptid=#{pdeptid}-->
+<!--        </if>-->
+<!--        <if test='pinfomationid!= null and pinfomationid > 0'>-->
+<!--             and pinfomationid=#{pinfomationid}-->
+<!--        </if>-->
+<!--        <if test="pgrade!= null and pgrade!=''">-->
+<!--             and pgrade=#{pgrade}-->
+<!--        </if>-->
+<!--            order by pCreateTime desc-->
+
+<!--    </select>-->
+    <!--
+        <select id="listByWhere" parameterType="com.xr.run.entity.PostRiskCombing2" resultMap="whereListMap">
+            SELECT pc.pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,
+            pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname
+            from postriskcombing pc,sys_mechanism m,sys_post p where pc.pDeptId=m.mid and pc.pInfomationId=p.pid and pStatus=1
+            <if test='pdeptid!= null'>
+                and pdeptid=#{pdeptid}
+            </if>
+            <if test='pinfomationid!= null'>
+                and pinfomationid=#{pinfomationid}
+            </if>
+            <if test="pgrade!= null and pgrade!=''">
+                and pgrade=#{pgrade}
+            </if>
+            order by pid desc
+        </select>
+    -->
+    <select id="findByPcID" parameterType="INTEGER" resultMap="ByPcIDMap">
+    SELECT p.pname,m.mechanism_name,pcid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,
+  pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,pStatus
+  from postriskcombing pc,sys_mechanism m,sys_post p where pc.pDeptId=m.mid and pc.pInfomationId=p.pid and pcid=#{pcid}
+  </select>
+
 </mapper>

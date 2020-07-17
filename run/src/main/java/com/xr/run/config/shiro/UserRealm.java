@@ -68,8 +68,6 @@ public class UserRealm extends AuthorizingRealm {
 		if (user == null) {
 			//没找到帐号
 			throw new UnknownAccountException();
-		}if("12".equals(user.getPid())){
-
 		}
 		System.out.println(user);
 		//交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
