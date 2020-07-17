@@ -24,7 +24,6 @@ public class CORSConfiguration {
         config.addAllowedOrigin("http://localhost:4031");
         //config.addAllowedOrigin("*");
         config.addAllowedOrigin("http://127.0.0.1:4031");
-        config.setAllowCredentials(true);
         config.addAllowedOrigin("null");
         config.addAllowedHeader("*");//服务器允许使用的字段
         config.addAllowedMethod("*");//真实请求允许的方法

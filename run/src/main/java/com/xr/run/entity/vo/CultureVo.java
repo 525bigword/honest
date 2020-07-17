@@ -43,5 +43,7 @@ public class CultureVo {
 
     private String cname;
     private String url;
+    //视频
+    private String dVideo;
 
 }
