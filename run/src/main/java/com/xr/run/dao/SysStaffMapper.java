@@ -33,7 +33,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
      */
     @Select("SELECT u.sid,u.name, u.sex,u.age,u.educational_background,u.political_appearance,u.phone,u.mid,u" +
             ".username,u.password,u.pid,u.create_time,u.create_id,u.staus FROM " +
-            " sys_staff u WHERE u.username = #{username} AND u.password = #{password} AND u.staus = '1'")
+            " sys_staff u WHERE u.username = #{username}  AND u.staus = '1'")
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,ppid" +
             "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid} order by sid desc")

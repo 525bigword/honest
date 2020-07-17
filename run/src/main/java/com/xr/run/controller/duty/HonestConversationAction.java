@@ -72,6 +72,7 @@ public class HonestConversationAction {
     }
     /*提交审核*/
     @RequestMapping("subauditHonestConversation")
+    @RequiresPermissions("honestconversation:add")
     public ResponseResult subauditHonestConversation(Integer id){
         System.out.println("id"+id);
         System.out.println("提交");
@@ -82,6 +83,7 @@ public class HonestConversationAction {
     }
     /*审核通过*/
     @RequestMapping("passauditHonestConversation")
+    @RequiresPermissions("honestconversation:audit")
     public ResponseResult passauditHonestConversation(Integer id,Integer status,String auditresult){
         System.out.println("审核 id="+id+",status="+status);
         honestConversationService.passauditHonestConversation(id,status,auditresult);
