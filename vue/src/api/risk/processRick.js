@@ -9,7 +9,7 @@ export function list() {
 
 export function impFile(data) {
   return api({
-    url: '/imp/importDuty',
+    url: '/imp/image',
     method: 'post',
     data
   })

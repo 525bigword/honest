@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ProcessrickMapper extends BaseMapper<Processrick> {
     @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
-            " where prostatus = 1 and proName like CONCAT('%',#{proName},'%') order by proid desc")
+            " where  proName like CONCAT('%',#{proName},'%') order by proid desc")
     @Results({
             @Result(column = "proCreateId",property = "proCreateId"),
             @Result(column = "proCreateId",property = "sysStaff",
@@ -28,7 +28,9 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      *
      * @return
      */
-    @Select("select * from processrick")
+    @Select("select  proid,proName,proYear,proAccessory,proAccessoryName,proInfomation," +
+            "        proMeasures,proGrade,proCreateTime,proCreateId,proCreateName,proStatus,proAccessoryName" +
+            "        from processrick where proStatus=1 ORDER BY proid desc")
     List<Processrick> getList();
 
     /**
@@ -36,7 +38,14 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      *
      * @param processrick
      */
+/*
     @Insert("insert into processrick(processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus,proAccessoryName) values(#{processId},#{proName},#{proYear},#{proInfomation},#{proAccessory},#{proCreateTime},#{proCreateId},#{proCreateName},#{proStatus},#{proAccessoryName})")
+*/
+    @Insert("insert into processrick" +
+            " values(0,null,#{proName},#{proYear},#{proAccessory}," +
+            "#{proAccessoryName},#{proInfomation},#{proMeasures},#{proGrade}," +
+            "now(),#{proCreateId},#{proCreateName},1)")
+
     void addProcessrick(Processrick processrick);
 
     /**
@@ -44,7 +53,7 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      *
      * @param proid
      */
-    @Delete("delete from processrick where proid=#{proid}")
+    @Delete("update processrick set proStatus=0 where proid=#{proid}")
     void deleteByProid(Integer proid);
 
     /**
@@ -52,7 +61,9 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      *
      * @param processrick
      */
-    @Update("update processrick set proName=#{proName},proYear=#{proYear},proAccessory=#{proAccessory},proAccessoryName=#{proAccessoryName},processID=#{processId},proInfomation=#{proInfomation} where proid=#{proid}")
+    @Update("update processrick set proName=#{proName},proYear=#{proYear},proAccessory=#{proAccessory}," +
+            "proAccessoryName=#{proAccessoryName},proInfomation=#{proInfomation},proMeasures=#{proMeasures},proGrade=#{proGrade}" +
+            " where proid=#{proid}")
     void updateByProcessrick(Processrick processrick);
 
     /**
@@ -62,9 +73,9 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      * @param proYear
      * @return
      */
-    List<Processrick> getListBy(@Param("proName") String proName, @Param("proYear") String proYear);
-
+    List<Processrick> getListBy(@Param("proName") String proName, @Param("proYear") String proYear,@Param("proGrade") String proGrade);
 
     @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick where proid=#{id} ")
     Processrick findProcessrickById(@Param("id") Integer id);
+
 }

@@ -440,7 +440,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let endtime = new Date(this.userInfo.createtime).toJSON();
-            this.userInfo.createtime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+            this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
               .toISOString()
               .replace(/T/g, " ")
               .replace(/\.[\d]{3}Z/, "")

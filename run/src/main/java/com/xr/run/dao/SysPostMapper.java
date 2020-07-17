@@ -70,7 +70,7 @@ public interface SysPostMapper extends BaseMapper<SysPost> {
     })
     List<SysPost> getSysPostAll();
     //根绝部门查询岗位
-    @Select("select pid,pname,mid,message,create_time,create_id,staus from sys_post where mid=#{mid} and staus='1'")
+    @Select("select pid,pname,mid,message,create_time,create_id,staus from sys_ppost where mid=#{mid} and staus='0'")
     List<SysPost> getSysPostByMid(@Param("mid") Integer mid);
     //根绝postid删除修改
     @Update("update sys_post_permission set stuas='2' where postid=#{postid}")

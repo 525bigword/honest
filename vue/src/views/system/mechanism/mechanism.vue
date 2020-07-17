@@ -205,14 +205,14 @@ export default {
           {
             required: true,
             message: "部门名称不能为空",
-            trigger: ["change", "blur"]
+            trigger: ["blur"]
           }
         ],
         region: [
           {
             required: true,
             message: "请选择负责人",
-            trigger: "change"
+            trigger: "blur"
           }
         ],
         /* defaultvalue:[{
@@ -241,6 +241,7 @@ export default {
   methods: {
     closefase() {
       console.log("123");
+      // this.temp={}
       this.placeholder = "";
       this.defaultvalue = [1];
     },
@@ -261,10 +262,10 @@ export default {
       this.getList();
     },
     getList() {
-      //查询列表
-      // if (!this.hasPerm('staff:list')) {
-      //   return
-      // }
+      // 查询列表
+      if (!this.hasPerm('mechanism:list')) {
+        return
+      }
       this.listLoading = true;
       this.api({
         url:
@@ -364,6 +365,7 @@ export default {
     },
     MChange(val) {
       console.log(val);
+      this.temp.region=undefined
       this.getAllStaff(val);
     },
     Change(val) {

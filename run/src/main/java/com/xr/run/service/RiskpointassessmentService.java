@@ -4,7 +4,9 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xr.run.entity.EducationPolitics;
 import com.xr.run.entity.Riskpointassessment;
+import com.xr.run.entity.SysMechanism;
 import lombok.Data;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -12,6 +14,16 @@ import java.util.List;
 
 
 public interface RiskpointassessmentService extends IService<Riskpointassessment> {
+
+    void add(Riskpointassessment riskPointAssessment);
+
+    void update(Riskpointassessment riskPointAssessment);
+
+    List<SysMechanism> notUpdatedDept(Riskpointassessment riskpointassessment);
+
+    Riskpointassessment findBy(Integer riskImfomation);
+
+
 
     /**
      * 同步风险点评表

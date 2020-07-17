@@ -98,7 +98,7 @@
     <!--  绑定了title，是一个数组里取的，表示是修改的标题还是添加的标题
       visible.sync 对话框是否显示
     -->
-    <el-dialog :title="title" :visible.sync="dialogFormVisible" style="width: 100%">
+    <el-dialog :close="closee" :title="title" :visible.sync="dialogFormVisible" style="width: 100%">
       <!--
           rules:校验规则
           model:数据绑定
@@ -720,6 +720,9 @@ import { mapGetters } from 'vuex'
     },
     Close(){
       this.he=''
+    },
+    closee(){
+      this.load=false
     }
     }
   }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface SysStaffMapper extends BaseMapper<SysStaff> {
-    @Select("select sid,name from sys_staff where pid=#{pid} and mid=#{mid}")
+    @Select("select sid,name from sys_staff where mid=#{mid}")//pid=#{pid}
     List<SysStaff> findstatffByPid(@Param("pid") Integer pid,@Param("mid")Integer mid);
     @Select("select sid,name from sys_staff where mid=#{mid}")
     List<SysStaff> findstatffByMid(@Param("mid")Integer mid);

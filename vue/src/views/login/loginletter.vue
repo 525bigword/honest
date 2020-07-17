@@ -29,8 +29,8 @@
           </el-button>
         </el-form-item></div><br/>
       <div ><el-form-item>
-     <!-- <el-button type="primary" class="el-icon-plus" @click="add" v-if="hasPerm('letter:add')">新增</el-button>
-        <el-button type="primary" class="el-icon-delete" @click="del"  v-if="hasPerm('letter:delete')">删除</el-button>--></el-form-item></div>
+      <el-button type="primary" class="el-icon-plus" @click="add ">新增</el-button>
+        <el-button type="primary" class="el-icon-delete" @click="del"  >删除</el-button></el-form-item></div>
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
@@ -130,13 +130,13 @@
     </el-form>
     <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%" >
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="220px"  :rules="rules" ref="ruleForm">
-        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2;" >
+        <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:0px; left:-1px;z-index:2;" >
 <br/>
         <div align="right" ><el-form-item >
           <el-button type="primary" class="el-icon-edit" align="right" @click="submitUser('ruleForm')"  v-bind:style="{display:tj}">保存</el-button>
        <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
-        <div style="background-color: white;margin-top: 7px;z-index:3;">
+        <div style="background-color: white;margin-top: 44px;z-index:3;">
         <el-input v-model="userInfo.lid" placeholder="编号" type="hidden" ></el-input>
           <el-form-item label="状态"  v-if="false">
             <el-input v-model="userInfo.lstatus" placeholder="状态" style="width: 300px" v-if="false"></el-input>
@@ -292,7 +292,8 @@
       },//新增
       add(){
 
-
+this.tf='none'
+        this.ad=''
       },
     //判断状态给提示
     cstatus: function (row, column, cellValue) {
@@ -460,6 +461,7 @@
        // this.userInfo.lCreateName=this.nickname
       },// 删除
       del(){
+
         var data = this.$refs.multipleTable.selection;
        // console.log("11"+data)
         if(JSON.stringify(data)=='[]'){
@@ -471,15 +473,20 @@
           })
         }
         else {
-          var ids = data.map(item => { return { lstatus: item.lstatus } })
+          this.$confirm('是否确认删除此记录?', '温馨提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            var ids = data.map(item => { return { lstatus: item.lstatus } })
           var ids1 =true
           for(var i = 0; i < ids.length; i++) {
-           // console.log('ids[i].lstatus'+ids[i].lstatus)
+            // console.log('ids[i].lstatus'+ids[i].lstatus)
             if(ids[i].lstatus!='4'){
               ids1=false
             }
           }
-         // console.log(ids1)
+          // console.log(ids1)
           if(!ids1){//判断处于审核中的不能删除
 
             this.$notify({
@@ -489,13 +496,13 @@
               duration: 2000
             })
           }else {
-          let postData = qs.stringify({
-            test:JSON.stringify(data)
-          });
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
 
-        //  console.debug('选中行数据'+JSON.stringify(data))
-          del(postData).then((response) =>{
-            this.initList();
+            //  console.debug('选中行数据'+JSON.stringify(data))
+            del(postData).then((response) =>{
+              this.initList();
             this.$notify({
               title: '成功',
               message: response.message,
@@ -503,6 +510,13 @@
               duration: 2000
             })
           })}
+          }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+
         }
       },//多条件查询
         //按标题查询
