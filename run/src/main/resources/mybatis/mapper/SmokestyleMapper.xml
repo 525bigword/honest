@@ -44,6 +44,7 @@
         </if>
 
     </select>
+
     <!--删除-->
     <update id="delSmokestyle" parameterType="Integer">
       update tam_smoke_style set sstatus=-1 where smoid=#{smoid}

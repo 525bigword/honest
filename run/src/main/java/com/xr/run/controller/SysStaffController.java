@@ -102,6 +102,7 @@ public class SysStaffController {
     public JSONObject createIndex(){
         try {
             homePageSevice.loading();
+
             return CommonUtil.successJson();
         }catch (Exception e){
             return CommonUtil.errorJson(ErrorEnum.E_500);
@@ -116,7 +117,6 @@ public class SysStaffController {
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
         //创建首页
 //        homePageSevice.loading();
-        System.out.println("==================jsonObject="+jsonObject);
         return jsonObject;
     }
     /**

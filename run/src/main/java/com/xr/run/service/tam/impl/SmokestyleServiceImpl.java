@@ -1,5 +1,7 @@
 package com.xr.run.service.tam.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.dao.tam.SmokestyleMapper;
 import com.xr.run.entity.tam.Smokestyle;
 import com.xr.run.service.tam.SmokestyleService;
@@ -34,5 +36,10 @@ smokestyleMapper.delSmokestyle(smoid);
     @Override
     public void gxSmokestyle(Smokestyle smokestyle) {
         smokestyleMapper.gxSmokestyle(smokestyle);
+    }
+
+    @Override
+    public IPage<Smokestyle> findAllSmokestyle1(Page page, String title) {
+        return smokestyleMapper.findAllSmokestyle1(page,title);
     }
 }

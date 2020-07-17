@@ -19,16 +19,11 @@ import com.xr.run.entity.tam.Smokestyle;
 import com.xr.run.entity.vo.CultureVo;
 import com.xr.run.entity.vo.RdWorkVo;
 import com.xr.run.entity.vo.RiskVo;
-import com.xr.run.service.DatacollectionService;
-import com.xr.run.service.DcpReportService;
 import com.xr.run.service.HomePageSevice;
-import com.xr.run.service.WindService;
 import com.xr.run.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -38,6 +33,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 /*
+ * 动态生成静态页面
  * @author TSYH
  * @create 2020-07-06
  * @since 1.0.0
@@ -230,10 +226,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
             String s = CommonUtil.delHTMLTag(list1.get(0).getContent());//去除标签
             map.put("rdContent", s);
-            if (list1.size() > 0 && list1.size() < 5) {
+            if (list1.size() > 0 && list1.size() < 6) {
                 list1 = list1.subList(0, list1.size());
             } else {
-                list1 = list1.subList(0, 5);
+                list1 = list1.subList(0, 6);
             }
             for (RdWorkVo rdWorkVo : list1) {
                 Map map1 = new HashMap();
@@ -414,18 +410,38 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
         //TODO 潭烟风貌
         loadTam(map);
+        //更多潭烟风貌
+        getMoreTam();
 
 
         createIndexHtml(destPath, "HomePage", "index.html", map);
     }
 
+
     //潭烟风貌
     private void loadTam(Map map) {
-
-        List<Smokestyle> allSmokestyle = smokestyleMapper.findAllSmokestyle();
-
+        List<Smokestyle> allSmokestyle = smokestyleMapper.findAllSmokestyle2();
+        List<Smokestyle> list = new ArrayList<>();
+        if(allSmokestyle.size()==0){
+            Smokestyle smokestyle = new Smokestyle();
+            smokestyle.setSmocontent("");
+            list.add(smokestyle);
+        }
+        for (Smokestyle smokestyle : allSmokestyle) {
+            HashMap map1 = new HashMap();
+            map1.put("smoke", smokestyle);
+            createIndexHtml(destPath + "/212/", "212/tamList", smokestyle.getSmoid() + ".html", map1);
+            list.add(smokestyle);
+        }
+        map.put("smokestyle", list);
 
     }
+
+    //更多潭烟风貌
+    private void getMoreTam() {
+        createIndexHtml(destPath + "/212/", "212/index", "index.html", null);
+    }
+
 
     //不同廉政文化
     private void getDifferentCultrue() {
@@ -522,9 +538,9 @@ public class HomePageSeviceImpl implements HomePageSevice {
     // TODO 廉政文化
     private void loadCulture(Map map) {
         //资料集锦
-        IPage<Datacollection> dataConllections = datacollectionMapper.findDataConllection1(new Page(), "");
+        IPage<Datacollection> dataConllections = datacollectionMapper.findDataConllection1(new Page(1,6), "");
         //清风文苑
-        IPage<Wind> winds = windMapper.findWind1(new Page(), "");
+        IPage<Wind> winds = windMapper.findWind1(new Page(1,6), "");
 
         List<CultureVo> list = new ArrayList<>();
         int i0 = 0;
@@ -537,6 +553,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             cultureVo.setType(0); //资料集锦
             cultureVo.setCreateTime(record.getDCreateTime());
             cultureVo.setUrl(record.getDFile());
+            cultureVo.setDVideo(record.getDVideo());
             list.add(cultureVo);
             Map map1 = new HashMap();
             map1.put("cultures", cultureVo);
@@ -567,10 +584,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
         if (list.size() != 0) {
             String s = CommonUtil.delHTMLTag(list.get(0).getContent());//去除标签
             map.put("cuContent", s);
-            if (list.size() > 0 && list.size() < 5) {
+            if (list.size() > 0 && list.size() < 6) {
                 list = list.subList(0, list.size());
-            } else if (list.size() >= 5) {
-                list = list.subList(0, 5);
+            } else if (list.size() >= 6) {
+                list = list.subList(0, 6);
             }
             for (CultureVo cultureVo : list) {
                 Map map1 = new HashMap();
@@ -594,7 +611,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
     //纪检报表
     private void loadReport(Map map) {
-        IPage<DcpReport> dcpReportIndex = dcpReportMapper.findDcpReportIndex(new Page(), "");
+        IPage<DcpReport> dcpReportIndex = dcpReportMapper.findDcpReportIndex(new Page(1,6), "");
         List<DcpReport> list = new ArrayList<>();
         for (DcpReport record : dcpReportIndex.getRecords()) {
             int i = record.getReport().lastIndexOf(".");
@@ -602,10 +619,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
             list.add(record);
         }
         if (list.size() != 0) {
-            if (list.size() > 0 && list.size() < 5) {
+            if (list.size() > 0 && list.size() < 6) {
                 list = list.subList(0, list.size());
-            } else if (list.size() >= 5) {
-                list = list.subList(0, 5);
+            } else if (list.size() >= 6) {
+                list = list.subList(0, 6);
             }
             for (DcpReport report : list) {
                 Map map1 = new HashMap();
@@ -624,8 +641,8 @@ public class HomePageSeviceImpl implements HomePageSevice {
     //风险防控
     private void loadRisk(Map map) {
         //流程风险
-        IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex(new Page(), "");
-        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(), "");
+        IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex(new Page(1,6), "");
+        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(1,6), "");
         List<RiskVo> list = new ArrayList<>();
         int i0 = 0;
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
@@ -669,10 +686,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
         if (list.size() != 0) {
             String s = CommonUtil.delHTMLTag(list.get(0).getDescription());//去除标签
             map.put("riContent", s);
-            if (list.size() > 0 && list.size() < 5) {
+            if (list.size() > 0 && list.size() < 6) {
                 list = list.subList(0, list.size());
             } else {
-                list = list.subList(0, 5);
+                list = list.subList(0, 6);
             }
             for (RiskVo riskVo : list) {
                 Map map1 = new HashMap();
@@ -757,11 +774,9 @@ public class HomePageSeviceImpl implements HomePageSevice {
         File file = new File(path);
         if (file.exists()) {
             //文件夹存在就删除
-            System.out.println("文件夹存在");
-            file.delete();
+             file.delete();
         } else {
-            System.out.println("文件夹不存在");
-            file.mkdirs();
+             file.mkdirs();
         }
         // 输出流
         //创建index.html页面，"rdList.html"

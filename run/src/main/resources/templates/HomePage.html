@@ -13,13 +13,12 @@
     <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.js"></script>
     <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.http.js"></script>
     <script src="http://localhost:4031/ms-mcms/static/plugins/ms/1.0.0/ms.util.js"></script>
-    <!--jq引用-->
-    <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
     <!--通用样式引用-->
     <link rel="stylesheet" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css">
     <!--图片轮播-->
     <script type="text/javascript"
             src="http://localhost:4031/ms-mcms/templets/1/yancao/js/SuperSlide.2.1.3/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="http://localhost:4031/ms-mcms/static/plugins/jquery.cookie/2.2.1/jquery.cookie.js"></script>
     <script type="text/javascript"
             src="http://localhost:4031/ms-mcms/templets/1/yancao/js/SuperSlide.2.1.3/jquery.SuperSlide.2.1.3.js"></script>
     <style type="text/css">
@@ -314,23 +313,6 @@
             cursor: pointer
         }
 
-
-
-
-       /* !* css 重置 *!
-        *{margin:0; padding:0; list-style:none; }
-        body{ background:#fff; font:normal 12px/22px 宋体;  }
-        img{ border:0;  }
-        a{ text-decoration:none; color:#333;  }
-        a:hover{ color:#1974A1;  }
-        .js{width:90%; margin:10px auto 0 auto; }
-        .js p{ padding:5px 0; font-weight:bold; overflow:hidden;  }
-        .js p span{ float:right; }
-        .js p span a{ color:#f00; text-decoration:underline;   }
-        .js textarea{ height:100px;  width:98%; padding:5px; border:1px solid #ccc; border-top:2px solid #aaa;  border-left:2px solid #aaa;  }
-
-*/
-
         /* 本例子css */
         .slideGroup{ width:1400px; border:0px ; text-align:left;  }
         .slideGroup .parHd{ height:30px; line-height:30px; background:#f4f4f4; padding:0 20px; border-bottom:1px solid #ddd;  position:relative;  }
@@ -450,41 +432,41 @@
                 </div>
                 <div class="bd">
                     <ul th:if="${educations[0].content!=''}" class="list-style-none">
-                        <li>
-                            <a href="http://localhost:4031/ms-mcms/html/2/211/283.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png"/>
+                        <li th:each="edu,stat:${educations}" th:if="${stat.count<=5}">
+                            <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${edu.next}+'/'+${edu.id}+'.html'" target="_blank">
+                                <img th:src="'http://localhost:4031/ms-mcms/templets/1/yancao/images/'+${edu.surl}+''" />
                             </a>
                         </li>
-                        <li>
+                       <!-- <li>
                             <a href="http://localhost:4031/ms-mcms/html/2/211/298.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-02.png"/>
+                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-02.png"/>
                             </a>
                         </li>
                         <li>
                             <a href="http://localhost:4031/ms-mcms/html/2/211/299.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-03.png"/>
+                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-03.png"/>
                             </a>
                         </li>
                         <li>
                             <a href="http://localhost:4031/ms-mcms/html/2/211/304.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-04.png"/>
+                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-04.png"/>
                             </a>
                         </li>
                         <li>
                             <a href="http://localhost:4031/ms-mcms/html/2/211/376.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-05.png"/>
+                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-05.png"/>
                             </a>
-                        </li>
+                        </li>-->
 
                     </ul>
                 </div>
             </div>
             <div>
                 <h5 class="ms-text-ellipsis">
-                    <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${educations[0].id}+'.html'" target="_blank" th:text="${educations[0].title}"> </a>
+                    <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${educations[0].next}+'/'+${educations[0].id}+'.html'" target="_blank" th:text="${educations[0].title}"> </a>
                 </h5>
                 <ul class="new-all">
-                    <li th:each="edu:${educations}">
+                    <li th:each="edu,itemStat:${educations}" th:if="${!itemStat.first}">
                         <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${edu.next}+'/'+${edu.id}+'.html'" th:text="${edu.title}" target="_blank"></a>
                         <span th:text="${#dates.format(edu.createTime,'MM-dd')}"></span>
                     </li>
@@ -494,19 +476,15 @@
     </div>
     <div class="right-content" id="indexForm">
         <div id="login-form">
-            <form v-if="isLogin">
-                <input type="text" name="account" value="" v-model="form.username" placeholder="账号">
-                <input v-model="form.password" type="password" name="password" value="" placeholder="密码">
-                <span @click="login" class="hand">登录</span>
+            <form action="http://localhost:8080/honest/qt/login/doLogin" id="form1">
+                <input type="text" name="username" value=""  placeholder="账号">
+                <input  type="password" name="password" value="" placeholder="密码">
+                <button type="submit">登录</button>
             </form>
-            <p v-if="!isLogin" style="line-height: 20px;">
-                <span style="padding-right: 47px;">亲爱的：<a href="http://localhost:4031/ms-mcms/ms/index.do"
-                                                          class="isLogin" target="_blank">{{userName}}</a></span><span>欢迎回来</span><br/>
-                <span style="padding-right: 114px;"><a
-                        href="http://localhost:4031/ms-mcms/ms/message/index.do?messageType=2&modelId=366&modelCode=366&modelTitle=待办事项"
-                        class="isLogin" target="_blank">待办事项</a></span><a href="javascript:void(0);" class="red"
-                                                                          @click="loginOut">[退出系统]</a>
-            </p>
+          <!--  <p  style="line-height: 20px;">
+                <span style="padding-right: 47px;">亲爱的：<a href="http://127.0.0.1:8080/ms-mcms/ms/index.do" class="isLogin" target="_blank">{{userName}}</a></span><span>欢迎回来</span><br/>
+                <span style="padding-right: 114px;"><a href="http://127.0.0.1:8080/ms-mcms/ms/message/index.do?messageType=2&modelId=366&modelCode=366&modelTitle=待办事项" class="isLogin" target="_blank">待办事项</a></span><a href="javascript:void(0);" class="red" @click="loginOut">[退出系统]</a>
+            </p>-->
         </div>
         <div class="announcements">
             <div class="title-model">
@@ -531,7 +509,7 @@
                 <a th:if="${rdWorkVos[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/185/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img th:if="${rdWorkVos[0].content!=''}" src="http://localhost:4031/ms-mcms/upload/1/article/3.jpg" alt="">
+                <img src="http://localhost:4031/ms-mcms/upload/1/article/3.jpg" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${rdWorkVos[0].title}"></span>
                     <div class="content">
@@ -543,7 +521,7 @@
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
-                <li th:each="rd:${rdWorkVos}">
+                <li th:each="rd,itemStat:${rdWorkVos}" th:if="${!itemStat.first}">
                     <a th:text="${rd.title}"
                        th:href="'http://localhost:4031/ms-mcms/html/2/185/'+${rd.type}+'/'+${rd.id}+'.html'"
                        target="_blank"></a>
@@ -558,17 +536,17 @@
                 <a th:if="${riskVos[0].description!=''}" href="http://localhost:4031/ms-mcms/html/2/195/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img  th:if="${riskVos[0].description!=''}" src="http://localhost:4031/ms-mcms/upload/1/article/2.jpg" alt="">
+                <img  src="http://localhost:4031/ms-mcms/upload/1/article/2.jpg" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${riskVos[0].project}"></span>
                     <div class="content">
-                        <label th:text="${#strings.abbreviate(riContent,30)}" th:inline="text"></label>
+                        <label th:text="${#strings.abbreviate(riContent,30)}" ></label>
                         <a th:if="${riskVos[0].description!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/195/'+${riskVos[0].type}+'/'+${riskVos[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
-                <li th:each="risk:${riskVos}">
+                <li th:each="risk,itemStat:${riskVos}" th:if="${!itemStat.first}">
                     <a th:text="${risk.project}" th:href="'http://localhost:4031/ms-mcms/html/2/195/'+${risk.type}+'/'+${risk.id}+'.html'" target="_blank"></a>
                     <span th:text="${#dates.format(risk.createTime,'MM-dd')}"></span>
                 </li>
@@ -577,7 +555,7 @@
     </div>
     <div class="right-content ms-absolute picture-list">
         <div><img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/justice.png" alt="一身正气"></div>
-        <div><a name="lettersVisits" href="http://localhost:9521/userReport" target="_blank"><img
+        <div><a name="lettersVisits" href="http://localhost:80/#/userReport" target="_blank"><img
                 src="http://localhost:4031/ms-mcms/templets/1/yancao/images/complaint-reporting.png" alt="信访入口"></a>
         </div>
     </div>
@@ -590,18 +568,18 @@
                 <a href="http://localhost:4031/ms-mcms/html/2/207/index.html" th:if="${supervise[0].DutyContent!=''}" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img th:if="${supervise[0].DutyContent!=''}" src="http://localhost:4031/ms-mcms/templets/1/yancao/images/dandelion.png" alt="">
+                <img src="http://localhost:4031/ms-mcms/templets/1/yancao/images/dandelion.png" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${supervise[0].DutyTitle}"></span>
                     <div class="content">
-                        <label th:text="${#strings.abbreviate(duContent,30)}" th:inline="text"></label>
+                        <label th:text="${#strings.abbreviate(duContent,30)}" ></label>
                         <a th:if="${supervise[0].DutyContent!=''}" href="http://localhost:4031/ms-mcms/html/2/207/289.html" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
 
             <ul class="list-style-none news-list-model new-all">
-                <li th:each="su,stat:${supervise}">
+                <li th:each="su,stat:${supervise}" th:if="${!stat.first}">
                     <a th:href="'http://localhost:4031/ms-mcms/html/2/207/'+${289+stat.index}+'.html'" target="_blank"
                        th:text="${su.DutyTitle}"></a>
                     <span th:text="${#dates.format(su.NewTime,'MM-dd')}"></span>
@@ -615,7 +593,7 @@
                 <a th:if="${reports[0].report!=''}" href="http://localhost:4031/ms-mcms/html/2//189/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img th:if="${reports[0].report!=''}" src="http://localhost:4031/ms-mcms/templets/1/yancao/images/meeting.png" alt="">
+                <img  src="http://localhost:4031/ms-mcms/templets/1/yancao/images/meeting.png" alt="">
                 <div>
                     <span class="title ms-text-ellipsis"  th:text="${#strings.abbreviate(reports[0].report,30)}" ></span>
                     <div class="content">
@@ -624,7 +602,7 @@
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
-                <li th:each="re:${reports}">
+                <li th:each="re,stat:${reports}" th:if="${!stat.first}">
                     <a th:href="'http://localhost:4031/ms-mcms/html/2/189/'+${re.id}+'.html'" target="_blank" th:text="${re.report}">
 
                     </a>
@@ -641,17 +619,17 @@
                 <a th:if="${cultures[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/182/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img src="http://localhost:4031/ms-mcms//upload/1//article/1.jpg" alt="">
+                <img  src="http://localhost:4031/ms-mcms//upload/1/article/1.jpg" alt="">
                 <div>
-                    <span class="title ms-text-ellipsis" th:text="${cultures[0].title}"></span>
+                    <span th:if="${cultures[0].content!=''}"class="title ms-text-ellipsis" th:text="${cultures[0].title}"></span>
                     <div class="content">
                         <label th:text="${#strings.abbreviate(cuContent,30)}"></label>
-                        <a th:if="${cultures[0].content!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/182/'+${cultures[0].type}+'/'+${cultures[0].id}+'.html'" target="_blank">详情>></a>
+                        <a  th:if="${cultures[0].content!=''}" th:href="'http://localhost:4031/ms-mcms/html/2/182/'+${cultures[0].type}+'/'+${cultures[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
-                <li th:each="cu:${cultures}">
+                <li th:each="cu,stat:${cultures}" th:if="${!stat.first}">
                     <a  class="right" th:href="'http://localhost:4031/ms-mcms/html/2/182/'+${cu.type}+'/'+${cu.id}+'.html'" target="_blank" th:text="${cu.title}"></a>
                     <span th:text="${#dates.format(cu.createTime,'MM-dd')}"></span>
                 </li>
@@ -663,61 +641,25 @@
 <div class="content-footer body-model body-content margin-center">
     <div class="title-model">
         <h5>潭烟风貌</h5>
-        <a href="http://localhost:4031/ms-mcms/html/2/212/index.html" target="_blank">更多</a>
+        <a th:if="${smokestyle[0].smocontent!=''}" href="http://localhost:4031/ms-mcms/html/2/212/index.html" target="_blank">更多</a>
     </div>
     <div class="slideGroup" style="margin:0 auto">
         <div class="parBd">
 
             <div class="slideBox">
                 <a class="sPrev" href="javascript:void(0)"></a>
-                <ul>
-                    <li>
-                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
-                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png" alt=""></a></div>
-                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.1</a></div>
-                    </li>
-                    <li>
-                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
-                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-02.png" alt=""></a></div>
-                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.2</a></div>
-                    </li>
-                    <li>
-                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
-                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-03.png" alt=""></a></div>
-                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.3</a></div>
-                    </li>
-                    <li>
-                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
-                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-04.png" alt=""></a></div>
-                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.4</a></div>
-                    </li>
-                    <li>
-                        <div class="pic"><a href="http://www.SuperSlide2.com" target="_blank"><img
-                                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-05.png" alt=""></a></div>
-                        <div class="title"><a href="http://www.SuperSlide2.com" target="_blank">效果图1.5</a></div>
+                <ul th:if="${smokestyle[0].smocontent!=''}">
+                    <li th:if="${smoke.surl!=''}" th:each="smoke:${smokestyle}">
+                        <div class="pic"><a th:href="'http://localhost:4031/ms-mcms/html/2/212/'+${smoke.smoid}+'.html'" target="_blank"><img
+                                th:src="'http://localhost:4031/ms-mcms/templets/2/image/'+${smoke.surl}" alt=""></a></div>
                     </li>
                 </ul>
                 <a class="sNext" href="javascript:void(0)"></a>
-            </div><!-- slideBox End -->
+            </div>
 
-        </div><!-- parBd End -->
+        </div>
     </div>
-
 </div>
-
-<!-- <ul class="list-style-none">
-
-        <li><a href="http://localhost:4031/ms-mcms/html/2/212/284.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-01.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2/212/285.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-02.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2/212/286.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-03.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2/212/287.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-04.png" alt=""></a></li>
-        <li><a href="http://localhost:4031/ms-mcms/html/2/212/288.html" target="_blank"><img
-                src="http://localhost:4031/ms-mcms/templets/1/yancao/images/scenery-05.png" alt=""></a></li>
-    </ul>-->
 
 ﻿<!--底部内容-->
 <div class="footer max-width margin-center">
@@ -726,18 +668,50 @@
 </div>
 </body>
 </html>
-<script id="jsID" type="text/javascript">
-    /*
-                SuperSlide组合注意：
-                1、内外层mainCell、targetCell、prevCell、nextCell等对象不能相同，除非特殊应用；
-                2、注意书写顺序，通常先写内层js调用，再写外层js调用
-                */
 
+<script id="jsID" type="text/javascript">
+    //登录
+    function login(){
+        $.ajax({
+            type: "POST",//方法类型
+            url: "http://localhost:8080/honest/qt/login/doLogin" ,//url
+            data: $('#form1').serialize(),
+            //几个参数需要注意一下
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                var username = $.cookie('username')
+                alert(username);
+            },
+            error : function() {
+                alert("异常！");
+            }
+        });
+    }
+    /*function getUser(){
+        $.ajax({
+            type: "POST",//方法类型
+            url: "http://localhost:8080/honest/qt/login/getUser" ,//url
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                //alert(data)
+                location.reload()
+            },
+            error : function() {
+                alert("异常！");
+            }
+        });
+    }*/
     /* 内层图片滚动切换 */
     jQuery(".slideGroup .slideBox").slide({ mainCell:"ul",vis:5,prevCell:".sPrev",nextCell:".sNext",effect:"leftLoop"});
 
-
     jQuery(".slideBox0").slide({mainCell: ".bd ul", autoPlay: true});
+/*
     var indexVue = new Vue({
         el: '#indexForm',
         data: {
@@ -783,7 +757,7 @@
                 var that = this;
                 ms.http.post("http://localhost:8080/honest/SysStaff/getInfo", "",{xhrFields:{withCredentials: true}}).then(function (data) {
                     alert(data.msg)
-                    /*that.isLogin = false;
+                    /!*that.isLogin = false;
 
                     alert(data.info.userPermission)
                     alert(man.info.userPermission)
@@ -792,7 +766,7 @@
                         $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
                     } else {
                         $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
-                    }*/
+                    }*!/
 
                 }).catch(function (err) {
                     $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
@@ -804,4 +778,5 @@
             //this.managerGet();
         }
     });
+*/
 </script>

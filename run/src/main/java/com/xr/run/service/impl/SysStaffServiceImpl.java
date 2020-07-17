@@ -93,7 +93,6 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         String password = jsonObject.getString("password");
         JSONObject info = new JSONObject();
         Subject currentUser = SecurityUtils.getSubject();
-        System.out.println("登录============="+currentUser.getSession().getId());
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         try {
             currentUser.login(token);

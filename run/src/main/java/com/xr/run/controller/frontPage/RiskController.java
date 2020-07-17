@@ -47,9 +47,9 @@ public class RiskController {
     
     public List<RiskVo> getList(String prProject){
         //岗位风险，type=0
-        IPage<Postriskcombing> postriskCombingAll = postriskcombingService.findPostriskCombingIndex1(new Page(), prProject);
+        IPage<Postriskcombing> postriskCombingAll = postriskcombingService.findPostriskCombingIndex1(new Page(1,6), prProject);
         //流程风险，type=1
-        IPage<Processrick> processrickAll = processrickService.findProcessrickIndex(new Page(), prProject);
+        IPage<Processrick> processrickAll = processrickService.findProcessrickIndex(new Page(1,6), prProject);
 
         List<RiskVo> list = new ArrayList<>();
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {

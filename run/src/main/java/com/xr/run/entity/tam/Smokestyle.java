@@ -28,4 +28,5 @@ public class Smokestyle {
     private Integer smocreateids;
     private String starttime;
     private String endtime;
+    private String name;
 }

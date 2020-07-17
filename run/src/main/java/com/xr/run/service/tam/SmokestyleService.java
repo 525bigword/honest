@@ -1,5 +1,7 @@
 package com.xr.run.service.tam;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.tam.Smokestyle;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface SmokestyleService {
 
     /*更新*/
     public void gxSmokestyle(Smokestyle smokestyle);
+
+    IPage<Smokestyle> findAllSmokestyle1(Page page, String title);
 }

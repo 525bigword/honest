@@ -25,5 +25,6 @@ public class EducationPolitics {
   private String staus;
   private String cname;
   private Integer next;
+  private String surl;
 
 }
