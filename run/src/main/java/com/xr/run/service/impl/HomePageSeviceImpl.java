@@ -417,6 +417,58 @@ public class HomePageSeviceImpl implements HomePageSevice {
         createIndexHtml(destPath, "HomePage", "index.html", map);
     }
 
+    public Map getIndexInfo() {
+        Map<String, Object> map = new HashMap<>();
+        //TODO 责任监督
+        loadDuty(map);
+        //责任监督更多
+        getMoreDuty();
+
+        //TODO 责任纪实
+        loadRdWork(map);
+        //责任纪实更多
+        getMoreRdWork();
+        //TODO 廉政文化
+        loadCulture(map);
+        //廉政文化更多
+        getMoreCultrue();
+        //不同的廉政文化
+        getDifferentCultrue();
+
+        //TODO 风险防控
+        loadRisk(map);
+        //风险防控更多
+        getMoreRisk();
+        //生成不同的风险防控
+        getDifferentRisk();
+
+        //生成不同的RdWork
+        getDifferentRdWord();
+
+        //TODO 廉政教育
+        loadEducation(map);
+        //廉政教育更多
+        getMoreEducation();
+        //获得不同的廉政教育
+        getDifferentEducation();
+
+
+        //TODO 通知公告
+        loadSystemMsg(map);
+
+        //TODO 纪检报表
+        loadReport(map);
+        //纪检报表更多
+        getMoreReport();
+
+        //TODO 潭烟风貌
+        loadTam(map);
+        //更多潭烟风貌
+        getMoreTam();
+
+
+        return map;
+    }
 
     //潭烟风貌
     private void loadTam(Map map) {

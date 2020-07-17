@@ -417,7 +417,7 @@
     <div class="left-content">
         <div class="ms-title title-model">
             <h5>廉政教育</h5>
-            <a th:if="${educations[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/181/index.html" target="_blank">更多</a>
+            <a th:if="${indexInfo.educations[0].content!=''}" href="http://localhost:4031/ms-mcms/html/2/181/index.html" target="_blank">更多</a>
         </div>
         <div class="ms-news">
             <div class="slideBox0">
@@ -431,7 +431,7 @@
                     </ul>
                 </div>
                 <div class="bd">
-                    <ul th:if="${educations[0].content!=''}" class="list-style-none">
+                    <ul th:if="${indexInfo.educations[0].content!=''}" class="list-style-none">
                         <li th:each="edu,stat:${educations}" th:if="${stat.count<=5}">
                             <a th:href="'http://localhost:4031/ms-mcms/html/2/181/'+${edu.next}+'/'+${edu.id}+'.html'" target="_blank">
                                 <img th:src="'http://localhost:4031/ms-mcms/templets/1/yancao/images/'+${edu.surl}+''" />

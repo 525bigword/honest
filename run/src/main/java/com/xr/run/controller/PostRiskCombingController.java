@@ -64,7 +64,7 @@ public class PostRiskCombingController {
     public ResponseResult list(Integer pageNum, Integer pageSize) {
         //System.out.println(pageNum+"    "+pageSize);
         //从session获取用户信息
-        Session session = SecurityUtils.getSubject().getSession();
+       /* Session session = SecurityUtils.getSubject().getSession();
         SysStaff loginStaff = (SysStaff) session.getAttribute(Constants.SESSION_USER_INFO);
         // 分页查询
         Page page=new Page(pageNum,pageSize);
@@ -73,8 +73,9 @@ public class PostRiskCombingController {
         ResponseResult result = new ResponseResult();
         result.getInfo().put("list",resultPage.getRecords());
         result.getInfo().put("total", resultPage.getTotal());
-        result.getInfo().put("loginStaff", loginStaff);
-        return result;
+        result.getInfo().put("loginStaff", loginStaff);*/
+        //return result;
+         return null;
     }
 
     @RequestMapping("add")
