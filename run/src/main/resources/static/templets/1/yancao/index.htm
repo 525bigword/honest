@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="keywords" content="{ms:global.keyword/}" />
+		<meta name="description" content="{ms:global.descrip/}" />
+		<title>{ms:global.name/}</title>
+		<script type="text/javascript" src="{ms:global.host/}/static/plugins/vue/2.6.9/vue.min.js"></script>
+		<!--网络请求框架-->
+	    <script src="{ms:global.host/}/static/plugins/axios/0.18.0/axios.min.js"></script>
+	    <script src="{ms:global.host/}/static/plugins/qs/6.6.0/qs.min.js"></script>
+		<!--铭飞-->
+	    <script src="{ms:global.host/}/static/plugins/ms/1.0.0/ms.js"></script>
+	    <script src="{ms:global.host/}/static/plugins/ms/1.0.0/ms.http.js"></script>
+	    <script src="{ms:global.host/}/static/plugins/ms/1.0.0/ms.util.js"></script>
+		<!--jq引用-->
+		<script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+		<!--通用样式引用-->
+		<link rel="stylesheet" href="{ms:global.host/}/{ms:global.style/}/css/app.css">
+		<script type="text/javascript" src="{ms:global.host/}/{ms:global.style/}/js/SuperSlide.2.1.3/jquery1.42.min.js"></script>
+		<script type="text/javascript" src="{ms:global.host/}/{ms:global.style/}/js/SuperSlide.2.1.3/jquery.SuperSlide.2.1.3.js"></script>
+		<style type="text/css">
+			/*主体内容样式*/
+			.body-model {
+				margin-top: 20px;
+			}
+			
+			.body-model>div {       
+				display: inline-block;
+			}
+			/*左边内容*/
+			
+			.body-model>.left-content {
+				width: 780px;
+				padding: 20px;
+				background:#FFFFFF;
+			}
+			
+			.body-model>.right-content {
+				width: 360px;
+				float: right;
+				
+			}
+			
+			.body-model>.right-content>div {
+				background:#FFFFFF;
+				padding: 20px;
+				
+			}
+			
+			.body-model>.left-content>div.news-content-model:last-child {
+				float: right;
+			}
+			
+			.body-model>.left-content>.ms-title>a {
+				text-align: center;
+				line-height: 25px;
+			}
+			
+			.body-model>.left-content>.ms-news {
+				padding-top: 20px;
+				height: 273px;
+			}
+			
+			.body-model>.left-content>.ms-news>div:first-child {
+				float: left;
+			}
+			
+			.body-model>.left-content>.ms-news>div:last-child {
+				float: right;
+			}
+			
+			.body-model>.left-content>.ms-news>div>img {
+				height: 100%;
+				width: 330px;
+			}
+			
+			.body-model>.left-content>.ms-news>div>h5 {
+					height: 23px;	
+				    width: 400px;
+				    line-height: 23px;
+				    font-weight: bold;
+				    color: rgba(51, 51, 51, 1);			
+			}
+			.body-model>.left-content>.ms-news>div>h5>a{
+				font-size: 16px;				
+			}
+			.body-model>.left-content>.ms-news>div>ul>li {
+				width: 409px;
+				height: 13px;
+				padding-top: 18px;
+				font-weight: 400;
+				color: #3D7D53;
+			}
+			
+			.body-model>.left-content>.ms-news>div>ul>li>a {
+				width: 356px;
+			}
+			
+			.body-model>.left-content>.ms-news>div>ul>li>span {
+				color: rgba(102, 102, 102, 1);
+			}
+			
+			.body-model>.left-content>.ms-news>div>ul>li>span:last-child {
+				float: right;
+			}
+			
+			.body-model>.left-content>.news-content-model {
+				width: calc(50% - 20px);
+			}
+			/*右边内容*/
+			
+			.body-model>.right-content>#login-form {
+				height: 33px;
+				margin-bottom: 20px;
+				padding: 20px;
+			}
+			
+			.body-model>.right-content>#login-form>a {
+				font-size: 18px;
+				text-decoration: underline;
+				font-weight: bolder;
+			}
+			
+			.body-model>.right-content>#login-form>form>input,
+			span {
+				float: left;
+			}
+			
+			.body-model>.right-content>#login-form>form>input {
+				width: 107px;
+				height: 30px;
+				background: rgba(255, 255, 255, 1);
+				border: 1px solid rgba(204, 204, 204, 1);
+				border-radius: 4px;
+				padding-left: 11px;
+				margin-right: 10px;
+			}
+			
+			.body-model>.right-content>#login-form>form>span {
+				width: 60px;
+				height: 30px;
+				background: rgba(61, 125, 83, 1);
+				border-radius: 4px;
+				font-weight: 400;
+				color: rgba(255, 255, 255, 1);
+				border: 0;
+				line-height: 30px;
+    			text-align: center;
+			}
+			
+			.body-model>.right-content>.announcements {
+				padding-top:16px;
+			}
+			
+			.body-model>.right-content>.announcements>.title-model>a {
+				width: 27px;
+				font-size: 13px;
+				line-height: 24px;
+				font-weight: 400;
+				color: rgba(153, 153, 153, 1);
+			}
+			
+			.body-content>.right-content.picture-list>div {
+				padding: 10px;
+			}
+			
+			.body-content>.right-content.picture-list>div:last-child {
+				margin-top: 20px;
+			}
+			
+			.body-content>.right-content.picture-list>div img {
+				width: 340px;
+				height: 138px;
+			}
+			
+			.body-content.ms-relative>.right-content.ms-absolute {
+				top: 0;
+				right: 0;
+			}
+			
+			.right-content .news-list-model>li >a{
+				width:230px;
+			}
+			.right-content .news-list-model>li >a.right{
+				width:262px;
+			}
+			/*内容尾部样式*/
+			.content-footer{
+				background: #FFFFFF;
+				margin-bottom:40px;
+			}
+			.content-footer>.title-model{
+				margin-top:20px;
+			}
+			.content-footer>.title-model>h5{
+				padding-left: 20px;
+			}
+			.content-footer>.title-model>a {
+				width: 31px;
+				padding-right: 20px;
+			}
+			
+			.content-footer>ul {
+				height: 205px;
+				margin-top: 15px;
+				padding: 0 20px;
+			}
+			
+			.content-footer>ul>li {
+				display: inline;
+				margin-right: 19px;
+				float: left;
+			}
+			
+			.content-footer>ul>li:last-child {
+				margin-right: 0px;
+			}
+			
+			.content-footer>ul>li>a>img {
+				width: 216px;
+				height: 145px;
+			}
+			/*内容尾部样式End*/
+			/*主体内容样式End*/
+</style>
+		
+<style type="text/css">
+/* 本例子css */
+.slideBox {
+	width: 330px;
+	height: 273px;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #ddd;
+}
+
+.slideBox .hd {
+	width: 100%;
+	height: 30px;
+	background:rgba(92,92,92,0.6);
+	overflow: hidden;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+}
+
+.slideBox .hd ul {
+	overflow: hidden;
+	zoom: 1;
+	right: 0;
+    bottom: calc(50% - 5px);
+}
+
+.slideBox .hd ul li {
+	float: left;
+	margin-right: 9px;
+	width: 8px;
+	height: 8px;
+	line-height: 14px;
+	text-align: center;
+	background: #fff;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.slideBox .hd ul li.on {
+	width: 16px;
+	border-radius: 4px;
+}
+
+.slideBox .bd {
+	position: relative;
+	height: 100%;
+	z-index: 0;
+}
+
+.slideBox .bd li {
+	zoom: 1;
+	vertical-align: middle;
+}
+
+.slideBox .bd img {
+	object-fit: cover;
+	width: 330px;
+	height: 273px;
+	display: block;
+}
+.isLogin{
+	color:green;
+	display: inline-flex;
+}
+.red{
+	color:red;
+}
+.hand {cursor:pointer}
+</style>
+
+	</head>
+
+	<body class="backgroud-block">
+		<#include "include/head.htm">
+			<!--内容主体-->
+			<div class="body-model body-content margin-center">
+				<div class="left-content">
+					<div class="ms-title title-model">
+						<h5>廉政教育</h5>
+						<a href="{ms:global.url/}/181/index.html" target="_blank">更多</a>
+					</div>
+			<div class="ms-news">
+				<div class="slideBox">
+					<div class="hd">
+						<ul class="ms-absolute list-style-none">
+							{ms:arclist typeid=211 size=5 flag=f}
+							<li index-num="[field.index/]"></li>
+							{/ms:arclist}
+						</ul>
+					</div>
+					<div class="bd"> 
+						<ul class="list-style-none">
+							{ms:arclist typeid=211  size=5 flag=f}
+							<li>
+								<a href="{ms:global.url/}[field.link/]" target="_blank">
+									<img src="{ms:global.host/}/[field.litpic/]" />
+								</a>
+							</li>
+							{/ms:arclist}
+																			
+						</ul>
+					</div>
+				</div>
+				<div>
+					<h5 class="ms-text-ellipsis">
+						{ms:arclist typeid=181 size=1 flag=c titlelen=45}
+						 <a href="{ms:global.url/}[field.link/]" target="_blank">[field.title/] </a>
+						{/ms:arclist}
+					</h5>
+					<ul class="new-all">
+						{ms:arclist typeid=181 size=8}
+						<li><a href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]
+						</a> <span>[field.date?string("MM-dd")/]</span></li> {/ms:arclist}
+					</ul>
+				</div>
+			</div>
+		</div>
+				<div class="right-content" id="indexForm">
+					<div id="login-form">
+						<form  v-if="isLogin">
+							<input type="text" name="account" value="" v-model="form.managerName" placeholder="账号">
+							<input v-model="form.managerPassword" type="password" name="password" value="" placeholder="密码">
+							<span @click="login" class="hand">登录</span>
+						</form>
+						<p v-if="!isLogin" style="line-height: 20px;">
+							<span style="padding-right: 47px;">亲爱的：<a href="{ms:global.host/}/ms/index.do" class="isLogin" target="_blank">{{userName}}</a></span><span>欢迎回来</span><br/>
+							<span style="padding-right: 114px;"><a href="{ms:global.host/}/ms/message/index.do?messageType=2&modelId=366&modelCode=366&modelTitle=待办事项" class="isLogin" target="_blank">待办事项</a></span><a href="javascript:void(0);" class="red" @click="loginOut">[退出系统]</a>
+						</p>
+					</div>
+					<div class="announcements">
+						<div class="title-model">
+							<h5>通知公告</h5>
+							<a href="{ms:global.url/}/211/index.html" target="_blank">更多</a>
+						</div>
+						<ul class="list-style-none news-list-model new-all">
+							{ms:arclist typeid=211	 size=7}
+							<li>
+								<a class="right" href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]</a> <span>[field.date?string("MM-dd")/]</span>
+							</li>
+							{/ms:arclist}
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="body-model ms-relative body-content margin-center">
+				<div class="left-content">
+					<div class="news-content-model">
+					 	{ms:arclist typeid=185 size=1 flag=c titlelen=15}
+						<div class="title-model">
+							<h5>责任纪实</h5>
+							<a href="{ms:global.url/}/185/index.html" target="_blank">更多</a>
+						</div>
+						<div class="graphics">
+							<img src="{ms:global.host/}/[field.litpic/]" alt="">
+							<div>
+								<span class="title ms-text-ellipsis">[field.title/]</span>
+								<div class="content">
+									<label>[field.descrip/]</label>
+									<a href="{ms:global.url/}[field.link/]" target="_blank">详情>></a>
+								</div>
+								
+							</div>
+						</div>
+						{/ms:arclist}
+						<ul class="list-style-none news-list-model new-all">
+							{ms:arclist typeid=185 size=5}
+							<li>
+								<a href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]</a>
+								<span>[field.date?string("MM-dd")/]</span>
+							</li>
+							{/ms:arclist}
+						</ul>
+					</div>
+					<div class="news-content-model">
+					
+						<div class="title-model">
+							<h5>风险防控</h5>
+							<a href="{ms:global.url/}/195/index.html" target="_blank">更多</a>
+						</div>
+						<div class="graphics">
+						{ms:arclist typeid=195 size=1 flag=c titlelen=15}
+							<img src="{ms:global.host/}/[field.litpic/]" alt="">
+							<div>
+								<span class="title ms-text-ellipsis">[field.title/]</span>
+								<div class="content">
+									<label>[field.descrip/]</label>
+									<a href="{ms:global.url/}[field.link/]" target="_blank">详情>></a>
+								</div>
+							</div>
+						{/ms:arclist}	
+						</div>
+						<ul class="list-style-none news-list-model new-all">
+							{ms:arclist typeid=195 size=5}
+							<li>
+								<a href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]</a><span>[field.date?string("MM-dd")/]</span></li>
+							{/ms:arclist}
+						</ul>
+					</div>
+				</div>
+				<div class="right-content ms-absolute picture-list">
+					<div><img src="{ms:global.host/}/{ms:global.style/}/images/justice.png" alt="一身正气"></div>
+					<div><a name="lettersVisits" href="{ms:global.host/}/yancao/lettersVisits/index.do?type=save" target="_blank"><img src="{ms:global.host/}/{ms:global.style/}/images/complaint-reporting.png" alt="信访入口"></a></div>
+				</div>
+			</div>
+			<div class="body-model body-content margin-center">
+				<div class="left-content">
+					<div class="news-content-model">
+						<div class="title-model">
+							<h5>监督责任</h5>
+							<a href="{ms:global.url/}/207/index.html" target="_blank">更多</a>
+						</div>
+						<div class="graphics">
+						{ms:arclist typeid=207 size=1 flag=c titlelen=15}
+							<img src="{ms:global.host/}/[field.litpic/]" alt="">
+							<div>
+								<span class="title ms-text-ellipsis">[field.title/]</span>
+								<div class="content">
+									<label>[field.descrip/]</label>
+									<a href="{ms:global.url/}[field.link/]" target="_blank">详情>></a>
+								</div>
+							</div>
+						{/ms:arclist}	
+						</div>
+						<ul class="list-style-none news-list-model new-all">
+							{ms:arclist typeid=207 size=5}
+							<li>
+								<a href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]</a>
+								<span>[field.date?string("MM-dd")/]</span>
+							</li>
+							{/ms:arclist}
+						</ul>
+					</div>
+					<div class="news-content-model">
+						<div class="title-model">
+							<h5>纪检报表</h5>
+							<a href="{ms:global.url/}/189/index.html" target="_blank">更多</a>
+						</div>
+						<div class="graphics">
+						{ms:arclist typeid=189 size=1 titlelen=15}
+							<img src="{ms:global.host/}/{ms:global.style/}/images/meeting.png" alt="">
+							<div>
+								<span class="title ms-text-ellipsis">[field.title/]</span>
+								<div class="content">
+									<a href="{ms:global.url/}[field.link/]" target="_blank">详情>></a>
+								</div>
+							</div>
+						{/ms:arclist}	
+						</div>
+						<ul class="list-style-none news-list-model new-all">
+							{ms:arclist typeid=189 size=5}
+							<li>
+								<a href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]</a>
+								<span>[field.date?string("MM-dd")/]</span>
+							</li>
+							{/ms:arclist}
+						</ul>
+					</div>
+				</div>
+				<div class="right-content">
+					<div class="news-content-model">
+						<div class="title-model">
+							<h5>廉政文化</h5>
+							<a href="{ms:global.url/}/182/index.html" target="_blank">更多</a>
+						</div>
+						<div class="graphics">
+						{ms:arclist typeid=182 size=1 flag=c titlelen=15}
+							<img src="{ms:global.host/}/[field.litpic/]" alt="">
+							<div>
+								<span class="title ms-text-ellipsis">[field.title/]</span>
+								<div class="content">
+									<label>[field.descrip/]</label>
+									<a href="{ms:global.url/}[field.link/]" target="_blank">详情>></a>
+								</div>
+							</div>
+						{/ms:arclist}	
+						</div>
+						<ul class="list-style-none news-list-model new-all">
+							{ms:arclist typeid=182 size=5}
+							<li>
+								<a class="right" href="{ms:global.url/}[field.link/]" target="_blank">[field.title/]</a>
+								<span>[field.date?string("MM-dd")/]</span>
+							</li>
+							{/ms:arclist}
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!--内容尾部-->
+			<div class="content-footer body-model body-content margin-center">
+				<div class="title-model">
+					<h5>潭烟风貌</h5>
+					<a href="{ms:global.url/}/212/index.html" target="_blank">更多</a>
+				</div>
+				<ul class="list-style-none">
+					{ms:arclist typeid=212 size=5}
+					<li><a href="{ms:global.url/}[field.link/]" target="_blank"><img src="{ms:global.host/}/[field.litpic/]" alt=""></a></li>
+					{/ms:arclist}
+				</ul>
+			</div>
+			<#include "include/footer.htm">
+	</body>
+
+</html>
+<script id="jsID" type="text/javascript">
+	jQuery(".slideBox").slide({mainCell:".bd ul",autoPlay:true});
+	var indexVue = new Vue({
+		el: '#indexForm',
+		data:{
+	        form: {
+	        	managerName : "",  //名称
+	        	managerPassword: "", //描述
+	        },
+	        isLogin:true,//是否显示表单
+	        userName:"",
+		},
+		methods:{ 
+		    //登录
+		    login: function() {
+		    	var that = this;
+		    	ms.http.post("{ms:global.host/}/checkYanCaoLogin.do",{
+					managerName:that.form.managerName,
+					managerPassword:that.form.managerPassword,
+				}).then(function(data){
+					if(data.result){
+						that.isLogin = false;
+						var man = $.parseJSON(data.resultMsg);
+						that.userName = man.managerNickName;
+						$("a[name='lettersVisits']").attr("href","{ms:global.host/}/ms/yancao/lettersVisits/form.do?type=save");
+                        location.reload();
+					}else{
+						alert("登录失败");
+					}
+				}).catch(function(err){
+					console.log(err);
+				});
+			},
+			//退出
+		    loginOut: function () {
+                var that = this;
+                ms.http.get("{ms:global.host/}/ms/loginOut.do","")
+                   .then(function(data) {
+					   location.reload();
+                   }, (err) => {
+						location.reload();
+                   })
+            },
+			//获取管理员信息
+			managerGet(){
+	        	var that = this;
+	        	ms.http.get("{ms:global.host/}/isLogin.do","").then(function(data){
+	        		if(data.result){
+	        			that.isLogin = false;
+	        			var man = $.parseJSON(data.resultMsg);
+	        			that.userName = man.managerNickName;
+	        			if(that.userName){
+							$("a[name='lettersVisits']").attr("href","{ms:global.host/}/ms/yancao/lettersVisits/form.do?type=save");
+						} else{
+							$("a[name='lettersVisits']").attr("href","{ms:global.host/}/yancao/lettersVisits/index.do?type=save");
+						}
+	        		}
+	            }).catch(function(err) {
+					$("a[name='lettersVisits']").attr("href","{ms:global.host/}/yancao/lettersVisits/index.do?type=save");
+	                console.log(err);
+	            });
+	        },
+		},
+		mounted(){
+			this.managerGet();
+		},
+	});
+</script>

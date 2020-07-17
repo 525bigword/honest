@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		{ms:channel type=parent}
+		<title>[field.typetitle/]</title>
+		{/ms:channel}
+		<link rel="stylesheet" type="text/css" href="{ms:global.host/}/{ms:global.style/}/css/app.css" />
+		<link rel="stylesheet" type="text/css" href="{ms:global.host/}/{ms:global.style/}/css/list-model.css" />
+		<!--网络请求框架-->
+	    <script src="{ms:global.host/}/static/plugins/axios/0.18.0/axios.min.js"></script>
+	    <script src="{ms:global.host/}/static/plugins/qs/6.6.0/qs.min.js"></script>
+		<!--铭飞-->
+	    <script src="{ms:global.host/}/static/plugins/ms/1.0.0/ms.js"></script>
+	    <script src="{ms:global.host/}/static/plugins/ms/1.0.0/ms.http.js"></script>
+	    <script src="{ms:global.host/}/static/plugins/ms/1.0.0/ms.util.js"></script>
+		<!--jq引用-->
+    	<script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+		<style type="text/css">
+			.ms-menue-content-model >div:last-child >div:first-child{
+				text-align: center;				
+			}
+			.ms-menue-content-model >div:last-child >div:first-child > div:first-child{
+				padding-top: 30px;
+				padding-bottom: 19px;
+				height: 17px;
+    			line-height: 15px;
+			}
+			.ms-menue-content-model >div:last-child >div:first-child > div:last-child{
+				padding-bottom: 15px;
+			}
+			.ms-menue-content-model >div:last-child >div:nth-child(2){
+				border-bottom: 1px solid rgba(238,238,238,1);
+			}
+			/*文章标题样式*/
+			.ms-menue-content-model >div:last-child >div:first-child > div:first-child > label{
+				font-size:18px;
+				font-weight:bold;
+				color:rgba(51,51,51,1);
+			}
+			/*文章简要信息样式*/
+			.ms-menue-content-model >div:last-child >div:first-child > div:last-child {
+				font-weight:400;
+				color:rgba(153,153,153,1);
+				height: 13px;
+    			line-height: 13px;
+			}
+			.ms-menue-content-model >.content-list>div:nth-child(2){
+				margin:25px 32px 0;
+				padding-bottom: 25px;
+			}
+			.ms-menue-content-model >.content-list>div:nth-child(2)> p{
+				width: 100%;
+    			word-break: break-all;
+			}
+			.ms-menue-content-model >.content-list>div:last-child{
+				padding: 23px 41px 25px;
+			}
+		</style>
+	</head>
+
+	<body>
+	<#include "include/head.htm">
+		<div class="margin-center ms-menue-content-model">
+			<div class="menue-list">
+					<ul class="list-style-none">
+						{ms:channel type=parent}
+						<li class="ms-relative">
+							<!--圆形-->
+							<div class="shape-circular ms-absolute">
+								<img src="{ms:global.host/}/{ms:global.style/}/images/箭头@2x.png" />
+							</div>
+							<span><label>[field.typetitle/]</label></span>
+							<ul class="list-style-none">
+								{ms:channel type=sonOrLevel class=active-span-title}
+								<li>
+									<span class="[field.class/]"><label><a href="{ms:global.url/}[field.typelink/]" >[field.typetitle/]</a></label></span>
+								</li>
+								{/ms:channel}
+							</ul>
+						</li>
+						{/ms:channel}
+						</ul>
+				</div>
+			<div></div>
+			<div class="content-list">
+				<div></div>
+				<div></div>
+				<div>
+			        <span class="ms-right"><a href="{ms:global.host/}/html/1/index.html">返回首页</a></span>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+					/*请求成功时调用 
+						getData: 返回的数据	
+					*/
+					function insertContent(getData){
+							var htmlContent = "";	//插入的列表内容
+							
+							var title = getData.dsTitle;		//标题
+							var time = getData.createDate;		//时间
+							
+							var content = getData.dsContent;		//内容
+							htmlContent += '<div><label>'+title+'</label></div><div>&nbsp;&nbsp;&nbsp;<span>时间：<label>'+time+'</label></span>&nbsp;&nbsp;&nbsp;'+
+							'<span>责任监督类型:<label>'+getData.dsType+'</label></span></div>';	//文章标题等信息
+							$(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
+							$(".content-list").children("div").eq(1).html(content);			//添加文章内容
+					}
+				
+					/*请求失败时调用 */
+					function insertError(){
+						$(".content-list").html("<center style='margin-top: 140px;'>暂无数据内容，请添加！</center>");
+					}
+					var id = ms.util.getParameter("id");
+				 	var URL = "{ms:global.host/}/yancao/dutySupervise/get.do?id="+id;
+					var getData = [];	//请求返回的数据
+						$.ajax({
+							async: true,
+							url: URL,
+							type: "get",
+							data: [],
+							success: function(data) {
+								insertContent(data);
+							},
+							error: function(data) {
+								insertError();
+							}
+						});
+		</script>
+	<#include "include/footer.htm">
+	</body>
+</html>
