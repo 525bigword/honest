@@ -62,6 +62,7 @@ public class EntityResponsibilityAction {
     }
     /*提交审核*/
     @RequestMapping("subaudit")
+    @RequiresPermissions("entityresponsibility:add")
     public ResponseResult subaudit(Integer id){
         entityResponsibilityService.subaudit(id);
         ResponseResult result=new ResponseResult();
@@ -70,6 +71,7 @@ public class EntityResponsibilityAction {
     }
     /*审核通过*/
     @RequestMapping("passaudit")
+    @RequiresPermissions("entityresponsibility:audit")
     public ResponseResult passaudit(EntityResponsibility entityResponsibility){
         entityResponsibilityService.passaudit(entityResponsibility);
         ResponseResult result=new ResponseResult();
