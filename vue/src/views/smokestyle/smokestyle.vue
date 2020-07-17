@@ -308,6 +308,7 @@
         this.$set(this.userInfo,'smocreatetime',row.smocreatetime)
       },//删除
       del(){
+
         var data = this.$refs.multipleTable.selection;
         console.log("11"+data)
         if(JSON.stringify(data)=='[]'){
@@ -317,22 +318,36 @@
             type: 'success',
             duration: 2000
           })
+
         }
         else {
-          let postData = qs.stringify({
-            test:JSON.stringify(data)
-          });
+          this.$confirm('是否确认删除此记录?', '温馨提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            let postData = qs.stringify({
+              test:JSON.stringify(data)
+            });
 
           console.debug('选中行数据'+JSON.stringify(data))
           delSmokestyle(postData).then((response) =>{
             this.initList();
-            this.$notify({
-              title: '成功',
-              message: response.message,
-              type: 'success',
-              duration: 2000
-            })
+          this.$notify({
+            title: '成功',
+            message: response.message,
+            type: 'success',
+            duration: 2000
           })
+        })
+          }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+          this.initList()
+        });
+
         }
       },//更新
       gxMethod(){

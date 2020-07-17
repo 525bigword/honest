@@ -3,6 +3,7 @@ package com.xr.run.service.daily;
 import com.xr.run.entity.daily.DeptUnit;
 import com.xr.run.entity.daily.LetterReport;
 
+import java.util.Date;
 import java.util.List;
 
 public interface LetterReportService {
@@ -22,7 +23,7 @@ public interface LetterReportService {
     /*用户提交审核*/
     public void tjshme(Integer lid);
     /*转办部门*/
-    public void turndept(Integer lid,Integer lmid);
+    public void turndept(Integer lid, Integer lmid, String lSupervisionComments, Date lSupervisionCommentsTime);
     /*监察科自办结果*/
     public void kezhangbc(LetterReport letterReport);
     /*转办部门处理结果*/

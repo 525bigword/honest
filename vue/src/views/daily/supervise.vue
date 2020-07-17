@@ -83,7 +83,7 @@
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
           <br/>
           <div align="right" ><el-form-item >
-            <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')||this.hasPerm('supervise:update')" align="right" v-bind:style="{display:tj}" @click="tjshme">提交审核</el-button>
+            <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')||this.hasPerm('supervise:update')" align="right" v-bind:style="{display:tj}" @click="tjshme('ruleForm')">提交审核</el-button>
             <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:add')" align="right" @click="submitUser('ruleForm')" v-bind:style="{display:bc}">保存</el-button>
             <el-button type="primary" class="el-icon-edit" v-if="this.hasPerm('supervise:update')" align="right" @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
             <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
@@ -111,10 +111,10 @@
                          :props="props"
                          :options="options_cascader"
                          :expandTrigger="'hover'"
-                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px"></el-cascader>
+                         clearable v-model="userInfo.sundertakerDeptId" @change="handleItemChange"  style="width: 300px" :disabled="userInfo.sstatus!=0"></el-cascader>
           </el-form-item>
           <el-form-item label="承办人" prop="sundertaker">
-            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px">
+            <el-select v-model="userInfo.sundertaker" placeholder="请选择承办人" style="width: 300px" :disabled="userInfo.sstatus!=0">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -124,10 +124,10 @@
             </el-select>
           </el-form-item><br/>
           <el-form-item label="事项摘要" prop="spaperItems">
-            <el-input v-model="userInfo.spaperItems" placeholder="请输入事项摘要" style="width: 300px"></el-input>
+            <el-input v-model="userInfo.spaperItems" placeholder="请输入事项摘要" style="width: 300px" :disabled="userInfo.sstatus!=0"></el-input>
           </el-form-item>
           <el-form-item label="耗资" prop="scost">
-            <el-input v-model="userInfo.scost" placeholder="请输入耗资" style="width: 300px" type="Number"></el-input>
+            <el-input v-model="userInfo.scost" placeholder="请输入耗资" style="width: 300px" type="Number" :disabled="userInfo.sstatus!=0"></el-input>
           </el-form-item><br/>
 
           <div>
@@ -374,21 +374,43 @@
         //   this.$set(this.userInfo,'sCreateTime',row.sCreateTime)
         //  this.userInfo.lCreateName=row.eid[0].name
       },
-      tjshme(){
-        let postData = qs.stringify({
-          sid:this.userInfo.sid,
-        });
-        tjshme(postData).then((response)=>{
-          this.initList();
-          this.tf=''//父页面隐藏
-          this.ad='none'
-          this.$notify({
-            title: '成功',
-            message: response.message,
-            type: 'success',
-            duration: 2000
+      tjshme(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let posdata=qs.stringify({
+              url:this.userInfo.url,
+              sid:this.userInfo.sid,
+              sPaperItems:this.userInfo.spaperItems,
+              sEnforcementMode:this.userInfo.senforcementMode,//this.$refs.text.value,
+              sAccessory:this.userInfo.saccessory,
+              sCost:this.userInfo.scost,
+              sUndertaker:this.userInfo.sundertaker,
+              sUndertakerDeptId:this.userInfo.sundertakerDeptId[this.userInfo.sundertakerDeptId.length-1],
+              punit:this.userInfo.sundertakerDeptId.toString()
+            })
+            gxme(posdata).then((response)=>{
+              let postData = qs.stringify({
+                sid:this.userInfo.sid,
+              });
+            tjshme(postData).then((response)=>{
+              this.initList();
+            this.tf=''//父页面隐藏
+            this.ad='none'
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
+            })
           })
-        })
+
+          })
+          } else {
+            console.log('error submit!!');
+        return false;
+      }
+      });
+
 
       },//更新数据
       gxmethod(formName){
@@ -444,7 +466,12 @@
           })
         }
         else {
-          var ids = data.map(item => { return { sstatus: item.sstatus } })
+          this.$confirm('请确认是否删除?', '温馨提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            var ids = data.map(item => { return { sstatus: item.sstatus } })
           var ids1 =true
           for(var i = 0; i < ids.length; i++) {
             console.log('ids[i].sstatus'+ids[i].sstatus)
@@ -461,6 +488,7 @@
               type: 'warning',
               duration: 2000
             })
+            this.initList()
           }else {
             let postData = qs.stringify({
               test:JSON.stringify(data)
@@ -469,14 +497,22 @@
             console.debug('选中行数据'+JSON.stringify(data))
             dele(postData).then((response) =>{
               this.initList();
-              this.$notify({
-                title: '成功',
-                message: response.message,
-                type: 'success',
-                duration: 2000
-              })
+            this.$notify({
+              title: '成功',
+              message: response.message,
+              type: 'success',
+              duration: 2000
             })
-          }}
+          })
+          }
+        }).catch(() => {
+            this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+            this.initList()
+        });
+      }
       },
       add(){
         this.dialogTitle='增加'
