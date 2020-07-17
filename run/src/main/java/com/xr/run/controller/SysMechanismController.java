@@ -37,7 +37,7 @@ public class SysMechanismController {
     }
 
     @GetMapping("get")
-    @RequiresPermissions(value ={"mechanism:list","mechanism:add","mechanism:update","staff:update","staff:add","staff:list","ppost:add","ppost:update","ppost:list"},logical = Logical.OR)
+    @RequiresPermissions(value ={"postRiskCombing:list","postRiskCombing:update","postRiskCombing:add","mechanism:list","mechanism:add","mechanism:update","staff:update","staff:add","staff:list","ppost:add","ppost:update","ppost:list"},logical = Logical.OR)
     public JSONObject getSysmechanismAll() {
         List<SysMechanism> sysMechanismAll = sysMechanismService.findSysMechanismAll();
         return CommonUtil.successJson(sysMechanismAll);

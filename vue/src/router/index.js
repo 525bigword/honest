@@ -145,13 +145,13 @@ export const asyncRouterMap = [
             component: _import('risk/processRick'),
             meta: { title: '流程风险梳理', icon: 'user' },
             menu: 'processRick'
-        }, {
+        }/*, {
             path: 'riskPointAssessment',
             name: '风险指数评定',
             component: _import('risk/riskpointassessment'),
             meta: { title: '风险指数评定', icon: 'user' },
             menu: 'riskpointassessment'
-        }]
+        }*/]
     }, {
         path: '/evaluate',
         component: Layout,

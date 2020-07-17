@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /honest
-  port: 8080
+  port: 8081
   max-http-header-size: 102400000000
 logging:
   level:
@@ -30,7 +30,7 @@ spring:
     username: root
     password: 123456
     #url: jdbc:mysql://139.129.118.147:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    url: jdbc:mysql://139.129.118.147 :3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     initialSize: 5
@@ -55,14 +55,14 @@ mybatis-plus:
 file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
-  #uploadFolder: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/tmp/
-  uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
-  #uploadDuty: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/duty/
-  uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
-  #uploadImage: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
-  uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
-  #uploadVideo: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/vido
-  uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
+  uploadFolder: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/tmp/
+  #uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
+  uploadDuty: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/duty/
+  #uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
+  uploadImage: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
+  #uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
+  uploadVideo: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/vido
+  #uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
   accessPaths: /upload
   staticAccessPaths: /upload/**
   uploadFolders: D:/IDE/tomcat/apache-tomcat-8.5/webapps/hoonest/img/
