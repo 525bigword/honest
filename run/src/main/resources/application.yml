@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /honest
-  port: 8082
+  port: 8080
   max-http-header-size: 102400000000
 logging:
   level:

@@ -1033,6 +1033,20 @@ export default {
           type: "warning"
         });
       } else {
+        let r=0;
+        this.multipleSelection.filter(row => {
+          console.debug(row)
+          if(row.status!==6&&row.status!==0&&row.status!==1)
+            r=1
+          });
+          if(r===1){
+            this.$message({
+          showClose: true,
+          message: '不能含有非刚创建、未通报或未结束的通知',
+          type: 'warning'
+        });
+        return;
+          }
         if (this.multipleSelection.length == 1) {
           title = this.multipleSelection[0].dutyTitle;
           this.deleteid.push(this.multipleSelection[0].did);
