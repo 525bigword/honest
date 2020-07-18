@@ -12,6 +12,7 @@ package com.xr.run.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xr.run.RunApplication;
 import com.xr.run.dao.*;
 import com.xr.run.dao.tam.SmokestyleMapper;
 import com.xr.run.entity.*;
@@ -25,9 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.*;
@@ -364,13 +368,15 @@ public class HomePageSeviceImpl implements HomePageSevice {
         createIndexHtml(destPath + "/181/3/", "181/indexIn", "index.html", map3);
     }
 
+
+
     public void loading() {
+
         Map<String, Object> map = new HashMap<>();
         //TODO 责任监督
         loadDuty(map);
         //责任监督更多
         getMoreDuty();
-
         //TODO 责任纪实
         loadRdWork(map);
         //责任纪实更多

@@ -22,6 +22,10 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -33,6 +37,15 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @SpringBootTest
 public class Test {
+    @Autowired
+    private HttpServletRequest request;
+//    @org.junit.jupiter.api.Test
+//    public void a(){
+//        String uri= request.getRealPath("run");
+//        System.out.println(uri);
+////        uri=uri.substring(0,uri.length()-10);
+//        System.out.println(uri);
+//    }
     /**
      * 产生盐值
      * @return
