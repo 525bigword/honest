@@ -24,13 +24,16 @@ public class RunApplication {
         SpringApplication.run(RunApplication.class, args);
     }
 
-//    private void configureThymeleafStaticVars(ThymeleafViewResolver viewResolver){
-//        if(viewResolver!=null){
-//            Map<String,Object> vars=new HashMap<>();
-//            vars.put("html",environment.getProperty("html"));
-//            viewResolver.setStaticVariables(vars);
-//        }
-//    }
+    @Resource
+    private void configureThymeleafStaticVars(ThymeleafViewResolver viewResolver){
+        if(viewResolver!=null){
+            Map<String,Object> vars=new HashMap<>();
+            vars.put("html",environment.getProperty("html"));
+            vars.put("skiphttml",environment.getProperty("skiphtml"));
+            vars.put("visitbackstage",environment.getProperty("visitbackstage"));
+            viewResolver.setStaticVariables(vars);
+        }
+    }
 
 //    @Override
 //    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
