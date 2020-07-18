@@ -89,6 +89,7 @@ public class ProcessRickController {
     }
 
     @RequestMapping("findBy")
+    @RequiresPermissions("processRick:list")
     public ResponseResult findBy(String proName, String proYear,String proGrade) {
         if(proYear!=null){
             proYear=proYear.substring(0,4);

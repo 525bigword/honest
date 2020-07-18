@@ -31,4 +31,13 @@ public class PostRiskCombingSQL {
         sql.append(" order by pc.pid desc");
         return sql.toString();
     }
+
+    public String list(){
+        StringBuffer sql = new StringBuffer();
+        sql.append("select pc.pid,pRiskId,pYear,pDeptId,pInfomationId," +
+                "pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue" +
+                ",pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname from postriskcombing pc LEFT JOIN sys_mechanism m on pc.pDeptId=m.mid LEFT JOIN  sys_post p on pc.pInfomationId=p.pid" +
+                " where pStatus=1 order by pc.pid desc");
+        return sql.toString();
+    }
 }

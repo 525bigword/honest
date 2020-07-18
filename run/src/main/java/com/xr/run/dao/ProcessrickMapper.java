@@ -45,7 +45,6 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
             " values(0,null,#{proName},#{proYear},#{proAccessory}," +
             "#{proAccessoryName},#{proInfomation},#{proMeasures},#{proGrade}," +
             "now(),#{proCreateId},#{proCreateName},1)")
-
     void addProcessrick(Processrick processrick);
 
     /**
