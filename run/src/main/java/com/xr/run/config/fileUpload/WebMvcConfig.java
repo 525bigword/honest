@@ -18,9 +18,11 @@ public class WebMvcConfig implements WebMvcConfigurer{
     private String uploadDuty;
     @Value("${file.uploadImage}")
     private String uploadImage;
+    @Value("${file.uploadVideo}")
+    private String uploadVideo;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + uploadFolder).addResourceLocations("file:"+uploadDuty).addResourceLocations("file:"+uploadImage);
+        registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + uploadFolder).addResourceLocations("file:"+uploadDuty).addResourceLocations("file:"+uploadImage).addResourceLocations("file:"+uploadVideo);
     }
 
 

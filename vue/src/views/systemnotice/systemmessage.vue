@@ -446,7 +446,7 @@ export default {
       this.checkList=this.temp.attribute.split(",")
       this.temp.createTime = row.createTime;
       if(row.picture!==''&&row.picture!==null){
-        this.fileList = [{ name: row.picturename, url:this.virtualimgIp+row.picture }];
+        this.fileList = [{ name: row.picturename, url:this.virtualIp+row.picture }];
       }else{
           this.fileList=[]
       }

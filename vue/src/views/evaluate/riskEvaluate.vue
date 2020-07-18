@@ -31,7 +31,7 @@
       </div>
     </el-form>
     <hr>
-    <div style="align-content: center; width: 100%;height: 700px;background:#fff;" id="echartss"></div>
+    <div style="background-color:darkolivegreen;align-content: center; width: 100%;height: 700px;background:#fff;" id="echartss"></div>
   </div>
 </template>
 <script>
@@ -113,7 +113,7 @@
           this.num1 = response.num1
           this.num2 = response.num2
           this.num3 = response.num3
-          //console.log(this.num1+ "    " +this.num2+"  "+this.num3)
+          console.log(this.num1+ "    " +this.num2+"  "+this.num3)
           /* if(this.search.pDeptId!=undefined){
              for(var i=0;i<this.bm.length;i++){
                if(this.search.pDeptId===this.bm[i].mid){
@@ -135,13 +135,15 @@
           this.getPostByMid(response.list);
         });*/
         let that = this;
-        setTimeout(that.test2, "1000");
+        setTimeout(that.test2, 1000);
       },
       // 重置表单数据
       resetTemp() {
         this.search.pDeptId=undefined
       },
       test2() {
+        console.log("test2:"+this.num1+ "    " +this.num2+"  "+this.num3)
+
         let objData = [
           {value: this.num1, name: "一级风险"},
           { value: this.num2, name: "二级风险" },
@@ -228,7 +230,7 @@
               name: "访问来源",
               type: "pie",
               radius: "55%",
-              center: ["50%", "45%"],
+              center: ["center", "45%"],
               data: [],
               label: {
                 normal: {

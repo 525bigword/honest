@@ -117,6 +117,8 @@ public class PostRiskCombingController {
         }else{
             // 统计风险等级数量
             postRiskCombing.setPDeptId(postriskcombingOld.getPDeptId());
+            System.out.println("修改统计表时postriskcombingOld的pdeptid:"+postriskcombingOld.getPDeptId());
+            System.out.println("修改统计表时pdeptid:"+postRiskCombing.getPDeptId());
             postRiskCombing.setPGrade("一级风险");
             Integer num1 = postRiskCombingService.findByGrade(postRiskCombing);
             postRiskCombing.setPGrade("二级风险");
@@ -138,7 +140,7 @@ public class PostRiskCombingController {
     }
 
     @RequestMapping("delete")
-    //@RequiresPermissions("postRiskCombing:delete") //访问权限
+    @PostMapping("postRiskCombing:delete")
     public ResponseResult deleteById(String pcid){
         List<String> resultID= Arrays.asList(pcid.split(","));
         List<Integer> list=new ArrayList<>();
@@ -190,6 +192,7 @@ public class PostRiskCombingController {
 
 
     @RequestMapping("findBy")
+    @RequiresPermissions("postRiskCombing:list")
     public ResponseResult findBy( String pinfomationid,String pdeptid, String pgrade,Integer pageNum, Integer pageSize) {
         System.out.println(pinfomationid+"  "+pdeptid+"  ");
         ResponseResult responseResult = new ResponseResult();
@@ -223,9 +226,9 @@ public class PostRiskCombingController {
     }
 
     @RequestMapping("getAllMechanismByParent")
-    public ResponseResult getAllMechanismByParent(String parent) {
+    public ResponseResult getAllMechanismByParent(Integer parent) {
         ResponseResult responseResult = new ResponseResult();
-        List<SysMechanism> list = sysMechanismService.findSysMechanismByParentAll(Integer.parseInt(parent));
+        List<SysMechanism> list = sysMechanismService.findSysMechanismByParentAll(parent);
         responseResult.getInfo().put("list", list);
         responseResult.getInfo().put("total", list.size());
         return responseResult;
@@ -233,10 +236,12 @@ public class PostRiskCombingController {
 
 
     @RequestMapping("getSysPostByMid")
+    @RequiresPermissions("postRiskCombing:list")
     public ResponseResult getSysPostByMid(String pdeptid) {
         if(pdeptid.contains("=")) {
             pdeptid = pdeptid.split("=")[1];
         }
+        System.out.println(pdeptid+"  pdeptid");
         ResponseResult responseResult = new ResponseResult();
         List<SysPost> list = sysPostService.getSysPostByMid(Integer.parseInt(pdeptid));
         responseResult.getInfo().put("list", list);
