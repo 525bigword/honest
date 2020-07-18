@@ -4,22 +4,21 @@
 <head>
 	<meta charset="UTF-8">
 	<title>潭烟风貌</title>
-	<link rel="stylesheet" type="text/css" href="../../static/css/app.css" />
-	<link rel="stylesheet" type="text/css" href="../../static/css/list-model.css" />
+	<link rel="stylesheet" type="text/css" th:href="#{html}+'/css/app.css'" />
+	<link rel="stylesheet" type="text/css" th:href="#{html}+'/css/list-model.css'" />
 	<!--网络请求框架-->	<!--jq引用-->
-
 	<script src="../../static/js/jquery-1.9.1.js"></script>
-	<script src="../../static/js/axios.min.js"></script>
-	<script src="../../static/js/qs.min.js"></script>
+	<script th:src="#{html}+'/js/axios.min.js'"></script>
+	<script th:src="#{html}+'/js/qs.min.js'"></script>
 	<!--铭飞-->
-	<script src="../../static/js/ms.js"></script>
-	<script src="../../static/js/ms.http.js"></script>
-	<script src="../../static/js/ms.util.js"></script>
+	<script th:src="#{html}+'/js/ms.js'"></script>
+	<script th:src="#{html}+'/js/ms.http.js'"></script>
+	<script th:src="#{html}+'/js/ms.util.js'"></script>
 	<!--jq引用-->
 	<!-- <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script> -->
-	<script type="text/javascript" src="../../static/js/jquery.min.js"></script>
+	<script type="text/javascript" src="#{html}+'/js/jquery.min.js'"></script>
 	<!--分页插件  -->
-	<script type="text/javascript" src="../../static/js/pageMe.js"></script>
+	<script type="text/javascript" src="#{html}+'/js/pageMe.js'"></script>
 	<style type="text/css">
 		.ms-menue-content-model p{
 			font-weight:500;
