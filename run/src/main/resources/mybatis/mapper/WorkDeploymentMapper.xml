@@ -19,12 +19,14 @@
         select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1
         <if test="mid != null and !mid.equals('')">
             and h.mid=#{mid}</if>
+        order by rwd.create_time desc
     </select>
     <!--按标题查询-->
     <select id="listBytitle" resultMap="baseMap" parameterType="com.xr.run.entity.duty.WorkDeployment">
         select rwd.id,rwd.title,rwd.content,rwd.create_time,rwd.staus,rwd.auditresult,h.name from rd_work_deployment rwd,Sys_Staff h where rwd.create_id=h.sid and rwd.staus!=-1 and rwd.title like CONCAT('%',#{title},'%')
         <if test="mid != null and !mid.equals('')">
             and h.mid=#{mid}</if>
+        order by rwd.create_time desc
     </select>
     <!--新增工作计划-->
     <insert id="addDeployment" parameterType="com.xr.run.entity.duty.WorkDeployment" useGeneratedKeys="true" keyProperty="id">

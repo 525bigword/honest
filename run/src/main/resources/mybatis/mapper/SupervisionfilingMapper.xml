@@ -6,19 +6,21 @@
         select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling where sStatus!=-1
         <if test="sStatus != null and !sStatus.equals('')">
             and sStatus=#{sStatus}</if>
-
+order by sCreateTime desc
     </select>
     <select id="findbytitle" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
         select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
         where sStatus!=-1 and   sPaperItems like CONCAT('%',#{sPaperItems},'%')
         <if test="sStatus != null and !sStatus.equals('')">
             and sStatus=#{sStatus}</if>
+        order by sCreateTime desc
     </select>
     <select id="findbysFilingId" resultType="com.xr.run.entity.daily.Supervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
         select sid,sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sAuditOpinion,sCreateTime,sCreateId,sCreateName,sStatus,url,auditorrole,punit from daily_supervisionFiling
         where sStatus!=-1 and   sFilingId like CONCAT('%',#{sFilingId},'%')
         <if test="sStatus != null and !sStatus.equals('')">
             and sStatus=#{sStatus}</if>
+        order by sCreateTime desc
     </select>
     <insert id="addsupervisionfiling" parameterType="com.xr.run.entity.daily.Supervisionfiling">
         insert into daily_supervisionFiling(sFilingId,sPaperItems,sAccessory,sEnforcementMode,sCost,sUndertaker,sUndertakerDeptId,sCreateTime,sCreateName,sCreateId,sStatus,url,punit)

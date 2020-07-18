@@ -50,10 +50,13 @@
         style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
-          prop="id"
           label="序号"
-          width="80">
-        </el-table-column>
+          width="80" type="index"></el-table-column>
+          <el-table-column
+            prop="id"
+            label="序号"
+            width="80" v-if="false">
+          </el-table-column>
         <el-table-column
           prop="reportType"
           label="报表类型"
@@ -124,10 +127,12 @@
               :on-preview="handlePreview"
               accept=".doc,.docx,.pdf,.txt,.xlsx"
               :http-request="modeUpload"
+              :before-upload="beforeAvatarUpload"
               :limit="1"
+              :on-exceed="handleExceed"
               :file-list="fileList">
               <el-button size="small" type="primary">上传文件</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传单个word,.doc,.docx,.pdf,.txt,.xlsx文件，且不超过50M</div>
+              <div slot="tip" class="el-upload__tip">只能上传单个word,.doc,.docx,.pdf,.txt,.xlsx文件，且不超过5M</div>
             </el-upload>
           </el-form-item><br/>
 
@@ -187,6 +192,17 @@
       this.initList()
     },
     methods:{
+      //限制文件大小
+      beforeAvatarUpload(file) {
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isLt5M) {
+          this.$message.error('上传文件大小不能超过 5MB!');
+        }
+        return isLt5M;
+      },//限制文件个数
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
       to(index,row){
         window.open(this.uploadimage+row.url)
       },
@@ -219,7 +235,8 @@
         }
         else if(val==='及时报'){
           this.placeholders='请选择重要时间'
-          this.options=[{id:1,name:'1点'},{id:2,name:'两点'},{id:3,name:'三点'},{id:4,name:'四点'},{id:5,name:'五点'}]
+          this.options=[{id:1,name:'1-2点'},{id:2,name:'2-3点'},{id:3,name:'3-4点'},{id:4,name:'4-5点'},{id:5,name:'5-6点'},{id:6,name:'6-7点'},{id:7,name:'7-8点'},{id:8,name:'8-9点'},{id:9,name:'9-10点'},{id:10,name:'10-11点'},{id:11,name:'11-12点'},{id:12,name:'12-13点'},
+            {id:13,name:'13-14点'},{id:14,name:'14-15点'},{id:15,name:'15-16点'},{id:16,name:'16-17点'},{id:17,name:'17-18点'},{id:18,name:'18-19点'},{id:19,name:'19-20点'},{id:20,name:'20-21点'},{id:21,name:'21-22点'},{id:22,name:'22-23点'},{id:23,name:'23-24点'},{id:24,name:'24-1点'}]
         }
       },
       //文件预览
