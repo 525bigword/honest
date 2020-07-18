@@ -38,7 +38,7 @@ public class LogAspect {
      * ..表示包及子包 该方法代表controller层的所有方法
      * TODO 路径需要根据自己项目定义
      */
-    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))&& !execution(* com.xr.run.controller.ThymeleafController.*(..))&&!execution(* com.xr.run.controller.frontPage.*.*(..)) ")
+    @Pointcut("execution(public * com.xr.run.controller.*.*(..)) && !execution(* com.xr.run.controller.SysStaffController.authLogin(..))&& !execution(* com.xr.run.controller.SysStaffController.getInfo(..))&& !execution(* com.xr.run.controller.IndexController.*(..))&& !execution(* com.xr.run.controller.ThymeleafController.*(..))&&!execution(* com.xr.run.controller.frontPage.*.*(..))&&!execution(* com.xr.run.controller.SysStaffController.auth(..)) ")
     public void controllerMethod() {
         log.info("切了");
     }

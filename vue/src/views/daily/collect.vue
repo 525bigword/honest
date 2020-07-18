@@ -27,9 +27,13 @@
         style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass'  v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
+         label="序号"
+         type="index"
+         width="180"></el-table-column>
+        <el-table-column
           prop="sid"
           label="序号"
-          width="180">
+          width="180" v-if="false">
         </el-table-column>
         <el-table-column
           prop="spaperItems"
@@ -105,8 +109,12 @@
               :on-preview="handlePreview"
               :on-change="handleChange"
               :http-request="modeUpload"
+              :before-upload="beforeAvatarUpload"
+              :limit="1"
+              :on-exceed="handleExceed"
               v-model="userInfo.saccessory"
-            ><el-button size="small" type="primary">上传</el-button></el-upload>
+            ><el-button size="small" type="primary">上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传单个word,.doc,.docx,.pdf,.txt,.xlsx文件，且不超过5M</div></el-upload>
           </el-form-item><br/>
 
           <el-form-item label="承办部门">
@@ -185,7 +193,17 @@
       this.userInfo.senforcementMode=''
       this.initList()
     },
-    methods:{
+    methods:{ //限制文件大小
+      beforeAvatarUpload(file) {
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isLt5M) {
+          this.$message.error('上传文件大小不能超过 5MB!');
+        }
+        return isLt5M;
+      },//限制文件个数
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
       handleItemChange(value){
 
         //点击选择时初始化谈话对象和记录人

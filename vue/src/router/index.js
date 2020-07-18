@@ -97,7 +97,7 @@ export const asyncRouterMap = [
     {
         path: '/duty',
         component: Layout,
-        redirect: '/duty/',
+        redirect: '/user/',
         name: '责任纪实',
         meta: { title: '责任纪实', icon: 'form' },
         children: [{

@@ -17,6 +17,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -119,6 +120,19 @@ public class SysStaffController {
         //创建首页
 //        homePageSevice.loading();
         return jsonObject;
+    }
+    /**
+     * 登录
+     */
+    @PostMapping("/login")
+    public String auth(@RequestParam String username, @RequestParam String password, HttpSession session) {
+//
+//        JSONObject jsonObject = sysStaffService.authLogin(requestJson);
+        System.out.println("username:"+username);
+        System.out.println("password:"+password);
+        //创建首页
+//        homePageSevice.loading();
+        return session.getId();
     }
 
     /**

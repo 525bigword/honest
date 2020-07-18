@@ -52,9 +52,14 @@
         style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
+          label="序号"
+          type="index"
+          width="80px"
+        ></el-table-column>
+        <el-table-column
           prop="id"
           label="序号"
-          width="80">
+          width="80" v-if="false">
         </el-table-column>
         <el-table-column
           prop="title"
@@ -137,10 +142,12 @@
               :on-preview="handlePreview"
               accept=".jpg,.gif,.png"
               :http-request="modeUpload"
+              :before-upload="beforeAvatarUpload"
               :limit="1"
+              :on-exceed="handleExceed"
               :file-list="fileList">
               <el-button size="small" type="primary">上传图片</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传单个图片，且不超过50M</div>
+              <div slot="tip" class="el-upload__tip">只能上传单个.jpg,.gif,.png图片，且不超过5M</div>
             </el-upload>
           </el-form-item>
           <br/>
@@ -176,7 +183,17 @@
     created() {
       this.initList()
     },
-    methods:{
+    methods:{   //限制文件大小
+      beforeAvatarUpload(file) {
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isLt5M) {
+          this.$message.error('上传图片大小不能超过 5MB!');
+        }
+        return isLt5M;
+      },//限制文件个数
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 1 张图片，本次选择了 ${files.length} 张图片，共选择了 ${files.length + fileList.length} 张图片`);
+      },
       //设置表格内容居中
       cellStyle({row, column, rowIndex, columnIndex}){
         return 'text-align:center';
