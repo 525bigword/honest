@@ -43,7 +43,7 @@ public class Upload {
     }
 
     @RequestMapping("/image")
-    public JSONObject importImage(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importImage(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, imagePth);
         return CommonUtil.successJson(filePath);
     }
