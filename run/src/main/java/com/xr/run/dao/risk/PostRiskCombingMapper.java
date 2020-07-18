@@ -21,11 +21,16 @@ public interface PostRiskCombingMapper {
      * @param page
      * @return
      */
-    @Select("SELECT pc.pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue," +
-            "        pCValue,pDValue,pGrade,pMeasures,pCreateTime,pCreateId,pCreateName,m.mechanism_name,p.pname" +
-            "        from postriskcombing pc LEFT JOIN sys_mechanism m on pc.pDeptId=m.mid LEFT JOIN  sys_post p on pc.pInfomationId=p.pid" +
-            "        where pStatus=1" +
-            "        order by pc.pid desc")
+    @SelectProvider(type = PostRiskCombingSQL.class,method = "list")
+    @Results({
+            @Result(column = "pDeptId",property = "deptName",one = @One(select = "getpDeptNameById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "pDeptId",property = "pDeptId"),
+            @Result(column = "pInfomationId",property = "postname",one = @One(select = "getpPostNameById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "pInfomationId",property = "pInfomationId"),
+            @Result(column = "pRiskPointDescription",property = "pRiskPointDescription"),
+            @Result(column = "pProbableLValue",property = "pProbableLValue"),
+
+    })
     public IPage<Postriskcombing> list(Page page);
     // 条件查询
     /**

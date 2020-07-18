@@ -152,6 +152,7 @@
           </div>
           <div style="background-color: white;margin-top: 25px;z-index:3;">
             <div style="height:20px"></div>
+            <h2 v-text="h1Text" align="center"></h2>
             <!--表单数据-->
             <el-input v-model="userInfo.pid" placeholder="编号" type="hidden"></el-input>
             <el-row style="margin-left:5%">
@@ -167,6 +168,7 @@
               <el-col :span="12" style="width:43%">
                 <el-form-item style="font-weight: bold;" label="执行年份" prop="pyear">
                   <el-date-picker
+                    :editable="false"
                     style="width: 350px"
                     v-model="userInfo.pyear"
                     type="year"
@@ -340,6 +342,7 @@ export default {
   },
   data() {
     return {
+      h1Text:'',
       dis: "inline-block",
       dis2: "none",
       iconFormVisible: false,
@@ -411,7 +414,7 @@ export default {
             trigger: ["change", "blur"]
           }
         ],
-        pRiskPointDescription: [
+        priskPointDescription: [
           {
             required: true,
             message: "风险点描述不能为空",
@@ -530,8 +533,8 @@ export default {
       },*/
     //动态计算风险值
     changValueRisk() {
-      console.log("this.userinfo----",this.userInfo)
-      console.log(this.userInfo.pprobableLValue.substring(1))
+      //console.log("this.userinfo----",this.userInfo)
+      //console.log(this.userInfo.pprobableLValue.substring(1))
       let lValue = this.userInfo.pprobableLValue.substring(
         this.userInfo.pprobableLValue.indexOf("(") + 1,
         this.userInfo.pprobableLValue.indexOf(")")
@@ -583,15 +586,11 @@ export default {
     },
     // 设置风险值的默认选中和默认值
     defaultSelect() {
-/*
-      this.userInfo.pprobablelvalue = this.lValue[0].lId;
-*/
-      this.userInfo.pprobablelvalue = "完全可能(10)";
-
+      this.userInfo.pprobableLValue = this.lValue[0].lId;
       this.userInfo.pcvalue = this.cValue[0].cId;
-      let lValue = this.userInfo.pprobablelvalue.substring(
-        this.userInfo.pprobablelvalue.indexOf("(") + 1,
-        this.userInfo.pprobablelvalue.indexOf(")")
+      let lValue = this.userInfo.pprobableLValue.substring(
+        this.userInfo.pprobableLValue.indexOf("(") + 1,
+        this.userInfo.pprobableLValue.indexOf(")")
       );
       let cValue = this.userInfo.pcvalue.substring(
         this.userInfo.pcvalue.indexOf("(") + 1,
@@ -657,6 +656,7 @@ export default {
     add() {
       this.$refs["dataForm"].clearValidate();
       this.dialogTitle = "添加岗位风险";
+      this.h1Text="添加岗位风险"
       //this.userInfo.pstatus = '正常'
       this.resetTemp();
       // 默认选中风险值
@@ -670,7 +670,7 @@ export default {
       this.resetTemp();
       this.dis = "inline-block";
       this.dis2 = "none";
-      this.onSearch()
+      this.initList()
     },
     // 弹窗确定
     submitUser() {
@@ -699,30 +699,33 @@ export default {
           if (valid) {
             add(postData).then(response => {
               this.iconFormVisible = false;
-              this.onSearch();
+              this.initList();
               this.$notify({
                 title: "成功",
                 message: response.message,
                 type: "success",
                 duration: 2000
               });
+              this.deselect()// 弹窗取消
             });
           }
         });
       }
       if (this.dialogTitle === "修改岗位风险") {
+        console.log("postData----"+this.userInfo.pDeptId)
         this.$refs["dataForm"].validate(valid => {
           // 表单校验通过
           if (valid) {
             update(postData).then(response => {
               this.iconFormVisible = false;
-              this.onSearch();
+              this.initList();
               this.$notify({
                 title: "成功",
                 message: response.message,
                 type: "success",
                 duration: 2000
               });
+              this.deselect()// 弹窗取消
             });
           }
         });
@@ -732,28 +735,22 @@ export default {
     handleUpdate(row) {
       // 将row里面与temp里属性相同的值，进行copy
       console.log("row",row)
-      this.userInfo = Object.assign({}, row); // copy obj
       this.userInfo.pProbableLValue=row.pprobableLValue
-      if (this.userInfo.pinfomationid === 0) {
-        this.userInfo.pinfomationid = "";
-      }
-      getSysPostByMid(row.pdeptid).then(response => {
+      //console.log("row.pdeptid:"+row.pdeptId)
+      getSysPostByMid(row.pdeptId).then(response => {
         this.postList3 = [];
         for (let sysPost of response.list) {
           this.postList3.push(sysPost);
         }
-        //console.log(this.postList2.length)
-        /*for(var i=0;i<this.postList2.length;i++){
-            if(this.userInfo.pinfomationid===this.postList2[i].pinfomationid) {
-              this.userInfo.pinfomationid = this.postList2[i].pinfomationid
-            }
-          }*/
-
-        /*if(this.userInfo.pinfomationid===0){
-            this.userInfo.pinfomationid=undefined
-          }*/
       });
+      //this.userInfo.pdeptid=row.pdeptId
+      /*if(row.pinfomationId===0){
+        this.userInfo.pinfomationId=''
+      }else {
+        this.userInfo.pinfomationId = row.pinfomationId
+      }*/
       this.dialogTitle = "修改岗位风险";
+      this.h1Text="修改岗位风险"
       this.iconFormVisible = true;
       this.$nextTick(() => {
         // 清除校验
@@ -761,6 +758,10 @@ export default {
       });
       this.dis = "none";
       this.dis2 = "inline-block";
+      this.userInfo = Object.assign({}, row);
+      if(row.pinfomationId===0){
+        this.userInfo.pinfomationId=undefined
+      }
     },
     // 多选框赋值
     changeFun(val) {
@@ -866,11 +867,21 @@ export default {
       let postData = qs.stringify({
         parent: val
       });
-      getAllMechanismByParent(postData).then(response => {
+      /*console.log("第一个下拉框选中部门val"+val)
+      console.log("第一个下拉框选中部门parent"+val)*/
+      /*getAllMechanismByParent(postData).then(response => {
         //console.log(response, "response.postData");
         this.postList2 = [];
         this.search.pinfomationid = undefined;
         this.getPostByMid(response.list);
+      });*/
+      this.postList2 = [];
+      this.search.pinfomationid = undefined;
+      getSysPostByMid(val).then(response => {
+        //console.log("response:", response);
+        for (let sysPost of response.list) {
+          this.postList2.push(sysPost);
+        }
       });
     },
     getPostByMid(list) {
@@ -891,15 +902,25 @@ export default {
       }
     },
     Change2(val) {
+      if(val===undefined)
+        return
       console.debug(val);
       this.userInfo.pdeptid = val;
       let postData = qs.stringify({
         parent: val
       });
-      getAllMechanismByParent(postData).then(response => {
+      //console.log("parent: val:"+ val)
+      /*getAllMechanismByParent(postData).then(response => {
         this.postList3 = [];
-        //this.userInfo.pinfomationId = undefined;
         this.getPostByMid2(response.list);
+      });*/
+      this.postList3 = [];
+      this.search.pinfomationid = undefined;
+      getSysPostByMid(val).then(response => {
+        //console.log("response:", response);
+        for (let sysPost of response.list) {
+          this.postList3.push(sysPost);
+        }
       });
     },
     getPostByMid2(list) {

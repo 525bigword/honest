@@ -13,6 +13,7 @@
           </el-form-item>
           <el-form-item label="年份">
             <el-date-picker
+              :editable="false"
               style="width: 200px"
               v-model="search.proYear"
               type="year"
@@ -54,10 +55,10 @@
           style="width: 100%" ref="multipleTable">
           <el-table-column type="selection" align="center" width="50px"></el-table-column>
           <el-table-column sortable label="序号"  type="index"  align="center" width="60px"></el-table-column>
-          <el-table-column width="120px"
+          <el-table-column width="100px"
                            align="center"
                            prop="proYear"
-                           label="流程风险年份"
+                           label="流程年份"
           >
           </el-table-column>
           <el-table-column
@@ -74,18 +75,19 @@
           <!-- <el-table-column align="center" prop="proBranch" label="分管领导">
            </el-table-column>-->
           <el-table-column align="center"
-                           prop="proGrade"
-                           label="风险等级">
-          </el-table-column>
-          <el-table-column align="center"
                            prop="proAccessoryName"
                            label="流程图名称">
           </el-table-column>
-          <el-table-column align="center"
+          <el-table-column width="120px"
+                           align="center"
+                           prop="proGrade"
+                           label="风险等级">
+          </el-table-column>
+          <el-table-column align="center" width="120px"
                            prop="proCreateName"
                            label="创建人">
           </el-table-column>
-          <el-table-column align="center"
+          <el-table-column align="center" width="120px"
                            prop="proCreateTime"
                            label="创建时间"
                            :formatter="dateFormat">
@@ -118,6 +120,7 @@
           </div>
           <div style="background-color: white;margin-top: 25px;z-index:3;">
             <div style="height:20px"></div>
+            <h2 v-text="h1Text" align="center"></h2>
             <el-input v-model="rickInfo.proid" placeholder="序号" type="hidden"></el-input>
             <el-row style="margin-left:5%;font-weight: bold;">
               <el-col :span="12" style="width:43%">
@@ -128,6 +131,7 @@
               <el-col :span="12" style="width:43%">
                 <el-form-item style="font-weight: bold;" label="风险流程年份" prop="proYear">
                   <el-date-picker
+                    :editable="false"
                     style="width: 350px"
                     v-model="rickInfo.proYear"
                     type="year"
@@ -230,7 +234,7 @@
                   <!--<quill-editor class="editor"  style="height:500px;width:90%;"
                                 ref="myQuillEditor"
                                 v-model="rickInfo.proInfomation"></quill-editor>-->
-                  <el-input v-model="rickInfo.proInfomation" :rows="3" style="width: 870px"
+                  <el-input v-model="rickInfo.proInfomation" :rows="5" style="width: 870px"
                             placeholder="请输入流程风险描述..." type="textarea"></el-input>
                 </el-form-item>
               </el-col>
@@ -238,7 +242,7 @@
             <el-row style="margin-left:5%;font-weight: bold;">
               <el-col :span="24">
                 <el-form-item style="font-weight: bold;" label="预防和控制措施" prop="proMeasures">
-                  <el-input v-model="rickInfo.proMeasures" :rows="8" style="width: 870px"
+                  <el-input v-model="rickInfo.proMeasures" :rows="10" style="width: 870px"
                             placeholder="请输入预防和控制措施..." type="textarea"></el-input>
                 </el-form-item>
               </el-col>
@@ -404,6 +408,7 @@
       // 修改
       handleEdit(index, row) {
         this.dialogTitle = '修改';
+        this.h1Text="修改流程风险"
         this.rickInfo = row;
         this.fileList=[{name:row.proAccessoryName,url:this.virtualimgIp+row.proAccessory}];
         this.filename=row.proAccessoryName
@@ -497,10 +502,11 @@
         this.$refs['dataForm'].clearValidate()
         this.fileList=[];
         this.dialogTitle = '增加';
+        this.h1Text="添加流程风险"
         this.rickInfo = {};
         this.iconFormVisible = true;
         // 设置风险值的默认选中和默认值
-        this.defaultSelect()
+        //this.defaultSelect()
         this.dis='none'
         this.dis2='inline-block'
       },
@@ -513,7 +519,7 @@
       },
       // 弹窗确定
       submitUser() {
-        //alert("this.rickInfo.proAccessoryName:"+this.rickInfo.proAccessoryName)
+        alert("this.rickInfo.proAccessoryName:"+this.rickInfo.proAccessoryName)
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
           if (valid) {
@@ -545,7 +551,7 @@
                 add(postData).then((response) => {
                   this.iconFormVisible = false;
                   clearInterval(this.timer)
-                  this.onSearch();
+                  this.initList();
                   this.$notify({
                     title: '成功',
                     message: response.message,
@@ -558,14 +564,16 @@
 
             }
             if (this.dialogTitle === '修改') {
+              console.log("准备执行修改方法")
               if (this.filename !==this.rickInfo.proAccessoryName) {
                 impFile(this.formData).then(response => {
                   this.rickInfo.proAccessory = response.dFile;
+                  console.log("response.dFile;"+response.dFile)
                 /*  var dateee = new Date(this.rickInfo.proYear).toJSON();
                   var date = new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
                   this.rickInfo.proYear = date;*/
 
-                  let postData = qs.stringify({
+                  /*let postData = qs.stringify({
                     proid: this.rickInfo.proid,
                     proName: this.rickInfo.proName,
                     proYear: this.rickInfo.proYear,
@@ -583,7 +591,7 @@
                   update(postData).then((response) => {
                     this.iconFormVisible = false;
                     clearInterval(this.timer)
-                    this.onSearch();
+                    this.initList();
                     this.$notify({
                       title: '成功',
                       message: response.message,
@@ -591,7 +599,7 @@
                       duration: 2000
                     })
                     this.deselect()
-                  })
+                  })*/
                 })
               }else{
                 var dateee = new Date(this.rickInfo.proYear).toJSON();
@@ -633,7 +641,16 @@
 
     },
     data() {
+      // 自定义风险等级校验规则
+      let pGradeCustom=(rule,value,callback)=>{
+        if (value === '') {
+          callback(new Error('请输入风险L、C值'));
+        } else {
+          callback();
+        }
+      }
       return {
+        h1Text:'',
         timer: '',
         iconFormVisible: false,
         rickInfo: {},
@@ -732,13 +749,16 @@
           //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
           proName: [{required:true,message:'流程名称不能为空',trigger:['blur','change']}],
           proYear:[{required:true,message:'执行年份不能为空',trigger:['blur','change']}],
-          proAccessoryName:[{required:true,message:'流程图必须上传',trigger:["blur"]}],
+          proAccessoryName:[{required:true,message:'流程图必须上传',trigger:["change","blur"]}],
           proInfomation: [{required: true, message: "预防和控制措施不能为空", trigger: ["change", "blur"]}],
           proMeasures: [{required: true, message: "预防和控制措施不能为空", trigger: ['change',"blur"]}],
           /*pLvalue:[{required: true, message: "风险发生可能性L值不能为空", trigger:  ["change", "blur"]}],
           pCvalue:[{required: true, message: "风险发生可能性C值不能为空", trigger:  ["change", "blur"]}],*/
-          /*pDvalue:[{required: true}],
-          proGrade:[{required: true}]*/
+          //pDvalue:[{required: true}],
+          proGrade:[
+            {required:true,message:'请选择流程风险L、C值',trigger:["change", "blur"]},
+            {validator:pGradeCustom,trigger:'blur'}
+          ],
         },
         riskGrades: [
           {rgId: '一级风险', rgName: '高度风险(一级)'},
