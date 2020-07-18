@@ -17,6 +17,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -103,6 +104,7 @@ public class SysStaffController {
     public JSONObject createIndex(){
         try {
             homePageSevice.loading();
+
             return CommonUtil.successJson();
         }catch (Exception e){
             return CommonUtil.errorJson(ErrorEnum.E_500);
@@ -117,8 +119,20 @@ public class SysStaffController {
         JSONObject jsonObject = sysStaffService.authLogin(requestJson);
         //创建首页
 //        homePageSevice.loading();
-        System.out.println("==================jsonObject="+jsonObject);
         return jsonObject;
+    }
+    /**
+     * 登录
+     */
+    @PostMapping("/login")
+    public String auth(@RequestParam String username, @RequestParam String password, HttpSession session) {
+//
+//        JSONObject jsonObject = sysStaffService.authLogin(requestJson);
+        System.out.println("username:"+username);
+        System.out.println("password:"+password);
+        //创建首页
+//        homePageSevice.loading();
+        return session.getId();
     }
 
     /**

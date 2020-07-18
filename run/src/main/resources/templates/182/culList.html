@@ -4,10 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>廉政文化</title>
+    <script type="text/javascript" src="http://localhost:4031/ms-mcms/static/plugins/vue/2.6.9/vue.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/app.css" />
     <link rel="stylesheet" type="text/css" href="http://localhost:4031/ms-mcms/templets/1/yancao/css/list-model.css" />
     <!--jq引用-->
-    <script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script src="http://localhost:4031/ms-mcms/static/plugins/jquery/1.9.1/jquery-1.9.1.js"></script>
+    <!--layer弹框-->
+    <script src="http://localhost:4031/ms-mcms/static/plugins/layer/layer.js"></script>
     <!--网络请求框架-->
     <script src="http://localhost:4031/ms-mcms/static/plugins/axios/0.18.0/axios.min.js"></script>
     <script src="http://localhost:4031/ms-mcms/static/plugins/qs/6.6.0/qs.min.js"></script>
@@ -162,11 +166,19 @@
         <div>
 			<span style="font-size: 14px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="color: #000000"  th:utext="${cultures.content}">
-
 			    </span>
-                <a th:if="${cultures.type==0}" th:href="${cultures.url}" >预览</a>
-            </span><br />
+                &nbsp;&nbsp;
+                <a th:if="${cultures.type==0}" th:href="'http://localhost:4031/ms-mcms/templets/2/image'+${cultures.url}" >预览</a>
+                &nbsp;&nbsp;
+                <a><span th:if="${cultures.type==0}"  th:onclick="check([[${cultures.dVideo}]])">
+                    查看视频</span>
+                </a>
+
+            </span>
+
+            <br/>
         </div>
+
         <div>
             <span class="ms-right" id="goback">
                 <a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a>
@@ -175,6 +187,21 @@
     </div>
 </div>
 ﻿<script type="text/javascript">
+    //layer播放本地视频
+    function check(dVideo){
+        var url = dVideo.trim()
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 1, //不显示关闭按钮
+            shade: 0.7,
+            scrollbar:false,
+            skin: 'layer-alert-video',
+            anim: 0,
+            scrollbar:true,//防止父页面自动跳到页面顶端
+            content: '<video src="http://localhost:4031/ms-mcms/templets/2/vedio'+url+'"  width="320" height="240" controls="controls"></video>'
+        });
+    }
 
     /*请求成功时调用
         getData: 返回的数据

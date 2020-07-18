@@ -50,178 +50,185 @@ public class ThymeleafController {
     @Autowired
     private PostriskcombingService postriskcombingService;
 
-    @RequestMapping("/produce")
-    public void index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
-        Page page=new Page(1,10);
-        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection(page, "");
-        for (Datacollection record : dataConllection.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("dFileName",record.getDFileName());
-            modelAndView.addObject("dPdf",record.getDPdf());
-            modelAndView.addObject("dFile",record.getDFile());
-            modelAndView.addObject("title",record.getDTitle());
-            modelAndView.addObject("time", DateUtil.upDate(record.getDCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("index1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDTitle());
-            modelAndView=null;
-        }
-        IPage<Wind> wind = windService.findWind(page, "");
-        for (Wind record : wind.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("content",record.getWContent());
-            modelAndView.addObject("title",record.getWTitle());
-            modelAndView.addObject("time", DateUtil.upDate(record.getWCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("wind1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getWTitle());
-            modelAndView=null;
-        }
-        //工作计划
-        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"",null);
-        for (RdWorkPlan record : findwp.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("content",record.getContent());
-            modelAndView.addObject("title",record.getTitle());
-            modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("zrjs/index1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
-            modelAndView=null;
-        }
-        //主题责任
-        IPage<RdEntityResponsibility> rdEntityResponsibilityIndex = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, "",null);
-        for (RdEntityResponsibility record : rdEntityResponsibilityIndex.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("content",record.getContent());
-            modelAndView.addObject("title",record.getTitle());
-            modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("zrjs/rdentityresponsibility1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
-            modelAndView=null;
-        }
-        //工作计划
-        IPage<RdWorkDeployment> rdWorkDeploymentIndex = rdWorkDeploymentService.findRdWorkDeploymentIndex(page, "",null);
-        for (RdWorkDeployment record : rdWorkDeploymentIndex.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("content",record.getContent());
-            modelAndView.addObject("title",record.getTitle());
-            modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("zrjs/rdworkdeployment1.html");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
-            modelAndView=null;
-        }
-        //TODO 纪检报表
-        IPage<DcpReport> dcpReportIndex = dcpReportService.findDcpReportIndex(page, "");
-        for (DcpReport record : dcpReportIndex.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("reportType",record.getReportType());
-            modelAndView.addObject("url",record.getUrl());
-            modelAndView.addObject("report",record.getReport());
-            modelAndView.addObject("time", DateUtil.upDate(record.getNewTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("jjbb/index1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getReportType());
-            modelAndView=null;
-        }
-        //监督责任
-        IPage<SpvDuty> spvDuty = spvDutyService.findSpvDuty(page, "");
-        for (SpvDuty record : spvDuty.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("content",record.getDutyContent());
-            modelAndView.addObject("dutyDutyType",record.getDutyTitle());
-            modelAndView.addObject("time", DateUtil.upDate(record.getNewTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("jdzr/index1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDutyTitle());
-            modelAndView=null;
-        }
-        //岗位风险
-        IPage<Postriskcombing> postriskCombingIndex = postriskcombingService.findPostriskCombingIndex(page, "");
-        for (Postriskcombing record : postriskCombingIndex.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("pProject",record.getPProject());
-            modelAndView.addObject("pRiskPointDescription",record.getPRiskPointDescription());
-            modelAndView.addObject("time", DateUtil.upDate(record.getPCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("fxfk/index1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getPProject());
-            modelAndView=null;
-        }
-        //流程风险
-        IPage<Processrick> findps =processrickService.findProcessrickIndex(page,"");
-        for (Processrick record : findps.getRecords()) {
-            ModelAndView modelAndView=new ModelAndView();
-            modelAndView.addObject("proName",record.getProName());
-            modelAndView.addObject("proInfomation",record.getProInfomation());
-            modelAndView.addObject("time", DateUtil.upDate(record.getProCreateTime()));
-            modelAndView.addObject("name", record.getSysStaff().getName());
-            modelAndView.setViewName("fxfk/processrick1");
-//            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getProName());
-            modelAndView=null;
-        }
-//        return modelAndView;
-    }
-    @RequestMapping("datacollection")
-    public ModelAndView indexa(){
-        ModelAndView modelAndView=new ModelAndView( );
+//    @RequestMapping("/produce")
+//    public void index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse){
 //        Page page=new Page(1,10);
 //        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection(page, "");
-////        IPage<Wind> wind = windService.findWind(page, "");
-//        modelAndView.addObject("list",dataConllection.getRecords());
-//        modelAndView.addObject("total",dataConllection.getTotal());
+//        for (Datacollection record : dataConllection.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("dFileName",record.getDFileName());
+//            modelAndView.addObject("dPdf",record.getDPdf());
+//            modelAndView.addObject("dFile",record.getDFile());
+//            modelAndView.addObject("title",record.getDTitle());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getDCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("index1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDTitle());
+//            modelAndView=null;
+//        }
+//        IPage<Wind> wind = windService.findWind(page, "");
+//        for (Wind record : wind.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("content",record.getWContent());
+//            modelAndView.addObject("title",record.getWTitle());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getWCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("wind1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getWTitle());
+//            modelAndView=null;
+//        }
+//        //工作计划
+//        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"",null);
+//        for (RdWorkPlan record : findwp.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("content",record.getContent());
+//            modelAndView.addObject("title",record.getTitle());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("zrjs/index1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
+//            modelAndView=null;
+//        }
+//        //主题责任
+//        IPage<RdEntityResponsibility> rdEntityResponsibilityIndex = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, "",null);
+//        for (RdEntityResponsibility record : rdEntityResponsibilityIndex.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("content",record.getContent());
+//            modelAndView.addObject("title",record.getTitle());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("zrjs/rdentityresponsibility1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
+//            modelAndView=null;
+//        }
+//        //工作计划
+//        IPage<RdWorkDeployment> rdWorkDeploymentIndex = rdWorkDeploymentService.findRdWorkDeploymentIndex(page, "",null);
+//        for (RdWorkDeployment record : rdWorkDeploymentIndex.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("content",record.getContent());
+//            modelAndView.addObject("title",record.getTitle());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("zrjs/rdworkdeployment1.html");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getTitle());
+//            modelAndView=null;
+//        }
+//        //TODO 纪检报表
+//        IPage<DcpReport> dcpReportIndex = dcpReportService.findDcpReportIndex(page, "");
+//        for (DcpReport record : dcpReportIndex.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("reportType",record.getReportType());
+//            modelAndView.addObject("url",record.getUrl());
+//            modelAndView.addObject("report",record.getReport());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getNewTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("jjbb/index1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getReportType());
+//            modelAndView=null;
+//        }
+//        //监督责任
+//        IPage<SpvDuty> spvDuty = spvDutyService.findSpvDuty(page, "");
+//        for (SpvDuty record : spvDuty.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("content",record.getDutyContent());
+//            modelAndView.addObject("dutyDutyType",record.getDutyTitle());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getNewTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("jdzr/index1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getDutyTitle());
+//            modelAndView=null;
+//        }
+//        //岗位风险
+//        IPage<Postriskcombing> postriskCombingIndex = postriskcombingService.findPostriskCombingIndex(page, "");
+//        for (Postriskcombing record : postriskCombingIndex.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("pProject",record.getPProject());
+//            modelAndView.addObject("pRiskPointDescription",record.getPRiskPointDescription());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getPCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("fxfk/index1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getPProject());
+//            modelAndView=null;
+//        }
+//        //流程风险
+//        IPage<Processrick> findps =processrickService.findProcessrickIndex(page,"");
+//        for (Processrick record : findps.getRecords()) {
+//            ModelAndView modelAndView=new ModelAndView();
+//            modelAndView.addObject("proName",record.getProName());
+//            modelAndView.addObject("proInfomation",record.getProInfomation());
+//            modelAndView.addObject("time", DateUtil.upDate(record.getProCreateTime()));
+//            modelAndView.addObject("name", record.getSysStaff().getName());
+//            modelAndView.setViewName("fxfk/processrick1");
+////            staticHtmlService.genHtmlPage(modelAndView,httpServletRequest,httpServletResponse,record.getProName());
+//            modelAndView=null;
+//        }
+////        return modelAndView;
+//    }
+    @RequestMapping("datacollection/{pageRow}")
+    public ModelAndView indexa(@PathVariable Integer pageRow,String title){
+        ModelAndView modelAndView=new ModelAndView( );
+        pageRow=pageRow<1?1:pageRow;
+        Page page=new Page(pageRow,10);
+        IPage<Datacollection> dataConllection = datacollectionService.findDataConllection(page, title);
+//        IPage<Wind> wind = windService.findWind(page, "");
+        modelAndView.addObject("list",dataConllection.getRecords());
+        modelAndView.addObject("total",dataConllection.getTotal());
         modelAndView.setViewName("182/index");
         return modelAndView;
     }
     /*廉政文化里的清风文苑查询数据*/
-    @RequestMapping("wind")
-    public ModelAndView findWind(){
+    @RequestMapping("wind/{pageRow}")
+    public ModelAndView findWind(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-//        Page<Wind> page=new Page(1,10);
-//        IPage<Wind> wind = windService.findWind(page, "");
-//        modelAndView.addObject("list",wind.getRecords());
+        Page<Wind> page=new Page(pageRow,10);
+        IPage<Wind> wind = windService.findWind(page, title);
+        modelAndView.addObject("list",wind.getRecords());
         modelAndView.setViewName("182/index");
         return modelAndView;
     }
     /*责任纪实 工作计划根据标题模糊查询 内容做显示详情*/
-    @RequestMapping("rdworkplan")
-    public ModelAndView findRdWorkPlan(){
+    @RequestMapping("rdworkplan/{pageRow}")
+    public ModelAndView findRdWorkPlan(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-        Page<RdWorkPlan> page=new Page(1,10);
-        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,"",null);
+        Page<RdWorkPlan> page=new Page(pageRow,10);
+        IPage<RdWorkPlan> findwp =rdWorkPlanService.findRdWorkPlanIndex(page,title,null);
         modelAndView.addObject("list",findwp.getRecords());
         modelAndView.setViewName("zrjs/index");
         return modelAndView;
     }
     /*责任纪实 工作部署 根据标题模糊查询 内容做显示详情*/
-    @RequestMapping("rdworkdeployment")
-    public ModelAndView findRdWorkDeploymentIndex(){
+    @RequestMapping("rdworkdeployment/{pageRow}")
+    public ModelAndView findRdWorkDeploymentIndex(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-        Page<RdWorkDeployment> page=new Page(1,10);
-        IPage<RdWorkDeployment> findrdwd =rdWorkDeploymentService.findRdWorkDeploymentIndex(page,"",null);
+        Page<RdWorkDeployment> page=new Page(pageRow,10);
+        IPage<RdWorkDeployment> findrdwd =rdWorkDeploymentService.findRdWorkDeploymentIndex(page,title,null);
         modelAndView.addObject("list",findrdwd.getRecords());
         modelAndView.setViewName("zrjs/rdworkdeployment");
         return modelAndView;
     }
     /*责任纪实 主体责任 根据标题模糊查询 内容做显示详情*/
-    @RequestMapping("rdentityresponsibility")
-    public ModelAndView findRdEntityResponsibilityIndex(){
+    @RequestMapping("rdentityresponsibility/{pageRow}")
+    public ModelAndView findRdEntityResponsibilityIndex(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-        Page<RdEntityResponsibility> page=new Page(1,10);
-        IPage<RdEntityResponsibility> findwp =rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page,"",null);
+        Page<RdEntityResponsibility> page=new Page(pageRow,10);
+        IPage<RdEntityResponsibility> findwp =rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page,title,null);
         modelAndView.addObject("list",findwp.getRecords());
         modelAndView.setViewName("zrjs/rdentityresponsibility");
         return modelAndView;
     }
     /*纪检报表 根据文件名模糊查询*/
-    @RequestMapping("dcpreport")
-    public ModelAndView findDcpReportIndex(){
+    @RequestMapping("dcpreport/{pageRow}")
+    public ModelAndView findDcpReportIndex(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-        Page<DcpReport> page=new Page(1,10);
-        IPage<DcpReport> findwp =dcpReportService.findDcpReportIndex(page,"");
+        Page<DcpReport> page=new Page(pageRow,10);
+        IPage<DcpReport> findwp =dcpReportService.findDcpReportIndex(page,title);
         List<DcpReport> records = findwp.getRecords();
         for (DcpReport record : records) {
             String substring = record.getReport().substring(0, record.getReport().lastIndexOf("."));
@@ -232,33 +239,36 @@ public class ThymeleafController {
         return modelAndView;
     }
     /*风险防控岗位风险梳理 根据风险点描述进行模糊查询 预防和控制措施做详情显示*/
-    @RequestMapping("postriskcombing")
-    public ModelAndView findPostriskCombing(){
+    @RequestMapping("postriskcombing/{pageRow}")
+    public ModelAndView findPostriskCombing(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-        Page<Postriskcombing> page=new Page(1,10);
-        IPage<Postriskcombing> findspv =postriskcombingService.findPostriskCombingIndex(page,"");
+        Page<Postriskcombing> page=new Page(pageRow,10);
+        IPage<Postriskcombing> findspv =postriskcombingService.findPostriskCombingIndex(page,title);
         modelAndView.addObject("list",findspv.getRecords());
         modelAndView.setViewName("fxfk/index");
         return modelAndView;
     }
     /*风险防控流程风险梳理 根据风险流程名称模糊查询 风险流程信息做显示详情*/
-    @RequestMapping("processrick")
-    public ModelAndView findProcessrick(){
+    @RequestMapping("processrick/{pageRow}")
+    public ModelAndView findProcessrick(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
-        Page<Processrick> page=new Page(1,10);
-        IPage<Processrick> findwp =processrickService.findProcessrickIndex(page,"");
+        Page<Processrick> page=new Page(pageRow,10);
+        IPage<Processrick> findwp =processrickService.findProcessrickIndex(page,title);
         modelAndView.addObject("list",findwp.getRecords());
         modelAndView.setViewName("fxfk/processrick");
         return modelAndView;
     }
 
     /*监督责任查询所有的监督数据 根据标题模糊查询*/
-    @RequestMapping("spvduty")
-    public ModelAndView findSpvDuty(){
+    @RequestMapping("spvduty/{pageRow}")
+    public ModelAndView findSpvDuty(@PathVariable Integer pageRow,String title){
+        pageRow=pageRow<1?1:pageRow;
         ModelAndView modelAndView=new ModelAndView();
         System.out.println("findSpvDuty");
-        Page<SpvDuty> page=new Page(1,10);
-        IPage<SpvDuty> findspv = spvDutyService.findSpvDuty(page,"");
+        Page<SpvDuty> page=new Page(pageRow,10);
+        IPage<SpvDuty> findspv = spvDutyService.findSpvDuty(page,title);
         modelAndView.addObject("list",findspv.getRecords());
         modelAndView.setViewName("jdzr/index");
         return modelAndView;

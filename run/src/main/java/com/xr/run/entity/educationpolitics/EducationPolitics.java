@@ -24,6 +24,7 @@ public class EducationPolitics {
   private String starttime;
   private String endtime;
   private String cname;
-
+  private String smoimage;
+  private String surl;
   private Integer firstPage; //最上面那一页面
 }

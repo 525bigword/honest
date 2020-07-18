@@ -16,7 +16,7 @@
 
     </resultMap>
     <select id="list" resultMap="basemap">
-select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,re.typeconcrete from dcp_report re,Sys_Staff h where h.sid=re.eid and re.status!=-1
+select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,re.typeconcrete from dcp_report re,Sys_Staff h where h.sid=re.eid and re.status!=-1 order by re.newtime desc
     </select>
     <select id="fintBywhere" resultMap="basemap">
         select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,re.typeconcrete from dcp_report re,Sys_Staff h where h.sid=re.eid and re.status!=-1
@@ -28,6 +28,7 @@ select re.id,re.reporttype,re.report,re.newtime,re.eid,re.status,h.name,re.url,r
         <if test="endtime != null and !endtime.equals('')">
             and re.newtime  &lt;= #{endtime}
         </if>
+         order by re.newtime desc
     </select>
     <insert id="addreport" parameterType="com.xr.run.dao.inspect.DcpReportMapper">
         insert into dcp_report(reportType,report,newTime,eid,status,url,typeconcrete) values(#{reportType},#{report},#{newTime},#{sid},#{status},#{url},#{typeconcrete})

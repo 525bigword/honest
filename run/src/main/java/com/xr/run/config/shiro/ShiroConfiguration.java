@@ -49,6 +49,8 @@ public class ShiroConfiguration {
 		filterChainDefinitionMap.put(path+"/export","anon");
 		filterChainDefinitionMap.put(path+"/uploadimg/**","anon");
 		filterChainDefinitionMap.put(path+"/upload/**","anon");
+		filterChainDefinitionMap.put(path+"/templates/**","anon");
+		filterChainDefinitionMap.put(path+"/SysStaff/login","anon");
 		filterChainDefinitionMap.put(path+"/ms-mcms/**","anon");
 		filterChainDefinitionMap.put(path+"/th/**","anon");
 		filterChainDefinitionMap.put(path+"/nologin/**","anon");
@@ -58,6 +60,7 @@ public class ShiroConfiguration {
 		filterChainDefinitionMap.put(path+"/demo", "anon");
 		filterChainDefinitionMap.put(path+"/qt/**", "anon"); //责任监督、责任纪实
 		filterChainDefinitionMap.put(path+"/moble", "anon");
+		filterChainDefinitionMap.put(path+"/yancao/**", "anon");
 		filterChainDefinitionMap.put(path+"/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;

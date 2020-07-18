@@ -213,19 +213,19 @@
           <br/>
 
           <el-form-item label="监察科部门意见" v-if="true                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             " >
-            <el-input v-model="userInfo.lsupervisionComments" placeholder="请输入监察科部门意见" style="width: 300px" v-bind:disabled=" hasPerm('letter:sencondadudit')&& this.userInfo.lstatus==2?false:'disabled'" ></el-input>
+            <el-input v-model="userInfo.lsupervisionComments" placeholder="请输入监察科部门意见" style="width: 300px" v-bind:disabled=" hasPerm('letter:sencondadudit')&& userInfo.lstatus==2?false:'disabled'" ></el-input>
           </el-form-item>
           <el-form-item label="监察科部门意见签署时间" >
             <el-date-picker v-model="userInfo.lsupervisionCommentsTime" placeholder="监察科部门意见签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="纪检组长意见" >
-            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="请输入纪检组长意见" style="width: 300px"  v-bind:disabled=" hasPerm('letter:groupsign')&& this.userInfo.lstatus==2?false:'disabled'"></el-input>
+            <el-input v-model="userInfo.ldisciplinaryComments" placeholder="请输入纪检组长意见" style="width: 300px"  v-bind:disabled=" hasPerm('letter:groupsign')&& userInfo.lstatus==2?false:'disabled'"></el-input>
           </el-form-item>
           <el-form-item label="纪检组长签署时间" >
             <el-date-picker v-model="userInfo.ldisciplinaryTime" placeholder="纪检组长签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="局领导意见"  >
-            <el-input v-model="userInfo.lleadersComments" placeholder="请输入局领导意见" style="width: 300px" v-bind:disabled=" hasPerm('letter:leadersign')&& this.userInfo.lstatus==2?false:'disabled'" ></el-input>
+            <el-input v-model="userInfo.lleadersComments" placeholder="请输入局领导意见" style="width: 300px" v-bind:disabled=" hasPerm('letter:leadersign')&& userInfo.lstatus==2?false:'disabled'" ></el-input>
           </el-form-item>
           <el-form-item label="局领导签署时间" >
             <el-date-picker v-model="userInfo.lleadersTime" placeholder="局领导签署时间" style="width: 300px" type="datetime" disabled="disabled"></el-date-picker>
@@ -347,20 +347,27 @@
       },
       //转办部门处理
       deptbc(){
+        if(this.userInfo.lresult==null||this.userInfo.lresult==''){
+          this.$notify({
+            title: '温馨提示',
+            message: '请填写完转办部门处理结果',
+            type: 'warning',
+            duration: 2000
+          })
+        }else {
+          let endtime = new Date(this.userInfo.lresultTime).toJSON();
+          this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "")
 
-        let endtime = new Date(this.userInfo.lresultTime).toJSON();
-        this.userInfo.lresultTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
-
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid,
-          lResult:this.userInfo.lresult,
-          lResultTime:this.userInfo.lresultTime,
-        })
-        deptbc(posdata).then((response)=>{
-          this.tf='';
+          let posdata=qs.stringify({
+            lid:this.userInfo.lid,
+            lResult:this.userInfo.lresult,
+            lResultTime:this.userInfo.lresultTime,
+          })
+          deptbc(posdata).then((response)=>{
+            this.tf='';
           this.ad='none'
           this.initList();
           this.$notify({
@@ -370,21 +377,31 @@
             duration: 2000
           })
         })
+        }
+
       },//局领导签署意见
       leaderbc(){
-        let endtime = new Date(this.userInfo.lleadersTime).toJSON();
-        this.userInfo.lleadersTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
+        if(this.userInfo.lleadersComments==null||this.userInfo.lleadersComments==''){
+          this.$notify({
+            title: '温馨提示',
+            message: '请填写完意见',
+            type: 'warning',
+            duration: 2000
+          })
+        }else {
+          let endtime = new Date(this.userInfo.lleadersTime).toJSON();
+          this.userInfo.lleadersTime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "")
 
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid,
-          lLeadersComments:this.userInfo.lleadersComments,
-          lLeadersTime:this.userInfo.lleadersTime
-        })
-        leaderbc(posdata).then((response)=>{
-          this.tf='';
+          let posdata=qs.stringify({
+            lid:this.userInfo.lid,
+            lLeadersComments:this.userInfo.lleadersComments,
+            lLeadersTime:this.userInfo.lleadersTime
+          })
+          leaderbc(posdata).then((response)=>{
+            this.tf='';
           this.ad='none'
           this.initList();
           this.$notify({
@@ -394,21 +411,31 @@
             duration: 2000
           })
         })
+        }
+
       },//纪检组长签署意见
       zzbc(){
-        let endtime = new Date(this.userInfo.ldisciplinaryTime).toJSON();
-        this.userInfo.ldisciplinaryTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
-          .toISOString()
-          .replace(/T/g, " ")
-          .replace(/\.[\d]{3}Z/, "")
+        if(this.userInfo.ldisciplinaryComments==''){
+          this.$notify({
+            title: '温馨提示',
+            message: '请填写完意见',
+            type: 'warning',
+            duration: 2000
+          })
+        }else{
+          let endtime = new Date(this.userInfo.ldisciplinaryTime).toJSON();
+          this.userInfo.ldisciplinaryTime = new Date(new Date(endtime) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "")
 
-        let posdata=qs.stringify({
-          lid:this.userInfo.lid,
-          lDisciplinaryComments:this.userInfo.ldisciplinaryComments,
-          lDisciplinaryTime:this.userInfo.ldisciplinaryTime
-        })
-        zzbc(posdata).then((response)=>{
-          this.tf='';
+          let posdata=qs.stringify({
+            lid:this.userInfo.lid,
+            lDisciplinaryComments:this.userInfo.ldisciplinaryComments,
+            lDisciplinaryTime:this.userInfo.ldisciplinaryTime
+          })
+          zzbc(posdata).then((response)=>{
+            this.tf='';
           this.ad='none'
           this.initList();
           this.$notify({
@@ -418,6 +445,8 @@
             duration: 2000
           })
         })
+        }
+
       },
       //判断状态给提示
       cstatus: function (row, column, cellValue) {
@@ -681,21 +710,32 @@
         setTimeout(() => {
           this.isShowAddressInfo = true;
         }, 10);
-
-        this.$set(this.userInfo,'lresultTime',new Date())
+if(this. hasPerm('letter:zbaudit')){
+        this.$set(this.userInfo,'lresultTime',new Date())}
+        if( this.hasPerm('letter:sencondadudit')&& this.userInfo.lstatus==2){
         this.$set(this.userInfo,'lsupervisionCommentsTime',new Date())
-        this.$set(this.userInfo,'lsupervisionResultTime',new Date())
-        this.$set(this.userInfo,'ldisciplinaryTime',new Date())
-        this.$set(this.userInfo,'lleadersTime',new Date())
+        this.$set(this.userInfo,'lsupervisionResultTime',new Date())}
+        if(this.hasPerm('letter:groupsign')&& this.userInfo.lstatus==2){
+        this.$set(this.userInfo,'ldisciplinaryTime',new Date())}
+        if(this.hasPerm('letter:leadersign')&& this.userInfo.lstatus==2){
+        this.$set(this.userInfo,'lleadersTime',new Date())}
         // this.userInfo.lCreateName=this.nickname
       },//纪检监察员审核提交保存
       shbc(){
-        let postData = qs.stringify({
-          lid:this.userInfo.lid,
-          lSynopsis:this.userInfo.lsynopsis
-        });
-        shbc(postData).then((response)=>{
-          this.initList();
+        if(this.userInfo.lsynopsis==''){
+          this.$notify({
+            title: '温馨提示',
+            message: '请填写信访内容摘要',
+            type: 'warning',
+            duration: 2000
+          })
+        }else{
+          let postData = qs.stringify({
+            lid:this.userInfo.lid,
+            lSynopsis:this.userInfo.lsynopsis
+          });
+          shbc(postData).then((response)=>{
+            this.initList();
           this.$notify({
             title: '成功',
             message: response.message,
@@ -705,6 +745,8 @@
           this.tf='';
           this.ad='none'//编辑/审核页面出来,
         })
+        }
+
       },// 删除
       del(){
         var data = this.$refs.multipleTable.selection;

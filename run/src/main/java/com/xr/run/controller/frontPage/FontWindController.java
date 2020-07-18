@@ -29,8 +29,8 @@ public class FontWindController {
     @GetMapping("get")
     public String getQfwyList(String title, Integer pageNo, Integer pageSize) {
         List<CultureVo> list = new ArrayList<>();
-        IPage<Wind> winds = windService.findWind1(new Page(), title);
-        IPage<Datacollection> dataConllections = datacollectionService.findDataConllection1(new Page(), title);
+        IPage<Wind> winds = windService.findWind1(new Page(1,6), title);
+        IPage<Datacollection> dataConllections = datacollectionService.findDataConllection1(new Page(1,6), title);
         for (Datacollection record : dataConllections.getRecords()) {
             CultureVo cultureVo = new CultureVo();
             cultureVo.setId(record.getDid());

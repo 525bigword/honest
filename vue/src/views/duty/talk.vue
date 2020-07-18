@@ -30,9 +30,13 @@
         style="width: 100%" ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
+          label="序号"
+          type="index"
+          width="80"></el-table-column>
+        <el-table-column
           prop="id"
           label="编号"
-          width="80">
+          width="80" v-if="false">
         </el-table-column>
         <el-table-column
           prop="type"

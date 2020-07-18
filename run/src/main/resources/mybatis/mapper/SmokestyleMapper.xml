@@ -21,7 +21,7 @@
         </association>
     </resultMap>
     <select id="findAllSmokestyle" resultMap="base">
-        select tms.smoid,tms.smotitle,tms.smoproperty,tms.smoimage,tms.smosource,tms.smoauthor,tms.smocreatetime,tms.smodescrion,tms.smocontent,tms.smocreateid,tms.smocreatename,tms.surl,ss.sid,ss.name from tam_smoke_style tms,sys_staff ss where tms.smocreateid=ss.sid and tms.sstatus!=-1
+        select tms.smoid,tms.smotitle,tms.smoproperty,tms.smoimage,tms.smosource,tms.smoauthor,tms.smocreatetime,tms.smodescrion,tms.smocontent,tms.smocreateid,tms.smocreatename,tms.surl,ss.sid,ss.name from tam_smoke_style tms,sys_staff ss where tms.smocreateid=ss.sid and tms.sstatus!=-1 order by tms.smocreatetime desc
     </select>
 
     <!--新增-->
@@ -42,8 +42,9 @@
         <if test="endtime != null and !endtime.equals('')">
             and tms.smocreatetime  &lt;= #{endtime}
         </if>
-
+order by tms.smocreatetime desc
     </select>
+
     <!--删除-->
     <update id="delSmokestyle" parameterType="Integer">
       update tam_smoke_style set sstatus=-1 where smoid=#{smoid}
