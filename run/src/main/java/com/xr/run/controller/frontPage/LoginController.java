@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysStaffService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/qt/login")
+@Slf4j
 public class LoginController {
 
 
@@ -56,13 +58,17 @@ public class LoginController {
     @RequestMapping("/doLogin")
     public String login(SysStaff sysStaff,HttpServletResponse response,HttpSession session){
         System.out.println("username="+sysStaff.getUsername());
-        SysStaff user = sysStaffService.getUser(sysStaff.getUsername(), sysStaff.getPassword());
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("username",sysStaff.getUsername());
+        jsonObject.put("password",sysStaff.getPassword());
+        JSONObject user = sysStaffService.authLogin(jsonObject);
+        log.debug("+==============================="+user);
         if(user!=null){
 //            //保存在Cookie中
 //            Cookie myCookie=new Cookie("username",user.getUsername());
 //            myCookie.setMaxAge(600*10);//30分钟
 //            response.addCookie(myCookie);
-            session.setAttribute("loginUser",user);
+//            session.setAttribute("loginUser",user);
 
             return "HomePage";
         }
