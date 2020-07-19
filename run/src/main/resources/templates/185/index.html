@@ -306,7 +306,7 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" th:value="#{skiphtml}" onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
+        <li id="home"  onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
         <li class="" id="lujing" th:value="#{visitbackstage}" onclick="window.open('/honest/templates/181/index.html','_blank')"><a>廉政教育</a></li>
         <li class="" onclick="window.open('/honest/templates/182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="active-li" onclick="window.open('/honest/templates/185/index.html','_blank')"><a>责任纪实</a></li>
@@ -315,12 +315,8 @@
     </ul>
 </div>
 <script type="text/javascript">
-    var ul=document.getElementById("home").value;
-    function dianji(val,mean) {
-        window.open(ul+val,mean)
-    }
     var url = window.location.href;
-    if(url ==(ul+'/index.html')){
+    if(url =='/honest/templates/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>
@@ -330,7 +326,7 @@
             <li class="ms-relative">
                 <!--圆形-->
                 <div class="shape-circular ms-absolute">
-                    <img src="../../static/images/箭头@2x.png" />
+                    <img src="/honest/templates/static/images/箭头@2x.png" />
                 </div>
                 <span><label>责任纪实</label></span>
                 <ul class="list-style-none">
@@ -393,8 +389,7 @@
                     $("#typeOne").val(getData[0].type);
                     $("#idOne").val(getData[0].id);
                 }
-                var ul=document.getElementById("home").value;
-                var url = ul+"/185/" +$("#typeOne").val() + "/" + $("#idOne").val() + ".html?id="+data.id+"&type="+data.type;//a链接地址
+                var url = "/honest/templates/185/" +$("#typeOne").val() + "/" + $("#idOne").val() + ".html?id="+data.id+"&type="+data.type;//a链接地址
                 var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }

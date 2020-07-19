@@ -118,7 +118,7 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" th:value="#{skiphtml}" onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
+        <li id="home"  onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
         <li class="" id="lujing" th:value="#{visitbackstage}" onclick="window.open('/honest/templates/181/index.html','_blank')"><a>廉政教育</a></li>
         <li class="" onclick="window.open('/honest/templates/182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="" onclick="window.open('/honest/templates/185/index.html','_blank')"><a>责任纪实</a></li>
@@ -127,12 +127,8 @@
     </ul>
 </div>
 <script type="text/javascript">
-    var ul=document.getElementById("home").value;
-    function dianji(val,mean) {
-        window.open(ul+val,mean)
-    }
     var url = window.location.href;
-    if(url ==ul+'/index.html'){
+    if(url =='/honest/templates/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>		<div class="margin-center ms-menue-content-model">
@@ -141,7 +137,7 @@
             <li class="ms-relative">
                 <!--圆形-->
                 <div class="shape-circular ms-absolute">
-                    <img src="../../static/images/箭头@2x.png" />
+                    <img src="/honest/templates/static/images/箭头@2x.png" />
                 </div>
                 <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
@@ -172,7 +168,7 @@
                 <span style="color: #000000"  th:utext="${cultures.content}">
 			    </span>
                 &nbsp;&nbsp;
-                <a th:if="${cultures.type==0}" th:href="#{skiphtml}+'static/images'+${cultures.url}" >预览</a>
+                <a th:if="${cultures.type==0}" th:href="'/honest/templates/static/images'+${cultures.url}" >预览</a>
                 &nbsp;&nbsp;
                 <a><span th:if="${cultures.type==0}"  th:onclick="check([[${cultures.dVideo}]])">
                     查看视频</span>
@@ -185,7 +181,7 @@
 
         <div>
             <span class="ms-right" id="goback">
-                <a th:href="#{skiphtml}+'/index.html'">返回首页</a>
+                <a th:href="/honest/templates/index.html">返回首页</a>
             </span>
         </div>
     </div>
@@ -193,7 +189,6 @@
 ﻿<script type="text/javascript">
     //layer播放本地视频
     function check(dVideo){
-        var ul=document.getElementById("home").value;
         var url = dVideo.trim()
         layer.open({
             type: 1,

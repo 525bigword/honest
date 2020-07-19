@@ -325,7 +325,7 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" th:value="#{skiphtml}" onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
+        <li id="home"  onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
         <li class="active-li" id="lujing" th:value="#{visitbackstage}" onclick="dianji('/honest/templates/181/index.html','_blank')"><a>廉政教育</a></li>
         <li class="" onclick="window.open('/honest/templates/182/index.html','_blank')"><a>廉政文化</a></li>
         <li class="" onclick="window.open('/honest/templates/185/index.html','_blank')"><a>责任纪实</a></li>
@@ -334,12 +334,8 @@
     </ul>
 </div>
 <script type="text/javascript">
-    var ul=document.getElementById("home").value;
-    function dianji(val,mean) {
-        window.open(ul+val,mean)
-    }
     var url = window.location.href;
-    if(url == ul+'/index.html'){
+    if(url == '/honest/templates/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>
@@ -355,16 +351,16 @@
                 <ul class="list-style-none">
                     <input type="hidden" id="type" th:value="${type}"/>
                     <li>
-                        <span th:class="${type==0}?'active-span-title':''" onclick="dianji('/honest/templates/181/0/index.html','_self')"><label><a>廉政要闻</a></label></span>
+                        <span th:class="${type==0}?'active-span-title':''" onclick="window.open('/honest/templates/181/0/index.html','_self')"><label><a>廉政要闻</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${type==1}?'active-span-title':''" onclick="dianji('/honest/templates/181/1/index.html','_self')"><label><a>文件制度</a></label></span>
+                        <span th:class="${type==1}?'active-span-title':''" onclick="window.open('/honest/templates/181/1/index.html','_self')"><label><a>文件制度</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${type==2}?'active-span-title':''" onclick="dianji('/honest/templates/181/2/index.html','_self')"><label><a>领导讲话</a></label></span>
+                        <span th:class="${type==2}?'active-span-title':''" onclick="window.open('/honest/templates/181/2/index.html','_self')"><label><a>领导讲话</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${type==3}?'active-span-title':''" onclick="dianji('/honest/templates/181/3/index.html','_self')"><label><a>警钟长鸣</a></label></span>
+                        <span th:class="${type==3}?'active-span-title':''" onclick="window.open('/honest/templates/181/3/index.html','_self')"><label><a>警钟长鸣</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -376,7 +372,7 @@
             <label>
                 <a th:href="/honest/templates/index.html">首页</a>
                 &gt;
-                <a th:href="#{skiphtml}+'/181/index.html'">廉政教育</a>
+                <a th:href="/honest/templates/181/index.html">廉政教育</a>
                 &gt;
                 <a th:if="${type==0}" th:href="/honest/templates/181/0/index.html" >廉政要闻</a>
                 <a th:if="${type==1}" th:href="/honest/templates/181/1/index.html" >文件制度</a>
@@ -426,8 +422,7 @@
                     }
                     $("#idOne").val(getData[0].id);
                 }//获取一条数据
-                var ul=document.getElementById("home").value;
-                var url = ul+"/181/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id;//a链接地址
+                var url = "/honest/templates/181/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id;//a链接地址
                 var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
