@@ -124,26 +124,22 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" th:value="#{skiphtml}" onclick="dianji('/index.html','_self')"><a>首页</a></li>
-        <li class="" id="lujing" th:value="#{visitbackstage}" onclick="dianji('/181/index.html','_blank')"><a>廉政教育</a>
+        <li id="home" th:value="#{skiphtml}" onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
+        <li class="" id="lujing" th:value="#{visitbackstage}" onclick="window.open('/honest/templates/181/index.html','_blank')"><a>廉政教育</a>
         </li>
-        <li class="" onclick="dianji('/182/index.html','_blank')"><a>廉政文化</a>
+        <li class="" onclick="window.open('/honest/templates/182/index.html','_blank')"><a>廉政文化</a>
         </li>
-        <li class="" onclick="dianji('/185/index.html','_blank')"><a>责任纪实</a>
+        <li class="" onclick="window.open('/honest/templates/185/index.html','_blank')"><a>责任纪实</a>
         </li>
-        <li class="" onclick="dianji('/195/index.html','_blank')"><a>风险防控</a>
+        <li class="" onclick="window.open('/honest/templates/195/index.html','_blank')"><a>风险防控</a>
         </li>
-        <li class="active-li" onclick="dianji('/207/index.html','_blank')"><a>监督责任</a>
+        <li class="active-li" onclick="window.open('/honest/templates/207/index.html','_blank')"><a>监督责任</a>
         </li>
     </ul>
 </div>
 <script type="text/javascript">
-    var ul=document.getElementById("home").value;
-    function dianji(val,mean) {
-        window.open(ul+val,mean)
-    }
     var url = window.location.href;
-    if (url == (ul+'/index.html')) {
+    if (url == '/honest/templates/index.html') {
         $("#home").attr("class", "active-li");
     }
 </script>
@@ -153,12 +149,12 @@
             <li class="ms-relative">
                 <!--圆形-->
                 <div class="shape-circular ms-absolute">
-                    <img src="../../static/images/箭头@2x.png"/>
+                    <img src="/honest/templates/static/images/箭头@2x.png"/>
                 </div>
                 <span><label>监督责任</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span ><label><a th:href="#{skiphtml}+'/207/index.html'" >监督责任</a></label></span>
+                        <span ><label><a href="/honest/templates/207/index.html" >监督责任</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -185,7 +181,7 @@
         </div>
         <div>
             <span class="ms-right" id="goback">
-                <a th:href="#{skiphtml}+'/index.html'">返回首页</a>
+                <a href="/honest/templates/index.html">返回首页</a>
             </span>
         </div>
     </div>
@@ -226,7 +222,7 @@
             if(da!="null"){
             var data = eval("(" + da + ")");
             if(data!=null){
-                $("#goback").append("&nbsp;<a href=\"#{skiphtml}+'/207/index.html'\">返回上一页</a>")
+                $("#goback").append("&nbsp;<a href=\"/honest/templates/207/index.html\">返回上一页</a>")
             }
             insertContent(data);
             }

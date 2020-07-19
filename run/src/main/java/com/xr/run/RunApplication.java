@@ -28,9 +28,7 @@ public class RunApplication extends SpringBootServletInitializer{
         if(viewResolver!=null){
             Map<String,Object> vars=new HashMap<>();
             vars.put("html",environment.getProperty("html"));
-            vars.put("skiphtml",environment.getProperty("skiphtml"));
             vars.put("visitbackstage",environment.getProperty("visitbackstage"));
-            vars.put("staticfile",environment.getProperty("staticfile"));
             viewResolver.setStaticVariables(vars);
         }
     }
