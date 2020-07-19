@@ -407,12 +407,8 @@
     </ul>
 </div>
 <script type="text/javascript">
-    var ul=document.getElementById("home").value;
-    function dianji(val,mean) {
-        window.open(val,mean)
-    }
     var url = window.location.href;
-    if (url == (ul+'index.html')) {
+    if (url == '/honest/templates/index.html') {
         $("#home").attr("class", "active-li");
     }
 </script>            <!--内容主体-->
@@ -420,7 +416,7 @@
     <div class="left-content">
         <div class="ms-title title-model">
             <h5>廉政教育</h5>
-            <a  th:href="/honest/templates/181/index.html" target="_blank">更多</a>
+            <a  href="/honest/templates/181/index.html" target="_blank">更多</a>
         </div>
         <div class="ms-news">
             <div class="slideBox0">
@@ -436,8 +432,8 @@
                 <div class="bd">
                     <ul  class="list-style-none">
                         <li th:each="edu,stat:${educations}" th:if="${stat.count<=5}">
-                            <a th:href="#{skiphtml}+'/181/'+${edu.next}+'/'+${edu.id}+'.html'" target="_blank">
-                                <img th:src="#{skiphtml}+'/static/images/'+${edu.surl}+''" />
+                            <a th:href="'/honest/templates/181/'+${edu.next}+'/'+${edu.id}+'.html'" target="_blank">
+                                <img th:src="'/honest/templates/static/images/'+${edu.surl}+''" />
                             </a>
                         </li>
                        <!-- <li>
@@ -466,11 +462,11 @@
             </div>
             <div>
                 <h5 class="ms-text-ellipsis">
-                    <a th:href="#{skiphtml}+'/181/'+${educations[0].next}+'/'+${educations[0].id}+'.html'" target="_blank" th:text="${educations[0].title}"> </a>
+                    <a th:href="'/honest/templates/181/'+${educations[0].next}+'/'+${educations[0].id}+'.html'" target="_blank" th:text="${educations[0].title}"> </a>
                 </h5>
                 <ul class="new-all">
                     <li th:each="edu,itemStat:${educations}" th:if="${!itemStat.first}">
-                        <a th:href="#{skiphtml}+'/181/'+${edu.next}+'/'+${edu.id}+'.html'" th:text="${edu.title}" target="_blank"></a>
+                        <a th:href="'/honest/templates/181/'+${edu.next}+'/'+${edu.id}+'.html'" th:text="${edu.title}" target="_blank"></a>
                         <span th:text="${#dates.format(edu.createTime,'MM-dd')}"></span>
                     </li>
                 </ul>
@@ -492,11 +488,11 @@
         <div class="announcements">
             <div class="title-model">
                 <h5>通知公告</h5>
-                <a th:if="${sysMessage[0].content!=''}" th:href="#{skiphtml}+'/211/index.html'" target="_blank">更多</a>
+                <a th:if="${sysMessage[0].content!=''}" th:href="/honest/templates/211/index.html" target="_blank">更多</a>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="msg:${sysMessage}">
-                    <a th:text="${msg.articletitle}" class="right" th:href="#{skiphtml}+'/211/'+${msg.aid}+'.html'" target="_blank"></a>
+                    <a th:text="${msg.articletitle}" class="right" th:href="'/honest/templates/211/'+${msg.aid}+'.html'" target="_blank"></a>
                     <span th:text="${#dates.format(msg.createTime,'MM-dd')}"></span>
                 </li>
 
@@ -509,15 +505,15 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>责任纪实</h5>
-                <a th:if="${rdWorkVos[0].content!=''}" th:href="#{skiphtml}+'/185/index.html'" target="_blank">更多</a>
+                <a th:if="${rdWorkVos[0].content!=''}" th:href="/honest/templates/185/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img th:src="${skiphtml}+'/article/3.jpg'" alt="">
+                <img th:src="/honest/templates/article/3.jpg" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${rdWorkVos[0].title}"></span>
                     <div class="content">
                         <label th:text="${#strings.abbreviate(rdContent,30)}" ></label>
-                        <a th:if="${rdWorkVos[0].content!=''}" th:href="#{skiphtml}+'/185/'+${rdWorkVos[0].type}+'/'+${rdWorkVos[0].id}+'.html'"
+                        <a th:if="${rdWorkVos[0].content!=''}" th:href="'/honest/templates/185/'+${rdWorkVos[0].type}+'/'+${rdWorkVos[0].id}+'.html'"
                            target="_blank">详情>></a>
                     </div>
 
@@ -526,7 +522,7 @@
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="rd,itemStat:${rdWorkVos}" th:if="${!itemStat.first}">
                     <a th:text="${rd.title}"
-                       th:href="#{skiphtml}+'/185/'+${rd.type}+'/'+${rd.id}+'.html'"
+                       th:href="'/honest/templates/185/'+${rd.type}+'/'+${rd.id}+'.html'"
                        target="_blank"></a>
                     <span th:text="${#dates.format(rd.createTime,'MM-dd')}"></span>
                 </li>
@@ -536,30 +532,30 @@
 
             <div class="title-model">
                 <h5>风险防控</h5>
-                <a th:if="${riskVos[0].description!=''}" th:href="#{skiphtml}+'/195/index.html'" target="_blank">更多</a>
+                <a th:if="${riskVos[0].description!=''}" th:href="/honest/templates/195/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img  th:src="${skiphtml}+'/article/2.jpg" alt="">
+                <img  th:src="/honest/templates/article/2.jpg" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${riskVos[0].project}"></span>
                     <div class="content">
                         <label th:text="${#strings.abbreviate(riContent,30)}" ></label>
-                        <a th:if="${riskVos[0].description!=''}" th:href="#{skiphtml}+'/195/'+${riskVos[0].type}+'/'+${riskVos[0].id}+'.html'" target="_blank">详情>></a>
+                        <a th:if="${riskVos[0].description!=''}" th:href="'/honest/templates/195/'+${riskVos[0].type}+'/'+${riskVos[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="risk,itemStat:${riskVos}" th:if="${!itemStat.first}">
-                    <a th:text="${risk.project}" th:href="#{skiphtml}+‘/195/'+${risk.type}+'/'+${risk.id}+'.html'" target="_blank"></a>
+                    <a th:text="${risk.project}" th:href="'/honest/templates/195/'+${risk.type}+'/'+${risk.id}+'.html'" target="_blank"></a>
                     <span th:text="${#dates.format(risk.createTime,'MM-dd')}"></span>
                 </li>
             </ul>
         </div>
     </div>
     <div class="right-content ms-absolute picture-list">
-        <div><img th:src="#{skiphtml}+'/static/images/justice.png'" alt="一身正气"></div>
+        <div><img th:src="/honest/templates/static/images/justice.png" alt="一身正气"></div>
         <div><a name="lettersVisits" href="http://localhost:80/#/userReport" target="_blank"><img
-                th:src="#{skiphtml}+/static/images/complaint-reporting.png" alt="信访入口"></a>
+                th:src="/honest/templates/static/images/complaint-reporting.png" alt="信访入口"></a>
         </div>
     </div>
 </div>
@@ -568,22 +564,22 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>监督责任</h5>
-                <a th:href="#{skiphtml}+'/207/index.html'" th:if="${supervise[0].DutyContent!=''}" target="_blank">更多</a>
+                <a th:href="/honest/templates/207/index.html" th:if="${supervise[0].DutyContent!=''}" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img th:src="#{skiphtml}+'/static/images/dandelion.png'" alt="">
+                <img th:src="/honest/templates/static/images/dandelion.png" alt="">
                 <div>
                     <span class="title ms-text-ellipsis" th:text="${supervise[0].DutyTitle}"></span>
                     <div class="content">
                         <label th:text="${#strings.abbreviate(duContent,30)}" ></label>
-                        <a th:if="${supervise[0].DutyContent!=''}" th:href="#{skiphtml}+'/207/289.html'" target="_blank">详情>></a>
+                        <a th:if="${supervise[0].DutyContent!=''}" th:href="/honest/templates/207/289.html" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
 
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="su,stat:${supervise}" th:if="${!stat.first}">
-                    <a th:href="#{skiphtml}+'/207/'+${289+stat.index}+'.html'" target="_blank"
+                    <a th:href="'/honest/templates/207/'+${289+stat.index}+'.html'" target="_blank"
                        th:text="${su.DutyTitle}"></a>
                     <span th:text="${#dates.format(su.NewTime,'MM-dd')}"></span>
                 </li>
@@ -593,20 +589,20 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>纪检报表</h5>
-                <a th:if="${reports[0].report!=''}" th:href="#{skiphtml}+'/189/index.html'" target="_blank">更多</a>
+                <a th:if="${reports[0].report!=''}" th:href="/honest/templates/189/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img  th:src="#{skiphtml}+/static/images/meeting.png" alt="">
+                <img  th:src="/honest/templates/static/images/meeting.png" alt="">
                 <div>
                     <span class="title ms-text-ellipsis"  th:text="${#strings.abbreviate(reports[0].report,30)}" ></span>
                     <div class="content">
-                        <a th:if="${reports[0].report!=''}" th:href="#{skiphtml}+'/189/'+${reports[0].id}+'.html'" target="_blank">详情>></a>
+                        <a th:if="${reports[0].report!=''}" th:href="'/honest/templates/189/'+${reports[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="re,stat:${reports}" th:if="${!stat.first}">
-                    <a th:href="#{skiphtml}+'/189/'+${re.id}+'.html'" target="_blank" th:text="${re.report}">
+                    <a th:href="'/honest/templates/189/'+${re.id}+'.html'" target="_blank" th:text="${re.report}">
 
                     </a>
                     <span th:text="${#dates.format(re.newTime,'MM-dd')}"></span>
@@ -619,21 +615,21 @@
         <div class="news-content-model">
             <div class="title-model">
                 <h5>廉政文化</h5>
-                <a th:if="${cultures[0].content!=''}" th:href="#{skiphtml}+'/182/index.html'" target="_blank">更多</a>
+                <a th:if="${cultures[0].content!=''}" th:href="/honest/templates/182/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img  src="#{skiphtml}+'/article/1.jpg'" alt="">
+                <img  src="/honest/templates/article/1.jpg" alt="">
                 <div>
                     <span th:if="${cultures[0].content!=''}"class="title ms-text-ellipsis" th:text="${cultures[0].title}"></span>
                     <div class="content">
                         <label th:text="${#strings.abbreviate(cuContent,30)}"></label>
-                        <a  th:if="${cultures[0].content!=''}" th:href="#{skiphtml}+'/182/'+${cultures[0].type}+'/'+${cultures[0].id}+'.html'" target="_blank">详情>></a>
+                        <a  th:if="${cultures[0].content!=''}" th:href="'/honest/templates/182/'+${cultures[0].type}+'/'+${cultures[0].id}+'.html'" target="_blank">详情>></a>
                     </div>
                 </div>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="cu,stat:${cultures}" th:if="${!stat.first}">
-                    <a  class="right" th:href="#{skiphtml}+'/html/2/182/'+${cu.type}+'/'+${cu.id}+'.html'" target="_blank" th:text="${cu.title}"></a>
+                    <a  class="right" th:href="'/honest/templates/html/2/182/'+${cu.type}+'/'+${cu.id}+'.html'" target="_blank" th:text="${cu.title}"></a>
                     <span th:text="${#dates.format(cu.createTime,'MM-dd')}"></span>
                 </li>
             </ul>
@@ -644,7 +640,7 @@
 <div class="content-footer body-model body-content margin-center">
     <div class="title-model">
         <h5>潭烟风貌</h5>
-        <a th:if="${smokestyle[0].smocontent!=''}" th:href="#{skiphtml}+'/212/index.html'" target="_blank">更多</a>
+        <a th:if="${smokestyle[0].smocontent!=''}" th:href="/honest/templates/212/index.html" target="_blank">更多</a>
     </div>
     <div class="slideGroup" style="margin:0 auto">
         <div class="parBd">
@@ -653,8 +649,8 @@
                 <a class="sPrev" href="javascript:void(0)"></a>
                 <ul th:if="${smokestyle[0].smocontent!=''}">
                     <li th:if="${smoke.surl!=''}" th:each="smoke:${smokestyle}">
-                        <div class="pic"><a th:href="#{skiphtml}+'/212/'+${smoke.smoid}+'.html'" target="_blank"><img
-                                th:src="#{skiphtml}+'/image/'+${smoke.surl}" alt=""></a></div>
+                        <div class="pic"><a th:href="'/honest/templates/212/'+${smoke.smoid}+'.html'" target="_blank"><img
+                                th:src="'/honest/templates/image/'+${smoke.surl}" alt=""></a></div>
                     </li>
                 </ul>
                 <a class="sNext" href="javascript:void(0)"></a>
