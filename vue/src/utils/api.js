@@ -5,15 +5,15 @@ import store from '../store'
 axios.defaults.withCredentials = true;
 // 创建axios实例
 const service = axios.create({
-        // baseURL: process.env.BASE_URL,//process.env.BASE_URL, // api的base_url
-      baseURL: "http://192.168.43.75:8080/honest",
+        baseURL: process.env.BASE_URL, //process.env.BASE_URL, // api的base_url
+        //baseURL: "http://192.168.43.75:8080/honest",
         timeout: 15000000 // 请求超时时间2
     })
     // request拦截器
 service.interceptors.request.use(config => {
 
-  config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-  return config
+        config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+        return config
     }, error => {
         // Do something with request error
         console.error(error) // for debug
@@ -37,12 +37,12 @@ service.interceptors.response.use(
                 duration: 500,
                 onClose: () => {
                     store.dispatch('FedLogOut').then(() => {
-                       location.reload() // 为了重新实例化vue-router对象 避免bug
+                        location.reload() // 为了重新实例化vue-router对象 避免bug
                     })
                 }
             });
             return Promise.reject("未登录")
-         } //else {
+        } //else {
         //     Message({
         //         message: res.msg,
         //         type: 'error',

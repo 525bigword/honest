@@ -110,7 +110,13 @@
     <!--增加修改页面-->
     <div :style="{'display':dis2}"  style="background-color: lightgray;width:100%;margin-top:-9px">
       <el-main><!--  margin-left:40px; -->
-        <el-form ref="dataForm" :rules="rules" :model="rickInfo" label-position="center" label-width="150px" style="width: 100%;">
+        <el-form 
+        ref="dataForm" 
+        :rules="rules" 
+        :model="rickInfo" 
+        label-position="center" 
+        label-width="150px" 
+        style="width: 100%;">
           <!--操作按钮-->
           <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;">
             <el-form-item  style="width:100%;height:30px;margin-left: -60px;margin-top:12px" align="right">
@@ -125,14 +131,14 @@
             <el-row style="margin-left:5%;font-weight: bold;">
               <el-col :span="12" style="width:43%">
                 <el-form-item style="font-weight: bold;" label="流程风险名称" prop="proName">
-                  <el-input style="width: 350px"  v-model="rickInfo.proName" placeholder="请输入流程风险名称" ></el-input>
+                  <el-input style="width: 100%"  v-model="rickInfo.proName" placeholder="请输入流程风险名称" ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12" style="width:43%">
                 <el-form-item style="font-weight: bold;" label="风险流程年份" prop="proYear">
                   <el-date-picker
                     :editable="false"
-                    style="width: 350px"
+                    style="width: 100%"
                     v-model="rickInfo.proYear"
                     type="year"
                     format="yyyy"
@@ -146,7 +152,7 @@
               <el-col :span="24" >
                 <el-form-item style="font-weight: bold;" label="流程风险图" prop="proAccessoryName">
                   <el-upload
-                    style="width:870px"
+                    style="width:715px"
                     class="upload-demo"
                     v-model="rickInfo.proAccessoryName"
                     ref="upload"
@@ -196,7 +202,7 @@
               <el-col :span="12" style="width:43%">
                 <el-form-item label="风险发生可能性L值"  prop="pLvalue">
                   <el-select v-model="rickInfo.pLvalue" placeholder="风险发生可能性L值"
-                             style="width: 350px" class="filter-item" @change="changValueRisk()">
+                             style="width: 100%" class="filter-item" @change="changValueRisk()">
                     <el-option v-for="item in lValue" :key="item.lId" :label="item.lName" :value="item.lId"/>
                   </el-select>
                 </el-form-item>
@@ -204,7 +210,7 @@
               <el-col :span="12" style="width:43%">
                 <el-form-item label="风险产生严重性C值"  prop="pCvalue">
                   <el-select v-model="rickInfo.pCvalue" placeholder="风险产生严重性C值"
-                             style="width: 350px" class="filter-item" @change="changValueRisk()">
+                             style="width: 100%" class="filter-item" @change="changValueRisk()">
                     <el-option v-for="item in cValue" :key="item.cId" :label="item.cName" :value="item.cId"/>
                   </el-select>
                 </el-form-item>
@@ -214,14 +220,14 @@
               <el-col :span="12" style="width:43%">
                 <el-form-item label="流程风险值D值" prop="pDvalue">
                   <el-input placeholder="系统自动算出" v-model="rickInfo.pDvalue"
-                            style="width: 350px" disabled="disabled"/>
+                            style="width: 100%" disabled="disabled"/>
                 </el-form-item>
               </el-col>
 
               <el-col :span="12" style="width:43%">
                 <el-form-item label="风险等级" prop="proGrade">
                   <el-select v-model="rickInfo.proGrade" placeholder="系统计算风险值后自动选择"
-                             style="width: 350px" class="filter-item"
+                             style="width: 100%" class="filter-item"
                              disabled="disabled">
                     <el-option v-for="item in riskGrades" :key="item.rgId" :label="item.rgName" :value="item.rgId"/>
                   </el-select>
@@ -234,7 +240,7 @@
                   <!--<quill-editor class="editor"  style="height:500px;width:90%;"
                                 ref="myQuillEditor"
                                 v-model="rickInfo.proInfomation"></quill-editor>-->
-                  <el-input v-model="rickInfo.proInfomation" :rows="5" style="width: 870px"
+                  <el-input v-model="rickInfo.proInfomation" :rows="5" style="width: 84%"
                             placeholder="请输入流程风险描述..." type="textarea"></el-input>
                 </el-form-item>
               </el-col>
@@ -242,7 +248,7 @@
             <el-row style="margin-left:5%;font-weight: bold;">
               <el-col :span="24">
                 <el-form-item style="font-weight: bold;" label="预防和控制措施" prop="proMeasures">
-                  <el-input v-model="rickInfo.proMeasures" :rows="10" style="width: 870px"
+                  <el-input v-model="rickInfo.proMeasures" :rows="10" style="width: 84%"
                             placeholder="请输入预防和控制措施..." type="textarea"></el-input>
                 </el-form-item>
               </el-col>
