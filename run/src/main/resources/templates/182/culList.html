@@ -204,7 +204,7 @@
             skin: 'layer-alert-video',
             anim: 0,
             scrollbar:true,//防止父页面自动跳到页面顶端
-            content: '<video src='+ul+'"http://localhost:4031/ms-mcms/templets/2/vedio'+url+'"  width="320" height="240" controls="controls"></video>'
+            content: '<video src="#{staticfile}'+url+'"  width="320" height="240" controls="controls"></video>'
         });
     }
 
@@ -225,7 +225,7 @@
         $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
 
         if (getData.type == 0) {
-            $(".content-list").children("div").eq(1).html(content + "<a href=\"" + getData.url + "\">预览</a>");			//添加文章内容
+            $(".content-list").children("div").eq(1).html(content + "<a th:href=\"#{staticfile}" + getData.url + "\">预览</a>");			//添加文章内容
         } else {
             $(".content-list").children("div").eq(1).html(content);			//添加文章内容
         }

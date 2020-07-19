@@ -31,6 +31,7 @@ public class RunApplication {
             vars.put("html",environment.getProperty("html"));
             vars.put("skiphttml",environment.getProperty("skiphtml"));
             vars.put("visitbackstage",environment.getProperty("visitbackstage"));
+            vars.put("staticfile",environment.getProperty("staticfile"));
             viewResolver.setStaticVariables(vars);
         }
     }
