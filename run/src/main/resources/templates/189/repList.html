@@ -62,7 +62,7 @@
     /*背景图片*/
     .head-banner{
         background-size: cover;
-        background-image: url("../../static/images/banner.png");
+        background-image: url("/honest/templates/static/images/banner.png");
         background-repeat: no-repeat;
         background-position: center center;
     }
@@ -113,12 +113,12 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" th:value="#{skiphtml}" onclick="dianji('/index.html','_self')"><a>首页</a></li>
-        <li class=""th:value="#{skiphtml}" onclick="dianji('/181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class=""  onclick="dianji('/182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class=""  onclick="dianji('/185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class=""  onclick="dianji('/195/index.html','_blank')"><a>风险防控</a></li>
-        <li class=""  onclick="dianji('/207/index.html','_blank')"><a>监督责任</a></li>
+        <li id="home" th:value="#{skiphtml}" onclick="window.open('/honest/templates/index.html','_self')"><a>首页</a></li>
+        <li class=""th:value="#{skiphtml}" onclick="window.open('/honest/templates/181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class=""  onclick="window.open('/honest/templates/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class=""  onclick="window.open('/honest/templates/185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class=""  onclick="window.open('/honest/templates/195/index.html','_blank')"><a>风险防控</a></li>
+        <li class=""  onclick="window.open('/honest/templates/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
 <script type="text/javascript">
@@ -136,7 +136,7 @@
             <li class="ms-relative">
                 <!--圆形-->
                 <div class="shape-circular ms-absolute">
-                    <img src="../../static/images/箭头@2x.png" />
+                    <img src="/honest/templates/static/images/箭头@2x.png" />
                 </div>
                 <span><label>纪检报表</label></span>
                 <ul class="list-style-none">
@@ -162,7 +162,7 @@
             <a th:href="${record.url}" >预览</a>
         </div>
         <div>
-             <span class="ms-right" id="goback"><a th:href="/index.html">返回首页</a></span>
+             <span class="ms-right" id="goback"><a th:href="/honest/templates/index.html">返回首页</a></span>
         </div>
     </div>
 </div>
