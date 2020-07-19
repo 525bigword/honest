@@ -570,7 +570,7 @@ import { mapGetters } from 'vuex'
       },
       shipin(row){
         if(row.dvideo!==null&&row.dvideo!==''){
-          this.he=this.virtualIp+row.dvideo
+          this.he=this.videoIp+row.dvideo
           this.dialogVideo=true
         }else{
           this.he=""

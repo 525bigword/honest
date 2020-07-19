@@ -8,10 +8,13 @@ import com.xr.run.entity.SysStaff;
 import com.xr.run.service.ProcessrickService;
 import com.xr.run.util.ResponseResult;
 import com.xr.run.util.constants.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +26,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @RestController
+@Slf4j
 @RequestMapping("/processRick")
 public class ProcessRickController {
 
@@ -40,9 +44,11 @@ public class ProcessRickController {
         return result;
     }
 
-    @RequestMapping("add")
+    @PostMapping("add")
     @RequiresPermissions("processRick:add")
-    public ResponseResult add(Processrick processrick) {
+    public ResponseResult add(@RequestBody Processrick processrick) {
+        log.info("=================================================="+processrick.toString());
+        log.info("=================================================="+processrick.getProName());
         //processrick.setProYear(processrick.getProYear().substring(0,4));
         ResponseResult result = new ResponseResult();
         if (processrick == null) {
@@ -73,10 +79,11 @@ public class ProcessRickController {
         return result;
     }
 
-    @RequestMapping("update")
+    @PostMapping(value = "update")
     @RequiresPermissions("processRick:update")
     public ResponseResult updatePostRiskCombing(Processrick processrick) {
        // System.out.println(processrick);
+        log.info("==========================================="+processrick.toString());
         processrick.setProYear(processrick.getProYear().substring(0,4));
         ResponseResult result = new ResponseResult();
         if (processrick != null) {

@@ -118,21 +118,17 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" th:value="#{skiphtml}" onclick="dianji('/index.html','_self')"><a>首页</a></li>
-        <li class="" id="lujing" th:value="#{visitbackstage}" onclick="dianji('/181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="dianji('/182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="" onclick="dianji('/185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="dianji('/195/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="dianji('/207/index.html','_blank')"><a>监督责任</a></li>
+        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/1/index.html','_self')"><a>首页</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1/181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1/185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1/195/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/1/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
 <script type="text/javascript">
-    var ul=document.getElementById("home").value;
-    function dianji(val,mean) {
-        window.open(ul+val,mean)
-    }
     var url = window.location.href;
-    if(url ==ul+'/index.html'){
+    if(url == 'http://localhost:4031/ms-mcms/html/1/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>		<div class="margin-center ms-menue-content-model">
@@ -146,10 +142,10 @@
                 <span><label>廉政文化</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span th:class="${cultures.type==1}?'active-span-title':''"><label><a th:href="#{skiphtml}+'/182/1/index.html'" >清风文苑</a></label></span>
+                        <span th:class="${cultures.type==1}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/182/1/index.html" >清风文苑</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${cultures.type==0}?'active-span-title':''"><label><a th:href="#{skiphtml}+'/182/0/index.html'" >资料集锦</a></label></span>
+                        <span th:class="${cultures.type==0}?'active-span-title':''"><label><a href="http://localhost:4031/ms-mcms/html/2/182/0/index.html" >资料集锦</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -172,7 +168,7 @@
                 <span style="color: #000000"  th:utext="${cultures.content}">
 			    </span>
                 &nbsp;&nbsp;
-                <a th:if="${cultures.type==0}" th:href="#{skiphtml}+'static/images'+${cultures.url}" >预览</a>
+                <a th:if="${cultures.type==0}" th:href="'http://localhost:4031/ms-mcms/templets/2/image'+${cultures.url}" >预览</a>
                 &nbsp;&nbsp;
                 <a><span th:if="${cultures.type==0}"  th:onclick="check([[${cultures.dVideo}]])">
                     查看视频</span>
@@ -185,7 +181,7 @@
 
         <div>
             <span class="ms-right" id="goback">
-                <a th:href="#{skiphtml}+'/index.html'">返回首页</a>
+                <a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a>
             </span>
         </div>
     </div>
@@ -193,7 +189,6 @@
 ﻿<script type="text/javascript">
     //layer播放本地视频
     function check(dVideo){
-        var ul=document.getElementById("home").value;
         var url = dVideo.trim()
         layer.open({
             type: 1,
@@ -204,7 +199,7 @@
             skin: 'layer-alert-video',
             anim: 0,
             scrollbar:true,//防止父页面自动跳到页面顶端
-            content: '<video src="#{staticfile}'+url+'"  width="320" height="240" controls="controls"></video>'
+            content: '<video src="http://localhost:4031/ms-mcms/templets/2/vedio'+url+'"  width="320" height="240" controls="controls"></video>'
         });
     }
 
@@ -225,7 +220,7 @@
         $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
 
         if (getData.type == 0) {
-            $(".content-list").children("div").eq(1).html(content + "<a th:href=\"#{staticfile}" + getData.url + "\">预览</a>");			//添加文章内容
+            $(".content-list").children("div").eq(1).html(content + "<a href=\"" + getData.url + "\">预览</a>");			//添加文章内容
         } else {
             $(".content-list").children("div").eq(1).html(content);			//添加文章内容
         }
@@ -237,8 +232,7 @@
     }
     var type = ms.util.getParameter("type");
     var id = ms.util.getParameter("id");
-    var lujing=document.getElementById("lujing");
-    var URL = lujing+"/qt/qtwind/getCulById?id="+id+"&type="+type;
+    var URL = "http://localhost:8080/honest/qt/qtwind/getCulById?id="+id+"&type="+type;
     var getData = [];	//请求返回的数据
     $.ajax({
         async: true,
@@ -249,7 +243,7 @@
             if(da!="null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("&nbsp;&nbsp;<a href=\"#{skiphtml}+'/182/index.html'\">返回上一页</a>")
+                    $("#goback").append("&nbsp;&nbsp;<a href=\"http://localhost:4031/ms-mcms/html/2/182/index.html\">返回上一页</a>")
                 }
                 insertContent(data);
             }

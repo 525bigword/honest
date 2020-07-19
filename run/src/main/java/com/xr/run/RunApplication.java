@@ -24,22 +24,18 @@ public class RunApplication {
         SpringApplication.run(RunApplication.class, args);
     }
 
-    @Resource
     private void configureThymeleafStaticVars(ThymeleafViewResolver viewResolver){
         if(viewResolver!=null){
             Map<String,Object> vars=new HashMap<>();
             vars.put("html",environment.getProperty("html"));
-            vars.put("skiphttml",environment.getProperty("skiphtml"));
-            vars.put("visitbackstage",environment.getProperty("visitbackstage"));
-            vars.put("staticfile",environment.getProperty("staticfile"));
             viewResolver.setStaticVariables(vars);
         }
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        // 注意这里要指向原先用main方法执行的Application启动类extends SpringBootServletInitializer
-//        return builder.sources(RunApplication.class);
-//    }
+    /*@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // 注意这里要指向原先用main方法执行的Application启动类
+        return builder.sources(RunApplication.class);extends SpringBootServletInitializer
+    }*/
 
 }

@@ -42,10 +42,10 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
     @Insert("insert into processrick(processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus,proAccessoryName) values(#{processId},#{proName},#{proYear},#{proInfomation},#{proAccessory},#{proCreateTime},#{proCreateId},#{proCreateName},#{proStatus},#{proAccessoryName})")
 */
     @Insert("insert into processrick" +
-            " values(0,null,#{proName},#{proYear},#{proAccessory}," +
-            "#{proAccessoryName},#{proInfomation},#{proMeasures},#{proGrade}," +
-            "now(),#{proCreateId},#{proCreateName},1)")
-    void addProcessrick(Processrick processrick);
+            " values(0,null,#{p.proName},#{p.proYear},#{p.proAccessory}," +
+            "#{p.proAccessoryName},#{p.proInfomation},#{p.proMeasures},#{p.proGrade}," +
+            "now(),#{p.proCreateId},#{p.proCreateName},1)")
+    void addProcessrick(@Param("p") Processrick processrick);
 
     /**
      * 根据ID删除

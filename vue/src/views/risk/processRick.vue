@@ -519,18 +519,24 @@
       },
       // 弹窗确定
       submitUser() {
-        alert("this.rickInfo.proAccessoryName:"+this.rickInfo.proAccessoryName)
+        //alert("this.rickInfo.proAccessoryName:"+this.rickInfo.proAccessoryName)
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
           if (valid) {
             if (this.dialogTitle === '增加') {
               impFile(this.formData).then(response => {
-                this.rickInfo.proAccessory = response.dFile;
+                console.log(response)
+                if(response===undefined) {
+
+                }else
+                {
+                  this.rickInfo.proAccessory = response.dFile;
+                }
                 /*var dateee = new Date(this.rickInfo.proYear).toJSON();
             var date = new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
             this.rickInfo.proYear = date;*/
 
-                let postData = qs.stringify({
+                let postData = {
                   proid: this.rickInfo.proid,
                   proName: this.rickInfo.proName,
                   proYear: this.rickInfo.proYear,
@@ -544,8 +550,8 @@
                   proCreateId: this.rickInfo.proCreateId,
                   proCreateName: this.rickInfo.proCreateName,
                   proStatus: this.rickInfo.proStatus
-                });
-
+                };
+                console.log(postData)
                // console.log("postData:" + postData)
                 //新增
                 add(postData).then((response) => {
@@ -558,22 +564,23 @@
                     type: 'success',
                     duration: 2000
                   })
+                  console.log(postData)
                   this.deselect()
                 })
               })
 
             }
             if (this.dialogTitle === '修改') {
-              console.log("准备执行修改方法")
+              //console.log("准备执行修改方法")
               if (this.filename !==this.rickInfo.proAccessoryName) {
                 impFile(this.formData).then(response => {
                   this.rickInfo.proAccessory = response.dFile;
                   console.log("response.dFile;"+response.dFile)
-                /*  var dateee = new Date(this.rickInfo.proYear).toJSON();
+                  var dateee = new Date(this.rickInfo.proYear).toJSON();
                   var date = new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
-                  this.rickInfo.proYear = date;*/
+                  this.rickInfo.proYear = date;
 
-                  /*let postData = qs.stringify({
+                  let postData = qs.stringify({
                     proid: this.rickInfo.proid,
                     proName: this.rickInfo.proName,
                     proYear: this.rickInfo.proYear,
@@ -588,6 +595,7 @@
                     proCreateName: this.rickInfo.proCreateName,
                     proStatus: this.rickInfo.proStatus
                   });
+                  console.debug(postData)
                   update(postData).then((response) => {
                     this.iconFormVisible = false;
                     clearInterval(this.timer)
@@ -599,7 +607,7 @@
                       duration: 2000
                     })
                     this.deselect()
-                  })*/
+                  })
                 })
               }else{
                 var dateee = new Date(this.rickInfo.proYear).toJSON();
@@ -749,7 +757,7 @@
           //dFileName: [{ required: true, message: '请上传文件', trigger: 'change'}]
           proName: [{required:true,message:'流程名称不能为空',trigger:['blur','change']}],
           proYear:[{required:true,message:'执行年份不能为空',trigger:['blur','change']}],
-          proAccessoryName:[{required:true,message:'流程图必须上传',trigger:["change","blur"]}],
+          //proAccessoryName:[{required:true,message:'流程图必须上传',trigger:["change","blur"]}],
           proInfomation: [{required: true, message: "预防和控制措施不能为空", trigger: ["change", "blur"]}],
           proMeasures: [{required: true, message: "预防和控制措施不能为空", trigger: ['change',"blur"]}],
           /*pLvalue:[{required: true, message: "风险发生可能性L值不能为空", trigger:  ["change", "blur"]}],
@@ -758,7 +766,7 @@
           proGrade:[
             {required:true,message:'请选择流程风险L、C值',trigger:["change", "blur"]},
             {validator:pGradeCustom,trigger:'blur'}
-          ],
+          ]
         },
         riskGrades: [
           {rgId: '一级风险', rgName: '高度风险(一级)'},

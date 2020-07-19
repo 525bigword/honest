@@ -320,6 +320,7 @@
 </template>
 
 <script>
+import qs from "qs";
 import {
   add,
   del,
@@ -332,7 +333,7 @@ import {
   getSysPostByMid
 } from "@/api/risk/postRiskCombing";
 import { mapGetters } from "vuex";
-import qs from "qs";
+
 import moment from "moment";
 import user from "../../store/modules/user";
 
@@ -610,6 +611,7 @@ export default {
         this.onSearch();
       } else {
         list(this.listQuery.pageNum, this.listQuery.pageSize).then(response => {
+          console.log("response:"+response)
           this.list = response.list;
           this.tableData = response.list;
           this.total = response.total;
@@ -905,6 +907,7 @@ export default {
       if(val===undefined)
         return
       console.debug(val);
+      this.userInfo.pinfomationid=undefined
       this.userInfo.pdeptid = val;
       let postData = qs.stringify({
         parent: val

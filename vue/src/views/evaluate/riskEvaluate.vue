@@ -110,32 +110,14 @@
         });
         this.listLoading = true;
         findBy(postData).then(response => {
+          console.log(response,"response")
           this.num1 = response.num1
           this.num2 = response.num2
           this.num3 = response.num3
-          console.log(this.num1+ "    " +this.num2+"  "+this.num3)
-          /* if(this.search.pDeptId!=undefined){
-             for(var i=0;i<this.bm.length;i++){
-               if(this.search.pDeptId===this.bm[i].mid){
-                 this.echarts1_option.title.text=this.bm[i].mechanismName+"风险等级占比图"
-               }
-             }
-           }else{
-             this.echarts1_option.title.text="风险等级总占比图"
-           }*/
+          console.log(this.num1+ " response.num3    "+ response.num3+"         " +this.num2+"  "+this.num3)
+          that.test2();
         })
-        /*getAllMechanismByParent(postData).then(response => {
-          this.num1 = 1;
-          this.num2 = 1;
-          this.num3 = 1;
-          console.log("response.list", response.list);
-          // response.list.filter(item=>{
-          //   this.bm.push(item)
-          // })
-          this.getPostByMid(response.list);
-        });*/
         let that = this;
-        setTimeout(that.test2, 1000);
       },
       // 重置表单数据
       resetTemp() {

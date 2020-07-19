@@ -1378,7 +1378,7 @@ export default {
         }
         },
         handleImgChan(){
-          var path=this.virtualIp+this.back.bpdf
+          var path=this.virtualdutyIp+this.back.bpdf
           if(this.back.backAccessoryName!==null&&this.back.backAccessoryName!==''){
             window.open(path)
           }

@@ -113,21 +113,17 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
 	<ul class="body-content list-style-none margin-center">
-		<li id="home" th:value="#{skiphtml}" onclick="dianji('/index.html','_self')"><a>首页</a></li>
-		<li class="" id="lujing" th:value="#{visitbackstage}" onclick="dianji('/181/index.html','_blank')"><a>廉政教育</a></li>
-		<li class="" onclick="dianji('/182/index.html','_blank')"><a>廉政文化</a></li>
-		<li class="" onclick="dianji('/185/index.html','_blank')"><a>责任纪实</a></li>
-		<li class="" onclick="dianji('/195/index.html','_blank')"><a>风险防控</a></li>
-		<li class="" onclick="dianji('/207/index.html','_blank')"><a>监督责任</a></li>
+		<li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
+		<li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
+		<li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
+		<li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
+		<li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
+		<li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
 	</ul>
 </div>
 <script type="text/javascript">
-	var ul=document.getElementById("home").value;
-	function dianji(val,mean) {
-		window.open(ul+val,mean)
-	}
     var url = window.location.href;
-    if(url ==  (ul+'/index.html')){
+    if(url == 'http://localhost:4031/ms-mcms/html/2/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>		<div class="margin-center ms-menue-content-model">
@@ -141,7 +137,7 @@
 				<span><label>潭烟风貌</label></span>
 				<ul class="list-style-none">
 					<li>
-						<span class="" onclick="dianji('/212/index.html','_self')"><label><a>潭烟风貌</a></label></span>
+						<span class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/212/index.html','_self')"><label><a>潭烟风貌</a></label></span>
 					</li>
 				</ul>
 			</li>
@@ -172,14 +168,14 @@
 
 		</div>
 		<div>
-			<span class="ms-right" id="goback"><a th:href="#{skiphtml}+'/index.html'">返回首页</a></span>
+			<span class="ms-right" id="goback"><a href="http://localhost:4031/ms-mcms/html/2/index.html">返回首页</a></span>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
     var id = ms.util.getParameter("id");
     if(id != null && id!="null" && id!=""){
-        $("#goback").append("&nbsp;&nbsp;<a href=\"#{skiphtml}+'/212/index.html'\">返回上一页</a>")
+        $("#goback").append("&nbsp;&nbsp;<a href=\"http://localhost:4031/ms-mcms/html/2/212/index.html\">返回上一页</a>")
 	}
 
 
