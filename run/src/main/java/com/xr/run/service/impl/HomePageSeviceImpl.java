@@ -10,6 +10,7 @@
  */
 package com.xr.run.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.RunApplication;
@@ -559,8 +560,16 @@ public class HomePageSeviceImpl implements HomePageSevice {
             cultureVo.setCname(record.getCname());
             cultureVo.setType(0); //资料集锦
             cultureVo.setCreateTime(record.getDCreateTime());
-            cultureVo.setUrl(record.getDPdf());
-            cultureVo.setDVideo(record.getDVideo());
+            if(StringUtils.isEmpty(record.getDPdf())){
+                cultureVo.setUrl(record.getDPdf());
+            }else{
+                cultureVo.setUrl("null");
+            }
+            if(StringUtils.isEmpty(record.getDVideo())){
+                cultureVo.setDVideo(record.getDVideo());
+            }else{
+                cultureVo.setDVideo("null");
+            }
             list.add(cultureVo);
             Map map1 = new HashMap();
             map1.put("cultures", cultureVo);

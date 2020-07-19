@@ -322,8 +322,8 @@
         .slideGroup .parBd{ padding:10px; zoom:1;  }
         .slideGroup .slideBox{ overflow:hidden; zoom:1; }
 
-        .slideGroup .sPrev,.slideGroup .sNext{ display:block; width:10px; height:120px; float:left;  border:1px solid white; background:url(../../upload/icon/icoLeft.gif) center center no-repeat white; }
-        .slideGroup .sNext{ background:url(../../upload/icon/icoRight.gif) center center no-repeat white;  }
+        .slideGroup .sPrev,.slideGroup .sNext{ display:block; width:10px; height:120px; float:left;  border:1px solid white; background:url(/honest/templates/static/images/icoLeft.gif) center center no-repeat white; }
+        .slideGroup .sNext{ background:url(/honest/templates/static/images/icoRight.gif) center center no-repeat white;  }
         .slideGroup .sPrev:hover,.slideGroup .sNext:hover{ border-color:green;  }
         .slideGroup .parBd .tempWrap{ float:left;  }
         .slideGroup .parBd ul{ overflow:hidden; zoom:1; float:left;  }
@@ -475,15 +475,19 @@
     </div>
     <div class="right-content" id="indexForm">
         <div id="login-form">
-            <form th:action="#{visitbackstage}+'/qt/login/doLogin'" id="form1">
+            <form  id="form1">
                 <input type="text" name="username" value=""  placeholder="账号">
                 <input  type="password" name="password" value="" placeholder="密码">
+<!--
                 <button type="submit">登录</button>
+-->
+                <span onclick="login()" class="hand">登录</span>
+
             </form>
-          <!--  <p  style="line-height: 20px;">
-                <span style="padding-right: 47px;">亲爱的：<a href="http://127.0.0.1:8080/ms-mcms/ms/index.do" class="isLogin" target="_blank">{{userName}}</a></span><span>欢迎回来</span><br/>
+           <p  style="line-height: 20px;" id="blockLogin">
+                <span style="padding-right: 47px;" id="loginUser"></span><span>欢迎回来</span><br/>
                 <span style="padding-right: 114px;"><a href="http://127.0.0.1:8080/ms-mcms/ms/message/index.do?messageType=2&modelId=366&modelCode=366&modelTitle=待办事项" class="isLogin" target="_blank">待办事项</a></span><a href="javascript:void(0);" class="red" @click="loginOut">[退出系统]</a>
-            </p>-->
+            </p>
         </div>
         <div class="announcements">
             <div class="title-model">
@@ -554,8 +558,7 @@
     </div>
     <div class="right-content ms-absolute picture-list">
         <div><img src="/honest/templates/static/images/justice.png" alt="一身正气"></div>
-        <div><a name="lettersVisits" href="http://localhost:80/#/userReport" target="_blank"><img
-                src="/honest/templates/static/images/complaint-reporting.png" alt="信访入口"></a>
+        <div><a name="lettersVisits" id="letter" href="http://localhost:8080/dist/#/userReport" target="_blank"><img src="/honest/templates/static/images/complaint-reporting.png" alt="信访入口"></a>
         </div>
     </div>
 </div>
@@ -618,7 +621,7 @@
                 <a th:if="${cultures[0].content!=''}" href="/honest/templates/182/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img  src="/honest/templates/article/1.jpg" alt="">
+                <img  src="/honest/templates/static/images/scenery-01.png/" alt="">
                 <div>
                     <span if="${cultures[0].content!=''}"class="title ms-text-ellipsis" th:text="${cultures[0].title}"></span>
                     <div class="content">
@@ -669,12 +672,14 @@
 </html>
 
 <script id="jsID" type="text/javascript">
+    $(function () {
+        $("#blockLogin").hide()
+    })
     //登录
-    /*function login(){
-        var lujing=document.getElementById("lujing");
+    function login(){
         $.ajax({
             type: "POST",//方法类型
-            url: lujing+"/qt/login/doLogin" ,//url
+            url: "/honest/qt/login/doLogin" ,//url
             data: $('#form1').serialize(),
             //几个参数需要注意一下
             xhrFields: {
@@ -682,14 +687,21 @@
             },
             crossDomain: true,
             success: function (data) {
-                var username = $.cookie('username')
-                alert(username);
+                console.log(data)
+                var username = data.info.userPermission.sysStaffByUserName.username
+                if(username!=''){
+                   //登录
+                    $("#blockLogin").show()
+                    $("#loginUser").append("亲爱的："+username);
+                    $("#form1").hide();
+                    $("#letter").attr("href","http://localhost:8080/dist/#/loginLetter")
+                }
             },
             error : function() {
                 alert("异常！");
             }
         });
-    }*/
+    }
     /*function getUser(){
         $.ajax({
             type: "POST",//方法类型
