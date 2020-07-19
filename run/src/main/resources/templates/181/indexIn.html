@@ -325,17 +325,21 @@
 <!--菜单导航栏-->
 <div class="menu-nav margin-center max-width">
     <ul class="body-content list-style-none margin-center">
-        <li id="home" onclick="window.open('http://localhost:4031/ms-mcms/html/2/index.html','_self')"><a>首页</a></li>
-        <li class="active-li" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/index.html','_blank')"><a>廉政教育</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/182/index.html','_blank')"><a>廉政文化</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/185/index.html','_blank')"><a>责任纪实</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/195/index.html','_blank')"><a>风险防控</a></li>
-        <li class="" onclick="window.open('http://localhost:4031/ms-mcms/html/2/207/index.html','_blank')"><a>监督责任</a></li>
+        <li id="home" th:value="#{skiphtml}" onclick="dianji('/index.html','_self')"><a>首页</a></li>
+        <li class="active-li" id="lujing" th:value="#{visitbackstage}" onclick="dianji('/181/index.html','_blank')"><a>廉政教育</a></li>
+        <li class="" onclick="dianji('/182/index.html','_blank')"><a>廉政文化</a></li>
+        <li class="" onclick="dianji('/185/index.html','_blank')"><a>责任纪实</a></li>
+        <li class="" onclick="dianji('/195/index.html','_blank')"><a>风险防控</a></li>
+        <li class="" onclick="dianji('/207/index.html','_blank')"><a>监督责任</a></li>
     </ul>
 </div>
 <script type="text/javascript">
+    var ul=document.getElementById("home").value;
+    function dianji(val,mean) {
+        window.open(ul+val,mean)
+    }
     var url = window.location.href;
-    if(url == 'http://localhost:4031/ms-mcms/html/2/index.html'){
+    if(url == ul+'/index.html'){
         $("#home").attr("class","active-li");
     }
 </script>
@@ -351,16 +355,16 @@
                 <ul class="list-style-none">
                     <input type="hidden" id="type" th:value="${type}"/>
                     <li>
-                        <span th:class="${type==0}?'active-span-title':''" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/0/index.html','_self')"><label><a>廉政要闻</a></label></span>
+                        <span th:class="${type==0}?'active-span-title':''" onclick="dianji('/181/0/index.html','_self')"><label><a>廉政要闻</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${type==1}?'active-span-title':''" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/1/index.html','_self')"><label><a>文件制度</a></label></span>
+                        <span th:class="${type==1}?'active-span-title':''" onclick="dianji('/181/1/index.html','_self')"><label><a>文件制度</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${type==2}?'active-span-title':''" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/2/index.html','_self')"><label><a>领导讲话</a></label></span>
+                        <span th:class="${type==2}?'active-span-title':''" onclick="dianji('/181/2/index.html','_self')"><label><a>领导讲话</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${type==3}?'active-span-title':''" onclick="window.open('http://localhost:4031/ms-mcms/html/2/181/3/index.html','_self')"><label><a>警钟长鸣</a></label></span>
+                        <span th:class="${type==3}?'active-span-title':''" onclick="dianji('/181/3/index.html','_self')"><label><a>警钟长鸣</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -370,14 +374,14 @@
         <p style="width: 50%;float: left;">
             <span>当前位置：</span>
             <label>
-                <a href="http://localhost:4031/ms-mcms/html/2/index.html">首页</a>
+                <a th:href="#{skiphtml}+'/index.html'">首页</a>
                 &gt;
-                <a href="http://localhost:4031/ms-mcms/html/2/181/index.html">廉政教育</a>
+                <a th:href="#{skiphtml}+'/181/index.html'">廉政教育</a>
                 &gt;
-                <a th:if="${type==0}" href="http://localhost:4031/ms-mcms/html/2/181/0/index.html" >廉政要闻</a>
-                <a th:if="${type==1}" href="http://localhost:4031/ms-mcms/html/2/181/1/index.html" >文件制度</a>
-                <a th:if="${type==2}" href="http://localhost:4031/ms-mcms/html/2/181/2/index.html" >领导讲话</a>
-                <a th:if="${type==3}" href="http://localhost:4031/ms-mcms/html/2/181/3/index.html" >警钟长鸣</a>
+                <a th:if="${type==0}" th:href="#{skiphtml}+'/181/0/index.html'" >廉政要闻</a>
+                <a th:if="${type==1}" th:href="#{skiphtml}+'/181/1/index.html'" >文件制度</a>
+                <a th:if="${type==2}" th:href="#{skiphtml}+'/181/2/index.html'" >领导讲话</a>
+                <a th:if="${type==3}" th:href="#{skiphtml}+'/181/3/index.html'" >警钟长鸣</a>
             </label>
         </p>
         <div id="box">
@@ -422,7 +426,8 @@
                     }
                     $("#idOne").val(getData[0].id);
                 }//获取一条数据
-                var url = "http://localhost:4031/ms-mcms/html/2/181/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id;//a链接地址
+                var ul=document.getElementById("home").value;
+                var url = ul+"/181/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id;//a链接地址
                 var title = data.title;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
@@ -441,7 +446,8 @@
                 pageNo = 1;
             }
             var type = $("#type").val();
-            var URL = "http://localhost:8080/honest/qt/educations/getEduList";
+            var lujing=document.getElementById("lujing");
+            var URL = lujing+"/qt/educations/getEduList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

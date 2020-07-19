@@ -17,7 +17,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @MapperScan("com.xr.run.dao")
-public class RunApplication {
+public class RunApplication extends SpringBootServletInitializer{
     @Resource
     private Environment environment;
     public static void main(String[] args) {
@@ -28,14 +28,17 @@ public class RunApplication {
         if(viewResolver!=null){
             Map<String,Object> vars=new HashMap<>();
             vars.put("html",environment.getProperty("html"));
+            vars.put("skiphtml",environment.getProperty("skiphtml"));
+            vars.put("visitbackstage",environment.getProperty("visitbackstage"));
+            vars.put("staticfile",environment.getProperty("staticfile"));
             viewResolver.setStaticVariables(vars);
         }
     }
 
-    /*@Override
+    @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         // 注意这里要指向原先用main方法执行的Application启动类
-        return builder.sources(RunApplication.class);extends SpringBootServletInitializer
-    }*/
+        return builder.sources(RunApplication.class);
+    }
 
 }
