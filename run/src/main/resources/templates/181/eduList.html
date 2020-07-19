@@ -139,16 +139,16 @@
 				<span><label>廉政教育</label></span>
 				<ul class="list-style-none">
 					<li>
-						<span th:class="${education.type=='廉政要闻'}?'active-span-title':''"><label><a th:href="/honest/templates/181/0/index.html" >廉政要闻</a></label></span>
+						<span th:class="${education.type=='廉政要闻'}?'active-span-title':''"><label><a href="/honest/templates/181/0/index.html" >廉政要闻</a></label></span>
 					</li>
 					<li>
-						<span th:class="${education.type=='文件制度'}?'active-span-title':''"><label><a th:href="/honest/templates/181/1/index.html" >文件制度</a></label></span>
+						<span th:class="${education.type=='文件制度'}?'active-span-title':''"><label><a href="/honest/templates/181/1/index.html" >文件制度</a></label></span>
 					</li>
 					<li>
-						<span th:class="${education.type=='领导讲话'}?'active-span-title':''"><label><a th:href="/honest/templates/181/2/index.html" >领导讲话</a></label></span>
+						<span th:class="${education.type=='领导讲话'}?'active-span-title':''"><label><a href="/honest/templates/181/2/index.html" >领导讲话</a></label></span>
 					</li>
 					<li>
-						<span th:class="${education.type=='警钟长鸣'}?'active-span-title':''"><label><a th:href="/honest/templates/181/3/index.html" >警钟长鸣</a></label></span>
+						<span th:class="${education.type=='警钟长鸣'}?'active-span-title':''"><label><a href="/honest/templates/181/3/index.html" >警钟长鸣</a></label></span>
 					</li>
 				</ul>
 			</li>
@@ -243,7 +243,7 @@
             if(da!="null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("<a th:href=\"/honest/templates/181/index.html\">返回上一页</a>")
+                    $("#goback").append("<a href=\"/honest/templates/181/index.html\">返回上一页</a>")
                 }
                 insertContent(data);
             }
