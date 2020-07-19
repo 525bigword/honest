@@ -22,6 +22,14 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     })
     IPage<SpvDuty> findSpvDuty(Page page, @Param("dutyTitle") String dutyTitle);
 
+    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`,tongbao from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status` =0 or `status` =6  order by did desc")
+    @Results({
+            @Result(column = "dCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
+    })
+    IPage<SpvDuty> findSpvDuty1(Page page, @Param("dutyTitle") String dutyTitle);
+
+
     @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},`status`=#{status} where did=#{did}")
     void updateSpvDutyByDid(SpvDuty spvDuty);
 
@@ -67,7 +75,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     })
     SpvDuty findSpvDutyByDid(int did);
 
-    @Select("select sd.*,ss.name from spv_duty sd inner join sys_staff ss on sd.dCreateId = ss.sid where sd.status = 2 ORDER BY sd.NewTime desc limit 0,5")
+    @Select("select sd.*,ss.name from spv_duty sd inner join sys_staff ss on sd.dCreateId = ss.sid where sd.status = 0 or sd.status = 6 ORDER BY sd.NewTime desc limit 0,5")
     List<SpvDuty> findSpvDutyTopFive();
     @Select("SELECT count(did) FROM (SELECT did,dCreateId FROM spv_duty WHERE `status` <> 0 and `status` <> -1 ) spv_duty WHERE dCreateId = #{sid}")
     Integer findSpvDutyByWstatusToCount(@Param("sid")Integer sid);

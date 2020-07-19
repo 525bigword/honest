@@ -82,5 +82,5 @@ public interface SpvDutyService extends IService<SpvDuty> {
     SpvDuty findSpvDutyByDid(int did);
 
 
-
+    IPage<SpvDuty> findSpvDuty1(Page page, String title);
 }

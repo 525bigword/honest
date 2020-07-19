@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" th:href="#{html}+'/css/app.css'" />
     <link rel="stylesheet" type="text/css" th:href="#{html}+'/css/list-model.css'" />
     <!--jq引用-->
-    <script src="../../static/js/jquery-1.9.1.js"></script>
+    <script th:src="#{html}+'/js/jquery-1.9.1.js'"></script>
     <script th:src="#{html}+'/js/axios.min.js'"></script>
     <script th:src="#{html}+'/js/qs.min.js'"></script>
     <!--铭飞-->
@@ -155,10 +155,10 @@
         </div>
         <div >
             <span th:text="${record.report}"></span>
-            <a th:href="${record.url}" >预览</a>
+            <a th:href="'/hoonest/img'+${record.url}" >预览</a>
         </div>
         <div>
-             <span class="ms-right" id="goback"><a th:href="/honest/templates/index.html">返回首页</a></span>
+             <span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>
         </div>
     </div>
 </div>
@@ -192,8 +192,7 @@
     }
 
     var id = ms.util.getParameter("id");
-    var lujing=document.getElementById("lujing");
-    var URL = lujing+"/qt/report/getReportById?id="+id;
+    var URL = "/honest/qt/report/getReportById?id="+id;
     var getData = [];	//请求返回的数据
     $.ajax({
         async: true,
@@ -204,7 +203,7 @@
             if(da!="null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("&nbsp;&nbsp;<a th:href=\"/honest/templates/189/index.html\">返回上一页</a>")
+                    $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/189/index.html\">返回上一页</a>")
                 }
                 insertContent(data);
             }

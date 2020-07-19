@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="#{html}+'/css/app.css'" />
     <link rel="stylesheet" type="text/css" th:href="#{html}+'/css/list-model.css'" />
     <!--jq引用-->
-    <script src="../../static/js/jquery-1.9.1.js"></script>
+    <script th:src="#{html}+'/js/jquery-1.9.1.js'"></script>
     <script th:src="#{html}+'/js/axios.min.js'"></script>
     <script th:src="#{html}+'/js/qs.min.js'"></script>
     <!--铭飞-->
@@ -166,7 +166,7 @@
                   </span></span></span><br />
         </div>
         <div>
-             <span class="ms-right" id="goback"><a th:href="/honest/templates/index.html">返回首页</a></span>
+             <span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>
         </div>
     </div>
 </div>
@@ -195,8 +195,7 @@
 
     var id = ms.util.getParameter("id");
     var type = ms.util.getParameter("type");
-    var lujing=document.getElementById("lujing");
-    var URL = lujing+"/qt/risk/getRiskById?id="+id+"&type="+type;
+    var URL = "/honest/qt/risk/getRiskById?id="+id+"&type="+type;
     var getData = [];	//请求返回的数据
     $.ajax({
         async: true,

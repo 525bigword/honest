@@ -63,4 +63,9 @@ public class SpvDutySericeImpl extends ServiceImpl<SpvDutyMapper,SpvDuty> implem
     public SpvDuty findSpvDutyByDid(int did) {
         return baseMapper.findSpvDutyByDid(did);
     }
+
+    @Override
+    public IPage<SpvDuty> findSpvDuty1(Page page, String title) {
+        return baseMapper.findSpvDuty1(page,title);
+    }
 }

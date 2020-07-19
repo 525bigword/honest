@@ -372,14 +372,14 @@
             <span>当前位置：</span>
             <label>
                 <input type="hidden" id="type" th:value="${type}"/>
-                <a th:href="/honest/templates/index.html">首页</a>
+                <a href="/honest/templates/index.html">首页</a>
                 &gt;
-                <a th:href="/honest/templates/185/index.html">责任纪实</a>
+                <a href="/honest/templates/185/index.html">责任纪实</a>
                 &gt;
-                <a th:if="${type==0}" th:href="/honest/templates/185/0/index.html">工作计划</a>
-                <a th:if="${type==1}" th:href="/honest/templates/185/1/index.html">工作部署</a>
-                <a th:if="${type==2}" th:href="/honest/templates/185/2/index.html">廉政谈话</a>
-                <a th:if="${type==3}" th:href="/honest/templates/185/3/index.html">主体责任</a>
+                <a th:if="${type==0}" href="/honest/templates/185/0/index.html">工作计划</a>
+                <a th:if="${type==1}" href="/honest/templates/185/1/index.html">工作部署</a>
+                <a th:if="${type==2}" href="/honest/templates/185/2/index.html">廉政谈话</a>
+                <a th:if="${type==3}" href="/honest/templates/185/3/index.html">主体责任</a>
             </label>
         </p>
         <div id="box">
@@ -437,8 +437,7 @@
                 pageNo = 1;
             }
             var type = $("#type").val();
-            var lujing=document.getElementById("lujing");
-            var URL = lujing+"/qt/duty/rdWorkDetailList";
+            var URL = "/honest/qt/duty/rdWorkDetailList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

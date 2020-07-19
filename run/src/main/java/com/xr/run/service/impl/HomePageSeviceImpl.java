@@ -226,6 +226,8 @@ public class HomePageSeviceImpl implements HomePageSevice {
             i3++;
         }
         listSort(list1);
+        log.info("====================list1========list1==================================list1list1list1==="+list1);
+
         if (list1.size() != 0) {
 
             String s = CommonUtil.delHTMLTag(list1.get(0).getContent());//去除标签
@@ -242,7 +244,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
                     createIndexHtml(destPath + "/185/0/", "185/rdList", rdWorkVo.getId() + ".html", map1);
                 } else if (rdWorkVo.getType() == 1) {
                     createIndexHtml(destPath + "/185/1/", "185/rdList", rdWorkVo.getId() + ".html", map1);
-
                 } else if (rdWorkVo.getType() == 2) {
                     createIndexHtml(destPath + "/185/2/", "185/rdList", rdWorkVo.getId() + ".html", map1);
                 } else {
@@ -558,7 +559,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             cultureVo.setCname(record.getCname());
             cultureVo.setType(0); //资料集锦
             cultureVo.setCreateTime(record.getDCreateTime());
-            cultureVo.setUrl(record.getDFile());
+            cultureVo.setUrl(record.getDPdf());
             cultureVo.setDVideo(record.getDVideo());
             list.add(cultureVo);
             Map map1 = new HashMap();

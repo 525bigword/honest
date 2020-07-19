@@ -344,9 +344,9 @@
         <p style="width: 50%;float: left;">
             <span>当前位置：</span>
             <label>
-                <a th:href="/honest/templates/index.html">首页</a>
+                <a href="/honest/templates/index.html">首页</a>
                 &gt;
-                <a th:href="/honest/templates/185/index.html">廉政文化</a>
+                <a href="/honest/templates/185/index.html">廉政文化</a>
             </label>
         </p>
         <input type="hidden" id="typeOne" />
@@ -402,8 +402,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var lujing=document.getElementById("lujing");
-            var URL = lujing+"/qt/qtwind/get";
+            var URL = "/honest/qt/qtwind/get";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

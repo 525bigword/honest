@@ -65,7 +65,7 @@ public class DutyController {
     @RequestMapping("/dustList")
     public String dustList(String title, Integer pageNo, Integer pageSize) {
         Page page = new Page(pageNo, pageSize);
-        IPage<SpvDuty> supervise = spvDutyService.findSpvDuty(page, title);
+        IPage<SpvDuty> supervise = spvDutyService.findSpvDuty1(page, title);
         String jsonString = JSON.toJSONString(supervise);
         return jsonString;
     }

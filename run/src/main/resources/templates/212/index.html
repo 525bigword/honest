@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" th:href="#{html}+'/css/app.css'" />
 	<link rel="stylesheet" type="text/css" th:href="#{html}+'/css/list-model.css'" />
 	<!--网络请求框架-->	<!--jq引用-->
-	<script src="../../static/js/jquery-1.9.1.js"></script>
+	<script th:src="#{html}+'/js/jquery-1.9.1.js'"></script>
 	<script th:src="#{html}+'/js/axios.min.js'"></script>
 	<script th:src="#{html}+'/js/qs.min.js'"></script>
 	<!--铭飞-->
@@ -418,8 +418,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-					var lujing=document.getElementById("lujing");
-            var URL =lujing+ "/qt/tamSmoke/getSmoke";
+            var URL = "/honest/qt/tamSmoke/getSmoke";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

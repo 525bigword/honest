@@ -294,11 +294,29 @@
       },
       //动态计算风险值
       changValueRisk() {
-        let lValue=this.rickInfo.pLvalue.substring(this.rickInfo.pLvalue.indexOf("(")+1,
-          this.rickInfo.pLvalue.indexOf(")"))
-        let cValue=this.rickInfo.pCvalue.substring(this.rickInfo.pCvalue.indexOf("(")+1,
-          this.rickInfo.pCvalue.indexOf(")"))
-        var s = this.rickInfo.pDvalue = parseInt(lValue) * parseInt(cValue)
+        let lValue;
+console.log('this.rickInfo.pLvalue',this.rickInfo.pLvalue)
+        console.log('this.rickInfo.pCValue',this.rickInfo.pCvalue)
+        if(this.rickInfo.pLvalue===undefined){
+          lValue=undefined
+        }else {
+          lValue = this.rickInfo.pLvalue.substring(this.rickInfo.pLvalue.indexOf("(") + 1,
+            this.rickInfo.pLvalue.indexOf(")"))
+        }
+        let cValue;
+
+        if(this.rickInfo.pCvalue===undefined) {
+          cValue=undefined
+        }else {
+          cValue=this.rickInfo.pCvalue.substring(this.rickInfo.pCvalue.indexOf("(") + 1,
+            this.rickInfo.pCvalue.indexOf(")"))
+        } console.log('lvalue',lValue)
+        console.log('cvalue',cValue)
+        let s;
+        if(this.rickInfo.pLvalue!=undefined&&this.rickInfo.pCvalue!=undefined){
+          s= this.rickInfo.pDvalue = parseInt(lValue) * parseInt(cValue)
+        }
+
         //console.log("s----"+s)
         if (s >= 240) {
           this.rickInfo.proGrade = this.riskGrades[0].rgId
@@ -410,7 +428,9 @@
         this.dialogTitle = '修改';
         this.h1Text="修改流程风险"
         this.rickInfo = row;
-        this.fileList=[{name:row.proAccessoryName,url:this.virtualimgIp+row.proAccessory}];
+        if(row.proAccessoryName!==''&&row.proAccessoryName!==null){
+          this.fileList=[{name:row.proAccessoryName,url:this.virtualimgIp+row.proAccessory}];
+        }
         this.filename=row.proAccessoryName
         /*if (row.pstatus === 1) {
           this.userInfo.pstatus = '正常'
@@ -500,7 +520,6 @@
       //新增
       add() {
         this.$refs['dataForm'].clearValidate()
-        this.fileList=[];
         this.dialogTitle = '增加';
         this.h1Text="添加流程风险"
         this.rickInfo = {};
@@ -509,12 +528,14 @@
         //this.defaultSelect()
         this.dis='none'
         this.dis2='inline-block'
+        this.fileList=[];
       },
       //弹窗取消
       deselect() {
         this.dis='inline-block'
         this.dis2='none'
         this.rickInfo={}
+        this.fileList=[];
         this.$refs['dataForm'].clearValidate()
       },
       // 弹窗确定
@@ -566,6 +587,7 @@
                   })
                   console.log(postData)
                   this.deselect()
+                  this.fileList=[];
                 })
               })
 
@@ -607,6 +629,7 @@
                       duration: 2000
                     })
                     this.deselect()
+                    this.fileList=[];
                   })
                 })
               }else{

@@ -344,12 +344,12 @@
         <p style="width: 50%;float: left;">
             <span>当前位置：</span>
             <label>
-                <a th:href="/honest/templates/index.html">首页</a>
+                <a href="/honest/templates/index.html">首页</a>
                 &gt;
-                <a th:href="/honest/templates/182/index.html">廉政文化</a>
+                <a href="/honest/templates/182/index.html">廉政文化</a>
                 &gt;
-                <a th:if="${type==0}" th:href="/honest/templates/182/0/index.html">资料集锦</a>
-                <a th:if="${type==1}" th:href="/honest/templates/182/1/index.html">清风文苑</a>
+                <a th:if="${type==0}" href="/honest/templates/182/0/index.html">资料集锦</a>
+                <a th:if="${type==1}" href="/honest/templates/182/1/index.html">清风文苑</a>
 
             </label>
         </p>
@@ -407,8 +407,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var lujing=document.getElementById("lujing");
-            var URL = lujing+"/qt/qtwind/getByType";
+            var URL = "/honest/qt/qtwind/getByType";
             var getData = [];	//请求返回的数据
             var type = $("#type").val();
             $.ajax({

@@ -368,9 +368,9 @@
 		<p style="width: 50%;float: left;">
 			<span>当前位置：</span>
 			<label>
-				<a th:href="/honest/templates//index.html">首页</a>
+				<a href="/honest/templates//index.html">首页</a>
 				&gt;
-				<a th:href="/honest/templates/181/index.html">廉政教育</a>
+				<a href="/honest/templates/181/index.html">廉政教育</a>
 			</label>
 		</p>
 		<div id="box">
@@ -434,8 +434,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-					var lujing=document.getElementById("lujing");
-            var URL = lujing+"/qt/educations/get";
+            var URL = "/honest/qt/educations/get";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,

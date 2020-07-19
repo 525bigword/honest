@@ -189,7 +189,7 @@
                     :props="props2"
                     @change="Change2"
                     :show-all-levels="false"
-                    :options="bm"
+                    :options="bm2"
                   ></el-cascader>
                 </el-form-item>
               </el-col>
@@ -504,7 +504,8 @@ export default {
         { cId: "一般(15)", cName: "一般" },
         { cId: "较轻(7)", cName: "较轻" }
       ],
-      parentDept:[]
+      parentDept:[],
+      parentDept2:[]
     };
   },
   created() {
@@ -739,6 +740,7 @@ export default {
       console.log("row",row)
       this.userInfo.pProbableLValue=row.pprobableLValue
       //console.log("row.pdeptid:"+row.pdeptId)
+      this.Change2()
       getSysPostByMid(row.pdeptId).then(response => {
         this.postList3 = [];
         for (let sysPost of response.list) {
@@ -821,18 +823,24 @@ export default {
       this.onSearch(); // 切换页码时，要获取每页显示的条数
       //console.log(`当前页: ${val}`)
     },
-    // 获得部门
-    /*getSysmechanismAll(val = 0) {
+    // 获得部门2
+    getSysmechanismAll(val = 0) {
+      return new Promise((resolve, reject) => {
         this.api({
           url: "sysmechanism/get",
           method: "get"
         }).then(res => {
-          this.bm = [];
+          console.log("sysmechanism", res);
+          // this.bm.concat(res)
+          this.bm2 = [];
           res.filter(item => {
-            this.bm.push(item);
+            this.bm2.push(item);
           });
+          resolve()
         });
-      },*/
+      });
+      },
+    // 获得部门1
     getSysmechanismAll(val = 0) {
       return new Promise((resolve, reject) => {
         this.api({

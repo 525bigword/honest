@@ -370,14 +370,14 @@
         <p style="width: 50%;float: left;">
             <span>当前位置：</span>
             <label>
-                <a th:href="/honest/templates/index.html">首页</a>
+                <a href="/honest/templates/index.html">首页</a>
                 &gt;
-                <a th:href="/honest/templates/181/index.html">廉政教育</a>
+                <a href="/honest/templates/181/index.html">廉政教育</a>
                 &gt;
-                <a th:if="${type==0}" th:href="/honest/templates/181/0/index.html" >廉政要闻</a>
-                <a th:if="${type==1}" th:href="/honest/templates/181/1/index.html" >文件制度</a>
-                <a th:if="${type==2}" th:href="/honest/templates/181/2/index.html" >领导讲话</a>
-                <a th:if="${type==3}" th:href="/honest/templates/181/3/index.html" >警钟长鸣</a>
+                <a th:if="${type==0}" href="/honest/templates/181/0/index.html" >廉政要闻</a>
+                <a th:if="${type==1}" href="/honest/templates/181/1/index.html" >文件制度</a>
+                <a th:if="${type==2}" href="/honest/templates/181/2/index.html" >领导讲话</a>
+                <a th:if="${type==3}" href="/honest/templates/181/3/index.html" >警钟长鸣</a>
             </label>
         </p>
         <div id="box">
@@ -441,8 +441,7 @@
                 pageNo = 1;
             }
             var type = $("#type").val();
-            var lujing=document.getElementById("lujing");
-            var URL = lujing+"/qt/educations/getEduList";
+            var URL = "/honest/qt/educations/getEduList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,
