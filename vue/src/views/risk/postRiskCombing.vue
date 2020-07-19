@@ -740,7 +740,7 @@ export default {
       console.log("row",row)
       this.userInfo.pProbableLValue=row.pprobableLValue
       //console.log("row.pdeptid:"+row.pdeptId)
-      this.Change2()
+      this.getSysmechanismAll()
       getSysPostByMid(row.pdeptId).then(response => {
         this.postList3 = [];
         for (let sysPost of response.list) {
