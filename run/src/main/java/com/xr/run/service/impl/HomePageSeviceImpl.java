@@ -560,12 +560,12 @@ public class HomePageSeviceImpl implements HomePageSevice {
             cultureVo.setCname(record.getCname());
             cultureVo.setType(0); //资料集锦
             cultureVo.setCreateTime(record.getDCreateTime());
-            if(StringUtils.isEmpty(record.getDPdf())){
+            if(record.getDPdf()!=null&&!record.getDPdf().equals("")){
                 cultureVo.setUrl(record.getDPdf());
             }else{
                 cultureVo.setUrl("null");
             }
-            if(StringUtils.isEmpty(record.getDVideo())){
+            if(record.getDVideo()!=null&&!record.getDVideo().equals("")){
                 cultureVo.setDVideo(record.getDVideo());
             }else{
                 cultureVo.setDVideo("null");

@@ -486,36 +486,35 @@ export default {
     handleDelete(row, index) {
       console.log("delete", row, index);
       if (row.staus == "正常") {
-        this.$alert("是否确定删除", "提示", {
-          showCancelButton: true,
-          showConfirmButton: true,
-          closeOnPressEscape: false,
-          callback: action => {
-            this.api({
-              url: "sysmechanism/del/" + row.mid,
-              method: "delete"
-            }).then(res => {
-              console.log(res);
-              if (res === 1) {
-                this.total--;
-                this.list.splice(index, 1);
-                this.$notify({
-                  title: "成功",
-                  message: "",
-                  type: "success",
-                  duration: 2000
-                });
-              } else {
-                this.$notify({
-                  title: "失败",
-                  message: "请先将与该部门相关联的数据删除",
-                  type: "error",
-                  duration: 2000
-                });
-              }
-            });
-          }
-        });
+        this.$confirm('是否确定删除？', '确定？', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '删除',
+          cancelButtonText: '取消'
+        }).then(res=> {
+          this.api({
+            url: "sysmechanism/del/" + row.mid,
+            method: "delete"
+          }).then(res => {
+            console.log(res);
+            if (res === 1) {
+              this.total--;
+              this.list.splice(index, 1);
+              this.$notify({
+                title: "成功",
+                message: "",
+                type: "success",
+                duration: 2000
+              });
+            } else {
+              this.$notify({
+                title: "失败",
+                message: "请先将与该部门相关联的数据删除",
+                type: "error",
+                duration: 2000
+              });
+            }
+          })
+        })
       } else {
         this.$alert("是否确定恢复", "提示", {
           showCancelButton: true,

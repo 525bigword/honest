@@ -168,9 +168,9 @@
                 <span style="color: #000000"  th:utext="${cultures.content}">
 			    </span>
                 &nbsp;&nbsp;
-                <a th:if="${cultures.type==0&&cultures.url!='null'}" th:href="'/hoonest/tmp'+${cultures.url}" >预览</a>
+                <a th:if="${cultures.type==0&&cultures.url!='null'&&cultures.url!='undefined'}" th:href="'/hoonest/tmp'+${cultures.url}" >预览</a>
                 &nbsp;&nbsp;
-                <a><span th:if="${cultures.type==0&&cultures.dVideo!='null'}"  th:onclick="check([[${cultures.dVideo}]])">查看视频</span></a>
+                <a><span th:if="${cultures.type==0&&cultures.dVideo!='null'&&cultures.dVideo!='undefined'}"  th:onclick="check([[${cultures.dVideo}]])">查看视频</span></a>
 
             </span>
 
@@ -219,20 +219,23 @@
             + getData.cname + '</label></span>&nbsp;&nbsp;&nbsp; ' +
             ' <span>时间：<label>' + getData.createTime + '</label></span></div> ';	//文章标题等信息
 
-        $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
-		//添加文章内容
-        var html = '';
-        if (getData.type == 0||getData.type=="0" ) {
-            if(getData.url!='null') {
-                html +="<a href= \"/hoonest/tmp"+ getData.url +">预览</a>";
-                $(".content-list").children("div").eq(1).html(content+ html);
+        var html ='';
+        if (getData.type == 0) {
+            var url =getData.url
+            if(url!="null"&&url!=="undefined"&&url!=null) {
+                html=html +"<a href=\"" + url + "\">预览</a>"
             }
-            if(getData.dVideo!='null') {
-                $(".content-list").children("div").eq(1).html(content + html + '&nbsp;&nbsp; <a><span onclick=check('+getData.dVideo+')>查看视频</span> </a>');
+            var dvideo =getData.dVideo
+            alert(getData.dVideo)
+            if(dvideo!="null"&&dvideo!=="undefined"&&dvideo!=null) {
+                html =html +" &nbsp;&nbsp;<a><span onclick=\"check("+dvideo+")\">查看视频</span></a>"
             }
-        }else{
+            $(".content-list").children("div").eq(1).html(content + html);			//添加文章内容
+
+        } else {
             $(".content-list").children("div").eq(1).html(content);			//添加文章内容
         }
+
 
     }
 

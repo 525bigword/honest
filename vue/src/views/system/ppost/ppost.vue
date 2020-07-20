@@ -567,37 +567,36 @@ export default {
         });
       } else {
         console.log(this.deletelist);
-        this.$alert("是否确定删除", "提示", {
-          showCancelButton: true,
-          showConfirmButton: true,
-          closeOnPressEscape: false,
-          callback: action => {
-            let arr = this.deletelist.join(",");
-            console.log(arr);
-            this.api({
-              url: "SysPostPermission/del",
-              method: "post",
-              params: {
-                arr: arr
-              }
-            }).then(res => {
-              console.log(res);
-              if (res === 0) {
-                this.$message({
-                  type: "error",
-                  message: "请保证该岗位没有员工"
-                });
-                return;
-              }
+        this.$confirm('是否确定删除？', '确认？', {
+          distinguishCancelAndClose: true,
+          confirmButtonText: '删除',
+          cancelButtonText: '取消'
+        }).then(res=>{
+          let arr = this.deletelist.join(",");
+          console.log(arr);
+          this.api({
+            url: "SysPostPermission/del",
+            method: "post",
+            params: {
+              arr: arr
+            }
+          }).then(res => {
+            console.log(res);
+            if (res === 0) {
               this.$message({
-                  type: "success",
-                  message: "删除成功"
-                });
-              this.getList();
-              // this.getList();
+                type: "error",
+                message: "请保证该岗位没有员工"
+              });
+              return;
+            }
+            this.$message({
+              type: "success",
+              message: "删除成功"
             });
-          }
-        });
+            this.getList();
+            // this.getList();
+          });
+        })
       }
     },
     handleFetchPv(pv) {

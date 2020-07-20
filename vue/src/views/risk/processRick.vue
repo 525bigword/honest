@@ -600,7 +600,7 @@ console.log('this.rickInfo.pLvalue',this.rickInfo.pLvalue)
             }
             if (this.dialogTitle === '修改') {
               //console.log("准备执行修改方法")
-              if (this.filename !==this.rickInfo.proAccessoryName) {
+              /*if (this.filename !==this.rickInfo.proAccessoryName) {*/
                 impFile(this.formData).then(response => {
                   this.rickInfo.proAccessory = response.dFile;
                   console.log("response.dFile;"+response.dFile)
@@ -638,7 +638,7 @@ console.log('this.rickInfo.pLvalue',this.rickInfo.pLvalue)
                     this.fileList=[];
                   })
                 })
-              }else{
+              /*}else{
                 var dateee = new Date(this.rickInfo.proYear).toJSON();
                 var date = new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, " ").replace(/\.[\d]{3}Z/, "");
                 this.rickInfo.proYear = date;
@@ -670,7 +670,7 @@ console.log('this.rickInfo.pLvalue',this.rickInfo.pLvalue)
                   })
                   this.deselect()
                 })
-              }
+              }*/
             }
           }
         })

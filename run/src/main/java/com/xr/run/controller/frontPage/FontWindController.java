@@ -39,6 +39,16 @@ public class FontWindController {
             cultureVo.setTitle(record.getDTitle());
             cultureVo.setCname(record.getCname());
             cultureVo.setType(0); //资料集锦
+            if(record.getDPdf()!=null&&!record.getDPdf().equals("")){
+                cultureVo.setUrl(record.getDPdf());
+            }else{
+                cultureVo.setUrl("null");
+            }
+            if(record.getDVideo()!=null&&!record.getDVideo().equals("")){
+                cultureVo.setDVideo(record.getDVideo());
+            }else{
+                cultureVo.setDVideo("null");
+            }
             cultureVo.setCreateTime(record.getDCreateTime());
             list.add(cultureVo);
         }
@@ -99,6 +109,16 @@ public class FontWindController {
                 cultureVo.setContent(record.getDFileName());
                 cultureVo.setTitle(record.getDTitle());
                 cultureVo.setCname(record.getCname());
+                if(record.getDPdf()!=null&&!record.getDPdf().equals("")){
+                    cultureVo.setUrl(record.getDPdf());
+                }else{
+                    cultureVo.setUrl("null");
+                }
+                if(record.getDVideo()!=null&&!record.getDVideo().equals("")){
+                    cultureVo.setDVideo(record.getDVideo());
+                }else{
+                    cultureVo.setDVideo("null");
+                }
                 cultureVo.setType(0); //资料集锦
                 cultureVo.setCreateTime(record.getDCreateTime());
                 list.add(cultureVo);
@@ -135,12 +155,12 @@ public class FontWindController {
                 cultureVo.setTitle(datacollection.getDTitle());
                 cultureVo.setCname(datacollection.getCname());
                 cultureVo.setType(0); //资料集锦
-                if(StringUtils.isEmpty(datacollection.getDPdf())){
+                if(datacollection.getDPdf()!=null&&!datacollection.getDPdf().equals("")){
                     cultureVo.setUrl(datacollection.getDPdf());
                 }else{
                     cultureVo.setUrl("null");
                 }
-                if(StringUtils.isEmpty(datacollection.getDVideo())){
+                if(datacollection.getDVideo()!=null&&!datacollection.getDVideo().equals("")){
                     cultureVo.setDVideo(datacollection.getDVideo());
                 }else{
                     cultureVo.setDVideo("null");

@@ -420,6 +420,7 @@ export default {
           showConfirmButton: true,
           closeOnPressEscape: false,
           callback: action => {
+            if (action === "confirm") {
             let arr = [];
             this.deleteList.filter(item => {
               arr.push(item.sid);
@@ -448,6 +449,7 @@ export default {
                 }
               }
             });
+          }
           }
         });
       }
@@ -672,20 +674,22 @@ export default {
             showConfirmButton: true,
             closeOnPressEscape: false,
             callback: action => {
-              this.api({
-                url: "SysStaff/update",
-                method: "put",
-                data: this.form
-              }).then(res => {
-                console.log(res);
-                if (res === 1) {
-                  this.$message({
-                    type: "success",
-                    message: "修改成功"
-                  });
-                  this.dialogTableVisible = false;
-                }
-              });
+              if (action === "confirm") {
+                this.api({
+                  url: "SysStaff/update",
+                  method: "put",
+                  data: this.form
+                }).then(res => {
+                  console.log(res);
+                  if (res === 1) {
+                    this.$message({
+                      type: "success",
+                      message: "修改成功"
+                    });
+                    this.dialogTableVisible = false;
+                  }
+                });
+              }
             }
           });
         }
