@@ -156,10 +156,10 @@
             <!--表单数据-->
             <el-input v-model="userInfo.pid" placeholder="编号" type="hidden"></el-input>
             <el-row style="margin-left:5%">
-              <el-col :span="12" style="width:43%">
+              <el-col  :span="12" style="width:43%">
                 <el-form-item style="font-weight: bold;" label="风险项目名称" prop="pproject">
                   <el-input
-                    style="width: 350px"
+                    style="width: 270px"
                     v-model="userInfo.pproject"
                     placeholder="请输入风险项目名称"
                   ></el-input>
@@ -169,7 +169,7 @@
                 <el-form-item style="font-weight: bold;" label="执行年份" prop="pyear">
                   <el-date-picker
                     :editable="false"
-                    style="width: 350px"
+                    style="width: 270px"
                     v-model="userInfo.pyear"
                     type="year"
                     format="yyyy"
@@ -183,13 +183,13 @@
               <el-col :span="12" style="width:43%">
                 <el-form-item style="font-weight: bold;" label="部门" prop="pdeptId">
                   <el-cascader
-                    style="width: 350px"
+                    style="width: 270px"
                     placeholder="部门"
                     v-model="userInfo.pdeptId"
                     :props="props2"
                     @change="Change2"
                     :show-all-levels="false"
-                    :options="bm2"
+                    :options="bm"
                   ></el-cascader>
                 </el-form-item>
               </el-col>
@@ -197,7 +197,7 @@
                 <el-form-item style="font-weight: bold;" label="岗位" prop="pinfomationId">
                   <el-select
                     @change="selectSystemChanged"
-                    style="width: 350px"
+                    style="width: 270px"
                     v-model="userInfo.pinfomationId"
                     placeholder="岗位"
                   >
@@ -221,7 +221,7 @@
                   <el-input
                     v-model="userInfo.priskPointDescription"
                     :rows="3"
-                    style="width: 870px"
+                    style="width: 715px"
                     placeholder="请输入廉政风险点描述"
                     type="textarea"
                   ></el-input>
@@ -234,7 +234,7 @@
                   <el-select
                     v-model="userInfo.pprobableLValue"
                     placeholder="风险发生可能性L值"
-                    style="width: 350px"
+                    style="width: 270px"
                     class="filter-item"
                     @change="changValueRisk()"
                   >
@@ -252,7 +252,7 @@
                   <el-select
                     v-model="userInfo.pcvalue"
                     placeholder="风险产生严重性C值"
-                    style="width: 350px"
+                    style="width: 270px"
                     class="filter-item"
                     @change="changValueRisk()"
                   >
@@ -273,7 +273,7 @@
                   <el-input
                     placeholder="系统自动算出"
                     v-model="userInfo.pdvalue"
-                    style="width: 350px"
+                    style="width: 270px"
                     disabled="disabled"
                   />
                 </el-form-item>
@@ -284,7 +284,7 @@
                   <el-select
                     v-model="userInfo.pgrade"
                     placeholder="系统计算风险值后自动选择"
-                    style="width: 350px"
+                    style="width: 270px"
                     class="filter-item"
                     disabled="disabled"
                   >
@@ -304,7 +304,7 @@
                   <el-input
                     v-model="userInfo.pmeasures"
                     :rows="8"
-                    style="width: 870px"
+                    style="width: 715px"
                     placeholder="请输入预防和控制措施"
                     type="textarea"
                   ></el-input>
@@ -665,6 +665,10 @@ export default {
       // 默认选中风险值
       this.defaultSelect();
       this.iconFormVisible = true;
+      this.$nextTick(() => {
+        // 清除校验
+        this.$refs["dataForm"].clearValidate();
+      });
       this.dis = "none";
       this.dis2 = "inline-block";
     },
@@ -710,6 +714,7 @@ export default {
                 duration: 2000
               });
               this.deselect()// 弹窗取消
+              
             });
           }
         });
@@ -737,10 +742,8 @@ export default {
     // 显示修改对话框
     handleUpdate(row) {
       // 将row里面与temp里属性相同的值，进行copy
-      console.log("row",row)
-      this.userInfo.pProbableLValue=row.pprobableLValue
+      //console.log("row",row)
       //console.log("row.pdeptid:"+row.pdeptId)
-      this.getSysmechanismAll()
       getSysPostByMid(row.pdeptId).then(response => {
         this.postList3 = [];
         for (let sysPost of response.list) {
@@ -763,9 +766,13 @@ export default {
       this.dis = "none";
       this.dis2 = "inline-block";
       this.userInfo = Object.assign({}, row);
+      this.userInfo.pProbableLValue=row.pprobableLValue
+      this.userInfo.pdeptid=row.pdeptId
+      this.userInfo.pinfomationId=row.pinfomationId
       if(row.pinfomationId===0){
         this.userInfo.pinfomationId=undefined
       }
+      
     },
     // 多选框赋值
     changeFun(val) {
@@ -781,33 +788,39 @@ export default {
         ids1 += ids[i].pid + ",";
       }
       if (ids1 == "") {
-        /*this.$message({
-            type: 'warning',
-            message: '请选择要删除的数据'
-          })*/
-        this.$notify({
-          title: "温馨提示",
-          message: "请至少选择一行进行删除",
-          type: "success",
-          duration: 2000
+        // 先弹确认取消框
+        let title='';
+          this.$message({
+          showClose: true,
+          message: '请选择删除信息',
+          type: 'warning'
         });
+        // this.$notify({
+        //   title: "温馨提示",
+        //   message: "请至少选择一行进行删除",
+        //   type: "success",
+        //   duration: 2000
+        // });
       } else {
         // 先弹确认取消框
-        var bool = confirm("是否确认删除？");
-        if (!bool) {
-          return;
-        }
-        // 调用ajax去后台删除
-        del(ids1).then(response => {
+        this.$confirm('确认删除此条信息吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          // 调用ajax去后台删除
+          del(ids1).then(response => {
           // 刷新数据表格
           this.onSearch();
-          this.$notify({
-            title: "成功",
-            message: response.message,
-            type: "success",
-            duration: 2000
-          });
+           this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success',
+              duration: 2000
+            })
         });
+        })
+        // 调用ajax去后台删除
       }
     },
     // 每页显示的条数改变
