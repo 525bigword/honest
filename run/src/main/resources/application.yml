@@ -28,8 +28,10 @@ spring:
     time-zone: GMT+8
   datasource:
     username: xtycdflz
+    #xtycdflz
     password: 123@xtycdflz
-    url: jdbc:mysql://10.73.100.46:6033/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    #123@xtycdflz
+    url: jdbc:mysql://10.73.100.46:3066/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     #url: jdbc:mysql://139.129.118.147:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -67,5 +69,5 @@ file:
   staticAccessPaths: /upload/**
   uploadFolders: D:/Tomcat8.5/webapps/hoonest/img/
 html:
-  destPath: D:/Tomcat8.5/webapps/honest/templates
+  destPath: D:\tomcat\Tomcat8.5\webapps\honest\templates
 
