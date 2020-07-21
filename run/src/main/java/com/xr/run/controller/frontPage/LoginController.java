@@ -39,8 +39,8 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Controller
-@RequestMapping("/qt/login")
 @Slf4j
+@RequestMapping("/qt/login")
 public class LoginController {
 
 
@@ -56,21 +56,24 @@ public class LoginController {
     * index.html中使用th标签动态读取和显示
     * */
     @RequestMapping("/doLogin")
-    public String login(SysStaff sysStaff,HttpServletResponse response,HttpSession session){
+    @ResponseBody
+    public JSONObject login(SysStaff sysStaff,HttpServletResponse response,HttpSession session){
         System.out.println("username="+sysStaff.getUsername());
-        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("username",sysStaff.getUsername());
         jsonObject.put("password",sysStaff.getPassword());
-        JSONObject user = sysStaffService.authLogin(jsonObject);
-        log.debug("+==============================="+user);
-        if(user!=null){
-//            //保存在Cookie中
-//            Cookie myCookie=new Cookie("username",user.getUsername());
-//            myCookie.setMaxAge(600*10);//30分钟
-//            response.addCookie(myCookie);
-//            session.setAttribute("loginUser",user);
+        JSONObject jsonObject1 = sysStaffService.authLogin(jsonObject);
+        if(jsonObject1!=null){
+            JSONObject info = sysStaffService.getInfo();
+            log.info("info===============================info=======================info"+info);
 
-            return "HomePage";
+            //保存在Cookie中
+          /*  Cookie myCookie=new Cookie("username",user.getUsername());
+            myCookie.setMaxAge(600*10);//30分钟
+            response.addCookie(myCookie);
+            session.setAttribute("loginUser",user);*/
+
+          return info;
         }
         return null;
     }

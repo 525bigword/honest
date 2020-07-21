@@ -1,5 +1,6 @@
 package com.xr.run.controller.frontPage;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -38,6 +39,16 @@ public class FontWindController {
             cultureVo.setTitle(record.getDTitle());
             cultureVo.setCname(record.getCname());
             cultureVo.setType(0); //资料集锦
+            if(record.getDPdf()!=null&&!record.getDPdf().equals("")){
+                cultureVo.setUrl(record.getDPdf());
+            }else{
+                cultureVo.setUrl("null");
+            }
+            if(record.getDVideo()!=null&&!record.getDVideo().equals("")){
+                cultureVo.setDVideo(record.getDVideo());
+            }else{
+                cultureVo.setDVideo("null");
+            }
             cultureVo.setCreateTime(record.getDCreateTime());
             list.add(cultureVo);
         }
@@ -98,6 +109,16 @@ public class FontWindController {
                 cultureVo.setContent(record.getDFileName());
                 cultureVo.setTitle(record.getDTitle());
                 cultureVo.setCname(record.getCname());
+                if(record.getDPdf()!=null&&!record.getDPdf().equals("")){
+                    cultureVo.setUrl(record.getDPdf());
+                }else{
+                    cultureVo.setUrl("null");
+                }
+                if(record.getDVideo()!=null&&!record.getDVideo().equals("")){
+                    cultureVo.setDVideo(record.getDVideo());
+                }else{
+                    cultureVo.setDVideo("null");
+                }
                 cultureVo.setType(0); //资料集锦
                 cultureVo.setCreateTime(record.getDCreateTime());
                 list.add(cultureVo);
@@ -134,7 +155,16 @@ public class FontWindController {
                 cultureVo.setTitle(datacollection.getDTitle());
                 cultureVo.setCname(datacollection.getCname());
                 cultureVo.setType(0); //资料集锦
-                cultureVo.setUrl(datacollection.getDFile());
+                if(datacollection.getDPdf()!=null&&!datacollection.getDPdf().equals("")){
+                    cultureVo.setUrl(datacollection.getDPdf());
+                }else{
+                    cultureVo.setUrl("null");
+                }
+                if(datacollection.getDVideo()!=null&&!datacollection.getDVideo().equals("")){
+                    cultureVo.setDVideo(datacollection.getDVideo());
+                }else{
+                    cultureVo.setDVideo("null");
+                }
                 cultureVo.setCreateTime(datacollection.getDCreateTime());
                 return JSON.toJSONString(cultureVo);
             } else {

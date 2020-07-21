@@ -27,9 +27,11 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:6033/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: xtycdflz
+    #xtycdflz
+    password: 123@xtycdflz
+    #123@xtycdflz
+    url: jdbc:mysql://10.73.100.46:3066/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     #url: jdbc:mysql://139.129.118.147:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -55,17 +57,17 @@ mybatis-plus:
 file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
-  uploadFolder: D:/tomcat/Tomcat8.5.50/webapps/hoonest/tmp/
+  uploadFolder: D:/Tomcat8.5/webapps/hoonest/tmp/
   #uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
-  uploadDuty: D:/tomcat/Tomcat8.5.50/webapps/hoonest/duty/
+  uploadDuty: D:/Tomcat8.5/webapps/hoonest/duty/
   #uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
-  uploadImage: D:/tomcat/Tomcat8.5.50/webapps/hoonest/img/
+  uploadImage: D:/Tomcat8.5/webapps/hoonest/img/
   #uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
-  uploadVideo: D:/tomcat/Tomcat8.5.50/webapps/hoonest/vido
+  uploadVideo: D:/Tomcat8.5/webapps/hoonest/vido
   #uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
   accessPaths: /upload
   staticAccessPaths: /upload/**
-  uploadFolders: D:/tomcat/Tomcat8.5.50/webapps/hoonest/img/
+  uploadFolders: D:/Tomcat8.5/webapps/hoonest/img/
 html:
-  destPath: D:/tomcat/Tomcat8.5.50/webapps/honest/templates
+  destPath: D:\tomcat\Tomcat8.5\webapps\honest\templates
 

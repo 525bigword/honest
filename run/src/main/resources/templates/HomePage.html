@@ -322,8 +322,8 @@
         .slideGroup .parBd{ padding:10px; zoom:1;  }
         .slideGroup .slideBox{ overflow:hidden; zoom:1; }
 
-        .slideGroup .sPrev,.slideGroup .sNext{ display:block; width:10px; height:120px; float:left;  border:1px solid white; background:url(../../upload/icon/icoLeft.gif) center center no-repeat white; }
-        .slideGroup .sNext{ background:url(../../upload/icon/icoRight.gif) center center no-repeat white;  }
+        .slideGroup .sPrev,.slideGroup .sNext{ display:block; width:10px; height:120px; float:left;  border:1px solid white; background:url(/honest/templates/static/images/icoLeft.gif) center center no-repeat white; }
+        .slideGroup .sNext{ background:url(/honest/templates/static/images/icoRight.gif) center center no-repeat white;  }
         .slideGroup .sPrev:hover,.slideGroup .sNext:hover{ border-color:green;  }
         .slideGroup .parBd .tempWrap{ float:left;  }
         .slideGroup .parBd ul{ overflow:hidden; zoom:1; float:left;  }
@@ -422,40 +422,16 @@
             <div class="slideBox0">
                 <div class="hd">
                     <ul class="ms-absolute list-style-none">
-                        <li index-num="1"></li>
-                        <li index-num="2"></li>
-                        <li index-num="3"></li>
-                        <li index-num="4"></li>
-                        <li index-num="5"></li>
+                        <li th:index-num="${stat.count}" th:each="edu,stat:${educations}" th:if="${not #strings.isEmpty(edu.surl)}"></li>
                     </ul>
                 </div>
                 <div class="bd">
                     <ul  class="list-style-none">
-                        <li th:each="edu,stat:${educations}" th:if="${stat.count<=5}">
+                        <li th:each="edu,stat:${educations}" th:if="${not #strings.isEmpty(edu.surl)}">
                             <a th:href="'/honest/templates/181/'+${edu.next}+'/'+${edu.id}+'.html'" target="_blank">
                                 <img th:src="'/hoonest/img'+${edu.surl}+''" />
                             </a>
                         </li>
-                       <!-- <li>
-                            <a href="http://localhost:4031/ms-mcms/html/2/211/298.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-02.png"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:4031/ms-mcms/html/2/211/299.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-03.png"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:4031/ms-mcms/html/2/211/304.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-04.png"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost:4031/ms-mcms/html/2/211/376.html" target="_blank">
-                                <img src="http://localhost:4031/ms-mcms/templets/2/image/scenery-05.png"/>
-                            </a>
-                        </li>-->
 
                     </ul>
                 </div>
@@ -475,15 +451,19 @@
     </div>
     <div class="right-content" id="indexForm">
         <div id="login-form">
-            <form th:action="#{visitbackstage}+'/qt/login/doLogin'" id="form1">
+            <form  id="form1">
                 <input type="text" name="username" value=""  placeholder="账号">
                 <input  type="password" name="password" value="" placeholder="密码">
+<!--
                 <button type="submit">登录</button>
+-->
+                <span onclick="login()" class="hand">登录</span>
+
             </form>
-          <!--  <p  style="line-height: 20px;">
-                <span style="padding-right: 47px;">亲爱的：<a href="http://127.0.0.1:8080/ms-mcms/ms/index.do" class="isLogin" target="_blank">{{userName}}</a></span><span>欢迎回来</span><br/>
+           <p  style="line-height: 20px;" id="blockLogin">
+                <span style="padding-right: 47px;" id="loginUser"></span><span>欢迎回来</span><br/>
                 <span style="padding-right: 114px;"><a href="http://127.0.0.1:8080/ms-mcms/ms/message/index.do?messageType=2&modelId=366&modelCode=366&modelTitle=待办事项" class="isLogin" target="_blank">待办事项</a></span><a href="javascript:void(0);" class="red" @click="loginOut">[退出系统]</a>
-            </p>-->
+            </p>
         </div>
         <div class="announcements">
             <div class="title-model">
@@ -554,8 +534,7 @@
     </div>
     <div class="right-content ms-absolute picture-list">
         <div><img src="/honest/templates/static/images/justice.png" alt="一身正气"></div>
-        <div><a name="lettersVisits" href="http://localhost:80/#/userReport" target="_blank"><img
-                src="/honest/templates/static/images/complaint-reporting.png" alt="信访入口"></a>
+        <div><a name="lettersVisits" id="letter" href="/dist/#/userReport" target="_blank"><img src="/honest/templates/static/images/complaint-reporting.png" alt="信访入口"></a>
         </div>
     </div>
 </div>
@@ -618,7 +597,7 @@
                 <a th:if="${cultures[0].content!=''}" href="/honest/templates/182/index.html" target="_blank">更多</a>
             </div>
             <div class="graphics">
-                <img  src="/honest/templates/article/1.jpg" alt="">
+                <img  src="/honest/templates/static/images/scenery-01.png/" alt="">
                 <div>
                     <span if="${cultures[0].content!=''}"class="title ms-text-ellipsis" th:text="${cultures[0].title}"></span>
                     <div class="content">
@@ -669,12 +648,14 @@
 </html>
 
 <script id="jsID" type="text/javascript">
+    $(function () {
+        $("#blockLogin").hide()
+    })
     //登录
-    /*function login(){
-        var lujing=document.getElementById("lujing");
+    function login(){
         $.ajax({
             type: "POST",//方法类型
-            url: lujing+"/qt/login/doLogin" ,//url
+            url: "/honest/qt/login/doLogin" ,//url
             data: $('#form1').serialize(),
             //几个参数需要注意一下
             xhrFields: {
@@ -682,14 +663,21 @@
             },
             crossDomain: true,
             success: function (data) {
-                var username = $.cookie('username')
-                alert(username);
+                console.log(data)
+                var username = data.info.userPermission.sysStaffByUserName.username
+                if(username!=''){
+                   //登录
+                    $("#blockLogin").show()
+                    $("#loginUser").append("亲爱的："+username);
+                    $("#form1").hide();
+                    $("#letter").attr("href","/dist/#/loginletter")
+                }
             },
             error : function() {
                 alert("异常！");
             }
         });
-    }*/
+    }
     /*function getUser(){
         $.ajax({
             type: "POST",//方法类型

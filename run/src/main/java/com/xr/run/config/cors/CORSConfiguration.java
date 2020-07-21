@@ -20,7 +20,8 @@ public class CORSConfiguration {
         config.setAllowCredentials(true);
         //允许该请求访问
         config.addAllowedOrigin("http://10.73.100.46:80");
-        config.addAllowedOrigin("http://192.168.43.75:8080");
+        config.addAllowedOrigin("http://10.73.100.46:8080");
+        config.addAllowedOrigin("http://192.168.43.43:8080");
         config.addAllowedOrigin("http://192.168.43.110:4031");
         config.addAllowedOrigin("http://192.168.43.158:4031");
         config.addAllowedOrigin("http://192.168.43.75:8080");
