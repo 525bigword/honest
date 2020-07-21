@@ -20,6 +20,7 @@ import java.util.Map;
 public class RunApplication extends SpringBootServletInitializer{
     @Resource
     private Environment environment;
+
     public static void main(String[] args) {
         SpringApplication.run(RunApplication.class, args);
     }

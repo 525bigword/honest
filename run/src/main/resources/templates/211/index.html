@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head xmlns:th="http://www.thymeleaf.org" >
 	<meta charset="UTF-8">
-	<title>纪检报表</title>
+	<title>监督责任</title>
 	<link rel="stylesheet" type="text/css" th:href="#{html}+'/css/app.css'" />
 	<link rel="stylesheet" type="text/css" th:href="#{html}+'/css/list-model.css'" />
 	<!--jq引用-->
@@ -21,7 +22,7 @@
 			color:rgba(153,153,153,1);
 			padding-bottom: 13px;
 		}
-		.ms-menue-content-model  p >label >a{
+		.ms-menue-content-model p >label >a{
 			color:rgba(153,153,153,1);
 			line-height: 12px;
 			display: inline;
@@ -116,13 +117,12 @@
 
 		.cut-page>li {
 			float: left;
-			padding: 3px 10px;
+			padding: 10px 15px;
 			border: 1px solid rgba(238, 238, 238, 1);
-			margin-left: 6px;
+			border-radius: 5px;
+			margin-left: 5px;
 			cursor: pointer;
-			background-color: #f9f9f9;
-			font-size: 13px;
-			margin-top: -5px;
+			font-weight: bold;
 		}
 
 		.gs_lieb {
@@ -173,7 +173,7 @@
 			border: 1px solid #e2e2e2;
 			height: 30px;
 			float: left;
-			background-image: url(/honest/templates/static/images/search.png);
+			background-image: url(../../static/images/search.png);
 			background-repeat: no-repeat;
 			background-size: 25px;
 			background-position:5px center;
@@ -249,31 +249,11 @@
 	</style>
 </head>
 <script type="text/javascript">
-    var that = this;
-    var departments = []; //部门
-    var jobs = []; //岗位
-    var names = []; //姓名
-    function resquestMethod(type, url, data, getData) {
-        $.ajax({
-            async: true,
-            url: url,
-            type: type,
-            data: data,
-            success: function(data) {
-                getData = data.rows;
-                console.log(getData);
-            },
-            error: function(data) {
-                console.log("失败了");
-            }
-        })
-    }
     function submit() {
         var title = $("input[name='basic_title']").val();
         listData(title);
     }
 </script>
-
 <body>
 <style type="text/css">
 	/*背景图片*/
@@ -335,7 +315,7 @@
 		<li class="" onclick="window.open('/honest/templates/182/index.html','_blank')"><a>廉政文化</a></li>
 		<li class="" onclick="window.open('/honest/templates/185/index.html','_blank')"><a>责任纪实</a></li>
 		<li class="" onclick="window.open('/honest/templates/195/index.html','_blank')"><a>风险防控</a></li>
-		<li class="" onclick="window.open('/honest/templates/207/index.html','_blank')"><a>监督责任</a></li>
+		<li onclick="window.open('/honest/templates/207/index.html','_blank')"><a>监督责任</a></li>
 	</ul>
 </div>
 <script type="text/javascript">
@@ -343,7 +323,8 @@
     if(url == '/honest/templates/index.html'){
         $("#home").attr("class","active-li");
     }
-</script>			<div class="margin-center ms-menue-content-model">
+</script>
+<div class="margin-center ms-menue-content-model">
 	<div class="menue-list">
 		<ul class="list-style-none">
 			<li class="ms-relative">
@@ -351,14 +332,12 @@
 				<div class="shape-circular ms-absolute">
 					<img src="/honest/templates/static/images/箭头@2x.png" />
 				</div>
-				<span>
-                    <label>纪检报表</label>
-                </span>
+				<span><label>通知公告</label></span>
 				<ul class="list-style-none">
-                    <li>
-                        <span class="" onclick="window.open('/honest/templates/189/index.html','_self')"><label><a>纪检报表</a></label></span>
-                    </li>
-                 </ul>
+					<li>
+						<span class="active-span-title" onclick="window.open('/honest/templates/211/index.html','_self')"><label><a>通知公告</a></label></span>
+					</li>
+				</ul>
 			</li>
 		</ul>
 	</div>
@@ -366,18 +345,17 @@
 		<p style="width: 50%;float: left;">
 			<span>当前位置：</span>
 			<label>
-				<a href="/honest/templates/index.html">'首页</a>
+				<a href="/honest/templates/index.html">首页</a>
 				&gt;
-				<a href="/honest/templates/189/index.html">纪检报表</a>
+				<a href="/honest/templates/211/index.html">通知公告</a>
 			</label>
 		</p>
 		<div id="box">
-			    <input type="hidden" id="firstPage"/>
-				<input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
-				<div id="search" onclick="submit();">搜索</div>
+			<input type="hidden" id="firstPage"/>
+			<input type="text" name="basic_title" placeholder="请输入关键字" autocomplete="off">
+			<div id="search" onclick="submit();">搜索</div>
 		</div>
 	</div>
-
 	<div class="content-list">
 		<div>
 			<ul>
@@ -385,7 +363,7 @@
 			</ul>
 		</div>
 	</div>
-    <script type="text/javascript">
+	<script type="text/javascript">
         $(function () {
             listData();
         });
@@ -397,13 +375,10 @@
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
                 if(pageNo===1){
-                    $("#firstPage").val(getData[0].id)
-				}
-                var url = "/honest/templates/189/"+$("#firstPage").val()+".html?id="+data.id;//a链接地址
-				var title = data.report;		//标题
-				var lastIndexOf = title.lastIndexOf(".");
-                title= title.substring(0,lastIndexOf);
-
+                    $("#firstPage").val(getData[0].aid)
+                }
+                var url = "/honest/templates/211/"+$("#firstPage").val()+".html?id="+data.aid;//a链接地址
+                var title = data.articletitle;		//标题
                 htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
             }
             $(".content-list ul").html(htmlContent);
@@ -420,7 +395,7 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "/honest/qt/report/getReport";
+            var URL = "/honest/qt/msg/msgList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,
@@ -451,14 +426,14 @@
                 }
             });
         }
-    </script>
-    <div class="cut-page margin-center page_div" id="page">
+	</script>
+	<div class="cut-page margin-center page_div" id="page">
 
-    </div>
+	</div>
 </div>
 ﻿<!--底部内容-->
 <div class="footer max-width margin-center">
-    主 管：湘潭市烟草专卖局 主 办：长沙市烟草专卖局纪检监察科<br/>
-    版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
+	主 管：湘潭市烟草专卖局 主 办：长沙市烟草专卖局纪检监察科<br/>
+	版权所有：湘潭市烟草专卖局未经许可，本网站包括图像、图标、文字在内的所有数据不得转载<br/>
 </div>	</body>
 </html>
