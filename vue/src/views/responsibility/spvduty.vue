@@ -143,6 +143,7 @@
                 <el-option value="作风建设"></el-option>
                 <el-option value="纪检再监督"></el-option>
                 <el-option value="执行力检查"></el-option>
+                <el-option value="其他类型"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -160,7 +161,7 @@
                 v-model="value"
                 style="width:100%"
                 :options="options"
-                :props="{ expandTrigger: 'hover',multiple: true,checkStrictly:true }"
+                :props="{ multiple: true,checkStrictly:true }"
                 :show-all-levels="false"
               ></el-cascader>
             </el-form-item>
