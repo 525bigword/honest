@@ -17,7 +17,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @MapperScan("com.xr.run.dao")
-public class RunApplication {
+public class RunApplication extends SpringBootServletInitializer{
     @Resource
     private Environment environment;
     public static void main(String[] args) {

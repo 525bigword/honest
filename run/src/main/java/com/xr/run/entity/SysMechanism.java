@@ -22,6 +22,7 @@ public class SysMechanism {
   private Date createTime;
   private int createId;
   private String staus;
+  private int sort;
   //TODO 业务属性
   private String sname;
   private String parentName;
