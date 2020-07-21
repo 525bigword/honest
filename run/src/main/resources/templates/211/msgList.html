@@ -161,8 +161,8 @@
 		<div>
                 <span th:utext="${message.content}"></span>
 		</div>
-		<div id="goback">
-			<span  class="ms-right"><a href="/honest/templates/index.html">返回首页</a></span>
+		<div >
+			<span id="goback" class="ms-right"><a href="/honest/templates/index.html">返回首页</a></span>
 		</div>
 	</div>
 </div>
@@ -202,7 +202,7 @@
             if(da!="null"){
                 var data = eval("(" + da + ")");
                 if(data!=null){
-                    $("#goback").append("&nbsp;<a href=\"/honest/templates/211/index.html\">返回上一页</a>")
+                    $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/211/index.html\">返回上一页</a>")
                 }
                 insertContent(data);
             }
