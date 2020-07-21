@@ -14,14 +14,24 @@ import java.util.List;
 
 @Repository
 public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
-
-
+    //将所有单位排序增加10
+    @Update("update sys_mechanism set sort=sort+10 where id>=6")
+    void upSysMechanismBySortRT();
+    //查询非单位最大排序
+    @Select("SELECT max(sort) from sys_mechanism where sort<(select sort from sys_mechanism where mid=6)")
+    Integer findSysMechanismMaxSortByAndLFFiveHundred();
+    //查询单位最小排序
+    @Select("SELECT min(sort) from sys_mechanism where sort>=(select sort from sys_mechanism where mid=6)")
+    Integer findSysMechanismMinSortByAndLFFiveHundred();
+    //查询最大的sort
+    @Select("SELECT max(sort) from sys_mechanism")
+    Integer findSysMechanismMaxSort();
     @Select("select mechanism_name from sys_mechanism where mid=#{mid}")
     String findMechanismNameByMid(@Param("mid") Integer mid);
 
     @Select("select mid,mechanism_name,sid,parent,branch,create_time,create_id,staus from sys_mechanism where EXISTS " +
             "(SELECT sid FROM sys_staff WHERE `NAME` LIKE CONCAT('%',#{principal},'%') AND sys_mechanism.sid = sys_staff.sid AND staus = '1')" +
-            " and mechanism_name like CONCAT('%',#{mechanism},'%') and staus=#{staus} order by mid desc limit #{index},#{pagenum} ")
+            " and mechanism_name like CONCAT('%',#{mechanism},'%') and staus=#{staus} order by sort limit #{index},#{pagenum} ")
     @Results({
             @Result(property = "sname",column = "sid",one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffByIdToName")),
             @Result(property = "parentName",column = "parent",one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName")),
@@ -45,7 +55,7 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
     /**
      * 按parent查
      */
-    @Select("select mid,mechanism_name,sid,parent,branch,create_time,create_id,staus from sys_mechanism where parent=#{parent} and staus='正常'")
+    @Select("select mid,mechanism_name,sid,parent,branch,create_time,create_id,staus from sys_mechanism where parent=#{parent} and staus='正常' order by sort")
     @Results({
             @Result(column = "mechanismName",property = "lable"),
             @Result(column = "mid",property = "value"),
@@ -57,7 +67,7 @@ public interface SysMechanismMapper extends BaseMapper<SysMechanism> {
     /**
      * 新增SysMechanism
      */
-    @Insert("insert into sys_mechanism value(null,#{m.mechanismName},#{m.sid},#{m.parent},#{m.branch},#{m.createTime},#{m.createId},'正常')")
+    @Insert("insert into sys_mechanism value(null,#{m.mechanismName},#{m.sid},#{m.parent},#{m.branch},#{m.createTime},#{m.createId},'正常',#{m.sort})")
     void addSysMechanism(@Param("m") SysMechanism sysMechanism);
     /**
      * 查询该项是否有子项

@@ -7,6 +7,8 @@ axios.defaults.withCredentials = true;
 const service = axios.create({
         //baseURL: process.env.BASE_URL+"honest", //process.env.BASE_URL, // api的base_url
         baseURL: "http://192.168.43.203:8080/honest",
+        //baseURL: process.env.BASE_URL+"honest", //process.env.BASE_URL, // api的base_url
+        //baseURL: "http://10.73.100.46:8080/honest",
         timeout: 15000000 // 请求超时时间2
     })
     // request拦截器
