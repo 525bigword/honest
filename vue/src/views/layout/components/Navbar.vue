@@ -4,17 +4,23 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'" />
+        <span style="display:inline-block;vertical-align:middle">{{nickname}}</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-         <el-dropdown-item v-if="hasPerm('index:add')">
-            <span @click="createIndex()" style="display:block;">生成首页</span>
-          </el-dropdown-item>
+        <el-dropdown-item v-if="hasPerm('index:add')">
+          <span @click="createIndex()" style="display:block;">生成首页</span>
+        </el-dropdown-item>
         <router-link class="inlineBlock" to="/workorders">
-       
           <el-dropdown-item v-if="hasPerm('back:list')">
             <span @click="workorder" style="display:block;">待办事项</span>
+          </el-dropdown-item>
+        </router-link>
+
+        <router-link class="inlineBlock" to="/document">
+          <el-dropdown-item divided>
+            <span style="display:block;">修改个人信息</span>
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
@@ -26,9 +32,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+import { mapGetters } from "vuex";
+import Breadcrumb from "@/components/Breadcrumb";
+import Hamburger from "@/components/Hamburger";
 
 export default {
   components: {
@@ -36,33 +42,30 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
+    ...mapGetters(["sidebar", "avatar", "nickname"])
   },
   methods: {
-    createIndex(){
+    createIndex() {
       this.api({
-        url:'SysStaff/createIndex',
-        method:'get'
-      }).then(res=>{
-        console.log(res)
-      })
+        url: "SysStaff/createIndex",
+        method: "get"
+      }).then(res => {
+        console.log(res);
+      });
     },
     toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar')
+      this.$store.dispatch("ToggleSideBar");
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
+      this.$store.dispatch("LogOut").then(() => {
+        location.reload(); // 为了重新实例化vue-router对象 避免bug
+      });
     },
-    workorder(){
-       this.$router.push({path: '/workorders'})
+    workorder() {
+      this.$router.push({ path: "/workorders" });
     }
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
@@ -71,7 +74,9 @@ export default {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
-  position: fixed; top:0px;width: 86%;
+  position: fixed;
+  top: 0px;
+  width: 86%;
   z-index: 1;
   .hamburger-container {
     line-height: 58px;

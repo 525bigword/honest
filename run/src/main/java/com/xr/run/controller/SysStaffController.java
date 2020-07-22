@@ -37,11 +37,13 @@ public class SysStaffController {
     private HomePageSevice homePageSevice;
 
     @GetMapping("del/{id}")
+    @RequiresPermissions("staff:delete")
     public JSONObject yjDel(@PathVariable Integer id){
         sysStaffService.yjDelSysStaffById(id);
         return CommonUtil.successJson();
     }
     @GetMapping("hf/{id}")
+    @RequiresPermissions("staff:update")
     public JSONObject hfSysStaff(@PathVariable Integer id){
         sysStaffService.hfSysStaff(id);
         return CommonUtil.successJson();
@@ -151,7 +153,13 @@ public class SysStaffController {
     public JSONObject getInfo() {
         return sysStaffService.getInfo();
     }
-
+    @PostMapping("/setInfo")
+    public JSONObject setInfo(@RequestBody SysStaff sysStaff){
+        sysStaff.setPassword(new SimpleHash("md5", sysStaff.getPassword(), null, 2).toString());
+        System.out.println(sysStaff);
+        sysStaffService.setInfo(sysStaff);
+        return CommonUtil.successJson();
+    }
     @PutMapping("update")
     @RequiresPermissions("staff:update")
     public JSONObject updateSysStaff(@RequestBody SysStaff sysStaff){
@@ -159,12 +167,6 @@ public class SysStaffController {
         sysStaffService.upSysStaff(sysStaff);
         return CommonUtil.successJson(1);
     }
-
-    public static void main(String[] args) {
-        SimpleHash md5 = new SimpleHash("MD5", "123456", "", 2);
-        System.out.println(md5.toString());
-    }
-
 
     /**
      * 根据部门查用户集合

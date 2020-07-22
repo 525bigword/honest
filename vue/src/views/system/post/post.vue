@@ -9,6 +9,7 @@
         @keyup.enter.native="handleFilter"
       />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="reset">重置</el-button>
       <el-button
         v-if="hasPerm('post:add')"
         class="filter-item"
@@ -52,9 +53,13 @@
       ></el-table-column>
       <el-table-column align="center" prop="pname" label="角色名称">
         <template slot-scope="scope">
-          <el-tooltip v-if="hasPerm('post:update')" content="点击查看详情或修改" placement="right" effect="dark">
-            <a 
-            
+          <el-tooltip
+            v-if="hasPerm('post:update')"
+            content="点击查看详情或修改"
+            placement="right"
+            effect="dark"
+          >
+            <a
               @click="tree(scope.row,$index)"
               target="_blank"
               class="buttonText"
@@ -86,7 +91,7 @@
             @click="tree(row,$index)"
           >修改</el-button>
         </template>
-      </el-table-column> -->
+      </el-table-column>-->
     </el-table>
     <el-pagination
       @current-change="handleCurrentChange"
@@ -297,20 +302,31 @@ export default {
     this.getTree();
   },
   methods: {
+    reset(){
+      this.listQuery={
+        page: 1,
+        limit: 10,
+        importance: "正常",
+        bm: [],
+        name: "",
+        message: "",
+        type: undefined,
+        sort: "+index"
+      }
+    },
     submit() {},
     treeClose() {
-      
       console.log(this.default_checked);
       this.$refs.tree.setCheckedKeys([]);
       this.default_checked = [];
-      this.temp.defaultvalue=[];
+      this.temp.defaultvalue = [];
       this.getList();
       // setCheckedKeys
       // this.default_checked.filter(value => {
       //   this.$refs.tree.setChecked(value, false, true); //利用这个方法就可以获取到父节点
       // });
       // console.log(this.default_checked);
-      
+
       // this.default_checked
     },
     treecheck(leafOnly, includeHalfChecked) {
@@ -394,8 +410,8 @@ export default {
     },
     getList() {
       //查询列表
-      if (!this.hasPerm('staff:list')) {
-        return
+      if (!this.hasPerm("staff:list")) {
+        return;
       }
       this.listLoading = true;
       this.api({
@@ -601,30 +617,32 @@ export default {
           showConfirmButton: true,
           closeOnPressEscape: false,
           callback: action => {
-            let arr = this.deletelist.join(",");
-            console.log(arr);
-            this.api({
-              url: "syspost/del",
-              method: "post",
-              params: {
-                arr: arr
-              }
-            }).then(res => {
-              console.log(res);
-              if (res === 0) {
+            if (action == "confirm") {
+              let arr = this.deletelist.join(",");
+              console.log(arr);
+              this.api({
+                url: "syspost/del",
+                method: "post",
+                params: {
+                  arr: arr
+                }
+              }).then(res => {
+                console.log(res);
+                if (res === 0) {
+                  this.$message({
+                    type: "error",
+                    message: "请保证该角色下没有员工"
+                  });
+                  return;
+                }
                 this.$message({
-                  type: "error",
-                  message: "请保证该角色下没有员工"
-                });
-                return;
-              }
-              this.$message({
                   type: "success",
                   message: "删除成功"
                 });
-              this.getList();
-              // this.getList();
-            });
+                this.getList();
+                // this.getList();
+              });
+            }
           }
         });
       }

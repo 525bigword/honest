@@ -149,4 +149,6 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     })
     SysStaff findSysStaffBySidDetail(@Param("sid")Integer sid);
 
+    @Update("update sys_staff set name=#{s.name},sex=#{s.sex},age=#{s.age},phone=#{s.phone},password=#{s.password},educational_background=#{s.educationalBackground},political_appearance=#{s.politicalAppearance} where sid=#{s.sid}")
+    void setInfo(@Param("s") SysStaff sysStaff);
 }

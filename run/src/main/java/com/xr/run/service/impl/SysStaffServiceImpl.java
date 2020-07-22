@@ -180,6 +180,11 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     }
 
     @Override
+    public void setInfo(SysStaff sysStaff) {
+        baseMapper.setInfo(sysStaff);
+    }
+
+    @Override
     public void upSysStaff(SysStaff sysStaff) {
         sysStaff.setPassword(new SimpleHash("md5", sysStaff.getPassword(), null, 2).toString());
         baseMapper.upSysStaff(sysStaff);
