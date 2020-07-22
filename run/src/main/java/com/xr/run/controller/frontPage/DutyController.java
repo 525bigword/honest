@@ -87,7 +87,7 @@ public class DutyController {
          if (type == 0) {
             Page page = new Page(pageNo, pageSize);
             List<RdWorkVo> list = new ArrayList();
-            IPage<RdWorkPlan> rdWorkPlanIndex1 = rdWorkPlanService.findRdWorkPlanIndex(page, title, 2);
+            IPage<RdWorkPlan> rdWorkPlanIndex1 = rdWorkPlanService.findRdWorkPlanIndex(page, title, null);
             for (RdWorkPlan rdWorkPlan : rdWorkPlanIndex1.getRecords()) {
                 RdWorkVo rdWorkVo = new RdWorkVo();
                 rdWorkVo.setContent(rdWorkPlan.getContent());
@@ -103,7 +103,7 @@ public class DutyController {
             return jso;
         } else if (type == 1) {
             Page page = new Page(pageNo, pageSize);
-            IPage<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentService.findRdWorkDeploymentIndex(page, title, 2);
+            IPage<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentService.findRdWorkDeploymentIndex(page, title, null);
             List<RdWorkVo> list = new ArrayList();
             for (RdWorkDeployment rdWorkDeployment : rdWorkDeployments.getRecords()) {
                 RdWorkVo rdWorkVo = new RdWorkVo();
@@ -120,7 +120,7 @@ public class DutyController {
             return jso;
         }  else {
             Page page = new Page(pageNo, pageSize);
-            IPage<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, title, 2);
+            IPage<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, title, null);
             List<RdWorkVo> list = new ArrayList();
             for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities.getRecords()) {
                 RdWorkVo rdWorkVo = new RdWorkVo();

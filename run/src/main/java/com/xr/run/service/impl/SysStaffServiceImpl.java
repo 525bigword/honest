@@ -260,4 +260,14 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
         return baseMapper.findSysStaffByIdToName(sid);
     }
 
+    @Override
+    public SysStaff findSysByPass(String username) {
+        return baseMapper.findSysByPass(username);
+    }
+
+    @Override
+    public void updateSysStaff(String newPass,String username) {
+        baseMapper.updateSysStaff(newPass,username);
+    }
+
 }

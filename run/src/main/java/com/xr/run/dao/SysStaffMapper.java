@@ -151,4 +151,10 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
 
     @Update("update sys_staff set name=#{s.name},sex=#{s.sex},age=#{s.age},phone=#{s.phone},password=#{s.password},educational_background=#{s.educationalBackground},political_appearance=#{s.politicalAppearance} where sid=#{s.sid}")
     void setInfo(@Param("s") SysStaff sysStaff);
+
+    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid, create_time,create_id,staus from sys_staff where username=#{username}")
+    SysStaff findSysByPass(@Param("username") String username);
+
+    @Update("update sys_staff set password=#{password} where username=#{username}")
+    void updateSysStaff(@Param("password") String newPass,@Param("username") String username);
 }

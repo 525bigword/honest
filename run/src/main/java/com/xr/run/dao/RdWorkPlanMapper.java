@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface RdWorkPlanMapper extends BaseMapper<RdWorkPlan> {
     @Select("select rw.rdid,rw.title,rw.content,rw.create_time,rw.create_id,rw.create_name,rw.staus,ss.name from " +
-            " rd_work_plan rw inner join sys_staff ss on rw.create_id= ss.sid where rw.staus <> -1 and rw.staus = CONCAT(#{staus}) and  rw.title like CONCAT('%',#{title},'%') order by rw.rdid desc")
+            " rd_work_plan rw inner join sys_staff ss on rw.create_id= ss.sid where rw.staus <> -1  and  rw.title like CONCAT('%',#{title},'%') order by rw.rdid desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",

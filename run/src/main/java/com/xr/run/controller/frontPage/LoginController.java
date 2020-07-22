@@ -12,16 +12,15 @@ package com.xr.run.controller.frontPage;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.xr.run.dao.SysStaffMapper;
 import com.xr.run.entity.SysStaff;
 import com.xr.run.service.SysStaffService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -55,28 +54,89 @@ public class LoginController {
     * 带到templates/index.html
     * index.html中使用th标签动态读取和显示
     * */
-    @RequestMapping("/doLogin")
+    @PostMapping("/doLogin")
     @ResponseBody
-    public JSONObject login(SysStaff sysStaff,HttpServletResponse response,HttpSession session){
+    public JSONObject login(SysStaff sysStaff){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("username",sysStaff.getUsername());
         jsonObject.put("password",sysStaff.getPassword());
         JSONObject jsonObject1 = sysStaffService.authLogin(jsonObject);
-        if(jsonObject1!=null){
-            JSONObject info = sysStaffService.getInfo();
-          return info;
+        log.info("============================================jsonObject1.getString(\"result\")==="+jsonObject1.toJSONString());
+        Object info = jsonObject1.get("info");
+        JSONObject infoo = JSON.parseObject(info.toString());
+        log.info("infoo========================infoo======"+infoo.getString("result"));
+        if(infoo.getString("result").equals("success")){
+            JSONObject msg = sysStaffService.getInfo();
+            return msg;
         }
         return null;
     }
+    
 
 
-    //获取用户信息
-   @RequestMapping("/getUser")
+    //验证初始密码是否与数据库一致
+   @RequestMapping("/checkOrignPass")
    @ResponseBody
-   public JSONObject getUser(){
-       JSONObject info = sysStaffService.getInfo();
-       return info;
+   public String checkPass(String oldPassword,String username){
+       String md5 = new SimpleHash("md5", oldPassword, null, 2).toString();
+       SysStaff sysStaff = sysStaffService.findSysByPass(username);
+       String password = sysStaff.getPassword();
+       if(password.equals(md5)){
+           return "true";
+       }else{
+           return "false";
+       }
    }
+
+
+   @ResponseBody
+   @RequestMapping("/changePass")
+   public String changePass(String oldPassword,String newPassword,String repeatPassword,String username){
+       String md5 = new SimpleHash("md5", oldPassword, null, 2).toString();
+       SysStaff sysStaff = sysStaffService.findSysByPass(username);
+       String password = sysStaff.getPassword();
+       if(!password.equals(md5)){
+           return "false";
+       }
+       if(!newPassword.equals(repeatPassword)){
+           return "false";
+       }
+       String newPass = new SimpleHash("md5", newPassword, null, 2).toString();
+
+       sysStaffService.updateSysStaff(newPass,username);
+
+
+       return "true";
+   }
+
+
+   //退出登录
+   @PostMapping("/logout")
+   @ResponseBody
+   public JSONObject logout() {
+       return sysStaffService.logout();
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
