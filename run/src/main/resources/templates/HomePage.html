@@ -688,6 +688,8 @@
                          //layer.msg('确定')
                          clearCookie('username')
                          clearCookie('sid')
+                         clearCookie('sname')
+
                          location.reload() //刷新
                      }
                  })
@@ -722,6 +724,7 @@
                         $("#letter").attr("href", "/dist/#/loginletter")
                         setCookie("username", username, 1800); //设置cookie的值，生存时间半个小时
                         setCookie("sid", sid, 1800); //设置cookie的值，生存时间半个小时
+                        setCookie('sname',sname,1800);
                     }
                 }else{
                     layer.msg('登录失败', {

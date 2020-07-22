@@ -1,5 +1,6 @@
 package com.xr.run.entity.daily;
 
+
 import lombok.Data;
 
 @Data
