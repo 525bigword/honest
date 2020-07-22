@@ -53,6 +53,22 @@ public class SysMechanismServiceImpl extends ServiceImpl<SysMechanismMapper,SysM
 
     @Override
     public void addSysMechanism(SysMechanism sysMechanism) {
+        Integer sort=null;
+        if(sysMechanism.getSort()==0){
+            //查询非单位最大排序
+            sort = baseMapper.findSysMechanismMaxSortByAndLFFiveHundred();
+            ++sort;
+            //查询单位最小排序
+            Integer minSort = baseMapper.findSysMechanismMinSortByAndLFFiveHundred();
+            if(sort==minSort){
+                //所有单位排序加10
+                baseMapper.upSysMechanismBySortRT();
+            }
+        }else{
+            sort = baseMapper.findSysMechanismMaxSort();
+            ++sort;
+        }
+        sysMechanism.setSort(sort);
         Date date = DateUtil.getDate();
         sysMechanism.setCreateTime(date);
         baseMapper.addSysMechanism(sysMechanism);

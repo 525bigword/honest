@@ -468,7 +468,7 @@
         <div class="announcements">
             <div class="title-model">
                 <h5>通知公告</h5>
-                <a th:if="${sysMessage[0].content!=''}" href="/honest/templates/211/index.html" target="_blank">更多</a>
+                <a th:if="${msgContent!=''}" href="/honest/templates/211/index.html" target="_blank">更多</a>
             </div>
             <ul class="list-style-none news-list-model new-all">
                 <li th:each="msg:${sysMessage}">
@@ -565,32 +565,7 @@
             </ul>
 
         </div>
-        <div class="news-content-model">
-            <div class="title-model">
-                <h5>纪检报表</h5>
-                <a th:if="${reports[0].report!=''}" href="/honest/templates/189/index.html" target="_blank">更多</a>
-            </div>
-            <div class="graphics">
-                <img  src="/honest/templates/static/images/meeting.png" alt="">
-                <div>
-                    <span class="title ms-text-ellipsis"  th:text="${#strings.abbreviate(reports[0].report,30)}" ></span>
-                    <div class="content">
-                        <a th:if="${reports[0].report!=''}" th:href="'/honest/templates/189/'+${reports[0].id}+'.html'" target="_blank">详情>></a>
-                    </div>
-                </div>
-            </div>
-            <ul class="list-style-none news-list-model new-all">
-                <li th:each="re,stat:${reports}" th:if="${!stat.first}">
-                    <a th:href="'/honest/templates/189/'+${re.id}+'.html'" target="_blank" th:text="${re.report}">
-
-                    </a>
-                    <span th:text="${#dates.format(re.newTime,'MM-dd')}"></span>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-    <div class="right-content">
+        <!------------------------------------------------->
         <div class="news-content-model">
             <div class="title-model">
                 <h5>廉政文化</h5>
@@ -613,6 +588,9 @@
                 </li>
             </ul>
         </div>
+
+    </div>
+    <div class="right-content">
     </div>
 </div>
 <!--内容尾部-->

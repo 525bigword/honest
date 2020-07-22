@@ -31,7 +31,7 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
     @Update("update spv_back set BackTitle=#{backTitle},BackContent=#{backContent},BackAccessory=#{backAccessory},backAccessoryName=#{backAccessoryName},bPdf=#{bPdf} where sid=#{sid}")
     void updateSpvBackFileBySid(SpvBack spvBack);
 
-    @Insert("insert into spv_back(sid,BackType,bid,NewTime,bCreateId,did,`status`) VALUES (NULL,#{backType},#{bid},NOW(),#{bCreateId},#{did},#{status})")
+    @Insert("insert into spv_back(sid,BackType,bid,NewTime,bCreateId,did,`status`) VALUES (NULL,#{backType},#{bid},date_add(NOW(),INTERVAL -8 hour),#{bCreateId},#{did},#{status})")
     void insertSpvBack(SpvBack spvBack);
 
     @Update("update spv_back set `status`=-1  where sid=#{sid}")

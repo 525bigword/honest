@@ -44,4 +44,7 @@ public interface SystemMessageService extends IService<SystemMessage> {
      * @return
      */
     String findSystemMessageByFile(int aid);
+
+
+    SystemMessage findSystemMessageByAid(int aid);
 }

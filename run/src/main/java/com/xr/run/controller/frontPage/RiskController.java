@@ -44,12 +44,13 @@ public class RiskController {
 
     public static final  Integer a =0;
 
-    
-    public List<RiskVo> getList(String prProject){
+
+
+    public List<RiskVo> getList(String prProject, Integer pageNo, Integer pageSize){
         //岗位风险，type=0
-        IPage<Postriskcombing> postriskCombingAll = postriskcombingService.findPostriskCombingIndex1(new Page(1,6), prProject);
+        IPage<Postriskcombing> postriskCombingAll = postriskcombingService.findPostriskCombingIndex1(new Page(pageNo,pageSize), prProject);
         //流程风险，type=1
-        IPage<Processrick> processrickAll = processrickService.findProcessrickIndex(new Page(1,6), prProject);
+        IPage<Processrick> processrickAll = processrickService.findProcessrickIndex(new Page(pageNo,pageSize), prProject);
 
         List<RiskVo> list = new ArrayList<>();
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
@@ -81,9 +82,9 @@ public class RiskController {
     }
 
 
-    @RequestMapping("/getRiskAll")
+   /* @RequestMapping("/getRiskAll")
     public String getRiskAll(String prProject, Integer pageNo, Integer pageSize){
-        List<RiskVo> list = getList(prProject);
+        List<RiskVo> list = getList(prProject,pageNo,pageSize);
         //分页
         Integer count = list.size(); //记录总数
         Integer pageCount = 0; //页数
@@ -123,12 +124,12 @@ public class RiskController {
             //没查找到返回
             return "null";
         }
-    }
+    }*/
 
     //不同的风险
     @RequestMapping("/getRiskByType")
     public String getRiskByType(String prProject,Integer pageNo,Integer pageSize,Integer type){
-        List<RiskVo> list1 = getList(prProject);
+        List<RiskVo> list1 = getList(prProject,pageNo,pageSize);
         if(type==0){
             //岗位
             IPage<Postriskcombing> postriskCombingIndex = postriskcombingService.findPostriskCombingIndex1(new Page(pageNo, pageSize), prProject);

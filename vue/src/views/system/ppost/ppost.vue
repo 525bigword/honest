@@ -73,7 +73,19 @@
         align="center"
         :class-name="getSortClass('id')"
       ></el-table-column>
-      <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
+      <el-table-column align="center" prop="pname" label="岗位名称">
+        <template slot-scope="scope">
+          <el-tooltip v-if="hasPerm('ppost:update')" content="点击查看详情或修改" placement="right" effect="dark">
+            <a 
+            
+              @click="tree(scope.row)"
+              target="_blank"
+              class="buttonText"
+              style="color: #1890ff"
+            >{{scope.row.pname}}</a>
+          </el-tooltip>
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" prop="mname" label="部门名称"></el-table-column>
 
@@ -84,7 +96,7 @@
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
 
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         v-if="hasPerm('ppost:delete')"
         label="操作"
         align="center"
@@ -99,7 +111,7 @@
             @click="tree(row,$index)"
           >修改</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       @current-change="handleCurrentChange"
@@ -567,36 +579,37 @@ export default {
         });
       } else {
         console.log(this.deletelist);
-        this.$confirm('是否确定删除？', '确认？', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '删除',
-          cancelButtonText: '取消'
-        }).then(res=>{
-          let arr = this.deletelist.join(",");
-          console.log(arr);
-          this.api({
-            url: "SysPostPermission/del",
-            method: "post",
-            params: {
-              arr: arr
-            }
-          }).then(res => {
-            console.log(res);
-            if (res === 0) {
+        this.$alert("是否确定删除", "提示", {
+          showCancelButton: true,
+          showConfirmButton: true,
+          closeOnPressEscape: false,
+          callback: action => {
+            let arr = this.deletelist.join(",");
+            console.log(arr);
+            this.api({
+              url: "SysPostPermission/del",
+              method: "post",
+              params: {
+                arr: arr
+              }
+            }).then(res => {
+              console.log(res);
+              if (res === 0) {
+                this.$message({
+                  type: "error",
+                  message: "请保证该岗位没有员工"
+                });
+                return;
+              }
               this.$message({
-                type: "error",
-                message: "请保证该岗位没有员工"
-              });
-              return;
-            }
-            this.$message({
-              type: "success",
-              message: "删除成功"
+                  type: "success",
+                  message: "删除成功"
+                });
+              this.getList();
+              // this.getList();
             });
-            this.getList();
-            // this.getList();
-          });
-        })
+          }
+        });
       }
     },
     handleFetchPv(pv) {

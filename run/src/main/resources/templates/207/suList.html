@@ -133,7 +133,7 @@
         </li>
         <li class="" onclick="window.open('/honest/templates/195/index.html','_blank')"><a>风险防控</a>
         </li>
-        <li class="active-li" onclick="window.open('/honest/templates/207/index.html','_blank')"><a>监督责任</a>
+        <li class="active-span-title" onclick="window.open('/honest/templates/207/index.html','_blank')"><a>监督责任</a>
         </li>
     </ul>
 </div>
@@ -154,7 +154,7 @@
                 <span><label>监督责任</label></span>
                 <ul class="list-style-none">
                     <li>
-                        <span ><label><a href="/honest/templates/207/index.html" >监督责任</a></label></span>
+                        <span class="active-span-title"><label><a href="/honest/templates/207/index.html" >监督责任</a></label></span>
                     </li>
                 </ul>
             </li>
@@ -174,10 +174,7 @@
         </div>
 
         <div>
-	           <span style="font-size: 14px"><span style="color: #000000">
-                   <span style="font-family: 宋体" th:utext="${dutyContent}">　　
-
-                  </span></span></span><br />
+                   <span th:utext="${dutyContent}">　　
         </div>
         <div>
             <span class="ms-right" id="goback">

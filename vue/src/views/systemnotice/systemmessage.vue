@@ -129,7 +129,7 @@
           </el-col>
         </el-row>
         <el-row style="margin-top:10px">
-          <!--<el-col style="width:45%;">
+          <!-- <el-col style="width:45%;">
             <el-form-item style="font-weight: bold;" label="文章属性" prop="attribute">
                 <el-checkbox-group v-model="checkList"
                 @change="getValue">
@@ -139,7 +139,7 @@
               <el-checkbox :key="4" label="4">幻灯</el-checkbox>
                 </el-checkbox-group>
             </el-form-item>
-          </el-col>-->
+          </el-col> -->
           <el-col style="width:45%">
             <el-form-item style="font-weight: bold;" label="文章缩略图" prop="picturename">
               <el-upload
@@ -250,13 +250,13 @@ export default {
             trigger: ["blur", "change"]
           }
         ],
-        articlesource: [
+        /* articlesource: [
           {
             required: true,
             message: "文章来源不能为空",
             trigger: ["blur", "change"]
           }
-        ],
+        ], */
         describe: [
           {
             required: true,
@@ -433,9 +433,9 @@ export default {
               this.resetTemp()
           })
                   }
-        
+
           }
-          
+
         })
     },
     // 显示修改对话框
@@ -565,7 +565,7 @@ export default {
             }
         }
         })
-        
+
     },
     out() {
       this.yincang();
@@ -687,7 +687,7 @@ export default {
       }else{
           return val.replace(/<\/?[^>]*>/g, "");
       }
-      
+
     }
   }
 };

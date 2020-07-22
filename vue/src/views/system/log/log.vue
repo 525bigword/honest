@@ -21,7 +21,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="get">查询</el-button>
+          <el-button type="primary" @click="get">详情</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -100,8 +100,8 @@
     <el-row>
         <el-col style="width:12%" align="right">登录名：</el-col>
          <el-col style="width:20%" align="left">{{dialogobj.username}}</el-col>
-        <el-col style="width:13%" align="right">登录密码：</el-col>
-        <el-col style="width:20%" align="left" >{{dialogobj.password}}</el-col>
+        <!-- <el-col style="width:13%" align="right">登录密码：</el-col>
+        <el-col style="width:20%" align="left" >{{dialogobj.password}}</el-col> -->
         <el-col style="width:12%" align="right">创建时间：</el-col>
         <el-col style="width:22%" align="left">{{dialogobj.createTime}}</el-col>
     </el-row>

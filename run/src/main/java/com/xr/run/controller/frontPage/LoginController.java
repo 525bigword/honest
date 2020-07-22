@@ -65,8 +65,6 @@ public class LoginController {
         JSONObject jsonObject1 = sysStaffService.authLogin(jsonObject);
         if(jsonObject1!=null){
             JSONObject info = sysStaffService.getInfo();
-            log.info("info===============================info=======================info"+info);
-
             //保存在Cookie中
           /*  Cookie myCookie=new Cookie("username",user.getUsername());
             myCookie.setMaxAge(600*10);//30分钟
