@@ -258,14 +258,15 @@
       ])
     },
     created() {
-    console.log('nickname'+this.nickname)
-    let posdata=qs.stringify({nickname:this.nickname})
+    console.log('nickname'+this.getCookie('sname'))
+    console.log('sid'+this.getCookie('sid'))
+    let posdata=qs.stringify({nickname:this.getCookie('sname')})
     this.userInfo={}
 
     letterreporter().then((response)=>{
       this.userInfo.letterId=response.letterid
-    this.userInfo.lcreateName =this.nickname
-    this.userInfo.lcomplainantName=this.nickname
+    this.userInfo.lcreateName =this.getCookie('sname')
+    this.userInfo.lcomplainantName=this.getCookie('sname')
     finddb(posdata).then((response)=>{
       // console.log('测试',response.list.mname)
       this.userInfo.lpostId=response.list.pname
@@ -363,10 +364,10 @@ this.tf='none'
               puni:this.userInfo.lpbrDeptId.toString(),
               lPbrPostId:this.userInfo.lpbrPostId,
               lContent:this.userInfo.lcontent,
-              lCreateName:this.nickname,
+              lCreateName:this.getCookie('sname'),
               lTime: this.userInfo.lcreateTime,
               lCreateTime:this.userInfo.lcreateTime,
-              lCreateId:this.userId,
+              lCreateId:this.getCookie('sid'),
               lStatus:1
             })
             add(posdata).then((response)=>{
@@ -387,11 +388,41 @@ this.tf='none'
       }
       });
       },
+      //读取cookie
+     getCookie(name) {
+        /*var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+        if(arr != null) {
+          console.log(arr);
+          return unescape(arr[2]);
+        }
+        return null;*/
+         var nameEQ = name + '='
+          var ca = document.cookie.split(';') // 把cookie分割成组
+          for (var i = 0; i < ca.length; i++) {
+            var c = ca[i] // 取得字符串
+            while (c.charAt(0) == ' ') { // 判断一下字符串有没有前导空格
+              c = c.substring(1, c.length) // 有的话，从第二位开始取
+            }
+            if (c.indexOf(nameEQ) == 0) { // 如果含有我们要的name
+              return unescape(c.substring(nameEQ.length, c.length)) // 解码并截取我们要值
+            }
+          }
+          return false
+     /*   var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++)
+        {
+          var c = ca[i].trim();
+          if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+        }
+        return "";*/
+
+      },
       //初始化页面
       initList() {
         let status;
         let mid;
-        let createid=this.userId
+        let createid=this.getCookie('sid')
         let posdata=qs.stringify({
           mid:mid,
           lStatus:status,
@@ -525,7 +556,7 @@ this.tf='none'
         let postData = qs.stringify({
           lComplainantName:this.search,
           lPersonBeReported:this.besearch,
-          lCreateId:this.userId
+          lCreateId:this.getCookie('sid')
         });
         this.listLoading = true
         findbyName(postData).then((response) =>{

@@ -31,17 +31,34 @@ public class RiskVo implements Serializable {
     private Integer id;
     private String project; //名称
     private String description; //描述
-
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")//页面写入数据库时格式化
     @JSONField(format="yyyy-MM-dd HH:mm:ss")//数据库导出页面时json格式化
     private Date createTime; //时间
     private String cname;//姓名
-
-    private Integer next;
-
-    private Integer prev;
-
+    private Integer next;//
+    private Integer prev;//
     private Integer type; //状态
+
+    private String year;// 风险年份
+    private String grade;// 风险等级
+    private String measures;// 防控措施
+    private String deptName;// 部门名称
+    private String postName;// 岗位名称
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //第一种类型

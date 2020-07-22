@@ -144,9 +144,6 @@
                         <span th:class="${rdWorkVo.type==1}?'active-span-title':''"><label><a href="/honest/templates/185/1/index.html" >工作部署</a></label></span>
                     </li>
                     <li>
-                        <span th:class="${rdWorkVo.type==2}?'active-span-title':''"><label><a href="/honest/templates/185/2/index.html" >廉政谈话</a></label></span>
-                    </li>
-                    <li>
                         <span th:class="${rdWorkVo.type==3}?'active-span-title':''"><label><a href="/honest/templates/185/3/index.html" >主体责任</a></label></span>
                     </li>
                 </ul>
@@ -172,11 +169,7 @@
             </div>
         </div>
         <div>
-             <span style="color: #000000"><span style="font-size: 14px">
-                <span style="font-family: 宋体" th:utext="${rdWorkVo.content}">&nbsp;&nbsp;&nbsp;
-            </span>
-            </span>
-            </span>
+                <span th:utext="${rdWorkVo.content}"></span>
         </div>
         <div>
             <span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>

@@ -5,7 +5,7 @@
 
     <select id="findRdWorkDeploymentAll" resultType="com.xr.run.entity.RdWorkDeployment">
         select rd.*,ss.name from rd_work_deployment rd inner join sys_staff ss
-        on rd.create_id = ss.sid where rd.staus = 2
+        on rd.create_id = ss.sid where rd.staus != -1
         <if test="title != null and title!=''">
             and rd.title like "%"#{title}"%"
         </if>

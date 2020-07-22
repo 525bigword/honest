@@ -31,4 +31,6 @@ public class Postriskcombing {
   private String pCreateName;
   private int pStatus;
 
+
+
 }

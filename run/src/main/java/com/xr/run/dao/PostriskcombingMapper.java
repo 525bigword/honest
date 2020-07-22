@@ -92,14 +92,15 @@ public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
     })
     Postriskcombing findPostriskcombingByPid(@Param("pid")Integer pid);
 
+
     @Select("select pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures," +
-            " pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing where pStatus = 1 and  pProject " +
+            " pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing " +
+            " where pStatus = 1 and  pProject " +
             " like CONCAT('%',#{pProject},'%') order by pid desc")
     @Results({
             @Result(column = "pCreateId", property = "pCreateId"),
             @Result(column = "pCreateId", property = "sysStaff",
-                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById", fetchType = FetchType.DEFAULT))
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById", fetchType = FetchType.DEFAULT)),
     })
     IPage<Postriskcombing> findPostriskCombingIndex1(Page page,@Param("pProject") String pProject);
-
 }

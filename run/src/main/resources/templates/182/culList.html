@@ -164,9 +164,8 @@
             </div>
         </div>
         <div>
-			<span style="font-size: 14px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="color: #000000"  th:utext="${cultures.content}">
-			    </span>
+			<span >
+                <span th:utext="${cultures.content}"></span>
                 &nbsp;&nbsp;
                 <a th:if="${cultures.type==0&&cultures.url!='null'&&cultures.url!='undefined'}" th:href="'/hoonest/tmp'+${cultures.url}" >预览</a>
                 &nbsp;&nbsp;

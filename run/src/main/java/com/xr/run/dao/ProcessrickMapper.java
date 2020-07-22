@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface ProcessrickMapper extends BaseMapper<Processrick> {
-    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
+       @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
             " where  proName like CONCAT('%',#{proName},'%') order by proid desc")
     @Results({
             @Result(column = "proCreateId",property = "proCreateId"),
@@ -77,4 +77,12 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
     @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick where proid=#{id} ")
     Processrick findProcessrickById(@Param("id") Integer id);
 
+    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
+            " where proStatus =1 and  proName like CONCAT('%',#{proName},'%') order by proid desc")
+    @Results({
+            @Result(column = "proCreateId",property = "proCreateId"),
+            @Result(column = "proCreateId",property = "sysStaff",
+                    one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
+    })
+    IPage<Processrick> findProcessrickIndex1(Page page,@Param("proName") String proName);
 }

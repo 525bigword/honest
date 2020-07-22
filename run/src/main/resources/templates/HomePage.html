@@ -16,11 +16,14 @@
     <!--通用样式引用-->
     <link rel="stylesheet" th:href="#{html}+'/css/app.css'">
     <!--图片轮播-->
-    <script type="text/javascript"
-            th:src="#{html}+'/js/jquery1.42.min.js'"></script>
+   <!-- <script type="text/javascript"
+            th:src="#{html}+'/js/jquery1.42.min.js'"></script>-->
+    <script th:src="#{html}+'/js/jquery-1.9.1.js'"></script>
     <script type="text/javascript" th:src="#{html}+'/js/jquery.cookie.js'"></script>
     <script type="text/javascript"
             th:src="#{html}+'/js/jquery.SuperSlide.2.1.3.js'"></script>
+    <!--layer弹框-->
+    <script th:src="#{html}+'/js/layer/layer.js'"></script>
     <style type="text/css">
         /*主体内容样式*/
         .body-model {
@@ -462,7 +465,7 @@
             </form>
            <p  style="line-height: 20px;" id="blockLogin">
                 <span style="padding-right: 47px;" id="loginUser"></span><span>欢迎回来</span><br/>
-                <span style="padding-right: 114px;"><a href="http://127.0.0.1:8080/ms-mcms/ms/message/index.do?messageType=2&modelId=366&modelCode=366&modelTitle=待办事项" class="isLogin" target="_blank">待办事项</a></span><a href="javascript:void(0);" class="red" @click="loginOut">[退出系统]</a>
+                <span style="padding-right: 114px;"><a href="" class="isLogin" target="_blank">修改密码</a></span><a href="javascript:void(0);" class="red" onclick="loginOut()">[退出系统]</a>
             </p>
         </div>
         <div class="announcements">
@@ -627,122 +630,104 @@
 
 <script id="jsID" type="text/javascript">
     $(function () {
-        $("#blockLogin").hide()
+        var username =getCookie('username')
+        if(username!=''){
+            $("#blockLogin").show()
+            $("#loginUser").append("亲爱的："+username);
+            $("#form1").hide();
+            $("#letter").attr("href","/dist/#/loginletter")
+        }else {
+            $("#blockLogin").hide()
+        }
     })
+
+    // 取得cookie
+    function getCookie(name) {
+        var nameEQ = name + '='
+        var ca = document.cookie.split(';') // 把cookie分割成组
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i] // 取得字符串
+            while (c.charAt(0) == ' ') { // 判断一下字符串有没有前导空格
+                c = c.substring(1, c.length) // 有的话，从第二位开始取
+            }
+            if (c.indexOf(nameEQ) == 0) { // 如果含有我们要的name
+                return unescape(c.substring(nameEQ.length, c.length)) // 解码并截取我们要值
+            }
+        }
+        return false
+    }
+
+    // 设置cookie
+    function setCookie(name, value, seconds) {
+        seconds = seconds || 0;   //seconds有值就直接赋值，没有为0，这个根php不一样。
+        var expires = "";
+        if (seconds != 0 ) {      //设置cookie生存时间
+            var date = new Date();
+            date.setTime(date.getTime()+(seconds*1000));
+            expires = "; expires="+date.toGMTString();
+        }
+        document.cookie = name+"="+escape(value)+expires+"; path=/";   //转码并赋值
+    }
+    // 清除cookie
+    function clearCookie(name) {
+        setCookie(name, "", -1);
+    }
+
+     function loginOut() {
+         layer.alert('您确定要退出登录吗?', {
+             skin: 'layui-layer-molv' //样式类名 自定义样式
+             , closeBtn: 1 // 是否显示关闭按钮
+             , anim: 1 //动画类型
+             , btn: ['确定', '取消'] //按钮
+             , icon: 6 // icon
+             , yes: function () {
+               //layer.msg('确定')
+                 clearCookie('username')
+                 clearCookie('sid')
+                 location.reload() //刷新
+             }
+             , btn2: function () {
+                 layer.msg('取消')
+             }
+         });
+
+     }
+
     //登录
     function login(){
         $.ajax({
             type: "POST",//方法类型
             url: "/honest/qt/login/doLogin" ,//url
             data: $('#form1').serialize(),
-            //几个参数需要注意一下
-            xhrFields: {
-                withCredentials: true
-            },
-            crossDomain: true,
             success: function (data) {
+                layer.msg('登录成功', {
+                    time: 1500, //1500ms后自动关闭
+                    icon: 6});
                 console.log(data)
                 var username = data.info.userPermission.sysStaffByUserName.username
+                var sid = data.info.userPermission.sysStaffByUserName.sid
+                var sname=data.info.userPermission.sysStaffByUserName.name
                 if(username!=''){
-                   //登录
                     $("#blockLogin").show()
                     $("#loginUser").append("亲爱的："+username);
                     $("#form1").hide();
                     $("#letter").attr("href","/dist/#/loginletter")
+                    setCookie("username",username,1800); //设置cookie的值，生存时间半个小时
+                    setCookie("sid",sid,1800); //设置cookie的值，生存时间半个小时
+
+                    setCookie('sname',sname,1800);
                 }
             },
             error : function() {
-                alert("异常！");
+                layer.msg('异常', {
+                    time: 1500, //1500ms后自动关闭
+                    icon: 5});
             }
         });
     }
-    /*function getUser(){
-        $.ajax({
-            type: "POST",//方法类型
-            url: "http://localhost:8080/honest/qt/login/getUser" ,//url
-            xhrFields: {
-                withCredentials: true
-            },
-            crossDomain: true,
-            success: function (data) {
-                //alert(data)
-                location.reload()
-            },
-            error : function() {
-                alert("异常！");
-            }
-        });
-    }*/
     /* 内层图片滚动切换 */
     jQuery(".slideGroup .slideBox").slide({ mainCell:"ul",vis:5,prevCell:".sPrev",nextCell:".sNext",effect:"leftLoop"});
 
     jQuery(".slideBox0").slide({mainCell: ".bd ul", autoPlay: true});
-/*
-    var indexVue = new Vue({
-        el: '#indexForm',
-        data: {
-            form: {
-                username: "",  //名称
-                password: "", //描述
-            },
-            isLogin: true,//是否显示表单
-            userName: "",
-        },
-        methods: {
-            //登录
-            login: function () {
-                var that = this;
-                ms.http.post("http://localhost:8080/honest/SysStaff/auth", {
-                    username: that.form.username,
-                    password: that.form.password
-                },{headers: {'Content-Type': 'application/json'},xhrFields:{withCredentials: true}}).then(function (data) {
-                    if(data.info.result==="success"){
-                        location.reload();
-                        that.isLogin = false;
-                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
-                    }else{
-                        alert("登录失败");
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
-                this.managerGet();
-            },
-            //退出
-            loginOut: function () {
-                var that = this;
-                ms.http.get("http://localhost:8080/honest/SysStaff/logout", "")
-                    .then(function (data) {
-                        location.reload();
-                    }, (err) => {
-                    location.reload();
-            })
-            },
-            //获取管理员信息
-            managerGet() {
-                var that = this;
-                ms.http.post("http://localhost:8080/honest/SysStaff/getInfo", "",{xhrFields:{withCredentials: true}}).then(function (data) {
-                    alert(data.msg)
-                    /!*that.isLogin = false;
 
-                    alert(data.info.userPermission)
-                    alert(man.info.userPermission)
-                    that.userName = man.info.userPermission.menuList.username;
-                    if (that.userName) {
-                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/ms/yancao/lettersVisits/form.do?type=save");
-                    } else {
-                        $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
-                    }*!/
-
-                }).catch(function (err) {
-                    $("a[name='lettersVisits']").attr("href", "http://localhost:4031/ms-mcms/yancao/lettersVisits/index.do?type=save");
-                    console.log(err);
-                });
-            }
-        },
-        mounted() {
-            //this.managerGet();
-        }
-    });
-*/
 </script>

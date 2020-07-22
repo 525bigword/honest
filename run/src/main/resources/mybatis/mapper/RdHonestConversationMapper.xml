@@ -6,7 +6,7 @@
 
     <select id="findRdHonestConversationAll" resultType="com.xr.run.entity.RdHonestConversation">
         select rd.*,ss.name from rd_honest_conversation rd inner join
-        sys_staff ss on rd.create_id = ss.sid where rd.staus = 2
+        sys_staff ss on rd.create_id = ss.sid where rd.staus != -1
         <if test="title != null and title!=''">
             and rd.syllabus like "%"#{title}"%"
         </if>
