@@ -14,7 +14,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -157,6 +159,12 @@ public class SysStaffController {
         sysStaffService.upSysStaff(sysStaff);
         return CommonUtil.successJson(1);
     }
+
+    public static void main(String[] args) {
+        SimpleHash md5 = new SimpleHash("MD5", "123456", "", 2);
+        System.out.println(md5.toString());
+    }
+
 
     /**
      * 根据部门查用户集合
