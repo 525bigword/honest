@@ -69,5 +69,5 @@ file:
   staticAccessPaths: /upload/**
   uploadFolders: D:/Tomcat8.5/webapps/hoonest/img/
 html:
-  destPath: G:/Tomcat/apache-tomcat-8.5.50/webapps/honest/templates
+  destPath: D:/Tomcat8.5/webapps/honest/templates
 

@@ -36,7 +36,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},dutyAccessory=#{dutyAccessory},dutyAccessoryName=#{dutyAccessoryName},`status`=#{status} where did=#{did}")
     void updateSpvDutyFileByDid(SpvDuty spvDuty);
 
-    @Insert("insert into spv_duty(did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`) VALUES(null,#{dnumId},#{dutyType},#{dutyTitle},#{dutyContent},#{bid},#{dutyAccessory},#{dutyAccessoryName},NOW(),#{dCreateId},#{status})")
+    @Insert("insert into spv_duty(did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`) VALUES(null,#{dnumId},#{dutyType},#{dutyTitle},#{dutyContent},#{bid},#{dutyAccessory},#{dutyAccessoryName},date_add(NOW(),INTERVAL -8 hour),#{dCreateId},#{status})")
     void insertSpvDuty(SpvDuty spvDuty);
 
     @Update("update spv_duty set `status`=-1 where did=#{did}")

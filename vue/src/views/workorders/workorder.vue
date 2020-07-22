@@ -187,7 +187,6 @@
     <div :style="{'display':dis5}" style="background-color: lightgray;width:100%;margin-top:-9px">
       <el-main>
       <el-form
-        ref="dataForm"
         :rules="rules"
         :model="temp"
         label-position="center"
@@ -279,7 +278,7 @@ export default {
           {
             required: true,
             message: "标题不能为空",
-            trigger: ["blur", "change"]
+            trigger: ["blur","change"]
           }
         ]
       },
