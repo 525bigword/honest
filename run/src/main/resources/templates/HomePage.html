@@ -706,6 +706,7 @@
                 console.log(data)
                 var username = data.info.userPermission.sysStaffByUserName.username
                 var sid = data.info.userPermission.sysStaffByUserName.sid
+                var sname=data.info.userPermission.sysStaffByUserName.name
                 if(username!=''){
                     $("#blockLogin").show()
                     $("#loginUser").append("亲爱的："+username);
@@ -713,6 +714,8 @@
                     $("#letter").attr("href","/dist/#/loginletter")
                     setCookie("username",username,1800); //设置cookie的值，生存时间半个小时
                     setCookie("sid",sid,1800); //设置cookie的值，生存时间半个小时
+
+                    setCookie('sname',sname,1800);
                 }
             },
             error : function() {
