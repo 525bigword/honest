@@ -58,35 +58,26 @@ public class LoginController {
     @RequestMapping("/doLogin")
     @ResponseBody
     public JSONObject login(SysStaff sysStaff,HttpServletResponse response,HttpSession session){
-        System.out.println("username="+sysStaff.getUsername());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("username",sysStaff.getUsername());
         jsonObject.put("password",sysStaff.getPassword());
         JSONObject jsonObject1 = sysStaffService.authLogin(jsonObject);
         if(jsonObject1!=null){
             JSONObject info = sysStaffService.getInfo();
-            //保存在Cookie中
-          /*  Cookie myCookie=new Cookie("username",user.getUsername());
-            myCookie.setMaxAge(600*10);//30分钟
-            response.addCookie(myCookie);
-            session.setAttribute("loginUser",user);*/
-
           return info;
         }
         return null;
     }
 
 
-
-
     //获取用户信息
-   /* @RequestMapping("/getUser")
-    public String getUser(HttpSession session){
-        SysStaff sysUser = (SysStaff) session.getAttribute("sysUser");
-        String user = JSON.toJSONString(sysUser);
-        return user;
-    }
-*/
+   @RequestMapping("/getUser")
+   @ResponseBody
+   public JSONObject getUser(){
+       JSONObject info = sysStaffService.getInfo();
+       return info;
+   }
+
 
 
 

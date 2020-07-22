@@ -52,4 +52,9 @@ public class ProcessrickServiceImpl extends ServiceImpl<ProcessrickMapper,Proces
     public Processrick findProcessrickById(Integer id) {
         return processrickMapper.findProcessrickById(id);
     }
+
+    @Override
+    public IPage<Processrick> findProcessrickIndex1(Page page, String prProject) {
+        return processrickMapper.findProcessrickIndex1(page,prProject);
+    }
 }

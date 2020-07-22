@@ -148,26 +148,58 @@
         </ul>
     </div>
     <div></div>
-    <div class="content-list">
+    <div class="content-list" >
+        <table >
+            <tr ><th  align="center;" >岗位风险详情</th></tr>
+            <tr>
+                <td >执行年份:</td>
+                <td th:text="${riskVo.year}"></td>
+            </tr>
+            <tr>
+                <td>风险名称：</td>
+                <td th:text="${riskVo.project}"></td>
+            </tr>
+             <tr>
+                 <td>部门：</td>
+                 <td th:text="${riskVo.deptName}"></td>
+             </tr>
+             <tr>
+                 <td>岗位：</td>
+                 <td th:text="${riskVo.postName}"></td>
+             </tr>
+            <tr>
+                <td>风险等级：</td>
+                <td th:text="${riskVo.grade}"></td>
+            </tr>
+            <tr>
+                <td>风险描述：</td>
+                <td th:text="${riskVo.description}"></td>
+            </tr>
+            <tr>
+                <td>防控措施：</td>
+                <td th:text="${riskVo.measures}"></td>
+            </tr>
+        </table>
 
-        <div>
+
+        <!--<div>
             <div>
                 <label th:text="${riskVo.project}"></label>
             </div>
             <div>
                 <span>上传者：<label th:text="${riskVo.cname}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>&nbsp;&nbsp;&nbsp;
+                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>
             </div>
         </div>
-        <div>
-	           <span style="font-size: 14px"><span style="color: #000000">
-                   <span style="font-family: 宋体" th:utext="${riskVo.description}">　　
 
-                  </span></span></span><br />
+
+        <div>
+            <span th:utext="${riskVo.description}">　</span>　
         </div>
+
         <div>
              <span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>
-        </div>
+        </div>-->
     </div>
 </div>
 <script type="text/javascript">
@@ -175,7 +207,7 @@
         getData: 返回的数据
     */
     function insertContent(getData) {
-        var htmlContent = "";	//插入的列表内容
+      /*  var htmlContent = "";	//插入的列表内容
         var title = getData.project;		//内容
 
         htmlContent += '<div> <label>'+title+'</label> </div>' +
@@ -185,7 +217,7 @@
         //文章标题等信息
 
         $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
-        $(".content-list").children("div").eq(1).html(getData.description);			//添加文章内容
+        $(".content-list").children("div").eq(1).html(getData.description);			//添加文章内容*/
     }
 
     /*请求失败时调用 */

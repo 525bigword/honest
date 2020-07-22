@@ -349,7 +349,7 @@
 				<span><label>廉政教育</label></span>
 				<ul class="list-style-none">
 					<li>
-						<span class="" onclick="window.open('/honest/templates/181/0/index.html','_self')"><label><a>廉政要闻</a></label></span>
+						<span class="active-span-title" onclick="window.open('/honest/templates/181/0/index.html','_self')"><label><a>廉政要闻</a></label></span>
 					</li>
 					<li>
 						<span class="" onclick="window.open('/honest/templates/181/1/index.html','_self')"><label><a>文件制度</a></label></span>
@@ -434,13 +434,13 @@
             if(!pageNo){
                 pageNo = 1;
             }
-            var URL = "/honest/qt/educations/get";
+            var URL = "/honest/qt/educations/getEduList";
             var getData = [];	//请求返回的数据
             $.ajax({
                 async: true,
                 url: URL,
                 type: "get",
-                data: {title:title,pageNo: pageNo,pageSize: 10},
+                data: {type:0,title:title,pageNo: pageNo,pageSize: 10},
                 success: function(da) {
                     console.log(eval("(" + da + ")"))
                     if(da!=="null") {

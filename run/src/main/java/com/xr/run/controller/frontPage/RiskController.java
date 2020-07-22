@@ -50,7 +50,7 @@ public class RiskController {
         //岗位风险，type=0
         IPage<Postriskcombing> postriskCombingAll = postriskcombingService.findPostriskCombingIndex1(new Page(pageNo,pageSize), prProject);
         //流程风险，type=1
-        IPage<Processrick> processrickAll = processrickService.findProcessrickIndex(new Page(pageNo,pageSize), prProject);
+        IPage<Processrick> processrickAll = processrickService.findProcessrickIndex1(new Page(pageNo,pageSize), prProject);
 
         List<RiskVo> list = new ArrayList<>();
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
@@ -60,6 +60,13 @@ public class RiskController {
             riskVo.setProject(postriskcombing.getPProject());
             riskVo.setId(postriskcombing.getPid());
             riskVo.setCname(postriskcombing.getPCreateName());
+
+            riskVo.setYear(postriskcombing.getPYear());
+            riskVo.setGrade(postriskcombing.getPGrade());
+            riskVo.setMeasures(postriskcombing.getPMeasures());
+            riskVo.setDeptName(postriskcombing.getDeptName());
+            riskVo.setPostName(postriskcombing.getPostname());
+
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);

@@ -81,95 +81,6 @@ public class DutyController {
         return "null";
     }
 
-    //查询责任纪实所有的信息
-    @RequestMapping("/rdWorkList")
-    public String rdWorkList(String title, Integer pageNo, Integer pageSize) {
-        List<RdWorkPlan> rdWorkPlans = rdWorkPlanService.findRdWorkPlanAll(title);
-        //工作部署
-        List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentService.findRdWorkDeploymentAll(title);
-        //廉政谈话
-        List<RdHonestConversation> rdHonestConversations = rdHonestConversationService.findRdHonestConversationAll(title);
-        //主体责任
-        List<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityService.findRdEntityResponsibilityAll(title);
-        List<RdWorkVo> list = new ArrayList<>();
-        //记录总页码
-        for (RdWorkPlan rdWorkPlan : rdWorkPlans) {
-            RdWorkVo rdWorkVo = new RdWorkVo();
-            rdWorkVo.setContent(rdWorkPlan.getContent());
-            rdWorkVo.setTitle(rdWorkPlan.getTitle());
-            rdWorkVo.setCreateTime(rdWorkPlan.getCreateTime());
-            rdWorkVo.setType(0);
-            rdWorkVo.setName(rdWorkPlan.getName());
-            rdWorkVo.setId(rdWorkPlan.getRdid());
-            list.add(rdWorkVo);
-        }
-
-        for (RdWorkDeployment rdWorkDeployment : rdWorkDeployments) {
-            RdWorkVo rdWorkVo = new RdWorkVo();
-            rdWorkVo.setContent(rdWorkDeployment.getContent());
-            rdWorkVo.setTitle(rdWorkDeployment.getTitle());
-            rdWorkVo.setCreateTime(rdWorkDeployment.getCreateTime());
-            rdWorkVo.setType(1);
-            rdWorkVo.setName(rdWorkDeployment.getName());
-            rdWorkVo.setId(rdWorkDeployment.getId());
-            list.add(rdWorkVo);
-        }
-
-        for (RdHonestConversation rdHonestConversation : rdHonestConversations) {
-            RdWorkVo rdWorkVo = new RdWorkVo();
-            rdWorkVo.setContent(rdHonestConversation.getContent());
-            rdWorkVo.setTitle(rdHonestConversation.getSyllabus());
-            rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
-            rdWorkVo.setType(2);
-            rdWorkVo.setName(rdHonestConversation.getName());
-            rdWorkVo.setId(rdHonestConversation.getId());
-            list.add(rdWorkVo);
-        }
-        for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities) {
-            RdWorkVo rdWorkVo = new RdWorkVo();
-            rdWorkVo.setContent(rdEntityResponsibility.getContent());
-            rdWorkVo.setTitle(rdEntityResponsibility.getTitle());
-            rdWorkVo.setCreateTime(rdEntityResponsibility.getCreateTime());
-            rdWorkVo.setName(rdEntityResponsibility.getName());
-            rdWorkVo.setType(3);
-            rdWorkVo.setId(rdEntityResponsibility.getId());
-            list.add(rdWorkVo);
-        }
-        //排序
-        rdWorkVoSort(list);
-        //分页
-        Integer count = list.size(); //记录总数
-        Integer pageCount = 0; //页数
-        if (count % pageSize == 0) {
-            pageCount = count / pageSize;
-        } else {
-            pageCount = count / pageSize + 1;
-        }
-
-        int fromIndex = 0; //开始索引
-        int toIndex = 0; //结束索引
-
-        if (pageNo > pageCount) {
-            pageNo = pageCount;
-        }
-        if (!pageNo.equals(pageCount)) {
-            fromIndex = (pageNo - 1) * pageSize;
-            toIndex = fromIndex + pageSize;
-        } else {
-            fromIndex = (pageNo - 1) * pageSize;
-            toIndex = count;
-        }
-        if (list.size() != 0) {
-            List<RdWorkVo> pageList = list.subList(fromIndex, toIndex);
-            String jsonString = JSON.toJSONString(pageList);
-            String jso = "{\"total\":" + count + ",\"pages\":" + pageCount + ",\"rows\":" + jsonString + "}";
-            return jso;
-        } else {
-            //没查找到返回
-            return "null";
-        }
-    }
-
 
     @RequestMapping("/rdWorkDetailList")
     public String rdWorkDetailList(Integer type, String title, Integer pageNo, Integer pageSize) {
@@ -207,24 +118,7 @@ public class DutyController {
             String jsonString = JSON.toJSONString(list);
             String jso = "{\"total\":" + rdWorkDeployments.getTotal() + ",\"pages\":" + rdWorkDeployments.getPages() + ",\"rows\":" + jsonString + "}";
             return jso;
-        } else if (type == 2) {
-            Page page = new Page(pageNo, pageSize);
-            IPage<RdHonestConversation> rdHonestConversations = rdHonestConversationService.findRdHonestConversationIndex(page, title);
-            List<RdWorkVo> list = new ArrayList();
-            for (RdHonestConversation rdHonestConversation : rdHonestConversations.getRecords()) {
-                RdWorkVo rdWorkVo = new RdWorkVo();
-                rdWorkVo.setContent(rdHonestConversation.getContent());
-                rdWorkVo.setTitle(rdHonestConversation.getSyllabus());
-                rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
-                rdWorkVo.setType(2);
-                rdWorkVo.setName(rdHonestConversation.getName());
-                rdWorkVo.setId(rdHonestConversation.getId());
-                list.add(rdWorkVo);
-            }
-            String jsonString = JSON.toJSONString(list);
-            String jso = "{\"total\":" + rdHonestConversations.getTotal() + ",\"pages\":" + rdHonestConversations.getPages() + ",\"rows\":" + jsonString + "}";
-            return jso;
-        } else {
+        }  else {
             Page page = new Page(pageNo, pageSize);
             IPage<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityService.findRdEntityResponsibilityIndex(page, title, 2);
             List<RdWorkVo> list = new ArrayList();
@@ -298,31 +192,7 @@ public class DutyController {
     }
 
 
-    private void rdWorkVoSort(List<RdWorkVo> list) {
-        //Collections的sort方法默认是升序排列，如果需要降序排列时就需要重写compare方法
-        Collections.sort(list, new Comparator<RdWorkVo>() {
-            @Override
-            public int compare(RdWorkVo o1, RdWorkVo o2) {
-                try {
-                    //获取体检日期，并把其类型由String转成Date，便于比较。
-                    Date dt1 = o1.getCreateTime();
-                    Date dt2 = o2.getCreateTime();
-                    //以下代码决定按日期降序排序，若将return“-1”与“1”互换，即可实现升序。
-                    //getTime 方法返回一个整数值，这个整数代表了从 1970 年 1 月 1 日开始计算到 Date 对象中的时间之间的毫秒数。
-                    if (dt1.getTime() > dt2.getTime()) {
-                        return -1;
-                    } else if (dt1.getTime() < dt2.getTime()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
 
-                } catch (Exception e) {
-                }
-                return 0;
-            }
-        });
-    }
 
 
 }

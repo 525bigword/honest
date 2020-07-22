@@ -54,4 +54,6 @@ public interface ProcessrickService extends IService<Processrick> {
      */
     List<Processrick> getListBy(String proName, String proYear,String proGrade);
     Processrick findProcessrickById(Integer id);
+
+    IPage<Processrick> findProcessrickIndex1(Page page, String prProject);
 }

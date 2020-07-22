@@ -5,7 +5,7 @@
 
     <select id="findRdWorkPlanAll" resultType="com.xr.run.entity.RdWorkPlan">
         select rd.*,ss.name from rd_work_plan rd inner join sys_staff ss on
-        rd.create_id = ss.sid where rd.staus = 2
+        rd.create_id = ss.sid where rd.staus != -1
         <if test="title != null and title!=''">
             and rd.title like "%"#{title}"%"
         </if>

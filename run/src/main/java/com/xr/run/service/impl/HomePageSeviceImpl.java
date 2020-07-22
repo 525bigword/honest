@@ -611,8 +611,8 @@ public class HomePageSeviceImpl implements HomePageSevice {
     //风险防控
     private void loadRisk(Map map) {
         //流程风险
-        IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex(new Page(1,6), "");
-        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex(new Page(1,6), "");
+        IPage<Processrick> processrickAll = processrickMapper.findProcessrickIndex1(new Page(1,6), "");
+        IPage<Postriskcombing> postriskCombingAll = postriskcombingMapper.findPostriskCombingIndex1(new Page(1,6), "");
         List<RiskVo> list = new ArrayList<>();
         int i0 = 0;
         for (Postriskcombing postriskcombing : postriskCombingAll.getRecords()) {
@@ -622,6 +622,13 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setProject(postriskcombing.getPProject());
             riskVo.setId(postriskcombing.getPid());
             riskVo.setCname(postriskcombing.getPCreateName());
+
+            riskVo.setYear(postriskcombing.getPYear());
+            riskVo.setGrade(postriskcombing.getPGrade());
+            riskVo.setMeasures(postriskcombing.getPMeasures());
+            riskVo.setDeptName(postriskcombing.getDeptName());
+            riskVo.setPostName(postriskcombing.getPostname());
+
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);

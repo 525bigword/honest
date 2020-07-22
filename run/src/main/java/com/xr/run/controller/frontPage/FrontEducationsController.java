@@ -45,14 +45,6 @@ public class FrontEducationsController {
         return  educationPoliticsService.findwhereEducationIndex(page,title);
     }
 
-    //所有廉政教育内容
-    @GetMapping("get")
-    public String getList(String title, Integer pageNo, Integer pageSize){
-        Page page = new Page(pageNo,pageSize);
-        IPage<EducationPolitics> educationPoliticsIPage = getList(page, title);
-        String jsonString = JSON.toJSONString(educationPoliticsIPage);
-        return jsonString;
-    }
 
     @GetMapping("/getEduList")
     public String getEduList(String type,String title, Integer pageNo, Integer pageSize){

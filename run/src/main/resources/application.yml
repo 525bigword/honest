@@ -58,17 +58,17 @@ mybatis-plus:
 file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
-  uploadFolder: D:/Tomcat8.5/webapps/hoonest/tmp/
+  uploadFolder: D:/Tomcat/newFolder/webapps/hoonest/tmp/
   #uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
-  uploadDuty: D:/Tomcat8.5/webapps/hoonest/duty/
+  uploadDuty: D:/Tomcat/newFolder/webapps/hoonest/duty/
   #uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
-  uploadImage: D:/Tomcat8.5/webapps/hoonest/img/
+  uploadImage: D:/Tomcat/newFolder/webapps/hoonest/img/
   #uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
-  uploadVideo: D:/Tomcat8.5/webapps/hoonest/vido
+  uploadVideo: D:/Tomcat/newFolder/webapps/hoonest/vido
   #uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
   accessPaths: /upload
   staticAccessPaths: /upload/**
-  uploadFolders: D:/Tomcat8.5/webapps/hoonest/img/
+  uploadFolders: D:/Tomcat/newFolder/webapps/hoonest/img/
 html:
-  destPath: D:\tomcat\Tomcat8.5\webapps\honest\templates
+  destPath: D:/Tomcat/newFolder/webapps/honest/templates
 
