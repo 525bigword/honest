@@ -21,7 +21,8 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="get">详情</el-button>
+          <el-button type="primary" @click="get">查询</el-button>
+          <el-button type="primary" @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -180,6 +181,9 @@ export default {
     
   },
   methods: {
+    reset(){
+      this.formInline={}
+    },
       staus(val) {
       if (val === '1') {
         return "正常";

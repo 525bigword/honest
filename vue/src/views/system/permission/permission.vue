@@ -19,6 +19,7 @@
       </el-select>
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="reset">重置</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
@@ -234,6 +235,16 @@ export default {
     this.getList();
   },
   methods: {
+    reset(){
+      this.listQuery={
+        page: 1,
+        limit: 10,
+        importance: "全部",
+        title: "",
+        type: undefined,
+        sort: "+index"
+      }
+    },
     swchange(val) {
       console.log(val);
       this.temp.requiredPermission = val ? 1 : 2;
