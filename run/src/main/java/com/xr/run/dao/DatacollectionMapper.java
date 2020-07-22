@@ -32,7 +32,7 @@ public interface DatacollectionMapper extends BaseMapper<Datacollection> {
     @Update("update datacollection set dTitle=#{dTitle},dVideo=#{dVideo},dVideoName=#{dVideoName},dFileName=#{dFileName},dFile=#{dFile},dStatus=#{dStatus},dPdf=#{dPdf} where did=#{did}")
     void updateDataConllectionByVideoAndFile(Datacollection datacollection);
 
-    @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName) VALUES(null,#{dTitle},#{dFileName},#{dFile},NOW(),#{dCreateId},#{dStatus},#{dPdf},#{dVideo},#{dVideoName})")
+    @Insert("insert into datacollection(did,dTitle,dFileName,dFile,dCreateTime,dCreateId,dStatus,dPdf,dVideo,dVideoName) VALUES(null,#{dTitle},#{dFileName},#{dFile},date_add(NOW(),INTERVAL -8 hour),#{dCreateId},#{dStatus},#{dPdf},#{dVideo},#{dVideoName})")
     @Options(useGeneratedKeys = true,keyProperty = "did")
     void insertDataConllection(Datacollection datacollection);
 

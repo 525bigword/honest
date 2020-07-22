@@ -21,7 +21,7 @@ public interface SystemprocessMapper extends BaseMapper<Systemprocess> {
     @Update("update systemprocess set sysTitle=#{sysTitle},sysContent=#{sysContent} where sysid=#{sysid}")
     void updateSystemprocessBySysId(Systemprocess systemprocess);
 
-    @Insert("insert into systemprocess(sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus) VALUES(null,#{sysTitle},#{sysContent},NOW(),#{sysCreateId},0)")
+    @Insert("insert into systemprocess(sysid,sysTitle,sysContent,sysCreateTime,sysCreateId,sysStatus) VALUES(null,#{sysTitle},#{sysContent},date_add(NOW(),INTERVAL -8 hour),#{sysCreateId},0)")
     void insertSystemprocess(Systemprocess systemprocess);
 
     @Delete("update systemprocess set sysStatus=1 where sysid=#{sysid}")
