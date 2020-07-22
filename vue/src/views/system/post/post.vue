@@ -50,16 +50,28 @@
         align="center"
         :class-name="getSortClass('id')"
       ></el-table-column>
-      <el-table-column align="center" prop="pname" label="岗位名称"></el-table-column>
+      <el-table-column align="center" prop="pname" label="角色名称">
+        <template slot-scope="scope">
+          <el-tooltip v-if="hasPerm('post:update')" content="点击查看详情或修改" placement="right" effect="dark">
+            <a 
+            
+              @click="tree(scope.row,$index)"
+              target="_blank"
+              class="buttonText"
+              style="color: #1890ff"
+            >{{scope.row.pname}}</a>
+          </el-tooltip>
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" prop="message" label="岗位描述"></el-table-column>
+      <el-table-column align="center" prop="message" label="角色描述"></el-table-column>
 
       <el-table-column align="center" prop="createname" label="创建人"></el-table-column>
 
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
 
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         v-if="hasPerm('post:delete')"
         label="操作"
         align="center"
@@ -74,7 +86,7 @@
             @click="tree(row,$index)"
           >修改</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       @current-change="handleCurrentChange"

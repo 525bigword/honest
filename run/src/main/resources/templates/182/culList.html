@@ -226,9 +226,8 @@
                 html=html +"<a href=\"" + url + "\">预览</a>"
             }
             var dvideo =getData.dVideo
-            alert(getData.dVideo)
             if(dvideo!="null"&&dvideo!=="undefined"&&dvideo!=null) {
-                html =html +" &nbsp;&nbsp;<a><span onclick=\"check("+dvideo+")\">查看视频</span></a>"
+                html =html +" &nbsp;&nbsp;<a><span onclick=\"check('"+dvideo+"')\">查看视频</span></a>"
             }
             $(".content-list").children("div").eq(1).html(content + html);			//添加文章内容
 

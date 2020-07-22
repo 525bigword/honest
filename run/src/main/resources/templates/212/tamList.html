@@ -137,7 +137,7 @@
 				<span><label>潭烟风貌</label></span>
 				<ul class="list-style-none">
 					<li>
-						<span class="" onclick="window.open('/honest/templates/212/index.html','_self')"><label><a>潭烟风貌</a></label></span>
+						<span class="active-span-title" onclick="window.open('/honest/templates/212/index.html','_self')"><label><a>潭烟风貌</a></label></span>
 					</li>
 				</ul>
 			</li>
@@ -168,14 +168,16 @@
 
 		</div>
 		<div>
-			<span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>
+			<span class="ms-right" id="goback">
+				<a href="/honest/templates/index.html">返回首页</a>
+			</span>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
     var id = ms.util.getParameter("id");
     if(id != null && id!="null" && id!=""){
-        $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/212/index.html\">返回上一页</a>")
+        $("#goback").append("<a href=\"/honest/templates/212/index.html\">返回上一页</a>")
 	}
 
 

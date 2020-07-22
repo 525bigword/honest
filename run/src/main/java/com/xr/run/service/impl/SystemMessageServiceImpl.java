@@ -39,4 +39,9 @@ public class SystemMessageServiceImpl extends ServiceImpl<SystemMessageMapper, S
     public String findSystemMessageByFile(int aid) {
         return baseMapper.findSystemMessageByFile(aid);
     }
+
+    @Override
+    public SystemMessage findSystemMessageByAid(int aid) {
+        return baseMapper.findSystemMessageByAid(aid);
+    }
 }

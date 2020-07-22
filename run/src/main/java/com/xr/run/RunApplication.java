@@ -20,6 +20,7 @@ import java.util.Map;
 public class RunApplication {
     @Resource
     private Environment environment;
+
     public static void main(String[] args) {
         SpringApplication.run(RunApplication.class, args);
     }

@@ -85,9 +85,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
     @Autowired
     private EducationPoliticsMapper educationPoliticsMapper;
 
-    //纪检报表
-    @Autowired
-    private DcpReportMapper dcpReportMapper;
 
     //资料集锦
     @Autowired
@@ -141,7 +138,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //工作部署
         List<RdWorkDeployment> rdWorkDeployments = rdWorkDeploymentMapper.findRdWorkDeploymentAll("");
         //廉政谈话
-        List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll("");
+        //List<RdHonestConversation> rdHonestConversations = rdHonestConversationMapper.findRdHonestConversationAll("");
         //主体责任
         List<RdEntityResponsibility> rdEntityResponsibilities = rdEntityResponsibilityMapper.findRdEntityResponsibilityAll("");
 
@@ -189,24 +186,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             i1++;
         }
         //廉政谈话
-        int i2 = 0;
-        for (RdHonestConversation rdHonestConversation : rdHonestConversations) {
-            //去除html标签
-            RdWorkVo rdWorkVo = new RdWorkVo();
-            rdWorkVo.setContent(rdHonestConversation.getContent());
-            rdWorkVo.setTitle(rdHonestConversation.getSyllabus());
-            rdWorkVo.setCreateTime(rdHonestConversation.getCreateTime());
-            rdWorkVo.setType(2);
-            rdWorkVo.setId(rdHonestConversation.getId());
-            rdWorkVo.setName(rdHonestConversation.getName());
-            list1.add(rdWorkVo);
-            Map map1 = new HashMap();
-            map1.put("rdWorkVo", rdWorkVo);
-            if (i2 == 0) {
-                createIndexHtml(destPath + "/185/2/", "185/rdList", rdWorkVo.getId() + ".html", map1);
-            }
-            i2++;
-        }
+
         //主体责任
         int i3 = 0;
         for (RdEntityResponsibility rdEntityResponsibility : rdEntityResponsibilities) {
@@ -227,8 +207,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
             i3++;
         }
         listSort(list1);
-        log.info("====================list1========list1==================================list1list1list1==="+list1);
-
         if (list1.size() != 0) {
 
             String s = CommonUtil.delHTMLTag(list1.get(0).getContent());//去除标签
@@ -410,11 +388,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
         //TODO 通知公告
         loadSystemMsg(map);
+        //通知公告更多
+        getMoreSystemMsg();
 
-        //TODO 纪检报表
-        loadReport(map);
-        //纪检报表更多
-        getMoreReport();
+
 
         //TODO 潭烟风貌
         loadTam(map);
@@ -423,6 +400,11 @@ public class HomePageSeviceImpl implements HomePageSevice {
 
 
         createIndexHtml(destPath, "HomePage", "index.html", map);
+    }
+
+    //更多通知公告
+    private void getMoreSystemMsg() {
+        createIndexHtml(destPath + "/211/", "211/index", "index.html", null);
     }
 
 
@@ -500,7 +482,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             list.add(record);
         }
         if (list.size() != 0) {
-            String s = CommonUtil.delHTMLTag(list.get(0).getContent());//去除标签
+            String s = CommonUtil.delHTMLTag(list.get(0).getArticletitle());//去除标签
             map.put("msgContent", s);
             for (SystemMessage message : list) {
                 Map map1 = new HashMap();
@@ -510,7 +492,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
         } else {
             SystemMessage message = new SystemMessage();
             message.setContent("");
-            //map.put("msgContent","");
+            map.put("msgContent","");
             list.add(message);
         }
         map.put("sysMessage", list);
@@ -625,34 +607,6 @@ public class HomePageSeviceImpl implements HomePageSevice {
         map.put("cultures", list);
     }
 
-    //纪检报表
-    private void loadReport(Map map) {
-        IPage<DcpReport> dcpReportIndex = dcpReportMapper.findDcpReportIndex(new Page(1,6), "");
-        List<DcpReport> list = new ArrayList<>();
-        for (DcpReport record : dcpReportIndex.getRecords()) {
-            int i = record.getReport().lastIndexOf(".");
-            record.setFile(record.getReport().substring(0, i));
-            list.add(record);
-        }
-        if (list.size() != 0) {
-            if (list.size() > 0 && list.size() < 6) {
-                list = list.subList(0, list.size());
-            } else if (list.size() >= 6) {
-                list = list.subList(0, 6);
-            }
-            for (DcpReport report : list) {
-                Map map1 = new HashMap();
-                map1.put("record", report);
-                createIndexHtml(destPath + "/189/", "189/repList", report.getId() + ".html", map1);
-            }
-        } else {
-            DcpReport report = new DcpReport();
-            report.setReport("");
-            list.add(report);
-        }
-
-        map.put("reports", list);
-    }
 
     //风险防控
     private void loadRisk(Map map) {

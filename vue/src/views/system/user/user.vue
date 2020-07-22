@@ -41,7 +41,18 @@
     >
       <el-table-column prop="pid" type="selection" width="55"></el-table-column>
       <el-table-column type="index" :index="indexMethod" align="center" label="序号"></el-table-column>
-      <el-table-column align="center" prop="name" label="员工名"></el-table-column>
+      <el-table-column align="center" prop="name" label="员工名">
+        <template slot-scope="scope">
+          <el-tooltip v-if="hasPerm('staff:update')" content="点击查看详情或修改" placement="right" effect="dark">
+            <a 
+              @click="showUpdate(scope)"
+              target="_blank"
+              class="buttonText"
+              style="color: #1890ff"
+            >{{scope.row.name}}</a>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="sex" label="性别"></el-table-column>
       <el-table-column align="center" prop="age" label="年龄"></el-table-column>
       <el-table-column align="center" prop="educationalBackground" label="学历"></el-table-column>
@@ -50,17 +61,12 @@
       <el-table-column align="center" prop="mechanismname" label="部门"></el-table-column>
       <el-table-column align="center" prop="postname" label="角色"></el-table-column>
       <el-table-column align="center" prop="ppname" label="岗位"></el-table-column>
-      <el-table-column align="center" label="管理" width="180" v-if="hasPerm('staff:update')">
+      <el-table-column align="center" label="管理" width="180" v-if="hasPerm('staff:update')&&formInline.staus==2">
         <template slot-scope="scope">
-          <div v-if="scope.row.staus==1">
-            <el-button type="primary" size="small" icon="edit" @click="showUpdate(scope)">修改</el-button>
-          </div>
-          <div v-if="scope.row.staus==2">
             <el-row>
               <el-button type="success" size="small" icon="edit" @click="huifu(scope)">恢复</el-button>
               <el-button type="danger" size="small" icon="edit" @click="yjdelete(scope)">永久删除</el-button>
             </el-row>
-          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -420,7 +426,6 @@ export default {
           showConfirmButton: true,
           closeOnPressEscape: false,
           callback: action => {
-            if (action === "confirm") {
             let arr = [];
             this.deleteList.filter(item => {
               arr.push(item.sid);
@@ -449,7 +454,6 @@ export default {
                 }
               }
             });
-          }
           }
         });
       }
@@ -674,22 +678,20 @@ export default {
             showConfirmButton: true,
             closeOnPressEscape: false,
             callback: action => {
-              if (action === "confirm") {
-                this.api({
-                  url: "SysStaff/update",
-                  method: "put",
-                  data: this.form
-                }).then(res => {
-                  console.log(res);
-                  if (res === 1) {
-                    this.$message({
-                      type: "success",
-                      message: "修改成功"
-                    });
-                    this.dialogTableVisible = false;
-                  }
-                });
-              }
+              this.api({
+                url: "SysStaff/update",
+                method: "put",
+                data: this.form
+              }).then(res => {
+                console.log(res);
+                if (res === 1) {
+                  this.$message({
+                    type: "success",
+                    message: "修改成功"
+                  });
+                  this.dialogTableVisible = false;
+                }
+              });
             }
           });
         }
