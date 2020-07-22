@@ -258,6 +258,7 @@
       ])
     },
     created() {
+    console.log('nickname'+this.nickname)
     let posdata=qs.stringify({nickname:this.nickname})
     this.userInfo={}
 

@@ -95,12 +95,11 @@
           prop="staus"
           label="状态"  :formatter="cstatus" width="100px">
         </el-table-column>
-        <el-table-column prop="auditresult" label="审核结果"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)" v-if="scope.row.staus==0&& hasPerm('honestconversation:update')">编辑</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.staus==0 && hasPerm('honestconversation:add')|| hasPerm('honestconversation:update')&&scope.row.staus==0" @click="tjsh(scope.$index, scope.row)">提交审核</el-button>
-            <el-button type="primary" size="small" v-if="scope.row.staus==1&& hasPerm('honestconversation:audit')" @click="sh(scope.$index, scope.row)">审核</el-button>
+            <el-button type="primary" size="small" @click="handleEdit(scope.$index, scope.row)" v-if=" hasPerm('honestconversation:update')&& scope.row.staus==0">编辑</el-button>
+            <el-button type="primary" size="small" v-if="scope.row.staus==0 && hasPerm('honestconversation:add')|| hasPerm('honestconversation:update')&& scope.row.staus==0" @click="tjsh(scope.$index, scope.row)">提交保存</el-button>
+          <el-button type="primary" size="small" v-if="scope.row.staus==1" @click="sh(scope.$index, scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -121,18 +120,19 @@
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
           <br/>
           <div align="right" ><el-form-item >
-            <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')"  >提交</el-button>
+            <el-button type="primary" class="el-icon-edit"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')"  >保存</el-button>
             <el-button type="primary" class="el-icon-edit" @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
-            <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
-            <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>
+           <!-- <el-button type="primary" class="el-icon-edit" @click="passtg('通过')" v-bind:style="{display:tg}">审核通过</el-button>
+            <el-button type="primary" class="el-icon-edit" @click="passtg('驳回')" v-bind:style="{display:bh}">驳回</el-button>-->
 
             <el-button type="primary" class="el-icon-back" @click="back('ruleForm')">返回</el-button></el-form-item></div></div>
         <br/>
         <div style="background-color: white;margin-top: 7px;z-index:3;">
           <el-input v-model="userInfo.id" placeholder="编号" type="hidden"></el-input>
+          <el-input v-model="userInfo.staus" placeholder="状态" type="hidden"></el-input>
 
           <el-form-item label="谈话对象单位" prop="punit">
-            <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo"
+            <el-cascader ref='cascaderUnit' :show-all-levels="false" v-if="isShowAddressInfo" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'"
                          :placeholder="defaUnit"
                          :props="props"
                          :options="options_cascader"
@@ -140,7 +140,7 @@
                          clearable v-model="userInfo.punit" @change="handleItemChange"  style="width: 400px"></el-cascader>
           </el-form-item>
           <el-form-item label="谈话对象姓名" prop="pid">
-            <el-select v-model="userInfo.pid" placeholder="请选择谈话对象姓名" style="width: 400px">
+            <el-select v-model="userInfo.pid" placeholder="请选择谈话对象姓名" style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -150,7 +150,7 @@
             </el-select>
           </el-form-item><br/>
           <el-form-item label="记录人" prop="personid">
-            <el-select v-model="userInfo.personid" placeholder="请选择记录人" style="width: 400px">
+            <el-select v-model="userInfo.personid" placeholder="请选择记录人" style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'">
               <el-option
                 v-for="item in options"
                 :key="item.sid"
@@ -160,10 +160,10 @@
             </el-select>
           </el-form-item>
           <el-form-item label="谈话时间" prop="time">
-            <el-date-picker v-model="userInfo.time" placeholder="请选择谈话时间" type="datetime"  style="width: 400px" ></el-date-picker>
+            <el-date-picker v-model="userInfo.time" placeholder="请选择谈话时间" type="datetime"  style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'"></el-date-picker>
           </el-form-item><br/>
           <el-form-item label="谈话对象政治面貌" prop="zzmm">
-            <el-select v-model="userInfo.zzmm" placeholder="请选择谈话对象政治面貌" style="width: 400px">
+            <el-select v-model="userInfo.zzmm" placeholder="请选择谈话对象政治面貌" style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'">
               <el-option label="党员" value="党员"></el-option>
               <el-option label="团员" value="团员"></el-option>
               <el-option label="群众" value="群众"></el-option>
@@ -171,25 +171,31 @@
             </el-select>
           </el-form-item>
           <el-form-item label="谈话对象职务" prop="duty">
-            <el-input v-model="userInfo.duty" placeholder="请输入谈话对象职务" style="width: 400px"></el-input>
+            <el-input v-model="userInfo.duty" placeholder="请输入谈话对象职务" style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'"></el-input>
           </el-form-item><br/>
           <el-form-item label="谈话类型" prop="type">
-            <el-select v-model="userInfo.type" placeholder="请选择谈话类型" style="width: 400px">
+            <el-select v-model="userInfo.type" placeholder="请选择谈话类型" style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'">
               <el-option label="例行廉政谈话" value="例行廉政谈话"></el-option>
               <el-option label="任前廉政谈话" value="任前廉政谈话"></el-option>
               <el-option label="提醒谈话" value="提醒谈话"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="谈话地点" prop="site">
-            <el-input v-model="userInfo.site" placeholder="请输入谈话地点" style="width: 400px"></el-input>
+            <el-input v-model="userInfo.site" placeholder="请输入谈话地点" style="width: 400px" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'"></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="谈话提纲" prop="syllabus">
-            <el-input v-model="userInfo.syllabus"  type="textarea" placeholder="请输入400字符以内的谈话提纲" style="width: 1000px;" :rows="6"></el-input>
+            <el-input v-model="userInfo.syllabus"  type="textarea" placeholder="请输入400字符以内的谈话提纲" style="width: 1000px;" :rows="6" :disabled="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:'disabled'"></el-input>
           </el-form-item>
           <br/>
           <el-form-item label="谈话内容" prop="content">
-            <el-input v-model="userInfo.content" type="textarea" placeholder="请输入2000字符以内的谈话内容" style="width: 1000px" :rows="16"></el-input>
+         <!--   <el-input v-model="userInfo.content" type="textarea" placeholder="请输入2000字符以内的谈话内容" style="width: 1000px" :rows="16"></el-input>-->
+            <el-card class="box-card" style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:true">
+              <div  v-html="userInfo.content"></div>
+            </el-card>
+
+            <quill-editor  id="editer"  v-bind:disabled='nr'  ref="text" v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 1000px;height: 450px;margin-bottom: 100px" v-if="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')"/>
+
           </el-form-item><br/>
           <el-form-item label="创建人" v-if="false">
             <el-input v-model="userInfo.createname" placeholder="创建人" disabled="disabled" style="width: 400px" v-if="false"></el-input>
@@ -323,11 +329,9 @@
         if (cellValue == 0){
           return '创建';
         }else if (cellValue == 1){
-          return '待审';
+          return '提交状态';
         }
-        else{
-          return '已审核'
-        }
+
       },
       back(formName){this.ad='none',//隐藏窗
         this.tf=''
@@ -392,7 +396,7 @@
         let postData = qs.stringify({
           id:row.id
         });
-        this.$confirm(`确定提交审核?`, '提示', {
+        this.$confirm('确认提交保存吗？提交后将不能够再更新信息', '温馨提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
@@ -410,7 +414,7 @@
         }).catch(() => {
           this.$notify({
             type: 'info',
-            message: '已取消提交审核'
+            message: '已取消提交'
           });
         })
       },
@@ -489,7 +493,12 @@
         this.userInfo.zzmm=row.users[0].politicalAppearance
         this.userInfo.duty=row.users[0].posts[0].pname
         this.bc='none'
-        this.gx='none'
+        if(row.staus==0||row.staus==1&& !this.role.includes("单位/部门负责人")&& !this.role.includes('局领导')){
+          this.gx=''
+        } else{
+          this.gx='none'
+        }
+
         this.ad='',//隐藏窗
           this.tf='none'
       }
@@ -593,7 +602,12 @@
         this.tf='none';//表格父页面隐藏
         this.ad=''//编辑/审核页面出来,
         this.bc='none'
-        this.gx=''
+        if(row.staus==0||row.staus==1&& !this.role.includes("单位/部门负责人")){
+          this.gx=''
+        } else{
+          this.gx='none'
+        }
+
         this.userInfo.zzmm=row.users[0].politicalAppearance
         this.userInfo.duty=row.users[0].posts[0].pname
         /*    this.userInfo.name=[]
@@ -726,6 +740,7 @@
         userInfo: {},
         dialogTitle: '增加',
         rowIndex: null,
+        editorOption: {},
         search:'',
         currentPage4: 1,
         pageSize:10,
