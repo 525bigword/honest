@@ -4,15 +4,15 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'" />
-        <span style="display:inline-block;vertical-align:middle">{{nickname}}</span>
+        <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'" /> -->
+        <span style="display:inline-block;vertical-align:middle">{{'欢迎您 &nbsp&nbsp&nbsp     '+nickname}}</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <el-dropdown-item v-if="hasPerm('index:add')">
+        <el-dropdown-item class="inlineBlock" v-if="hasPerm('index:add')">
           <span @click="createIndex()" style="display:block;">生成首页</span>
         </el-dropdown-item>
-        <router-link class="inlineBlock" to="/workorders">
+        <router-link  to="/workorders">
           <el-dropdown-item v-if="hasPerm('back:list')">
             <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>

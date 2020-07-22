@@ -343,7 +343,8 @@ export default {
             required: true,
             message: "登录密码不能为空",
             trigger: ["blur", "change"]
-          }
+          },
+          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: ["blur", "change"] }
         ],
         ppid: [
           {
@@ -614,6 +615,7 @@ export default {
         this.users = [];
         this.total = data.total;
         data.records.filter(item => {
+          item.password=undefined
           this.users.push(item);
         });
         //this.users.concat(data.records);
