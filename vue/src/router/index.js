@@ -17,10 +17,19 @@ export const constantRouterMap = [
         redirect: '/dashboard',
         name: '首页',
         hidden: true,
-        children: [{
+        children: [
+            {
             path: 'dashboard',
             component: _import('dashboard/index')
-        }]
+        },
+        {
+            path: '/document',
+            name: '修改个人信息',
+            hidden: true,
+            component: _import('system/document/document'),
+            meta: { title: '修改个人信息', icon: 'user' },
+        }
+    ]
     }
 
 
@@ -30,8 +39,7 @@ export default new Router({
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRouterMap
 })
-export const asyncRouterMap = [
-    {
+export const asyncRouterMap = [{
         path: '/system',
         component: Layout,
         redirect: '/system/mechanism',
@@ -135,24 +143,26 @@ export const asyncRouterMap = [
         name: '风险防控',
         meta: { title: '风险防控', icon: 'table' },
         children: [{
-            path: 'postRiskCombing',
-            name: '岗位风险梳理',
-            component: _import('risk/postRiskCombing'),
-            meta: { title: '岗位风险梳理', icon: 'user' },
-            menu: 'postRiskCombing'
-        }, {
-            path: 'processRick',
-            name: '流程风险梳理',
-            component: _import('risk/processRick'),
-            meta: { title: '流程风险梳理', icon: 'user' },
-            menu: 'processRick'
-        }/*, {
-            path: 'riskPointAssessment',
-            name: '风险指数评定',
-            component: _import('risk/riskpointassessment'),
-            meta: { title: '风险指数评定', icon: 'user' },
-            menu: 'riskpointassessment'
-        }*/]
+                path: 'postRiskCombing',
+                name: '岗位风险梳理',
+                component: _import('risk/postRiskCombing'),
+                meta: { title: '岗位风险梳理', icon: 'user' },
+                menu: 'postRiskCombing'
+            }, {
+                path: 'processRick',
+                name: '流程风险梳理',
+                component: _import('risk/processRick'),
+                meta: { title: '流程风险梳理', icon: 'user' },
+                menu: 'processRick'
+            }
+            /*, {
+                        path: 'riskPointAssessment',
+                        name: '风险指数评定',
+                        component: _import('risk/riskpointassessment'),
+                        meta: { title: '风险指数评定', icon: 'user' },
+                        menu: 'riskpointassessment'
+                    }*/
+        ]
     }, {
         path: '/evaluate',
         component: Layout,
@@ -172,12 +182,12 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/responsibility/',
         name: '监督责任',
-        meta: { title: '监督责任', icon: 'table' },
+        meta: { title: '监督责任', icon: 'jiandu' },
         children: [{
             path: '',
             name: '监督责任',
             component: _import('responsibility/spvduty'),
-            meta: { title: '监督责任', icon: 'user' },
+            meta: { title: '监督责任', icon: 'jiandu' },
             menu: 'spvduty'
         }]
     }, {
@@ -206,37 +216,36 @@ export const asyncRouterMap = [
             meta: { title: '潭烟风貌', icon: 'guide' },
             menu: 'smokestyle'
         }]
-    }
-  , {
-    path: '/educationPolitics',
-    component: Layout,
-    redirect: '/user/',
-    name: '廉政教育',
-    meta: { title: '廉政教育', icon: 'education' },
-    children: [{
-      path: '',
-      name: '廉政教育',
-      component: _import('educationPolitics/educationPolitics'),
-      meta: { title: '廉政教育', icon: 'education' },
-      menu: 'educationpolitics'
-    }]
-  }, {
+    }, {
+        path: '/educationPolitics',
+        component: Layout,
+        redirect: '/user/',
+        name: '廉政教育',
+        meta: { title: '廉政教育', icon: 'education' },
+        children: [{
+            path: '',
+            name: '廉政教育',
+            component: _import('educationPolitics/educationPolitics'),
+            meta: { title: '廉政教育', icon: 'education' },
+            menu: 'educationpolitics'
+        }]
+    }, {
         path: '/culture',
         component: Layout,
         redirect: '/culture/',
         name: '廉政文化',
-        meta: { title: '廉政文化', icon: 'table' },
+        meta: { title: '廉政文化', icon: 'culture' },
         children: [{
             path: '',
             name: '资料锦集',
             component: _import('cultrue/datakamset'),
-            meta: { title: '资料锦集', icon: 'user' },
+            meta: { title: '资料锦集', icon: 'ziliao' },
             menu: 'dataCollection'
         }, {
             path: 'windculture',
             name: '清风文苑',
             component: _import('cultrue/windculture'),
-            meta: { title: '清风文苑', icon: 'user' },
+            meta: { title: '清风文苑', icon: 'wenyuan' },
             menu: 'wind'
         }]
     },
@@ -245,18 +254,18 @@ export const asyncRouterMap = [
         component: Layout,
         redirect: '/riskmanagement/',
         name: '动态管理',
-        meta: { title: '动态管理', icon: 'table' },
+        meta: { title: '动态管理', icon: 'dongtai' },
         children: [{
             path: '',
             name: '风险点预警管理',
             component: _import('riskmanagement/riskwarning'),
-            meta: { title: '风险点预警管理', icon: 'user' },
+            meta: { title: '风险点预警管理', icon: 'fengxian' },
             menu: 'riskpointwarning'
         }, {
             path: 'systemprocess',
             name: '制度流程完善',
             component: _import('riskmanagement/systemprocess'),
-            meta: { title: '制度流程完善', icon: 'user' },
+            meta: { title: '制度流程完善', icon: 'liucheng' },
             menu: 'systemprocess'
         }]
     }, {
@@ -271,7 +280,7 @@ export const asyncRouterMap = [
             component: _import('daily/letter'),
             meta: { title: '信访举报管理', icon: 'email' },
             menu: 'letter'
-        },{
+        }, {
             path: 'supervise',
             name: '三重一大事项监管',
             component: _import('daily/supervise'),
@@ -294,13 +303,13 @@ export const asyncRouterMap = [
     {
         path: '/workorders',
         component: Layout,
-        hidden: true,
         redirect: '/workorders/',
-        name: '工单',
+        name: '待办事项',
         children: [{
             path: '',
-            name: '工单',
+            name: '待办事项',
             component: _import('workorders/workorder'),
+            meta: { title: '待办事项', icon: 'spvback' },
             menu: 'spvback'
         }]
     },
@@ -313,7 +322,7 @@ export const asyncRouterMap = [
             path: '',
             name: '通知公告',
             component: _import('systemnotice/systemmessage'),
-            meta: { title: '通知公告', icon: 'user' },
+            meta: { title: '通知公告', icon: 'message' },
             menu: 'systemnotice'
         }]
     },

@@ -42,11 +42,12 @@
           prop="title"
           label="标题"
           width="360">
-          <template slot-scope="scope">
+          <template slot-scope="scope"><el-tooltip :content="scope.row.staus==0||scope.row.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?'点击标题可修改工作计划信息':'点击标题可查看工作计划信息'" placement="top">
             <a  @click="handleEdit(scope.$index, scope.row)"
                 target="_blank"
-                class="buttonText" style="color: #1890ff">{{scope.row.title}}</a>
+                class="buttonText" style="color: #1890ff">{{scope.row.title}}</a> </el-tooltip>
           </template>
+
         </el-table-column>
         <el-table-column
           prop="users[0].mechanisms[0].mechanismName"
@@ -65,7 +66,6 @@
           prop="staus"
           label="状态"  :formatter="cstatus">
         </el-table-column>
-        <el-table-column prop="auditresult" label="审核结果"></el-table-column>
       </el-table>
       <div class="block" align="center">
         <el-pagination
@@ -79,17 +79,17 @@
         </el-pagination>
       </div> </el-form>
     <!--隐藏窗-->
-    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%;height: 700px" :title="dialogTitle">
+    <div v-bind:style="{display:ad}" style="background-color: lightgray;width: 100%" :title="dialogTitle">
       <el-main>      <el-form :inline="true" :model="userInfo" class="demo-form-inline" label-width="180px" :rules="rules" ref="ruleForm">
         <div style="background-color: white;width: 100%;height: 65px;position:fixed; top:50px; left:-1px;z-index:2 ;" >
           <br/>
           <div align="right" >
 
-            <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交审核</el-button>
+            <el-button type="primary"  @click="tjshmethod('ruleForm')" v-bind:style="{display:tjsh}">提交保存</el-button>
             <el-button type="primary"  @click="gxmethod('ruleForm')" v-bind:style="{display:gx}">更新</el-button>
             <el-button type="primary"   v-bind:style="{display:bc}"  @click="submitUser('ruleForm')">保存</el-button>
-            <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
-            <el-button type="primary"  @click="tgmethod('不通过')"  v-bind:style="{display:btg}">不通过</el-button>
+          <!--  <el-button type="primary"  @click="tgmethod('通过')" v-bind:style="{display:tg}">通过</el-button>
+            <el-button type="primary"  @click="tgmethod('不通过')"  v-bind:style="{display:btg}">不通过</el-button>-->
             <el-button type="primary" class="el-icon-back" @click="deselect('ruleForm')">返回</el-button>
           </div></div>
         <br/>
@@ -119,7 +119,13 @@
             </el-tree>
           </el-form-item>
           <el-form-item label="工作计划内容" prop="content">
-            <el-input v-model="userInfo.content" placeholder="请输入工作计划内容" type="textarea"  style="width: 800px" :rows="16"  v-bind:disabled='nr'></el-input>
+         <!--   <el-input v-model="userInfo.content" placeholder="请输入工作计划内容" type="textarea"  style="width: 800px" :rows="16"  v-bind:disabled='nr'></el-input>
+       --> <el-card class="box-card"  style="margin-bottom:30px;width: 830px;text-align: left" v-if="userInfo.staus==undefined||userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')?false:true">
+            <div  class="clearfix" v-html="userInfo.content"></div>
+          </el-card>
+
+            <quill-editor id="editer"    v-if="userInfo.staus==undefined|| userInfo.staus==0||userInfo.staus==1&& !role.includes('单位/部门负责人')&& !role.includes('局领导')"   ref="text"
+                          v-model="userInfo.content" class="myQuillEditor" :options="editorOption" style="width: 800px;height: 450px;margin-bottom: 100px" />
           </el-form-item>
           <el-form-item label="状态" v-if="false">
             <el-input v-model="userInfo.staus" placeholder="状态"   disabled="disabled"  style="width: 400px" ></el-input>
@@ -165,10 +171,7 @@
         if (cellValue == 0){
           return '创建';
         }else if (cellValue == 1){
-          return '待审';
-        }
-        else{
-          return '已审核'
+          return '提交状态';
         }
       },
       //更新数据
@@ -201,82 +204,94 @@
       },
       //提交审核
       tjshmethod(formName){
-        console.log('dialogTitle'+this.dialogTitle)
-        if(this.dialogTitle=='新增'){
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              let endtime = new Date(this.userInfo.createtime).toJSON();
-              this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
-                .toISOString()
-                .replace(/T/g, " ")
-                .replace(/\.[\d]{3}Z/, "")
-              let postData = qs.stringify({
-                title: this.userInfo.title,
-                content: this.userInfo.content,
-                staus:0,
-                createname: this.userInfo.createname,
-                createtime:this.userInfo.createtime,
-                createid:this.userId
-              });
-              add(postData).then((response) => {
-                this.initList();
+        this.$confirm('确认提交保存吗？提交后将不能够再更新信息', '温馨提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log('dialogTitle'+this.dialogTitle)
+          if(this.dialogTitle=='新增'){
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
+                let endtime = new Date(this.userInfo.createtime).toJSON();
+                this.userInfo.createtime = new Date(+new Date(endtime) + 8 * 3600 * 1000)
+                  .toISOString()
+                  .replace(/T/g, " ")
+                  .replace(/\.[\d]{3}Z/, "")
                 let postData = qs.stringify({
-                  id:response.id
+                  title: this.userInfo.title,
+                  content: this.userInfo.content,
+                  staus:0,
+                  createname: this.userInfo.createname,
+                  createtime:this.userInfo.createtime,
+                  createid:this.userId
                 });
-                console.log('tjsh'+response.id)
-                subaudit(postData).then((response)=>{
-                  this.ad='none'//默认新增页面隐藏
-                  this.tf=''//表格页面显示
-                  this.initList()
-                  this.$notify({
-                    title: '成功',
-                    message: '提交成功',
-                    type: 'success',
-                    duration: 2000
+                add(postData).then((response) => {
+                  this.initList();
+                  let postData = qs.stringify({
+                    id:response.id
+                  });
+                  console.log('tjsh'+response.id)
+                  subaudit(postData).then((response)=>{
+                    this.ad='none'//默认新增页面隐藏
+                    this.tf=''//表格页面显示
+                    this.initList()
+                    this.$notify({
+                      title: '成功',
+                      message: '提交成功',
+                      type: 'success',
+                      duration: 2000
+                    })
                   })
                 })
-              })
-            } else {
-              console.log('error submit!!');
-              return false;
-            }
-          });
+              } else {
+                console.log('error submit!!');
+                return false;
+              }
+            });
 
-        }
-        else {
-          this.$refs[formName].validate((valid) => {
-            if (valid) {
-              let postData = qs.stringify({
-                id:this.userInfo.id,
-                title:this.userInfo.title,
-                content:this.userInfo.content
-              });
-              updatecontent(postData).then((responese)=>{
-                //编辑审核
+          }
+          else {
+            this.$refs[formName].validate((valid) => {
+              if (valid) {
                 let postData = qs.stringify({
-                  id:this.userInfo.id
+                  id:this.userInfo.id,
+                  title:this.userInfo.title,
+                  content:this.userInfo.content
                 });
-              console.log('tjsh'+this.userInfo.id)
-              subaudit(postData).then((response)=>{
-                this.ad='none'//默认新增页面隐藏
-              this.tf=''//表格页面显示
-              this.initList()
-              this.$notify({
-                title: '成功',
-                message: '提交成功',
-                type: 'success',
-                duration: 2000
-              })
-            })
-            })
-              console.log('gx'+this.userInfo.id)
-            } else {
-              console.log('error submit!!');
-          return false;
-        }
-        });
+                updatecontent(postData).then((responese)=>{
+                  //编辑审核
+                  let postData = qs.stringify({
+                    id:this.userInfo.id
+                  });
+                  console.log('tjsh'+this.userInfo.id)
+                  subaudit(postData).then((response)=>{
+                    this.ad='none'//默认新增页面隐藏
+                    this.tf=''//表格页面显示
+                    this.initList()
+                    this.$notify({
+                      title: '成功',
+                      message: '提交成功',
+                      type: 'success',
+                      duration: 2000
+                    })
+                  })
+                })
+                console.log('gx'+this.userInfo.id)
+              } else {
+                console.log('error submit!!');
+                return false;
+              }
+            });
 
-        }
+          }
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消提交'
+          });
+        });
 
       },
       //通过审核
@@ -318,8 +333,8 @@
           this.nr=false
           this.bt=false
           this.bc='none'//保存按钮
-          this.tg='none'//通过按钮不显示
-          this.btg='none'//不通过按钮不显示
+        /*  this.tg='none'//通过按钮不显示
+          this.btg='none'//不通过按钮不显示*/
           if(this.hasPerm('workplan:update')) {
             this.gx = ''//更新按钮显示
             this.tjsh = ''//提交审核按钮显示
@@ -330,16 +345,31 @@
           }
         }
         else if(row.staus==1){
-          this.nr='disabled'//内容禁用
-          this.bt='disabled'//标题禁用
-
-          this.bc='none'//保存按钮
-          if(this.hasPerm('workplan:audit')){
-            this.tg=''//通过按钮显示
-            this.btg=''//不通过按钮显示
+          if(this.role.includes('单位/部门负责人')||this.role.includes('局领导')){
+            this.nr='disabled'//内容禁用
+            this.bt='disabled'//标题禁用
+            this.gx = 'none'//更新按钮显示
           }
-          this.gx='none'//更新按钮不显示
-          this.tjsh='none'//提交审核按钮不显示
+          else{
+            this.nr=false
+            this.bt=false
+            this.gx = ''//更新按钮显示
+
+          }
+
+          this.tjsh = 'none'//提交审核按钮显示
+          this.bc='none'//保存按钮
+
+
+        }
+        else if(row.staus==undefined){
+          this.nr=false
+          this.bt=false
+          this.bc=''//保存按钮
+
+            this.gx = 'none'//更新按钮显示
+            this.tjsh = ''//提交审核按钮显示
+
         }
         else{
 
@@ -407,7 +437,7 @@
 
             this.$notify({
               title: '温馨提示',
-              message: '该记录处于审核中不能删除',
+              message: '该记录处于提交状态不能删除',
               type: 'warning',
               duration: 2000
             })
@@ -538,6 +568,7 @@
             {  required: true, message: '请输入工作内容', trigger: 'blur' }
           ]
 
+        }, editorOption: {
         },
         listLoading:true,
         dialogTitle:'新增',//辨别新增还是编辑

@@ -317,7 +317,6 @@
     <div :style="{'display':dis4}" style="background-color: lightgray;width:100%;margin-top:-9px">
        <el-main>
       <el-form
-        ref="dataForm"
         :model="back"
         label-position="center"
         label-width="130px"
@@ -385,7 +384,6 @@
     <div :style="{'display':dis5}" style="background-color: lightgray;width:100%;margin-top:-9px">
       <el-main>
       <el-form
-        ref="dataForm"
         :rules="rules"
         :model="back"
         label-position="center"
@@ -485,7 +483,6 @@
     <div :style="{'display':dis7}" style="background-color: lightgray;width:100%;margin-top:-9px">
       <el-main>
       <el-form
-        ref="dataForm"
         :rules="rules"
         :model="back"
         label-position="center"

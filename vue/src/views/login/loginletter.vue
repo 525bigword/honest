@@ -248,7 +248,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import qs from 'qs'
-  import {list,add,del,findbyName,finddb} from '@/api/daily/loginletter'
+  import {list,add,del,findbyName,finddb,getCookie} from '@/api/daily/loginletter'
   import {initdept,initemploy,letterreporter} from '@/api/nologin/nologin'
   import {getFileGroup} from '@/api/duty/talk'
   export default {  computed: {
@@ -258,6 +258,7 @@
       ])
     },
     created() {
+    console.log('nickname'+this.nickname)
     let posdata=qs.stringify({nickname:this.nickname})
     this.userInfo={}
 
@@ -362,10 +363,10 @@ this.tf='none'
               puni:this.userInfo.lpbrDeptId.toString(),
               lPbrPostId:this.userInfo.lpbrPostId,
               lContent:this.userInfo.lcontent,
-              lCreateName:this.nickname,
+              lCreateName:getCookie(name),
               lTime: this.userInfo.lcreateTime,
               lCreateTime:this.userInfo.lcreateTime,
-              lCreateId:this.userId,
+              lCreateId:getCookie(sid),
               lStatus:1
             })
             add(posdata).then((response)=>{
@@ -390,7 +391,7 @@ this.tf='none'
       initList() {
         let status;
         let mid;
-        let createid=this.userId
+        let createid=getCookie(sid)
         let posdata=qs.stringify({
           mid:mid,
           lStatus:status,

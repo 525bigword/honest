@@ -27,7 +27,7 @@ public interface SystemMessageMapper extends BaseMapper<SystemMessage> {
     @Update("update system_message set articletitle=#{articletitle},attribute=#{attribute},articlesource=#{articlesource},`describe`=#{describe},content=#{content} where aid=#{aid}")
     void updateSystemMessageByAidNoFile(SystemMessage systemMessage);
 
-    @Insert("insert into system_message(aid,articletitle,attribute,picture,picturename,articlesource,`describe`,content,createId,createTime,`status`) values(NULL,#{articletitle},#{attribute},#{picture},#{picturename},#{articlesource},#{describe},#{content},#{createId},NOW(),0)")
+    @Insert("insert into system_message(aid,articletitle,attribute,picture,picturename,articlesource,`describe`,content,createId,createTime,`status`) values(NULL,#{articletitle},#{attribute},#{picture},#{picturename},#{articlesource},#{describe},#{content},#{createId},date_add(NOW(),INTERVAL -8 hour),0)")
     void insertSystemMessage(SystemMessage riskpointwarning);
 
     @Update("update system_message set status=1 where aid=#{aid}")

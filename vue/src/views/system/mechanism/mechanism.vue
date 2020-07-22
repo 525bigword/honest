@@ -26,6 +26,7 @@
       </el-select>
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="reset">重置</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
@@ -39,11 +40,29 @@
       <el-table-column
         label="序号"
         type="index"
+        fit
         :index="indexMethod"
+        highlight-current-row
         align="center"
         :class-name="getSortClass('id')"
       ></el-table-column>
-      <el-table-column align="center" prop="mechanismName" label="部门名"></el-table-column>
+      <el-table-column align="center" prop="mechanismName" label="部门名">
+        <template slot-scope="scope">
+          <el-tooltip
+            v-if="hasPerm('mechanism:update')&&scope.row.staus=='正常'"
+            content="点击查看详情或修改"
+            placement="right"
+            effect="dark"
+          >
+            <a
+              @click="handleUpdate(scope.row)"
+              target="_blank"
+              class="buttonText"
+              style="color: #1890ff"
+            >{{scope.row.mechanismName}}</a>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="sname" label="负责人"></el-table-column>
       <el-table-column align="center" prop="parentName" label="父级部门"></el-table-column>
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
@@ -66,12 +85,12 @@
             <span>{{row.staus=='正常'?'删除':'恢复'}}</span>
           </el-button>
 
-          <el-button
+          <!-- <el-button
             type="primary"
             v-if="hasPerm('mechanism:update')&&row.staus=='正常'"
             size="mini"
             @click="handleUpdate(row)"
-          >修改</el-button>
+          >修改</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -90,7 +109,7 @@
     >
       <!-- style="width: 400px; margin-left:50px;" -->
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="30%">
-        <el-form-item label="父级部门" prop="defaultvalue">
+        <el-form-item label="所属部门" prop="defaultvalue">
           <!-- //temp.parent -->
           <el-cascader
             style="width:60%;margin-left:10px"
@@ -101,6 +120,12 @@
             :show-all-levels="false"
             :options="bm"
           ></el-cascader>
+        </el-form-item>
+        <el-form-item label="是否为单位" prop="sort">
+          <el-radio-group v-model="temp.sort">
+            <el-radio :label="0">非单位</el-radio>
+            <el-radio :label="1">单位</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="部门名称" prop="menuName">
           <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="部门名称" />
@@ -182,6 +207,7 @@ export default {
       temp: {
         id: undefined,
         menuName: "",
+        sort: undefined,
         menuCode: "",
         region: 0,
         parent: [],
@@ -192,8 +218,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: "",
       textMap: {
-        update: "修改",
-        create: "新增"
+        update: "修改部门",
+        create: "新增部门"
       },
       staff: [],
       parentasd: [],
@@ -201,6 +227,13 @@ export default {
       dialogPvVisible: true,
       pvData: [],
       rules: {
+        sort: [
+          {
+            required: true,
+            message: "请至少选择一项",
+            trigger: ["change"]
+          }
+        ],
         menuName: [
           {
             required: true,
@@ -231,6 +264,7 @@ export default {
     };
   },
   created() {
+    this.temp.sort = 1;
     this.getList();
     this.$nextTick(() => {
       // 以服务的方式调用的 Loading 需要异步关闭
@@ -239,11 +273,22 @@ export default {
     });
   },
   methods: {
+    reset(){
+      this.listQuery={
+        page: 1,
+        limit: 10,
+        importance: "正常",
+        title: "",
+        fzr: "",
+        type: undefined,
+        sort: "+index"
+      }
+    },
     closefase() {
       console.log("123");
       // this.temp={}
       this.placeholder = "";
-      this.defaultvalue = [1];
+      this.defaultvalue = 1;
     },
     clicen() {
       this.dialogFormVisible = false;
@@ -263,8 +308,8 @@ export default {
     },
     getList() {
       // 查询列表
-      if (!this.hasPerm('mechanism:list')) {
-        return
+      if (!this.hasPerm("mechanism:list")) {
+        return;
       }
       this.listLoading = true;
       this.api({
@@ -365,7 +410,7 @@ export default {
     },
     MChange(val) {
       console.log(val);
-      this.temp.region=undefined
+      this.temp.region = undefined;
       this.getAllStaff(val);
     },
     Change(val) {
@@ -407,6 +452,7 @@ export default {
             params: {
               mechanismName: this.temp.menuName,
               sid: this.temp.region,
+              sort: this.temp.sort,
               parent: this.defaultvalue[0],
               branch: this.temp.ld,
               createId: store.getters.userId
@@ -486,35 +532,39 @@ export default {
     handleDelete(row, index) {
       console.log("delete", row, index);
       if (row.staus == "正常") {
-        this.$confirm('是否确定删除？', '确定？', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '删除',
-          cancelButtonText: '取消'
-        }).then(res=> {
-          this.api({
-            url: "sysmechanism/del/" + row.mid,
-            method: "delete"
-          }).then(res => {
-            console.log(res);
-            if (res === 1) {
-              this.total--;
-              this.list.splice(index, 1);
-              this.$notify({
-                title: "成功",
-                message: "",
-                type: "success",
-                duration: 2000
-              });
-            } else {
-              this.$notify({
-                title: "失败",
-                message: "请先将与该部门相关联的数据删除",
-                type: "error",
-                duration: 2000
+        this.$alert("是否确定删除", "提示", {
+          showCancelButton: true,
+          showConfirmButton: true,
+          closeOnPressEscape: false,
+          callback: action => {
+            console.log(action, "this.$alert");
+            if (action == "confirm") {
+              this.api({
+                url: "sysmechanism/del/" + row.mid,
+                method: "delete"
+              }).then(res => {
+                console.log(res);
+                if (res === 1) {
+                  this.total--;
+                  this.list.splice(index, 1);
+                  this.$notify({
+                    title: "成功",
+                    message: "",
+                    type: "success",
+                    duration: 2000
+                  });
+                } else {
+                  this.$notify({
+                    title: "失败",
+                    message: "请先将与该部门相关联的数据删除",
+                    type: "error",
+                    duration: 2000
+                  });
+                }
               });
             }
-          })
-        })
+          }
+        });
       } else {
         this.$alert("是否确定恢复", "提示", {
           showCancelButton: true,

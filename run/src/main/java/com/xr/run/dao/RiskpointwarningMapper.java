@@ -22,7 +22,7 @@ public  interface RiskpointwarningMapper extends BaseMapper<Riskpointwarning> {
     @Update("update riskpointwarning set wTitle=#{wTitle},wContent=#{wContent} where wid=#{wid}")
     void updateRiskpointwarningByWid(Riskpointwarning riskpointwarning);
 
-    @Insert("insert into riskpointwarning(wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus) VALUES(null,#{numId},#{wTitle},#{wContent},NOW(),#{wCreateId},0)")
+    @Insert("insert into riskpointwarning(wid,numId,wTitle,wContent,wCreateTime,wCreateId,wStatus) VALUES(null,#{numId},#{wTitle},#{wContent},date_add(NOW(),INTERVAL -8 hour),#{wCreateId},0)")
     void insertRiskpointwarning(Riskpointwarning riskpointwarning);
 
     @Delete("update riskpointwarning set wStatus=1 where wid=#{wid}")

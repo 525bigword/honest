@@ -19,6 +19,7 @@
       </el-select>
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="reset">重置</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
@@ -54,7 +55,18 @@
           <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>-->
-      <el-table-column align="center" prop="menuName" label="栏目名"></el-table-column>
+      <el-table-column align="center" prop="menuName" label="栏目名">
+        <template slot-scope="scope">
+          <el-tooltip v-if="hasPerm('permission:update')" content="点击查看详情或修改" placement="right" effect="dark">
+            <a 
+              @click="handleUpdate(scope.row,)"
+              target="_blank"
+              class="buttonText"
+              style="color: #1890ff"
+            >{{scope.row.menuName}}</a>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="menuName" label="栏目名" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
@@ -74,41 +86,7 @@
         </template>
       </el-table-column>-->
       <el-table-column align="center" prop="requiredPermissionis" label="是否必选"></el-table-column>
-      <!-- <el-table-column prop="requiredPermission" label="是否必选" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="权限名" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon
-            v-for="n in + row.importance"
-            :key="n"
-            icon-class="star"
-            class="meta-item__icon"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="是否必须" align="center" width="95">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.pageviews"
-            class="link-type"
-            @click="handleFetchPv(row.pageviews)"
-          >{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>-->
-      <!-- <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
-        </template>
-      </el-table-column>-->
+
       <el-table-column
         v-if="hasPerm('permission:delete')"
         label="操作"
@@ -123,12 +101,12 @@
             type="danger"
             @click="handleDelete(row,$index)"
           >删除</el-button>
-          <el-button
+          <!-- <el-button
             v-if="hasPerm('permission:update')"
             size="mini"
             type="primary"
             @click="handleUpdate(row,$index)"
-          >修改</el-button>
+          >修改</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -257,6 +235,16 @@ export default {
     this.getList();
   },
   methods: {
+    reset(){
+      this.listQuery={
+        page: 1,
+        limit: 10,
+        importance: "全部",
+        title: "",
+        type: undefined,
+        sort: "+index"
+      }
+    },
     swchange(val) {
       console.log(val);
       this.temp.requiredPermission = val ? 1 : 2;

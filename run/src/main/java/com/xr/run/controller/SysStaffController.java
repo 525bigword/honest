@@ -14,7 +14,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -35,11 +37,13 @@ public class SysStaffController {
     private HomePageSevice homePageSevice;
 
     @GetMapping("del/{id}")
+    @RequiresPermissions("staff:delete")
     public JSONObject yjDel(@PathVariable Integer id){
         sysStaffService.yjDelSysStaffById(id);
         return CommonUtil.successJson();
     }
     @GetMapping("hf/{id}")
+    @RequiresPermissions("staff:update")
     public JSONObject hfSysStaff(@PathVariable Integer id){
         sysStaffService.hfSysStaff(id);
         return CommonUtil.successJson();
@@ -149,7 +153,13 @@ public class SysStaffController {
     public JSONObject getInfo() {
         return sysStaffService.getInfo();
     }
-
+    @PostMapping("/setInfo")
+    public JSONObject setInfo(@RequestBody SysStaff sysStaff){
+        sysStaff.setPassword(new SimpleHash("md5", sysStaff.getPassword(), null, 2).toString());
+        System.out.println(sysStaff);
+        sysStaffService.setInfo(sysStaff);
+        return CommonUtil.successJson();
+    }
     @PutMapping("update")
     @RequiresPermissions("staff:update")
     public JSONObject updateSysStaff(@RequestBody SysStaff sysStaff){

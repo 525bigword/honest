@@ -31,7 +31,7 @@ public interface WindMapper extends BaseMapper<Wind> {
     @Update("update Wind set wTitle=#{wTitle},wContent=#{wContent},wContributor=#{wContributor},wStatus=#{wStatus} where wid=#{wid}")
     void updateWindByWid(Wind wind);
 
-    @Insert("insert into Wind(wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus) VALUES(null,#{wTitle},#{wContent},#{wContributor},NOW(),#{wCreateId},#{wStatus})")
+    @Insert("insert into Wind(wid,wTitle,wContent,wContributor,wCreateTime,wCreateId,wStatus) VALUES(null,#{wTitle},#{wContent},#{wContributor},date_add(NOW(),INTERVAL -8 hour),#{wCreateId},#{wStatus})")
     @Options(useGeneratedKeys = true,keyProperty = "wid")
     void insertWind(Wind wind);
 
