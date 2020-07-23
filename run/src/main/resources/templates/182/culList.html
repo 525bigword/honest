@@ -254,7 +254,12 @@
             if(da!="null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("<a href=\"/honest/templates/182/index.html\">返回上一页</a>")
+                    if(data.type==0){//资料集锦
+                        $("#goback").append("<a href=\"/honest/templates/182/0/index.html\">返回上一页</a>")
+
+                    }else{
+                        $("#goback").append("<a href=\"/honest/templates/182/1/index.html\">返回上一页</a>")
+                    }
                 }
                 insertContent(data);
             }

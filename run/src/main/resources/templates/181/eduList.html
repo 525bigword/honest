@@ -223,17 +223,7 @@
             + getData.cname + '</label></span>&nbsp;&nbsp;&nbsp; ' +
             ' <span>来源：<label>' + getData.source + '</label></span>&nbsp;&nbsp;&nbsp; ' +
             ' <span>时间：<label>' + time + '</label></span></div> ';	//文章标题等信息
-        /*
-            <div>
-                <label th:text="${education.title}"></label>
-            </div>
-            <div>
-                <span>上传者：<label th:text="${education.cname}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>来源：<label th:text="${education.source}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(education.createTime,'yyyy-MM-dd')}"></label></span>&nbsp;&nbsp;&nbsp;
 
-            </div>
-         */
         $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
         $(".content-list").children("div").eq(1).html(content);			//添加文章内容
     }
@@ -255,7 +245,14 @@
             if (da != "null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("<a href=\"/honest/templates/181/index.html\">返回上一页</a>")
+                    if(data.type=="廉政要闻")
+                        $("#goback").append("<a href=\"/honest/templates/181/0/index.html\">返回上一页</a>")
+                    else if(data.type=="文件制度")
+                        $("#goback").append("<a href=\"/honest/templates/181/1/index.html\">返回上一页</a>")
+                    else if(data.type=="领导讲话")
+                        $("#goback").append("<a href=\"/honest/templates/181/2/index.html\">返回上一页</a>")
+                    else
+                        $("#goback").append("<a href=\"/honest/templates/181/3/index.html\">返回上一页</a>")
                 }
                 insertContent(data);
             }

@@ -223,7 +223,13 @@
             if(da!="null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/185/index.html\">返回上一页</a> ")
+                    if(data.type==0){
+                        $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/185/0/index.html\">返回上一页</a> ")
+                    }else if(data.type==1){
+                        $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/185/1/index.html\">返回上一页</a> ")
+                    }else{
+                        $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/185/3/index.html\">返回上一页</a> ")
+                    }
                 }
                 insertContent(data);
             }

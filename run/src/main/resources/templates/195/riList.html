@@ -193,7 +193,7 @@
             </tr>
             <tr th:if="${riskVo.type==1}">
                 <th style="width: 20%;">流程风险图片:</th>
-                <td id="pic"><img th:if="${not #strings.isEmpty(riskVo.pic)}" th:src="'/hoonest/img'+${riskVo.pic}"></td>
+                <td id="pic" th:if="${not #strings.isEmpty(riskVo.pic)}"><img th:src="'/hoonest/img'+${riskVo.pic}"></td>
             </tr>
         </table>
 
@@ -239,7 +239,11 @@
             if(da!="null") {
                 var data = eval("(" + da + ")");
                 if (data != null) {
-                    $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/195/index.html\">返回上一页</a>")
+                    if (data.type == 0) {
+                        $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/195/0/index.html\">返回上一页</a>")
+                    }else{
+                        $("#goback").append("&nbsp;&nbsp;<a href=\"/honest/templates/195/1/index.html\">返回上一页</a>")
+                    }
                 }
                 insertContent(data);
             }
