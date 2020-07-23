@@ -45,7 +45,7 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Select("select DutyAccessory from spv_duty where did=#{did}")
     public String findSpvDutyByFile(int did);
 
-    @Select("select mid,mechanism_name from sys_mechanism where staus='正常' and parent=#{parent}")
+    @Select("select mid,mechanism_name from sys_mechanism where staus='正常' and parent=#{parent} order by sort")
     @Results({
             @Result(column = "mid",property = "mid"),
             @Result(column = "mechanism_name",property = "mechanismName"),

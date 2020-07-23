@@ -12,11 +12,11 @@
         <el-dropdown-item v-if="hasPerm('index:add')">
           <span @click="createIndex()" style="display:block;">生成首页</span>
         </el-dropdown-item>
-        <router-link class="inlineBlock" to="/workorders">
+        <!-- <router-link class="inlineBlock" to="/workorders">
           <el-dropdown-item v-if="hasPerm('back:list')">
             <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>
-        </router-link>
+        </router-link> -->
 
         <router-link class="inlineBlock" to="/document">
           <el-dropdown-item divided>

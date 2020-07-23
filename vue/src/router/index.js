@@ -8,28 +8,27 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 Vue.use(Router)
 export const constantRouterMap = [
     { path: '/login', component: _import('login/index'), hidden: true },
-  { path: '/userReport', component: _import('userReport'), hidden: true },
+    { path: '/userReport', component: _import('userReport'), hidden: true },
     { path: '/404', component: _import('404'), hidden: true },
-  { path: '/loginletter', component: _import('login/loginletter'), hidden: true },
+    { path: '/loginletter', component: _import('login/loginletter'), hidden: true },
     {
         path: '/',
         component: Layout,
         redirect: '/dashboard',
         name: '首页',
         hidden: true,
-        children: [
+        children: [{
+                path: 'dashboard',
+                component: _import('dashboard/index')
+            },
             {
-            path: 'dashboard',
-            component: _import('dashboard/index')
-        },
-        {
-            path: '/document',
-            name: '修改个人信息',
-            hidden: true,
-            component: _import('system/document/document'),
-            meta: { title: '修改个人信息', icon: 'user' },
-        }
-    ]
+                path: '/document',
+                name: '修改个人信息',
+                hidden: true,
+                component: _import('system/document/document'),
+                meta: { title: '修改个人信息', icon: 'user' },
+            }
+        ]
     }
 
 
@@ -304,12 +303,12 @@ export const asyncRouterMap = [{
         path: '/workorders',
         component: Layout,
         redirect: '/workorders/',
-        name: '待办事项',
+        name: '责任监督反馈',
         children: [{
             path: '',
-            name: '待办事项',
+            name: '责任监督反馈',
             component: _import('workorders/workorder'),
-            meta: { title: '待办事项', icon: 'spvback' },
+            meta: { title: '责任监督反馈', icon: 'spvback' },
             menu: 'spvback'
         }]
     },
