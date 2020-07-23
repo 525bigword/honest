@@ -631,12 +631,10 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setId(postriskcombing.getPid());
             riskVo.setCname(postriskcombing.getPCreateName());
 
-            riskVo.setYear(postriskcombing.getPYear());
-            riskVo.setGrade(postriskcombing.getPGrade());
-            riskVo.setMeasures(postriskcombing.getPMeasures());
-            riskVo.setDeptName(postriskcombing.getDeptName());
-            riskVo.setPostName(postriskcombing.getPostname());
-
+            riskVo.setGrade(postriskcombing.getPGrade()); //风险级别
+            riskVo.setMeasures(postriskcombing.getPMeasures()); //措施
+            riskVo.setPname(postriskcombing.getPname());
+            riskVo.setMname(postriskcombing.getMname());
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);
@@ -657,6 +655,12 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setProject(processrick.getProName());
             riskVo.setId(processrick.getProid());
             riskVo.setCname(processrick.getProCreateName());
+
+            riskVo.setGrade(processrick.getProGrade()); //风险级别
+            riskVo.setMeasures(processrick.getProMeasures()); //措施
+            riskVo.setPname(processrick.getPname());
+            riskVo.setMname(processrick.getMname());
+            riskVo.setPic(processrick.getProAccessory()); //图片
             //状态
             Map map1 = new HashMap();
             map1.put("riskVo", riskVo);

@@ -27,4 +27,8 @@ public class Processrick {
   private SysStaff sysStaff;
   private String proCreateName;
   private int proStatus;
+
+  private String pname="所有部门"; //岗位
+  private String mname ="所有岗位"; //部门
+
 }

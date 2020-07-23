@@ -837,7 +837,7 @@ export default {
       //console.log(`当前页: ${val}`)
     },
     // 获得部门2
-    getSysmechanismAll(val = 0) {
+    getSysmechanismAll2(val = 0) {
       return new Promise((resolve, reject) => {
         this.api({
           url: "sysmechanism/get",

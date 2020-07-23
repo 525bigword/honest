@@ -85,6 +85,6 @@ select h.sid,h.`name`from Sys_Staff h where  h.ppid=#{ppid}
         <result column="mechanism_name" property="mechanismName"></result>
     </resultMap>
     <select id="findallunit" resultMap="mmap">
-        select sm.mid,sm.mechanism_name from sys_mechanism sm where sm.parent=#{parent}
+        select sm.mid,sm.mechanism_name from sys_mechanism sm where sm.parent=#{parent} order by sm.sort
     </select>
 </mapper>

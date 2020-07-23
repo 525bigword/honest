@@ -49,8 +49,9 @@
 
         <el-table-column label="标题" prop="wtitle"  align="center" width="280px">
         <template slot-scope="scope">
-
+          <el-tooltip content="点击查看详情或修改" placement="right" effect="dark">
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
+          </el-tooltip>
         </template>
         </el-table-column>
         <el-table-column label="风险点内容" prop="wcontent"   align="center" width="280px">

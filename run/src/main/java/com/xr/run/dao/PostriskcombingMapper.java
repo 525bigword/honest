@@ -93,10 +93,11 @@ public interface PostriskcombingMapper extends BaseMapper<Postriskcombing> {
     Postriskcombing findPostriskcombingByPid(@Param("pid")Integer pid);
 
 
-    @Select("select pid,pRiskId,pYear,pDeptId,pInfomationId,pProject,pRiskPointDescription,pProbableLValue,pCValue,pDValue,pGrade,pMeasures," +
-            " pCreateTime,pCreateId,pCreateName,pStatus from postriskcombing " +
-            " where pStatus = 1 and  pProject " +
-            " like CONCAT('%',#{pProject},'%') order by pid desc")
+    @Select("select p.pid,p.pRiskId,p.pYear,p.pDeptId,p.pInfomationId,p.pProject,p.pRiskPointDescription," +
+            "p.pProbableLValue,p.pCValue,p.pDValue,p.pGrade,p.pMeasures," +
+            " p.pCreateTime,p.pCreateId,p.pCreateName,p.pStatus,m.pname as pname,sm.mechanism_name as mname from postriskcombing p left join sys_post m on p.pRiskId = m.pid left join sys_mechanism sm on sm.mid = m.mid" +
+            " where p.pStatus = 1 and  p.pProject " +
+            " like CONCAT('%',#{pProject},'%') order by p.pid desc")
     @Results({
             @Result(column = "pCreateId", property = "pCreateId"),
             @Result(column = "pCreateId", property = "sysStaff",

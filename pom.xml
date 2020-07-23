@@ -130,8 +130,8 @@
                 </exclusion>
            </exclusions>
         </dependency>
-        <dependency>
-          <!-- &lt;!&ndash;此时运行会报错，把<scope>provided</scope>去掉才能运行）&ndash;&gt;-->
+       <dependency>
+          <!--&lt;!&ndash; &lt;!&ndash;此时运行会报错，把<scope>provided</scope>去掉才能运行）&ndash;&gt;&ndash;&gt;-->
            <groupId>javax.servlet</groupId>
            <artifactId>javax.servlet-api</artifactId>
            <version>3.1.0</version>

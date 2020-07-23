@@ -25,8 +25,8 @@ public class Postriskcombing {
   @JSONField(format="yyyy-MM-dd HH:mm:ss")//数据库导出页面时json格式化
   private Date pCreateTime;
   private int pCreateId;
-  private String deptName;
-  private String postname;
+  private String mname ="所有部门";  //部门
+  private String pname ="所有岗位"; //岗位
   private  SysStaff sysStaff;
   private String pCreateName;
   private int pStatus;

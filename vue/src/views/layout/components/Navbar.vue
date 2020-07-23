@@ -4,19 +4,19 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <!-- <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'" /> -->
-        <span style="display:inline-block;vertical-align:middle">{{'欢迎您 &nbsp&nbsp&nbsp     '+nickname}}</span>
+
+        <span style="display:inline-block;vertical-align:middle">{{mechanismname+'&nbsp'+ppname+"&nbsp"+nickname}}</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <el-dropdown-item class="inlineBlock" v-if="hasPerm('index:add')">
+        <el-dropdown-item v-if="hasPerm('index:add')">
           <span @click="createIndex()" style="display:block;">生成首页</span>
         </el-dropdown-item>
-        <router-link  to="/workorders">
+        <!-- <router-link class="inlineBlock" to="/workorders">
           <el-dropdown-item v-if="hasPerm('back:list')">
             <span @click="workorder" style="display:block;">待办事项</span>
           </el-dropdown-item>
-        </router-link>
+        </router-link> -->
 
         <router-link class="inlineBlock" to="/document">
           <el-dropdown-item divided>
@@ -42,7 +42,7 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "nickname"])
+    ...mapGetters(["sidebar", "avatar", "nickname","mechanismname","ppname"])
   },
   methods: {
     createIndex() {

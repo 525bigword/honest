@@ -42,9 +42,10 @@ public class RiskVo implements Serializable {
     private String year;// 风险年份
     private String grade;// 风险等级
     private String measures;// 防控措施
-    private String deptName;// 部门名称
-    private String postName;// 岗位名称
+    private String mname="所有部门";// 部门名称
+    private String pname="所有岗位";// 岗位名称
 
+    private String pic;
 
 
 

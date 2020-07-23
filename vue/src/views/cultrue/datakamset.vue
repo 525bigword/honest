@@ -44,18 +44,23 @@
       </el-table-column>
         <el-table-column label="标题" prop="dtitle"  align="center" width="250px">
         <template slot-scope="scope">
-
+          <el-tooltip content="点击查看详情或修改" placement="right" effect="dark">
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.dtitle }}</a>
+          </el-tooltip>
         </template>
         </el-table-column>
         <el-table-column label="文件名"  prop="dfileName"  align="center" width="260px">
         <template slot-scope="scope">
+          <el-tooltip content="点击预览文件" placement="right" effect="dark">
           <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName }}</a>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="视频" prop="sysStaff"   align="center" width="160px">
         <template slot-scope="scope">
+          <el-tooltip content="点击预览视频" placement="right" effect="dark">
           <a style="color:#1890ff" href="#" @click="shipin(scope.row)">{{ scope.row.dvideo===null||scope.row.dvideo===''?'未上传视频':'查看视频' }}</a>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column label="创建人" prop="sysStaff"   align="center" width="120px">

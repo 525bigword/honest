@@ -5,7 +5,7 @@ import store from '../store'
 axios.defaults.withCredentials = true;
 // 创建axios实例
 const service = axios.create({
-       // baseURL: process.env.BASE_URL, //process.env.BASE_URL, // api的base_url
+        //baseURL: process.env.BASE_URL, //process.env.BASE_URL, // api的base_url
         baseURL: "http://192.168.43.43:8080/honest",
         //baseURL: process.env.BASE_URL+"honest", //process.env.BASE_URL, // api的base_url
         //baseURL: "http://10.73.100.46:8080/honest",
