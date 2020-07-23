@@ -34,11 +34,11 @@ public class RunApplication {
             viewResolver.setStaticVariables(vars);
         }
     }
-//
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        // 注意这里要指向原先用main方法执行的Application启动类extends SpringBootServletInitializer
-//        return builder.sources(RunApplication.class);
-//    }
+
+    /*@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // 注意这里要指向原先用main方法执行的Application启动类
+        return builder.sources(RunApplication.class);extends SpringBootServletInitializer
+    }*/
 
 }
