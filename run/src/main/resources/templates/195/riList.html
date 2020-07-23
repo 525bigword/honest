@@ -68,6 +68,15 @@
         background-position: center center;
     }
     /*背景图片End*/
+    table{
+        border-top: 1px solid #3D7D53;
+        border-left: 1px solid #3D7D53;
+        border-collapse: collapse; /*设置单元格的边框合并为1*/
+    }
+    td{
+        border-bottom: 1px solid #3D7D53;
+        border-right: 1px solid #3D7D53;
+    }
 </style>
 <script>
     //加入收藏
@@ -149,9 +158,9 @@
     </div>
     <div></div>
     <div class="content-list" >
-        <table style="width: auto;text-align: center" id="tab">
-            <th th:if="${riskVo.type==0}" style="font-size: 15px;color:#3D7D53;text-align: center">岗位风险详情</th>
-            <th th:if="${riskVo.type==1}" style="font-size: 15px;color:#3D7D53;text-align: center">流程风险详情</th>
+        <table border="1" cellspacing="0" style="width: auto;text-align: center" id="tab">
+            <th colspan="2" th:if="${riskVo.type==0}" style="font-size: 15px;color:#3D7D53;text-align: center">岗位风险详情</th>
+            <th colspan="2" th:if="${riskVo.type==1}" style="font-size: 15px;color:#3D7D53;text-align: center">流程风险详情</th>
             <tr>
                 <th style="width: 20%;">执行时间:</th>
                 <td id="time" th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:ss:mm')}"></td>
