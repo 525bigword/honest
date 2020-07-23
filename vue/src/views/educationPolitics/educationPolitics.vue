@@ -49,7 +49,7 @@
       <el-table
         :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
         border
-        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle':header-cell-style='rowClass' v-loading="listLoading">
+        style="width: 100%"  ref="multipleTable" :cell-style='cellStyle' :header-cell-style='rowClass' v-loading="listLoading">
         <el-table-column type="selection" width="55px"></el-table-column>
         <el-table-column
           label="序号"
@@ -140,14 +140,14 @@
               action="https://jsonplaceholder.typicode.com/posts/"
               :on-change="handleChange"
               :on-preview="handlePreview"
-              accept=".jpg,.gif,.png"
+              accept=".jpg,.png,.gif,.jpeg,.bmp"
               :http-request="modeUpload"
               :before-upload="beforeAvatarUpload"
               :limit="1"
               :on-exceed="handleExceed"
               :file-list="fileList">
               <el-button size="small" type="primary">上传图片</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传单个.jpg,.gif,.png图片，且不超过5M</div>
+              <div slot="tip" class="el-upload__tip">只能上传单个.jpg,.png,.gif,.jpeg,.bmp图片，且不超过5M</div>
             </el-upload>
           </el-form-item>
           <br/>

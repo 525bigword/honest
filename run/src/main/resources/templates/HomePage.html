@@ -726,6 +726,7 @@
                 if(data.code==100) {
                     var username = data.info.userPermission.sysStaffByUserName.username
                     var sid = data.info.userPermission.sysStaffByUserName.sid
+                    var sname=data.info.userPermission.sysStaffByUserName.name
                     if (username != '') {
                         layer.msg('登录成功', {
                             time: 1500, //1500ms后自动关闭

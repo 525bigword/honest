@@ -69,7 +69,7 @@
     </el-row>
     <el-form-item style="margin-top:15px">
       <el-button style="margin-left:63%" type="primary" @click="submit()">提交</el-button>
-      <el-button type="primary" @click="dialogTableVisible = false;">取消</el-button>
+      <el-button type="primary" @click="clen()">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -190,6 +190,9 @@ export default {
     ...mapGetters(["sidebar", "avatar", "nickname"])
   },
   methods: {
+    clen(){
+      this.$router.push({ path: "/" });
+    },
     submit() {
       this.api({
         url: "SysStaff/setInfo",
