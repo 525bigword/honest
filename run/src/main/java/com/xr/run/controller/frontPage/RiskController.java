@@ -18,6 +18,7 @@ import com.xr.run.entity.Processrick;
 import com.xr.run.entity.vo.RiskVo;
 import com.xr.run.service.PostriskcombingService;
 import com.xr.run.service.ProcessrickService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,7 @@ import java.util.*;
  * @create 2020-07-14
  * @since 1.0.0
  */
+@Slf4j
 @RestController
 @RequestMapping("/qt/risk")
 public class RiskController {
@@ -41,9 +43,6 @@ public class RiskController {
     //流程风险
     @Autowired
     private ProcessrickService processrickService;
-
-    public static final  Integer a =0;
-
 
 
     public List<RiskVo> getList(String prProject, Integer pageNo, Integer pageSize){
@@ -60,13 +59,6 @@ public class RiskController {
             riskVo.setProject(postriskcombing.getPProject());
             riskVo.setId(postriskcombing.getPid());
             riskVo.setCname(postriskcombing.getPCreateName());
-
-            riskVo.setYear(postriskcombing.getPYear());
-            riskVo.setGrade(postriskcombing.getPGrade());
-            riskVo.setMeasures(postriskcombing.getPMeasures());
-            riskVo.setDeptName(postriskcombing.getDeptName());
-            riskVo.setPostName(postriskcombing.getPostname());
-
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);
@@ -79,6 +71,7 @@ public class RiskController {
             riskVo.setProject(processrick.getProName());
             riskVo.setId(processrick.getProid());
             riskVo.setCname(processrick.getProCreateName());
+
             //状态
             riskVo.setType(1); //流程风险
             list.add(riskVo);
@@ -87,51 +80,6 @@ public class RiskController {
         listSortriskVos(list);
         return list;
     }
-
-
-   /* @RequestMapping("/getRiskAll")
-    public String getRiskAll(String prProject, Integer pageNo, Integer pageSize){
-        List<RiskVo> list = getList(prProject,pageNo,pageSize);
-        //分页
-        Integer count = list.size(); //记录总数
-        Integer pageCount = 0; //页数
-        if (count % pageSize == 0) {
-            pageCount = count / pageSize;
-        } else {
-            pageCount = count / pageSize + 1;
-        }
-
-        int fromIndex = 0; //开始索引
-        int toIndex = 0; //结束索引
-
-        if (pageNo > pageCount) {
-            pageNo = pageCount;
-        }
-        if (!pageNo.equals(pageCount)) {
-            fromIndex = (pageNo - 1) * pageSize;
-            toIndex = fromIndex + pageSize;
-        } else {
-            fromIndex = (pageNo - 1) * pageSize;
-            toIndex = count;
-        }
-        if (list.size() != 0) {
-            List<RiskVo> pageList = list.subList(fromIndex, toIndex);
-            //第一页、第一种类型
-            for (RiskVo risk : pageList) {
-             int first= list.get(0).getId();
-             int type = list.get(0).getType();
-             risk.setFirstPage(first);
-             risk.setFirstType(type);
-            }
-            String jsonString = JSON.toJSONString(pageList);
-            String  jso= "{\"total\":" + count + ",\"pages\":" + pageCount + ",\"rows\":" + jsonString + "}";
-
-            return jso;
-        } else {
-            //没查找到返回
-            return "null";
-        }
-    }*/
 
     //不同的风险
     @RequestMapping("/getRiskByType")
@@ -150,6 +98,11 @@ public class RiskController {
                 riskVo.setProject(postriskcombing.getPProject());
                 riskVo.setId(postriskcombing.getPid());
                 riskVo.setCname(postriskcombing.getPCreateName());
+                riskVo.setPname(postriskcombing.getPname());
+                riskVo.setMname(postriskcombing.getMname());
+                riskVo.setGrade(postriskcombing.getPGrade()); //风险级别
+                riskVo.setMeasures(postriskcombing.getPMeasures()); //措施
+
                 //状态
                 riskVo.setType(0); //岗位风险
                 list.add(riskVo);
@@ -158,8 +111,7 @@ public class RiskController {
         }else{
             //流程
             List<RiskVo> list = new ArrayList<>();
-            IPage<Processrick> processrickAll = processrickService.findProcessrickIndex(new Page(pageNo, pageSize), prProject);
-            int i =0;
+            IPage<Processrick> processrickAll = processrickService.findProcessrickIndex1(new Page(pageNo, pageSize), prProject);
             for (Processrick processrick : processrickAll.getRecords()) {
                 RiskVo riskVo = new RiskVo();
                 riskVo.setFirstPage(list1.get(0).getId());
@@ -170,6 +122,12 @@ public class RiskController {
                 riskVo.setProject(processrick.getProName());
                 riskVo.setId(processrick.getProid());
                 riskVo.setCname(processrick.getProCreateName());
+                riskVo.setGrade(processrick.getProGrade()); //风险级别
+                riskVo.setMeasures(processrick.getProMeasures()); //措施
+                riskVo.setPname(processrick.getPname());
+                riskVo.setMname(processrick.getMname());
+                riskVo.setPic(processrick.getProAccessory()); //图片
+
                 //状态
                 riskVo.setType(1); //流程风险
                 list.add(riskVo);
@@ -191,6 +149,11 @@ public class RiskController {
                riskVo.setProject(post.getPProject());
                riskVo.setId(post.getPid());
                riskVo.setCname(post.getPCreateName());
+               riskVo.setGrade(post.getPGrade()); //风险级别
+               riskVo.setMeasures(post.getPMeasures()); //措施
+               riskVo.setPname(post.getPname());
+               riskVo.setMname(post.getMname());
+
                //状态
                riskVo.setType(0); //岗位风险
 
@@ -207,6 +170,12 @@ public class RiskController {
                riskVo.setProject(processrick.getProName());
                riskVo.setId(processrick.getProid());
                riskVo.setCname(processrick.getProCreateName());
+               riskVo.setGrade(processrick.getProGrade()); //风险级别
+               riskVo.setMeasures(processrick.getProMeasures()); //措施
+               riskVo.setPname(processrick.getPname());
+               riskVo.setMname(processrick.getMname());
+               riskVo.setPic(processrick.getProAccessory()); //图片
+
                //状态
                riskVo.setType(1); //流程风险
                return JSON.toJSONString(riskVo);

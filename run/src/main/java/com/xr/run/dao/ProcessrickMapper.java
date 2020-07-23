@@ -77,8 +77,9 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
     @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick where proid=#{id} ")
     Processrick findProcessrickById(@Param("id") Integer id);
 
-    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick " +
-            " where proStatus =1 and  proName like CONCAT('%',#{proName},'%') order by proid desc")
+    @Select("select p.proGrade,p.proid,p.processID,p.proName,p.proMeasures,p.proYear,p.proInfomation,p.proAccessory,p.proCreateTime,p.proCreateId,p.proCreateName,p.proStatus,m.pname,sm.mechanism_name as mname from processrick p " +
+            " left join sys_post m on p.processID = m.pid left join sys_mechanism sm on sm.mid = m.mid " +
+            " where p.proStatus =1 and  p.proName like CONCAT('%',#{proName},'%') order by p.proid desc")
     @Results({
             @Result(column = "proCreateId",property = "proCreateId"),
             @Result(column = "proCreateId",property = "sysStaff",

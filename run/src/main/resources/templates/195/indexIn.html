@@ -373,6 +373,11 @@
         */
         function insertContent(getData,pageNo){
             var htmlContent = "";	//插入的列表内容
+            if(getData[0].type==0){
+                htmlContent ='<li>岗位风险梳理</li>'
+            }else{
+                htmlContent ='<li>流程风险梳理</li>'
+            }
             for(var i = 0; i < getData.length; i++){
                 var data = getData[i];		//获取一条数据
                 if(pageNo==1) {
@@ -381,7 +386,15 @@
                 }//获取一条数据
                 var url = "/honest/templates/195/"+ $("#typeOne").val()+"/"+$("#idOne").val()+".html?id="+data.id+"&type="+data.type;			//a链接地址
                 var title = data.project;		//标题
-                htmlContent += '<li><a href="'+url+'">'+title+'</a></li>'
+                var mname = data.mname;
+                var pname = data.pname;
+                var grade = data.grade;
+                htmlContent += '<li><a href="' + url + '">' +
+                    '' + title + '' +
+                    '&nbsp;&nbsp;&nbsp;<span style="color: #3D7D53">' + mname + '</span>' +
+                    '&nbsp;&nbsp;&nbsp;<span style="color: #3D7D53">' + pname + '</span>' +
+                    '&nbsp;&nbsp;&nbsp;<span style="color: #3D7D53">' + grade + '</span>' +
+                    '</a></li>'
             }
             $(".content-list ul").html(htmlContent);
         }

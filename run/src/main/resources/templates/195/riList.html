@@ -149,35 +149,40 @@
     </div>
     <div></div>
     <div class="content-list" >
-        <table >
-            <tr ><th  align="center;" >岗位风险详情</th></tr>
+        <table style="width: auto;text-align: center" id="tab">
+            <tr th:if="${riskVo.type==0}"><th >岗位风险详情</th></tr>
+            <tr th:if="${riskVo.type==1}"><th >流程风险详情</th></tr>
             <tr>
-                <td >执行年份:</td>
-                <td th:text="${riskVo.year}"></td>
+                <th style="width: 20%;">执行时间:</th>
+                <td id="time" th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:ss:mm')}"></td>
             </tr>
             <tr>
-                <td>风险名称：</td>
-                <td th:text="${riskVo.project}"></td>
+                <th style="width: 20%;">风险名称：</th>
+                <td id="project" th:text="${riskVo.project}"></td>
             </tr>
              <tr>
-                 <td>部门：</td>
-                 <td th:text="${riskVo.deptName}"></td>
+                 <th style="width: 20%;">部门：</th>
+                 <td id="mname" th:text="${riskVo.mname}"></td>
              </tr>
              <tr>
-                 <td>岗位：</td>
-                 <td th:text="${riskVo.postName}"></td>
+                 <th style="width: 20%;">岗位：</th>
+                 <td id="pname" th:text="${riskVo.pname}"></td>
              </tr>
             <tr>
-                <td>风险等级：</td>
-                <td th:text="${riskVo.grade}"></td>
+                <th style="width: 20%;">风险等级：</th>
+                <td id="grade" th:text="${riskVo.grade}"></td>
             </tr>
             <tr>
-                <td>风险描述：</td>
-                <td th:text="${riskVo.description}"></td>
+                <th style="width: 20%;">风险描述：</th>
+                <td id="description" th:text="${riskVo.description}"></td>
             </tr>
             <tr>
-                <td>防控措施：</td>
-                <td th:text="${riskVo.measures}"></td>
+                <th style="width: 20%;">防控措施：</th>
+                <td id="measures" th:text="${riskVo.measures}"></td>
+            </tr>
+            <tr th:if="${riskVo.type==1}">
+                <th style="width: 20%;">流程风险图片：</th>
+                <td id="pic"><img th:src="'/hoonest/img'+${riskVo.pic}"></td>
             </tr>
         </table>
 
@@ -196,10 +201,10 @@
         <div>
             <span th:utext="${riskVo.description}">　</span>　
         </div>
-
+-->
         <div>
              <span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>
-        </div>-->
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -207,17 +212,17 @@
         getData: 返回的数据
     */
     function insertContent(getData) {
-      /*  var htmlContent = "";	//插入的列表内容
-        var title = getData.project;		//内容
+      $("#time").text(getData.createTime);
+      $("#project").text(getData.project);
+      $("#mname").text(getData.mname);
+      $("#pname").text(getData.pname);
+      $("#grade").text(getData.grade);
+      $("#description").text(getData.description);
+      $("#measures").text(getData.measures);
+      if(getData.type==1) {
+          $("#pic").html("<img src='/hoonest/img'" + getData.pic + ">");
+      }
 
-        htmlContent += '<div> <label>'+title+'</label> </div>' +
-            '<div> <span>上传者：<label>'
-            +getData.cname+'</label></span>&nbsp;&nbsp;&nbsp; ' +
-            ' <span>时间：<label>'+getData.createTime+'</label></span>></div>';
-        //文章标题等信息
-
-        $(".content-list").children("div").eq(0).html(htmlContent);			//添加标题内容
-        $(".content-list").children("div").eq(1).html(getData.description);			//添加文章内容*/
     }
 
     /*请求失败时调用 */
