@@ -150,38 +150,38 @@
     <div></div>
     <div class="content-list" >
         <table style="width: auto;text-align: center" id="tab">
-            <th th:if="${riskVo.type==0}" style="font-size: 15px;text-align: center">岗位风险详情</th>
-            <th th:if="${riskVo.type==1}" style="font-size: 15px;text-align: center">流程风险详情</th>
+            <th th:if="${riskVo.type==0}" style="font-size: 15px;color:#3D7D53;text-align: center">岗位风险详情</th>
+            <th th:if="${riskVo.type==1}" style="font-size: 15px;color:#3D7D53;text-align: center">流程风险详情</th>
             <tr>
                 <th style="width: 20%;">执行时间:</th>
                 <td id="time" th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:ss:mm')}"></td>
             </tr>
             <tr>
-                <th style="width: 20%;">风险名称：</th>
+                <th style="width: 20%;">风险名称:</th>
                 <td id="project" th:text="${riskVo.project}"></td>
             </tr>
              <tr>
-                 <th style="width: 20%;">部门：</th>
+                 <th style="width: 20%;">部门:</th>
                  <td id="mname" th:text="${riskVo.mname}"></td>
              </tr>
              <tr>
-                 <th style="width: 20%;">岗位：</th>
+                 <th style="width: 20%;">岗位:</th>
                  <td id="pname" th:text="${riskVo.pname}"></td>
              </tr>
             <tr>
-                <th style="width: 20%;">风险等级：</th>
+                <th style="width: 20%;">风险等级:</th>
                 <td id="grade" th:text="${riskVo.grade}"></td>
             </tr>
             <tr>
-                <th style="width: 20%;">风险描述：</th>
+                <th style="width: 20%;">风险描述:</th>
                 <td id="description" th:text="${riskVo.description}"></td>
             </tr>
             <tr>
-                <th style="width: 20%;">防控措施：</th>
+                <th style="width: 20%;">防控措施:</th>
                 <td id="measures" th:text="${riskVo.measures}"></td>
             </tr>
             <tr th:if="${riskVo.type==1}">
-                <th style="width: 20%;">流程风险图片：</th>
+                <th style="width: 20%;">流程风险图片:</th>
                 <td id="pic"><img th:src="'/hoonest/img'+${riskVo.pic}"></td>
             </tr>
         </table>
@@ -220,7 +220,7 @@
       $("#description").text(getData.description);
       $("#measures").text(getData.measures);
       if(getData.type==1) {
-          $("#pic").html("<img src='/hoonest/img'" + getData.pic + ">");
+          $("#pic").html("<img src='/hoonest/img"+getData.pic+"'>");
       }
 
     }
