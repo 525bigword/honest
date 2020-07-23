@@ -64,6 +64,7 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
 		String loginName = (String) authcToken.getPrincipal();
 		// 获取用户密码
+		log.info("获取用户密码::"+loginName);
 		String password = new String((char[]) authcToken.getCredentials());
 			SysStaff user = sysStaffService.getUser(loginName, password);
 		if (user == null) {

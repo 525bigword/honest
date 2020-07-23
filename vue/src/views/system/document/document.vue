@@ -49,7 +49,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    
+
     <el-row>
       <el-col style="width:45%">
         <el-form-item label="登录名" prop="username">
@@ -159,7 +159,8 @@ export default {
             required: true,
             message: "登录密码不能为空",
             trigger: ["blur", "change"]
-          }
+          },
+          { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: ["blur", "change"] }
         ],
         ppid: [
           {
@@ -201,8 +202,8 @@ export default {
       }).then(res => {
         console.log(res, "setInfo");
         this.$message({
-          type:'success',
-          message:'修改成功'
+          type: "success",
+          message: "修改成功"
         });
         this.$router.push({ path: "/" });
       });

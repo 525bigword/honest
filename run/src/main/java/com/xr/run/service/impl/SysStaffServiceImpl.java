@@ -14,6 +14,7 @@ import com.xr.run.service.SysStaffService;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
 import com.xr.run.util.constants.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -28,6 +29,7 @@ import java.util.List;
 
 @Service
 @CrossOrigin(allowCredentials="true")
+@Slf4j
 public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> implements SysStaffService {
     @Autowired
     private SysPermissionService sysPermissionService;
@@ -92,6 +94,8 @@ public class SysStaffServiceImpl extends ServiceImpl<SysStaffMapper,SysStaff> im
     public JSONObject authLogin(JSONObject jsonObject) {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
+        log.info("String username = jsonObject.getString(\"username\");:"+username);
+        log.info("jsonObject.getString(\"password\");:"+password);
 //        password="E10ADC3949BA59ABBE56E057F20F883E";
         JSONObject info = new JSONObject();
         Subject currentUser = SecurityUtils.getSubject();
