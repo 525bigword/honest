@@ -76,7 +76,7 @@
         <template slot-scope="scope">
           <el-row>
             <el-button type="success" size="small" icon="edit" @click="huifu(scope)">恢复</el-button>
-            <el-button type="danger" size="small" icon="edit" @click="yjdelete(scope)">永久删除</el-button>
+            <!-- <el-button type="danger" size="small" icon="edit" @click="yjdelete(scope)">永久删除</el-button> -->
           </el-row>
         </template>
       </el-table-column>
@@ -488,32 +488,6 @@ export default {
         .then(() => {
           this.api({
             url: "SysStaff/hf/" + row.row.sid,
-            method: "get"
-          }).then(res => {
-            this.getList();
-          });
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
-    },
-    yjdelete(row) {
-      console.log(row);
-      this.$confirm("此操作将永久删除用户以及用户信息", "是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.api({
-            url: "SysStaff/del/" + row.row.sid,
             method: "get"
           }).then(res => {
             this.getList();

@@ -36,12 +36,12 @@ public class SysStaffController {
     @Autowired
     private HomePageSevice homePageSevice;
 
-    @GetMapping("del/{id}")
-    @RequiresPermissions("staff:delete")
-    public JSONObject yjDel(@PathVariable Integer id){
-        sysStaffService.yjDelSysStaffById(id);
-        return CommonUtil.successJson();
-    }
+//    @GetMapping("del/{id}")
+//    @RequiresPermissions("staff:delete")
+//    public JSONObject yjDel(@PathVariable Integer id){
+//        sysStaffService.yjDelSysStaffById(id);
+//        return CommonUtil.successJson();
+//    }
     @GetMapping("hf/{id}")
     @RequiresPermissions("staff:update")
     public JSONObject hfSysStaff(@PathVariable Integer id){
