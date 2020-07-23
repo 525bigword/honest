@@ -4,8 +4,8 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'" />
-        <span style="display:inline-block;vertical-align:middle">{{nickname}}</span>
+
+        <span style="display:inline-block;vertical-align:middle">{{mechanismname+'&nbsp'+ppname+"&nbsp"+nickname}}</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -42,7 +42,7 @@ export default {
     Hamburger
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "nickname"])
+    ...mapGetters(["sidebar", "avatar", "nickname","mechanismname","ppname"])
   },
   methods: {
     createIndex() {

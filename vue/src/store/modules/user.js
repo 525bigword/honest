@@ -9,6 +9,8 @@ const user = {
         nickname: "",
         userId: 0,
         avatar: 'https://www.gravatar.com/avatar/6560ed55e62396e40b34aac1e5041028',
+        mechanismname:'',
+        ppname:'',
         role: "",
         menus: [],
         permissions: [],
@@ -23,6 +25,13 @@ const user = {
             state.menus = userInfo.menuList;
             state.mid = userInfo.sysStaffByUserName.mid;
             state.permissions = userInfo.permissionList;
+
+        },
+        SET_PPNAME:(state,PPNAME)=>{
+          state.ppname=PPNAME
+        },
+        SET_MNAME:(state,MNAME)=>{
+          state.mechanismname=MNAME
         },
         SET_USER_ID: (state, userInfo) => {
             state.nickname = userInfo;
@@ -71,7 +80,9 @@ const user = {
                 }).then(data => {
                     console.log(data)
                         //储存用户信息
-                    commit('SET_USER', data.userPermission);
+        commit('SET_USER', data.userPermission);
+        commit('SET_MNAME', data.userPermission.sysStaffByUserName.mechanismname);
+        commit('SET_PPNAME', data.userPermission.sysStaffByUserName.ppname);
                     //cookie保存登录状态,仅靠vuex保存的话,页面刷新就会丢失登录状态
                     setToken();
                     //生成路由

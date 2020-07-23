@@ -29,11 +29,20 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
     @Delete("delete from sys_staff where sid=#{id} and staus=2")
     void yjDelSysStaffById(@Param("id") Integer id);
     /**
+     * 根絕Id查詢崗位名
+     */
+    @Select("select pname from sys_ppost where pid=#{pid}")
+    String findSysPPostNameById(@Param("pid")Integer pid);
+    /**
      * 根据用户名和密码查询对应的用户
      */
     @Select("SELECT u.sid,u.name, u.sex,u.age,u.educational_background,u.political_appearance,u.phone,u.mid,u" +
-            ".username,u.password,u.pid,u.create_time,u.create_id,u.staus FROM " +
+            ".username,u.password,u.pid,u.ppid,u.create_time,u.create_id,u.staus FROM " +
             " sys_staff u WHERE u.username = #{username}  AND u.staus = '1'")
+    @Results({
+            @Result(column = "ppid",property = "ppname",one = @One(select = "findSysPPostNameById",fetchType = FetchType.DEFAULT)),
+            @Result(column = "mid",property = "mechanismname",one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName",fetchType = FetchType.DEFAULT))
+    })
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
     @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,ppid" +
             "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid} order by sid desc")
