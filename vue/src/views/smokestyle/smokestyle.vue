@@ -123,14 +123,14 @@
               action="https://jsonplaceholder.typicode.com/posts/"
               :on-change="handleChange"
               :on-preview="handlePreview"
-              accept=".jpg,.gif,.png"
+              accept=".jpg,.png,.gif,.jpeg,.bmp"
               :http-request="modeUpload"
               :before-upload="beforeAvatarUpload"
               :limit="1"
               :on-exceed="handleExceed"
               :file-list="fileList">
               <el-button size="small" type="primary">上传图片</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传单个.jpg,.gif,.png图片，且不超过5M</div>
+              <div slot="tip" class="el-upload__tip">只能上传单个.jpg,.png,.gif,.jpeg,.bmp图片，且不超过5M</div>
             </el-upload>
           </el-form-item><br/>
           <el-form-item label="文章来源" prop="smosource">

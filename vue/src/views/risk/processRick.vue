@@ -159,14 +159,14 @@
                     action="https://localhost:8080/imp/importDuty"
                     :on-remove="fileRemove"
                     :on-change="handleImgChange1"
-                    accept=".jpg,.png,.gif"
+                    accept=".jpg,.png,.gif,.jpeg,.bmp"
                     :file-list="fileList"
                     :limit="1"
                     list-type="picture"
                     :auto-upload="false"
                   >
                     <el-button slot="trigger" class="el-icon-upload" size="small" type="primary">上传图片</el-button>
-                    <span slot="tip"  style="margin-left: 20px">建议上传5M以下的文件，文件类型支持格式：jpg，png，gif</span>
+                    <span slot="tip"  style="margin-left: 20px">建议上传5M以下的文件，文件类型支持格式：jpg，png，gif，jpeg，bmp</span>
                   </el-upload>
                 </el-form-item>
               </el-col>
