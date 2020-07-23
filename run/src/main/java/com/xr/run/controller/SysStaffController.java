@@ -54,6 +54,7 @@ public class SysStaffController {
         SysStaff sysStaffBySid = sysStaffService.findSysStaffBySid(sid);
         return CommonUtil.successJson(sysStaffBySid);
     }
+
     @PostMapping("delete")
     @RequiresPermissions("staff:delete")
     public JSONObject delSysStaff(String str){
