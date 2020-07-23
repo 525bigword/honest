@@ -22,7 +22,7 @@ public class PostRiskCombingSQL {
         if(null!=pDeptId){
             sql.append(" and pDeptId="+pDeptId);
         }
-        if(0!=pInfomationId){
+        if(null!=pInfomationId){
             sql.append(" and pInfomationId="+pInfomationId);
         }
         if(!StringUtils.isEmpty(pGrade)){

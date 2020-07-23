@@ -29,7 +29,6 @@ public interface PostRiskCombingMapper {
             @Result(column = "pInfomationId",property = "pInfomationId"),
             @Result(column = "pRiskPointDescription",property = "pRiskPointDescription"),
             @Result(column = "pProbableLValue",property = "pProbableLValue"),
-
     })
     public IPage<Postriskcombing> list(Page page);
     // 条件查询

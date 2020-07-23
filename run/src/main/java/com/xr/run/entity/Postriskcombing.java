@@ -30,6 +30,8 @@ public class Postriskcombing {
   private  SysStaff sysStaff;
   private String pCreateName;
   private int pStatus;
+  private String deptName;
+  private String postname;
 
 
 

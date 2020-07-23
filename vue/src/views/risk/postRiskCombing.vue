@@ -631,11 +631,11 @@ export default {
         this.search.pdeptid = deptId;
         this.search.pgrade = grade;
       }
-      if(this.search.pdeptid===undefined&&this.search.pinfomationid===undefined&&this.search.pgrade===undefined){
-        this.initList()
-        //alert("initList")
-        return
-      }
+      // if(this.search.pdeptid===undefined&&this.search.pinfomationid===undefined&&this.search.pgrade===undefined){
+      //   this.initList()
+      //   //alert("initList")
+      //   return
+      // }
       let postData = qs.stringify({
         pdeptid: this.search.pdeptid,
         pinfomationid: this.search.pinfomationid,
@@ -875,7 +875,7 @@ export default {
           /*this.getAllStaff(res[0].mid);*/
           // this.getAllld(res[0].mid)
           console.log(this.bm,"this.bm");
-          this.initList(); // 加载数据列表
+          this.onSearch(); // 加载数据列表
           resolve()
         });
       });
