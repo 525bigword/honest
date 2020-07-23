@@ -601,7 +601,7 @@ export default {
         });
         return;
       }else{
-        this.$confirm('确认删除这条待办信息吗?', '提示', {
+        this.$confirm('确认删除这条反馈信息吗?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
