@@ -630,6 +630,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setProject(postriskcombing.getPProject());
             riskVo.setId(postriskcombing.getPid());
             riskVo.setCname(postriskcombing.getPCreateName());
+
             riskVo.setGrade(postriskcombing.getPGrade()); //风险级别
             riskVo.setMeasures(postriskcombing.getPMeasures()); //措施
             riskVo.setPname(postriskcombing.getPname());
@@ -659,6 +660,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setMeasures(processrick.getProMeasures()); //措施
             riskVo.setPname(processrick.getPname());
             riskVo.setMname(processrick.getMname());
+            riskVo.setPic(processrick.getProAccessory()); //图片
             //状态
             Map map1 = new HashMap();
             map1.put("riskVo", riskVo);

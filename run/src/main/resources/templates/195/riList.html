@@ -150,8 +150,8 @@
     <div></div>
     <div class="content-list" >
         <table style="width: auto;text-align: center" id="tab">
-            <tr th:if="${riskVo.type==0}"><th >岗位风险详情</th></tr>
-            <tr th:if="${riskVo.type==1}"><th >流程风险详情</th></tr>
+            <th th:if="${riskVo.type==0}" style="font-size: 15px;text-align: center">岗位风险详情</th>
+            <th th:if="${riskVo.type==1}" style="font-size: 15px;text-align: center">流程风险详情</th>
             <tr>
                 <th style="width: 20%;">执行时间:</th>
                 <td id="time" th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:ss:mm')}"></td>
