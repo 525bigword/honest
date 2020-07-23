@@ -116,7 +116,7 @@
             v-html="temp.gettop">
         </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
+        <el-form-item style="font-weight: bold;" label="责任反馈内容" prop="backContent">
           <quill-editor
             class="editor"
             style="height:400px;width:85%;"

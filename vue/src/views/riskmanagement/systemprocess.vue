@@ -48,8 +48,9 @@
       </el-table-column>
         <el-table-column label="制度信息标题" prop="sysTitle"  align="center" width="450px">
         <template slot-scope="scope">
-
+          <el-tooltip content="点击查看详情或修改" placement="right" effect="dark">
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.sysTitle }}</a>
+          </el-tooltip>
         </template>
         </el-table-column>
         

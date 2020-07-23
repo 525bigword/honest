@@ -28,6 +28,7 @@ public class CORSConfiguration {
         config.addAllowedOrigin("http://192.168.43.75:8080");
         config.addAllowedOrigin("http://localhost:9520");
         config.addAllowedOrigin("http://localhost:4031");
+        config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("*");
         //config.addAllowedOrigin("*");
         config.addAllowedOrigin("http://127.0.0.1:4031");

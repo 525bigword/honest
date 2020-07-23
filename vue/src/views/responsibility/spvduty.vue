@@ -126,7 +126,7 @@
             :disabled="isShow"
             class="el-icon-top"
             @click="dialogStatus==='update'?updateData():createData()"
-          >更新</el-button>
+          >保存</el-button>
           <el-button class="el-icon-back" plain @click="out()">返回</el-button>
         </el-form-item></div>
          <div style="background-color: white;margin-top: 25px;z-index:3;">
@@ -369,7 +369,7 @@
             v-html="back.gettop">
         </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
+        <el-form-item style="font-weight: bold;" label="责任反馈内容" prop="backContent">
           <el-card class="box-card"
           style="width:85%;"
             ref="myQuillEditor"
@@ -536,7 +536,7 @@
             v-html="back.gettop">
         </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="责任监督内容" prop="backContent">
+        <el-form-item style="font-weight: bold;" label="责任反馈内容" prop="backContent">
           <el-card class="box-card"
           style="width:85%;"
             ref="myQuillEditor"

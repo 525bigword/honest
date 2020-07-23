@@ -42,7 +42,9 @@
       
         <el-table-column label="标题" prop="wtitle"  align="center" width="310px">
         <template slot-scope="scope">
+          <el-tooltip content="点击查看详情或修改" placement="right" effect="dark">
           <a style="color:#1890ff" @click="handleUpdate(scope.row)">{{ scope.row.wtitle }}</a>
+          </el-tooltip>
         </template>
         </el-table-column>
         <el-table-column label="投稿人" prop="wnew"   align="center" width="200px">
