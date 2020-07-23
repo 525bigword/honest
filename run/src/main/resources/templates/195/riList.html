@@ -193,26 +193,11 @@
             </tr>
             <tr th:if="${riskVo.type==1}">
                 <th style="width: 20%;">流程风险图片:</th>
-                <td id="pic"><img th:src="'/hoonest/img'+${riskVo.pic}"></td>
+                <td id="pic"><img th:if="${not #strings.isEmpty(riskVo.pic)}" th:src="'/hoonest/img'+${riskVo.pic}"></td>
             </tr>
         </table>
 
 
-        <!--<div>
-            <div>
-                <label th:text="${riskVo.project}"></label>
-            </div>
-            <div>
-                <span>上传者：<label th:text="${riskVo.cname}"></label></span>&nbsp;&nbsp;&nbsp;
-                <span>时间：<label th:text="${#dates.format(riskVo.createTime,'yyyy-MM-dd HH:mm:ss')}"></label></span>
-            </div>
-        </div>
-
-
-        <div>
-            <span th:utext="${riskVo.description}">　</span>　
-        </div>
--->
         <div>
              <span class="ms-right" id="goback"><a href="/honest/templates/index.html">返回首页</a></span>
         </div>
