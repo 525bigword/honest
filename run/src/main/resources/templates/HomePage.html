@@ -465,7 +465,7 @@
             </form>
            <p  style="line-height: 20px;" id="blockLogin">
                 <span style="padding-right: 47px;" id="loginUser"></span><span>欢迎回来</span><br/>
-                <span style="padding-right: 114px;"><a href="/honest/templates/checkPassword.html" class="isLogin" target="_blank">修改密码</a></span><a href="javascript:void(0);" class="red" onclick="loginOut()">[退出系统]</a>
+                <span style="padding-right: 114px;"><a  href="javascript:void(0)" onclick="checkPass()" class="isLogin" target="_blank">修改密码</a></span><a href="javascript:void(0);" class="red" onclick="loginOut()">[退出系统]</a>
             </p>
         </div>
         <div class="announcements">
@@ -671,6 +671,19 @@
     // 清除cookie
     function clearCookie(name) {
         setCookie(name, "", -1);
+    }
+
+    function checkPass() {
+        var username =getCookie('username')
+        if(username!=''){
+            location.href="/honest/templates/checkPassword.html"
+        }else{
+            layer.msg('登录信息已经过期', {
+                time: 1500, //1500ms后自动关闭
+                icon: 5
+            });
+            location.reload() //刷新
+        }
     }
 
      function loginOut() {
