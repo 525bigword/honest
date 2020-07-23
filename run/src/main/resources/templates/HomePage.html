@@ -465,7 +465,7 @@
             </form>
            <p  style="line-height: 20px;" id="blockLogin">
                 <span style="padding-right: 47px;" id="loginUser"></span><span>欢迎回来</span><br/>
-                <span style="padding-right: 114px;"><a href="" class="isLogin" target="_blank">修改密码</a></span><a href="javascript:void(0);" class="red" onclick="loginOut()">[退出系统]</a>
+                <span style="padding-right: 114px;"><a  href="javascript:void(0)" onclick="checkPass()" class="isLogin" target="_blank">修改密码</a></span><a href="javascript:void(0);" class="red" onclick="loginOut()">[退出系统]</a>
             </p>
         </div>
         <div class="announcements">
@@ -673,6 +673,19 @@
         setCookie(name, "", -1);
     }
 
+    function checkPass() {
+        var username =getCookie('username')
+        if(username!=''){
+            location.href="/honest/templates/checkPassword.html"
+        }else{
+            layer.msg('登录信息已经过期', {
+                time: 1500, //1500ms后自动关闭
+                icon: 5
+            });
+            location.reload() //刷新
+        }
+    }
+
      function loginOut() {
          layer.alert('您确定要退出登录吗?', {
              skin: 'layui-layer-molv' //样式类名 自定义样式
@@ -681,10 +694,19 @@
              , btn: ['确定', '取消'] //按钮
              , icon: 6 // icon
              , yes: function () {
-               //layer.msg('确定')
-                 clearCookie('username')
-                 clearCookie('sid')
-                 location.reload() //刷新
+                 $.ajax({
+                     type: "POST",//方法类型
+                     url: "/honest/qt/login/logout" ,//url
+                     success:function (aa) {
+                         //layer.msg('确定')
+                         clearCookie('username')
+                         clearCookie('sid')
+                         clearCookie('sname')
+
+                         location.reload() //刷新
+                     }
+                 })
+
              }
              , btn2: function () {
                  layer.msg('取消')
@@ -700,22 +722,28 @@
             url: "/honest/qt/login/doLogin" ,//url
             data: $('#form1').serialize(),
             success: function (data) {
-                layer.msg('登录成功', {
-                    time: 1500, //1500ms后自动关闭
-                    icon: 6});
                 console.log(data)
-                var username = data.info.userPermission.sysStaffByUserName.username
-                var sid = data.info.userPermission.sysStaffByUserName.sid
-                var sname=data.info.userPermission.sysStaffByUserName.name
-                if(username!=''){
-                    $("#blockLogin").show()
-                    $("#loginUser").append("亲爱的："+username);
-                    $("#form1").hide();
-                    $("#letter").attr("href","/dist/#/loginletter")
-                    setCookie("username",username,1800); //设置cookie的值，生存时间半个小时
-                    setCookie("sid",sid,1800); //设置cookie的值，生存时间半个小时
-
-                    setCookie('sname',sname,1800);
+                if(data.code==100) {
+                    var username = data.info.userPermission.sysStaffByUserName.username
+                    var sid = data.info.userPermission.sysStaffByUserName.sid
+                    if (username != '') {
+                        layer.msg('登录成功', {
+                            time: 1500, //1500ms后自动关闭
+                            icon: 6
+                        });
+                        $("#blockLogin").show()
+                        $("#loginUser").append("亲爱的：" + username);
+                        $("#form1").hide();
+                        $("#letter").attr("href", "/dist/#/loginletter")
+                        setCookie("username", username, 1800); //设置cookie的值，生存时间半个小时
+                        setCookie("sid", sid, 1800); //设置cookie的值，生存时间半个小时
+                        setCookie('sname',sname,1800);
+                    }
+                }else{
+                    layer.msg('登录失败', {
+                        time: 1500, //1500ms后自动关闭
+                        icon: 5
+                    });
                 }
             },
             error : function() {

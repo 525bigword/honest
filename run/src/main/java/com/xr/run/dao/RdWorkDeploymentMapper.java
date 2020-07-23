@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface RdWorkDeploymentMapper extends BaseMapper<RdWorkDeployment> {
     @Select("select rd.id,rd.title,rd.content,rd.create_time,rd.create_id,rd.staus,ss.name  from rd_work_deployment rd inner join sys_staff ss on rd.create_id = ss.sid where rd.staus <> -1 " +
-            " and rd.staus = CONCAT(#{staus}) and  rd.title like CONCAT('%',#{title},'%') order by rd.id desc")
+            " and  rd.title like CONCAT('%',#{title},'%') order by rd.id desc")
     @Results({
             @Result(column = "create_id",property = "createId"),
             @Result(column = "create_id",property = "sysStaff",

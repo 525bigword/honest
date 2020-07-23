@@ -398,8 +398,16 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //更多潭烟风貌
         getMoreTam();
 
+        //TODO 修改密码
+        checkPass();
+
 
         createIndexHtml(destPath, "HomePage", "index.html", map);
+    }
+
+    //修改密码
+    private void checkPass() {
+        createIndexHtml(destPath, "CheckPassword", "checkPassword.html", null);
     }
 
     //更多通知公告

@@ -65,4 +65,11 @@ public interface SysStaffService extends IService<SysStaff> {
      */
     List<SysStaff> findSysStaffByMid(int mid);
     String findSysStaffByIdToName(@Param("sid")Integer sid);
+
+
+
+    SysStaff findSysByPass(String username);
+
+
+    void updateSysStaff(String newPass,String username);
 }

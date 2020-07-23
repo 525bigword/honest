@@ -29,7 +29,7 @@ spring:
   datasource:
     username: root
     #xtycdflz
-    password: 123456
+    password: 1234
     #password: 123456
     #123@xtycdflz
     url: jdbc:mysql://localhost:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
@@ -58,17 +58,17 @@ mybatis-plus:
 file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
-  uploadFolder: D:/tomcat/Tomcat8.5.50/webapps/hoonest/tmp/
+  uploadFolder: D:/tomcat/newFolder/webapps/hoonest/tmp/
   #uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
-  uploadDuty: D:/tomcat/Tomcat8.5.50/webapps/hoonest/duty/
+  uploadDuty: D:/tomcat/newFolder/webapps/hoonest/duty/
   #uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
-  uploadImage: D:/tomcat/Tomcat8.5.50/webapps/hoonest/img/
+  uploadImage: D:/tomcat/newFolder/webapps/hoonest/img/
   #uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
-  uploadVideo: D:/tomcat/Tomcat8.5.50/webapps/hoonest/vido
+  uploadVideo: D:/tomcat/newFolder/webapps/hoonest/vido
   #uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
   accessPaths: /upload
   staticAccessPaths: /upload/**
-  uploadFolders: D:/tomcat/Tomcat8.5.50/webapps/hoonest/img/
+  uploadFolders: D:/tomcat/newFolder/webapps/hoonest/img/
 html:
-  destPath: D:/tomcat/Tomcat8.5.50/webapps/honest/templates
+  destPath: D:/tomcat/newFolder/webapps/honest/templates
 
