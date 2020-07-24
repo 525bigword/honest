@@ -74,7 +74,9 @@ public interface ProcessrickMapper extends BaseMapper<Processrick> {
      */
     List<Processrick> getListBy(@Param("proName") String proName, @Param("proYear") String proYear,@Param("proGrade") String proGrade);
 
-    @Select("select proid,processID,proName,proYear,proInfomation,proAccessory,proCreateTime,proCreateId,proCreateName,proStatus from processrick where proid=#{id} ")
+    @Select("select p.proGrade,p.proid,p.processID,p.proName,p.proMeasures,p.proYear,p.proInfomation,p.proAccessory,p.proCreateTime,p.proCreateId,p.proCreateName,p.proStatus,m.pname,sm.mechanism_name as mname from processrick p " +
+            "  left join sys_post m on p.processID = m.pid left join sys_mechanism sm on sm.mid = m.mid  " +
+            " where p.proid=#{id} order by p.proid desc ")
     Processrick findProcessrickById(@Param("id") Integer id);
 
     @Select("select p.proGrade,p.proid,p.processID,p.proName,p.proMeasures,p.proYear,p.proInfomation,p.proAccessory,p.proCreateTime,p.proCreateId,p.proCreateName,p.proStatus,m.pname,sm.mechanism_name as mname from processrick p " +

@@ -333,22 +333,18 @@ public class HomePageSeviceImpl implements HomePageSevice {
         //廉政要闻
         Map map0 = new HashMap();
         map0.put("type", 0);
-        map0.put("next", 0);
         createIndexHtml(destPath + "/181/0/", "181/indexIn", "index.html", map0);
         //文件制度
         Map map1 = new HashMap();
         map1.put("type", 1);
-        map1.put("next", 1);
         createIndexHtml(destPath + "/181/1/", "181/indexIn", "index.html", map1);
         //领导讲话
         Map map2 = new HashMap();
         map2.put("type", 2);
-        map2.put("next", 2);
         createIndexHtml(destPath + "/181/2/", "181/indexIn", "index.html", map2);
         //警钟长鸣
         Map map3 = new HashMap();
         map3.put("type", 3);
-        map3.put("next", 3);
         createIndexHtml(destPath + "/181/3/", "181/indexIn", "index.html", map3);
     }
 
@@ -639,6 +635,7 @@ public class HomePageSeviceImpl implements HomePageSevice {
             riskVo.setMeasures(postriskcombing.getPMeasures()); //措施
             riskVo.setPname(postriskcombing.getPname());
             riskVo.setMname(postriskcombing.getMname());
+            riskVo.setPic(""); //图片
             //状态
             riskVo.setType(0); //岗位风险
             list.add(riskVo);

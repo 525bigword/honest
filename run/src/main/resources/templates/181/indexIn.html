@@ -438,7 +438,7 @@
                 var title = data.title;		//标题
                 var d = new Date(data.time);
                 var time = formatDate(d);//时间
-                htmlContent += '<li><a href="'+url+'">'+title+'</a>   '+time+'</li>'
+                htmlContent += '<li><a href="'+url+'">'+title+'</a>&nbsp;&nbsp;   '+time+'</li>'
             }
             $(".content-list ul").html(htmlContent);
         }

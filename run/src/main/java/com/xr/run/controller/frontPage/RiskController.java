@@ -102,6 +102,7 @@ public class RiskController {
                 riskVo.setMname(postriskcombing.getMname());
                 riskVo.setGrade(postriskcombing.getPGrade()); //风险级别
                 riskVo.setMeasures(postriskcombing.getPMeasures()); //措施
+                riskVo.setPic(""); //图片
 
                 //状态
                 riskVo.setType(0); //岗位风险
@@ -153,6 +154,7 @@ public class RiskController {
                riskVo.setMeasures(post.getPMeasures()); //措施
                riskVo.setPname(post.getPname());
                riskVo.setMname(post.getMname());
+               riskVo.setPic(""); //图片
 
                //状态
                riskVo.setType(0); //岗位风险
@@ -161,7 +163,7 @@ public class RiskController {
 
            }else{
                //1是流程
-               Processrick  processrick = processrickService.findProcessrickById(Integer.parseInt(id));
+               Processrick processrick = processrickService.findProcessrickById(Integer.parseInt(id));
                RiskVo riskVo = new RiskVo();
                riskVo.setCreateTime(processrick.getProCreateTime());
                String s = processrick.getProInfomation();

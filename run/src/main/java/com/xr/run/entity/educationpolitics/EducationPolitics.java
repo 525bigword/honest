@@ -17,6 +17,7 @@ public class EducationPolitics {
   private Date time;
   @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")//页面写入数据库时格式化
   private Date createTime;
+
   private Integer createId;
   private String createname;
   private String staus;

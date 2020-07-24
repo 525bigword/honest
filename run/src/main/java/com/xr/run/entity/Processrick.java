@@ -15,7 +15,7 @@ public class Processrick {
   /*
     private String proBranch;
   */
-  private String proAccessory;
+  private String proAccessory="";
   private String proAccessoryName;
   private String proInfomation;
   private String proMeasures;
