@@ -409,9 +409,6 @@
             { required: true, message: '请输入文章标题', trigger: 'blur' },
             { min: 3, message: '长度得大于3 字符', trigger: 'blur' }
           ],
-          smosource: [
-            { required: true, message: '请输入文章来源', trigger: 'blur' },
-          ],
           smoproperty: [
             { type: 'array', required: true, message: '请至少选择一个文章属性', trigger: 'change' }
           ],

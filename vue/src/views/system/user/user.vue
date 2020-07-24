@@ -27,7 +27,7 @@
           <el-button type="primary" @click="get">查询</el-button>
           <el-button type="primary" @click="reset">重置</el-button>
           <el-button type="primary" v-if="hasPerm('staff:add')" @click="addOrUpdateHandle()">添加</el-button>
-          <el-button type="primary" v-if="hasPerm('staff:delete')" @click="deleteHandle()">删除</el-button>
+          <el-button type="danger" v-if="hasPerm('staff:delete')"  @click="deleteHandle()">删除</el-button>
         </el-form-item>
       </el-form>
     </div>

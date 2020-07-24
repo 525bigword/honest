@@ -422,9 +422,6 @@
             { required: true, message: '请输入资讯标题', trigger: 'blur' },
             { min: 3, message: '长度得大于3 字符', trigger: 'blur' }
           ],
-          source: [
-            { required: true, message: '请输入资讯标题', trigger: 'blur' },
-          ],
           type: [
             { required: true, message: '请选择资讯类型', trigger: 'change' }
           ],

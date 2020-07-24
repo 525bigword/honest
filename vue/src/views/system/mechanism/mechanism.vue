@@ -15,18 +15,18 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-select
+      <!-- <el-select
         v-model="listQuery.importance"
         placeholder="部门状态"
         clearable
         style="width: 150px"
         class="filter-item"
-      >
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
+      >-->
+      <!-- <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
+      </el-select>-->
 
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="reset">重置</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="reset">重置</el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
@@ -34,9 +34,24 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >添加</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="danger"
+        v-if="hasPerm('permission:delete')"
+        icon="el-icon-edit"
+        @click="handleDelete()"
+      >删除</el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" style="width: 100%;">
+    <el-table
+      :key="tableKey"
+      @selection-change="selectChange"
+      v-loading="listLoading"
+      :data="list"
+      style="width: 100%;"
+    >
+      <el-table-column prop="mid" type="selection" width="55"></el-table-column>
       <el-table-column
         label="序号"
         type="index"
@@ -68,8 +83,8 @@
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
       <el-table-column align="center" prop="createName" label="创建人"></el-table-column>
       <el-table-column align="center" prop="staus" label="状态"></el-table-column>
-      <el-table-column
-        v-if="hasPerm('permission:delete')"
+      <!-- <el-table-column
+        v-if="hasPerm('permission:delete')&&row.staus!='正常'"
         label="操作"
         align="center"
         width="230"
@@ -84,15 +99,8 @@
           >
             <span>{{row.staus=='正常'?'删除':'恢复'}}</span>
           </el-button>
-
-          <!-- <el-button
-            type="primary"
-            v-if="hasPerm('mechanism:update')&&row.staus=='正常'"
-            size="mini"
-            @click="handleUpdate(row)"
-          >修改</el-button>-->
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
     <el-pagination
       @current-change="handleCurrentChange"
@@ -167,11 +175,12 @@ const calendarTypeOptions = [
   { key: "CN", display_name: "China" },
   { key: "US", display_name: "USA" },
   { key: "JP", display_name: "Japan" },
-  { key: "EU", display_name: "Eurozone" }
+  { key: "EU", display_name: "Eurozone" },
 ];
 export default {
   data() {
     return {
+      deleteList: undefined,
       bmfzr: undefined,
       defaultvalue: [1],
       props: {
@@ -180,7 +189,7 @@ export default {
         children: "chilrenMechanism",
         emitPath: false,
         expandTrigger: "click",
-        checkStrictly: true
+        checkStrictly: true,
       },
       placeholder: "",
       tableKey: 0,
@@ -193,14 +202,14 @@ export default {
         title: "",
         fzr: "",
         type: undefined,
-        sort: "+index"
+        sort: "+index",
       },
       ld: [],
       importanceOptions: ["正常", "删除"],
       calendarTypeOptions,
       sortOptions: [
         { label: "ID Ascending", key: "+index" },
-        { label: "ID Descending", key: "-index" }
+        { label: "ID Descending", key: "-index" },
       ],
       statusOptions: ["published", "draft", "deleted"],
       showReviewer: false,
@@ -212,14 +221,14 @@ export default {
         region: 0,
         parent: [],
         ld: "",
-        status: "published"
+        status: "published",
       },
       listLoading: false,
       dialogFormVisible: false,
       dialogStatus: "",
       textMap: {
         update: "修改部门",
-        create: "新增部门"
+        create: "新增部门",
       },
       staff: [],
       parentasd: [],
@@ -231,22 +240,22 @@ export default {
           {
             required: true,
             message: "请至少选择一项",
-            trigger: ["change"]
-          }
+            trigger: ["change"],
+          },
         ],
         menuName: [
           {
             required: true,
             message: "部门名称不能为空",
-            trigger: ["blur"]
-          }
+            trigger: ["blur"],
+          },
         ],
         region: [
           {
             required: true,
             message: "请选择负责人",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         /* defaultvalue:[{
           required:true,message:"请选择父级部门",trigger:'change'
@@ -255,12 +264,12 @@ export default {
           {
             required: true,
             message: "请选择分管领导",
-            trigger: "change"
-          }
-        ]
+            trigger: "change",
+          },
+        ],
       },
       bm: [],
-      downloadLoading: false
+      downloadLoading: false,
     };
   },
   created() {
@@ -273,16 +282,21 @@ export default {
     });
   },
   methods: {
-    reset(){
-      this.listQuery={
+    selectChange(val) {
+      console.log(val);
+      this.deleteList = val;
+      console.log(this.deleteList);
+    },
+    reset() {
+      this.listQuery = {
         page: 1,
         limit: 10,
         importance: "正常",
         title: "",
         fzr: "",
         type: undefined,
-        sort: "+index"
-      }
+        sort: "+index",
+      };
     },
     closefase() {
       console.log("123");
@@ -322,9 +336,9 @@ export default {
         params: {
           mechanism: this.listQuery.title,
           principal: this.listQuery.fzr,
-          staus: this.listQuery.importance
-        }
-      }).then(response => {
+          staus: this.listQuery.importance,
+        },
+      }).then((response) => {
         console.log(response);
         this.total = response.count;
         this.list = [];
@@ -351,7 +365,7 @@ export default {
     handleModifyStatus(row, status) {
       this.$message({
         message: "操作Success",
-        type: "success"
+        type: "success",
       });
       row.status = status;
     },
@@ -381,17 +395,17 @@ export default {
         timestamp: new Date(),
         title: "",
         status: "published",
-        type: ""
+        type: "",
       };
     },
     getAllStaff(mid) {
       this.api({
         url: "SysStaff/gets/10/" + mid,
-        method: "get"
-      }).then(res => {
+        method: "get",
+      }).then((res) => {
         console.log(res, "负责人列表");
         this.staff = [];
-        res.filter(item => {
+        res.filter((item) => {
           this.staff.push(item);
         });
       });
@@ -399,11 +413,11 @@ export default {
     getAllld(mid) {
       this.api({
         url: "SysStaff/gets/7/" + mid,
-        method: "get"
-      }).then(res => {
+        method: "get",
+      }).then((res) => {
         console.log(res, "负责人列表");
         this.ld = [];
-        res.filter(item => {
+        res.filter((item) => {
           this.ld.push(item);
         });
       });
@@ -422,12 +436,12 @@ export default {
     getSysmechanismAll(val = 0) {
       this.api({
         url: "sysmechanism/get",
-        method: "get"
-      }).then(res => {
+        method: "get",
+      }).then((res) => {
         console.log("sysmechanism", res);
         // this.bm.concat(res)
         this.bm = [];
-        res.filter(item => {
+        res.filter((item) => {
           this.bm.push(item);
         });
         this.getAllStaff(res[0].mid);
@@ -444,7 +458,7 @@ export default {
       });
     },
     createData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.api({
             url: "sysmechanism/add",
@@ -455,9 +469,9 @@ export default {
               sort: this.temp.sort,
               parent: this.defaultvalue[0],
               branch: this.temp.ld,
-              createId: store.getters.userId
-            }
-          }).then(res => {
+              createId: store.getters.userId,
+            },
+          }).then((res) => {
             this.getSysmechanismAll();
             this.getList();
             this.temp.parent = this.defaultvalue;
@@ -466,7 +480,7 @@ export default {
               title: "成功",
               message: "新增成功",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.dialogFormVisible = false;
           });
@@ -487,8 +501,8 @@ export default {
       // bmfzr
       this.api({
         url: "sysmechanism/getmname/" + this.temp.region,
-        method: "get"
-      }).then(res => {
+        method: "get",
+      }).then((res) => {
         console.log("部门Id:", res);
         this.bmfzr = res;
         this.getAllStaff(res);
@@ -502,7 +516,7 @@ export default {
       });
     },
     updateData() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           console.log("this.temp", this.temp);
           console.log(this.defaultvalue, "this.defaultvalue123");
@@ -514,82 +528,61 @@ export default {
               mechanismName: this.temp.menuName,
               sid: this.temp.region,
               parent: this.defaultvalue,
-              branch: this.temp.ld
-            }
-          }).then(res => {
+              branch: this.temp.ld,
+            },
+          }).then((res) => {
             this.getList();
             this.$notify({
               title: "成功",
               message: "修改成功",
               type: "success",
-              duration: 2000
+              duration: 2000,
             });
             this.dialogFormVisible = false;
           });
         }
       });
     },
-    handleDelete(row, index) {
-      console.log("delete", row, index);
-      if (row.staus == "正常") {
-        this.$alert("是否确定删除", "提示", {
-          showCancelButton: true,
-          showConfirmButton: true,
-          closeOnPressEscape: false,
-          callback: action => {
-            console.log(action, "this.$alert");
-            if (action == "confirm") {
-              this.api({
-                url: "sysmechanism/del/" + row.mid,
-                method: "delete"
-              }).then(res => {
-                console.log(res);
-                if (res === 1) {
-                  this.total--;
-                  this.list.splice(index, 1);
-                  this.$notify({
-                    title: "成功",
-                    message: "",
-                    type: "success",
-                    duration: 2000
-                  });
-                } else {
-                  this.$notify({
-                    title: "失败",
-                    message: "请先将与该部门相关联的数据删除",
-                    type: "error",
-                    duration: 2000
-                  });
-                }
-              });
-            }
+    delete(mid) {
+      this.api({
+        url: "sysmechanism/del/" + mid,
+        method: "delete",
+      }).then((res) => {
+        console.log(res);
+        if (res === 1) {
+          this.getList();
+          this.$notify({
+            title: "成功",
+            message: "",
+            type: "success",
+            duration: 2000,
+          });
+        } else {
+          this.$notify({
+            title: "失败",
+            message: "请先将与该部门相关联的数据删除",
+            type: "error",
+            duration: 2000,
+          });
+        }
+      });
+    },
+    handleDelete() {
+      console.log("deletelist", this.deleteList);
+      this.$alert("是否确定删除", "提示", {
+        showCancelButton: true,
+        showConfirmButton: true,
+        closeOnPressEscape: false,
+        callback: (action) => {
+          console.log(action, "this.$alert");
+          if (action == "confirm") {
+            this.deleteList.filter(item=>{
+              console.log(item)
+              this.delete(item.mid)
+            })
           }
-        });
-      } else {
-        this.$alert("是否确定恢复", "提示", {
-          showCancelButton: true,
-          showConfirmButton: true,
-          closeOnPressEscape: false,
-          callback: action => {
-            this.api({
-              url: "sysmechanism/update/" + row.mid,
-              method: "put"
-            }).then(res => {
-              console.log(res);
-              if (res === 1) {
-                this.total++;
-                this.list.splice(index, 1);
-                this.$notify({
-                  title: "成功",
-                  message: "",
-                  type: "success",
-                  duration: 2000
-                });
-              }
-            });
-          }
-        });
-      }
+        },
+      });
       this.getSysmechanismAll();
     },
     handleFetchPv(pv) {
@@ -602,8 +595,8 @@ export default {
       window.location.href = "http://localhost:8080/export/mechanism";
     },
     formatJson(filterVal) {
-      return this.list.map(v =>
-        filterVal.map(j => {
+      return this.list.map((v) =>
+        filterVal.map((j) => {
           if (j === "timestamp") {
             return parseTime(v[j]);
           } else {
@@ -612,11 +605,11 @@ export default {
         })
       );
     },
-    getSortClass: function(key) {
+    getSortClass: function (key) {
       const sort = this.listQuery.sort;
       return sort === `+${key}` ? "ascending" : "descending";
-    }
-  }
+    },
+  },
 };
 </script>
 
