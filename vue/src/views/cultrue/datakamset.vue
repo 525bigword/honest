@@ -52,7 +52,7 @@
         <el-table-column label="文件名"  prop="dfileName"  align="center" width="260px">
         <template slot-scope="scope">
           <el-tooltip content="点击预览文件" placement="right" effect="dark">
-          <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName }}</a>
+          <a style="color:#1890ff" :href="hre" @click="yulan(scope.row)">{{ scope.row.dfileName===null||scope.row.dfileName===''?'未上传文件':scope.row.dfileName  }}</a>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -103,7 +103,7 @@
     <!--  绑定了title，是一个数组里取的，表示是修改的标题还是添加的标题
       visible.sync 对话框是否显示
     -->
-    <el-dialog :close="closee" :title="title" :visible.sync="dialogFormVisible" style="width: 100%">
+    <el-dialog @close="closee" :title="title" :visible.sync="dialogFormVisible" style="width: 100%">
       <!--
           rules:校验规则
           model:数据绑定
@@ -230,9 +230,7 @@ import { mapGetters } from 'vuex'
         dialogStatus: '', // 表示表单是添加还是修改的
         rules: {
           // 校验规则
-          dtitle:  [{ required: true, message: '标题不能为空', trigger: ['blur','change']}],
-          dfileName: [{ required: true, message: '请上传文件', trigger: 'change'}],
-          dvideoName: [{ required: true, message: '请上传文件', trigger: 'change'}]
+          dtitle:  [{ required: true, message: '标题不能为空', trigger: ['blur','change']}]
         },
         multipleSelection:[],
         deleteid:[],
@@ -314,8 +312,8 @@ import { mapGetters } from 'vuex'
       handleCreate () {
         // 重置表单数据
         this.resetTemp()
-        this.fileList=[]
-        this.viList=[]
+        this.fileList=null
+        this.viList=null
         this.i=3
         this.temp.sysStaff.name=this.nickname
         this.temp.sysStaff.sid=this.userId
@@ -336,21 +334,40 @@ import { mapGetters } from 'vuex'
           return
         }
             this.temp.dstatus=val;
+            
         // 表单校验
         this.$refs['dataForm'].validate((valid) => {
           // 所有的校验都通过
               if (valid) {
+                if(this.formData===null&&this.vformData===null){
+                this.$message({
+                  title: '请选择文件或者视频文件上传',
+                  message: '请选择文件或者视频文件上传',
+                  type: 'warning',
+                 duration: 2000
+                })
+                return
+            }
                 this.isShow=true
                 this.load=true
-        imp(this.formData).then((response)=>{
+            if(this.formData!==null&&this.vformData!==null){
+                  imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
             console.debug(this.temp)
             
             vimp(this.vformData).then((resp)=>{
           this.temp.dvideo=resp.dFile
-        
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            dCreateId: this.temp.sysStaff.sid,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
             // 调用api里的sys里的user.js的ajax方法
-            add(this.temp).then((response) => {
+            add(tempa).then((response) => {
 
               // 关闭对话框
               this.dialogFormVisible = false
@@ -371,6 +388,76 @@ import { mapGetters } from 'vuex'
           })
           })
           })
+                }else if(this.formData!==null&&this.vformData===null){
+                    imp(this.formData).then((response)=>{
+          this.temp.dFile=response.dFile
+            console.debug(this.temp)
+            
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            dCreateId: this.temp.sysStaff.sid,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            // 调用api里的sys里的user.js的ajax方法
+            add(tempa).then((response) => {
+
+              // 关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格里的数据
+              this.getList()
+              // 显示一个通知
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.isShow=false
+              this.i=0;
+              this.resetTemp()
+          })
+          })
+                }else if(this.formData===null&&this.vformData!==null){
+            vimp(this.vformData).then((resp)=>{
+          this.temp.dvideo=resp.dFile
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            dCreateId: this.temp.sysStaff.sid,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            // 调用api里的sys里的user.js的ajax方法
+            add(tempa).then((response) => {
+
+              // 关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格里的数据
+              this.getList()
+              // 显示一个通知
+              this.$notify({
+                title: '成功',
+                message: '新增成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.isShow=false
+              this.i=0;
+              this.resetTemp()
+          })
+          })
+                }
+        
           }
           
         })
@@ -398,34 +485,309 @@ import { mapGetters } from 'vuex'
           // 清除校验
           this.$refs['dataForm'].clearValidate()
         })
+        
       },
       // 执行修改操作
       updateData(val) {
         if (!this.hasPerm('datacollection:update')) {
           return
         }
-        this.$refs['dataForm'].validate((valid) => {})
-          if(this.fileList!==null&&this.viList!==null&&this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
+        this.$refs['dataForm'].validate((valid) => {
+          if(valid){
+        if(this.fileList===null&&this.viList===null){
+                this.$message({
+                  title: '请选择文件或者视频文件上传',
+                  message: '请选择文件或者视频文件上传',
+                  type: 'warning',
+                 duration: 2000
+                })
+                return
+        }
+         this.temp.dstatus=val;
+         this.isShow=true
+            this.load=true
+            if(this.formData!==null&&this.vformData!==null){
+                  imp(this.formData).then((response)=>{
+          this.temp.dFile=response.dFile
+            console.debug(this.temp)
+            
+            vimp(this.vformData).then((resp)=>{
+          this.temp.dvideo=resp.dFile
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+            })
+          })
+          })
+                }else if(this.formData!==null&&this.vformData===null){
+                  if(this.viList==null){
+                    imp(this.formData).then((response)=>{
+          this.temp.dFile=response.dFile
+            console.debug(this.temp)
+            
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: '',
+            dVideoName: ''
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+            })
+          })
+                  }else{
+                    imp(this.formData).then((response)=>{
+          this.temp.dFile=response.dFile
+            console.debug(this.temp)
+            
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.viList[0].url,
+            dVideoName: this.viList[0].name
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+            })
+          })
+                  }
+                    
+                }else if(this.formData===null&&this.vformData!==null){
+                  if(this.fileList==null){
+                    vimp(this.vformData).then((resp)=>{
+          this.temp.dvideo=resp.dFile
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: '',
+            dFileName: '',
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+            })
+          })
+                  }else{
+                    vimp(this.vformData).then((resp)=>{
+          this.temp.dvideo=resp.dFile
+        let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.fileList[0].url,
+            dFileName: this.fileList[0].name,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+            })
+          })
+                  }
+            
+                }else if(this.fileList!==null&&this.viList!==null){
+                    let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.fileList[0].url,
+            dFileName: this.fileList[0].name,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.viList[0].url,
+            dVideoName: this.viList[0].name
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+            })
+                }else if(this.fileList!==null&&this.viList===null){
+                  let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.fileList[0].url,
+            dFileName: this.fileList[0].name,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: '',
+            dVideoName: ''
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+                })
+
+                }else if(this.viList!==null&&this.fileList===null){
+                  let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile:'',
+            dFileName: '',
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo:  this.viList[0].url,
+            dVideoName:  this.viList[0].name
+                })
+            // 进行ajax提交
+            update(tempa).then((response) => {
+              // 提交完毕，关闭对话框
+              this.dialogFormVisible = false
+              // 刷新数据表格
+              this.getList()
+              // 显示通知
+              this.$notify({
+                title: '成功',
+                message: '修改成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.isShow=false
+              this.yincang()
+              this.load=false
+                })
+                }
+        }
+        
+                })
+          /* if(this.fileList!==null&&this.viList!==null&&this.fileAgin!==this.fileList[0].name&&this.vfileAgin!==this.viList[0].name){//两者都换
           this.i=6
         }else if( this.fileList!==null&&this.fileAgin!==this.fileList[0].name){//换文件
           this.i=1;
         }else if(this.viList!==null&&this.vfileAgin!==this.viList[0].name){//换视频
           this.i=2
-        }
-            this.temp.dstatus=val;
-      console.debug(this.i)
-        if(this.i===1){
+        } */
+            
+            
+        /* if(this.i===1){
           this.temp.dvideo='1'
           this.$refs['dataForm'].validate((valid) => {
           // 表单校验通过
           if (valid) {
             this.isShow=true
             this.load=true
+            
+                
             imp(this.formData).then((response)=>{
           this.temp.dFile=response.dFile
-            
+            let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            update(tempa).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -456,8 +818,16 @@ import { mapGetters } from 'vuex'
             console.debug(this.temp)
             vimp(this.vformData).then((resp)=>{
           this.temp.dvideo=resp.dFile
-           
-            update(this.temp).then((response) => {
+           let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            update(tempa).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -485,11 +855,21 @@ import { mapGetters } from 'vuex'
           if (valid) {
              this.isShow=true
              this.load=true
+             
+                
           vimp(this.vformData).then((resp)=>{
            this.temp.dvideo=resp.dFile
-           
+           let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            update(tempa).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -518,7 +898,16 @@ import { mapGetters } from 'vuex'
             this.isShow=true
             this.load=true
             // 进行ajax提交
-            update(this.temp).then((response) => {
+            let tempa=qs.stringify({
+                  dTitle: this.temp.dtitle,
+            dFile: this.temp.dFile,
+            dFileName: this.temp.dfileName,
+            did: this.temp.did,
+            dStatus: this.temp.dstatus,
+            dVideo: this.temp.dvideo,
+            dVideoName: this.temp.dvideoName
+                })
+            update(tempa).then((response) => {
               // 提交完毕，关闭对话框
               this.dialogFormVisible = false
               // 刷新数据表格
@@ -539,7 +928,7 @@ import { mapGetters } from 'vuex'
           this.temp.dFile=''
         })
         }
-        this.i=0;
+        this.i=0; */
       },
       handleOutFile(){
         if (!this.hasPerm('datacollection:out')) {
@@ -689,8 +1078,10 @@ import { mapGetters } from 'vuex'
     yincang(){
         this.btnShowTs=false;
         this.temp.dstatus=1;
-        this.viList=[]
-        this.fileList=[]
+        this.viList=null
+        this.fileList=null
+        this.formData=null
+        this.vformData=null
         this.getList()
     },
     handleSizeChange(size) {
@@ -713,12 +1104,16 @@ import { mapGetters } from 'vuex'
     fileRemove(file, fileList){
       this.file={}
       this.temp.dfileName=''
+      this.temp.dfile=''
       this.fileList=null
+      this.formData=null
     },
     fileRemove1(file, fileList){
       this.vfile={}
       this.temp.dvideoName=''
+      this.temp.dvideo=''
       this.viList=null
+      this.vformData=null
     },
     indexMethod(val){
       return ++val
@@ -727,7 +1122,11 @@ import { mapGetters } from 'vuex'
       this.he=''
     },
     closee(){
+      this.getList()
       this.load=false
+      this.formData=null
+      this.vformData=null
+      
     }
     }
   }

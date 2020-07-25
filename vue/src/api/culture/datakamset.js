@@ -4,15 +4,7 @@ export function add(data) {
     return request({
         url: '/datacollection/insert',
         method: 'post',
-        params: {
-            dTitle: data.dtitle,
-            dFile: data.dFile,
-            dFileName: data.dfileName,
-            dCreateId: data.sysStaff.sid,
-            dStatus: data.dstatus,
-            dVideo: data.dvideo,
-            dVideoName: data.dvideoName
-        }
+        data
     })
 }
 
@@ -44,15 +36,7 @@ export function update(data) {
     return request({
         url: '/datacollection/update',
         method: 'post',
-        params: {
-            dTitle: data.dtitle,
-            dFile: data.dFile,
-            dFileName: data.dfileName,
-            did: data.did,
-            dStatus: data.dstatus,
-            dVideo: data.dvideo,
-            dVideoName: data.dvideoName
-        }
+        data
     })
 }
 

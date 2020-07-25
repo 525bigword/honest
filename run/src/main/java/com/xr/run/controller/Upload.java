@@ -32,12 +32,12 @@ public class Upload {
     @Value("${file.uploadImage}")
     private String imagePth;
     @PostMapping("/import")
-    public JSONObject importData(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importData(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, realBasePath);
         return CommonUtil.successJson(filePath);
     }
     @RequestMapping("/importDuty")
-    public JSONObject importDuty(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importDuty(MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, dutyPath);
         return CommonUtil.successJson(filePath);
     }
@@ -49,7 +49,7 @@ public class Upload {
     }
 
     @RequestMapping("/vido")
-    public JSONObject uploadfile(@RequestParam(name = "file")MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject uploadfile(MultipartFile file, HttpServletRequest req) throws IOException {
         System.out.println("anndfs===========");
         Map filePath = getFilePath(file, req, accessPath, vidoPath);
         return CommonUtil.successJson(filePath);

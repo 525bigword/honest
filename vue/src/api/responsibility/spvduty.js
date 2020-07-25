@@ -30,13 +30,7 @@ export function updateStatus(data) {
     return request({
         url: '/spvduty/updatestatus',
         method: 'post',
-        params: {
-            did: data.did,
-            status: data.status,
-            dutyType: data.dutyType,
-            dCreateId: data.sysStaff.sid,
-            bid: data.bid
-        }
+        data
     })
 }
 // 根据用户对象进行查询用户
@@ -60,17 +54,11 @@ export function list(pageNum, pageRow, dutyTitle) {
     })
 }
 
-export function updatestatusall(back) {
+export function updatestatusall(data) {
     return request({
         url: '/spvback/updatestatusall',
         method: 'post',
-        params: {
-            backType: back.backType,
-            bid: back.bid,
-            status: back.status,
-            sid: back.sid,
-            bCreateId: 0
-        }
+        data
     })
 }
 export function updatetong(data) {

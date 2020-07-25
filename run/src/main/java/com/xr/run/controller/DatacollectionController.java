@@ -63,56 +63,39 @@ public class DatacollectionController {
         System.out.println(datacollection.getDFile());
         Datacollection data= datacollectionService.findDatacollectionById(datacollection.getDid());
         staticHtmlService.deleteHtmlPage(data.getDTitle());
-        if(datacollection.getDFile().equals("1")){
-            datacollectionService.updateDataConllectionByFile(datacollection);
-        }else if(datacollection.getDVideo().equals("1")){
-            String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
-            try {
-                File file = new File(realBasePath + filePath);
-                if (file.exists()) {
-                    file.delete();
+            if(datacollection.getDFile().equals("")||datacollection.getDFile()==null){
+                try {
+                    File file = new File(realBasePath + data.getDFile());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    File file = new File(realBasePath + data.getDPdf());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else {
+                String pdf = getPdf(datacollection.getDFile());
+                datacollection.setDPdf(pdf);
             }
-            String pdf = getPdf(datacollection.getDFile());
-            datacollection.setDPdf(pdf);
-            datacollectionService.updateDataConllectionByDid(datacollection);
-        }else if(datacollection.getDFile().equals("2")){
-            String filePath = datacollectionService.findDatacollectionBydVideo(datacollection.getDid());
-            try {
-                File file = new File(videoBasePath + filePath);
-                if (file.exists()) {
-                    file.delete();
+            if (datacollection.getDVideoName()==null||datacollection.equals("")){
+                try {
+                    File file = new File(videoBasePath + data.getDVideo());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            datacollectionService.updateDataConllectionByVideo(datacollection);
-        }else{
-            String filePath = datacollectionService.findDatacollectionByFile(datacollection.getDid());
-            try {
-                File file = new File(realBasePath + filePath);
-                if (file.exists()) {
-                    file.delete();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            System.out.println("删除文件后");
-            String pdf = getPdf(datacollection.getDFile());
-            datacollection.setDPdf(pdf);
-            String videoPath = datacollectionService.findDatacollectionBydVideo(datacollection.getDid());
-            try {
-                File file = new File(videoBasePath + videoPath);
-                if (file.exists()) {
-                    file.delete();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             datacollectionService.updateDataConllectionByVideoAndFile(datacollection);
-        }
+
         thymeleaftest(datacollection,httpServletRequest,httpServletResponse);
         return CommonUtil.successJson("修改成功!");
     }
@@ -140,8 +123,16 @@ public class DatacollectionController {
     @RequestMapping("insert")
     @RequiresPermissions("datacollection:add")
     public JSONObject insertDatacollection(Datacollection datacollection, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  {
-        String pdf = getPdf(datacollection.getDFile());
-        datacollection.setDPdf(pdf);
+        if(datacollection.getDFileName()==null){
+            datacollection.setDFileName("");
+        }
+        if(datacollection.getDVideoName()==null){
+            datacollection.setDVideoName("");
+        }
+        if (datacollection.getDFile()!=null){
+            String pdf = getPdf(datacollection.getDFile());
+            datacollection.setDPdf(pdf);
+        }
         datacollectionService.insertDataConllection(datacollection);
         thymeleaftest(datacollection,httpServletRequest,httpServletResponse);
         return CommonUtil.successJson("新增成功!");
@@ -151,7 +142,7 @@ public class DatacollectionController {
         if(path.contains(".doc")||path.contains(".docx")){
             String path1 = path.substring(0, path.lastIndexOf("."));
             String url=path1+".pdf";
-        AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
             return url;
         }
         return null;

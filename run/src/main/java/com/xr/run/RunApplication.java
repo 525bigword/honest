@@ -17,7 +17,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @MapperScan("com.xr.run.dao")
-public class RunApplication extends SpringBootServletInitializer{
+public class RunApplication {
     @Resource
     private Environment environment;
 
@@ -35,10 +35,10 @@ public class RunApplication extends SpringBootServletInitializer{
         }
     }
 
-    @Override
+    /*@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         // 注意这里要指向原先用main方法执行的Application启动类
-        return builder.sources(RunApplication.class);
-    }
+        return builder.sources(RunApplication.class);extends SpringBootServletInitializer
+    }*/
 
 }

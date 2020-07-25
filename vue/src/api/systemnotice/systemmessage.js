@@ -38,6 +38,7 @@ export function list(pageNum, pageRow, articletitle, describe) {
 export function imageFile(data) {
     return request({
         url: '/imp/image',
+        headers: { 'Content-Type': 'multipart/form-data' },
         method: 'post',
         data
     })

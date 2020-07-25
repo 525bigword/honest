@@ -11,6 +11,7 @@ import com.xr.run.service.SpvDutyService;
 import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class SpvBackController {
     @Value("${file.uploadDuty}")
     private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
-    public JSONObject findSpvBack(@PathVariable Integer pageNum, Integer bid, Integer did, @PathVariable Integer pageRow){
+    public JSONObject findSpvBack(@PathVariable Integer pageNum, @Param("bid") Integer bid, @Param("did") Integer did, @PathVariable Integer pageRow){
         System.out.println("findSpvBack");
         pageNum=pageNum<1||null==pageNum?1:pageNum;
         pageRow=pageRow<5||null==pageRow?5:pageRow;

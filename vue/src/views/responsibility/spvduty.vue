@@ -783,6 +783,7 @@ export default {
           );
           // 所有的校验都通过
           if (this.temp.dutyAccessoryName !== "") {
+            
             impFile(this.formData).then(response => {
               this.temp.dutyAccessory = response.dFile;
               console.debug(this.temp);
@@ -1146,7 +1147,14 @@ export default {
         this.temp.status=0
       }
       this.temp.bid=1+','+this.temp.bid
-      updateStatus(this.temp).then(response => {
+      let tempu=qs.stringify({
+        did: this.temp.did,
+            status: this.temp.status,
+            dutyType: this.temp.dutyType,
+            dCreateId: this.temp.sysStaff.sid,
+            bid: this.temp.bid
+      })
+      updateStatus(tempu).then(response => {
               // 刷新数据表格
               this.getList();
               // ajax去后台删除
@@ -1336,7 +1344,14 @@ export default {
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          updatestatusall(this.back).then((response) => {
+          let backu=qs.stringify({
+            backType: this.back.backType,
+            bid: this.back.bid,
+            status: this.back.status,
+            sid: this.back.sid,
+            bCreateId: 0
+          })
+          updatestatusall(backu).then((response) => {
             // 刷新数据表格
             this.getbList(this.temp.did)
             // ajax去后台删除
@@ -1358,7 +1373,14 @@ export default {
           type: 'warning'
         }).then(() => {
           // 调用ajax去后台删除
-          updatestatusall(this.back).then((response) => {
+          let backu=qs.stringify({
+            backType: this.back.backType,
+            bid: this.back.bid,
+            status: this.back.status,
+            sid: this.back.sid,
+            bCreateId: 0
+          })
+          updatestatusall(backu).then((response) => {
             // 刷新数据表格
             this.getbList(this.temp.did)
             // ajax去后台删除
@@ -1428,9 +1450,16 @@ export default {
             tongbao: this.temp.tongbao,
             bCreateId: 0
           })
-          
+          let backu=qs.stringify({
+            backType: this.back.backType,
+            bid: this.back.bid,
+            status: this.back.status,
+            sid: this.back.sid,
+            bCreateId: 0
+          })
           updatetong(posdata).then((response)=>{
-            updatestatusall(this.back).then((response) => {
+            
+            updatestatusall(backu).then((response) => {
             // 刷新数据表格
             this.getbList(this.temp.did)
             // ajax去后台删除
@@ -1472,9 +1501,15 @@ export default {
             tongbao: this.temp.tongbao,
             bCreateId: 0
           })
-          
+          let backu=qs.stringify({
+            backType: this.back.backType,
+            bid: this.back.bid,
+            status: this.back.status,
+            sid: this.back.sid,
+            bCreateId: 0
+          })
           updatetong(posdata).then((response)=>{
-            updatestatusall(this.back).then((response) => {
+            updatestatusall(backu).then((response) => {
             // 刷新数据表格
             this.getbList(this.temp.did)
             // ajax去后台删除
