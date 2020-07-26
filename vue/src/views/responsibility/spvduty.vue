@@ -357,7 +357,7 @@
             </el-form-item>
           </el-col>
           <el-col style="width:44%">
-            <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
+            <el-form-item style="font-weight: bold;" label="反馈附件" prop="dutyAccessoryName">
               <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
             </el-form-item>
           </el-col>
@@ -524,9 +524,22 @@
             </el-form-item>
           </el-col>
           <el-col style="width:44%">
-            <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
-              <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
-            </el-form-item>
+            <table  style="margin-left:7%;width:100%;">
+              <tr>
+                <td style="text-align:right;">
+                  <label class="el-form-item__label" style="font-weight: bold;">通知附件</label>
+                </td>
+                <td>
+                  <el-button type="primary" @click="handleImgChan1">{{back.gfile!==null&&back.gfile!==''?'查看文件':'未上传文件'}}</el-button>
+                </td>
+                <td>
+                  <label class="el-form-item__label" style="font-weight: bold;">反馈附件</label>
+                </td>
+                <td>
+                  <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
+                </td>
+              </tr>
+            </table>
           </el-col>
         </el-row>
         <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
@@ -652,7 +665,8 @@ export default {
         dutyContent:'',
         gettop:'',
         cid:0,
-        bpdf:''
+        bpdf:'',
+        gfile:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -1265,6 +1279,9 @@ export default {
     ckfkxq(row){
       this.fileAgin = row.backAccessoryName;
       this.back = row;
+      console.debug("============")
+      console.debug(row)
+      console.debug("============")
       if(this.back.backTitle===''||this.back.backTitle===null){
           this.back.backTitle='(未提交信息)'
       }
@@ -1400,7 +1417,13 @@ export default {
         handleImgChan(){
           var path=this.virtualdutyIp+this.back.bpdf
           if(this.back.backAccessoryName!==null&&this.back.backAccessoryName!==''){
-            window.open(path)
+            window.open(path,'_self')
+          }
+        },
+        handleImgChan1(){
+          var path=this.virtualdutyIp+this.back.gfile
+          if(this.back.gfile!==null&&this.back.gfile!==''){
+            window.open(path,'_self')
           }
         },
         fabutongbao(){

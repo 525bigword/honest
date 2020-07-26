@@ -1,52 +1,54 @@
 package com.xr.run.util;
 
 
-import com.aspose.words.Document;
-import com.aspose.words.License;
+import com.jacob.activeX.ActiveXComponent;
+import com.jacob.com.ComThread;
+import com.jacob.com.Dispatch;
+import com.jacob.com.Variant;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class AsposeUtil {
+    static final int wdFormatPDF = 17;// PDF 格式
 
-    public static boolean getLicense() {
-        boolean result = false;
+    /**
+     *
+     * @param docFileName 将要被转化的word文档
+     * @param toFileName 新建一个pdf文档
+     */
+    public static void doc2pdf(String docFileName,String toFileName) {
+        ComThread.InitSTA(true);
+        ComThread.Release();
+        System.out.println("启动Word...");
+        long start = System.currentTimeMillis();
+        ActiveXComponent app = null;
+        Dispatch doc = null;
         try {
-            InputStream is = AsposeUtil.class.getClassLoader().getResourceAsStream("license.xml");
-            License aposeLic = new License();
-            aposeLic.setLicense(is);
-            result = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static void doc2pdf(String inPath, String outPath) {
-        if (!getLicense()) {// 验证License 若不验证则转化出的pdf文档会有水印产生
-            return;
-        }
-        FileOutputStream os =null;
-        try {
-            long old = System.currentTimeMillis();
-            File file = new File(outPath);  //新建一个pdf文档
-            os = new FileOutputStream(file);
-            Document doc = new Document(inPath);                    //Address是将要被转化的word文档
-            doc.save(os, com.aspose.words.SaveFormat.PDF);//全面支持DOC, DOCX, OOXML, RTF HTML, OpenDocument, PDF, EPUB, XPS, SWF 相互转换
-            long now = System.currentTimeMillis();
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            if(os!=null){
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            app = new ActiveXComponent("Word.Application");
+            app.setProperty("Visible", new Variant(false));
+            Dispatch docs = app.getProperty("Documents").toDispatch();
+            doc = Dispatch.call(docs, "Open", docFileName).toDispatch();
+            System.out.println("打开文档..." + docFileName);
+            System.out.println("转换文档到PDF..." + toFileName);
+            File tofile = new File(toFileName);
+            if (tofile.exists()) {
+                tofile.delete();
             }
+            Dispatch.call(doc,
+                    "SaveAs",
+                    toFileName, // FileName
+                    wdFormatPDF);
+            long end = System.currentTimeMillis();
+            System.out.println("转换完成..用时：" + (end - start) + "ms.");
+        } catch (Exception e) {
+            System.out.println("========Error:文档转换失败：" + e.getMessage());
+        } finally {
+            Dispatch.call(doc, "Close", false);
+            System.out.println("关闭文档");
+            if (app != null)
+                app.invoke("Quit", new Variant[]{});
         }
+        //如果没有这句话,winword.exe进程将不会关闭
+        ComThread.Release();
     }
 }

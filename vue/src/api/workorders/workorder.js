@@ -1,23 +1,4 @@
 import request from '@/utils/api'
-// 添加用户
-export function add(data) {
-    return request({
-        url: '/spvback/insert',
-        method: 'post',
-        params: {
-            dnumId: data.dnumId,
-            dutyType: data.dutyType,
-            dutyTitle: data.dutyTitle,
-            dutyContent: data.dutyContent,
-            bid: data.bmid,
-            dutyAccessory: data.dutyAccessory,
-            dutyAccessoryName: data.dutyAccessoryName,
-            dCreateId: data.sysStaff.sid,
-            status: data.status
-        }
-    })
-}
-
 
 // 修改用户
 export function update(data) {

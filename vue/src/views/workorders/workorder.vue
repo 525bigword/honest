@@ -43,10 +43,14 @@
               style="color:#1890ff"
               @click="tongbaoshow(scope.row)"
             >{{ scope.row.status===5?'查看通报':''}}&nbsp;&nbsp;</a>
-            <a
+            <!-- <a
               style="color:#1890ff"
               @click="deletz(scope.row)"
-            >删除通知&nbsp;&nbsp;</a>
+            >删除通知&nbsp;&nbsp;</a> -->
+            <a
+              style="color:#1890ff"
+              @click="chakan(scope.row)"
+            >{{scope.row.status===2||scope.row.status===4?'查看详情':''}}&nbsp;&nbsp;</a>
           </template>
         </el-table-column>
       </el-table>
@@ -106,6 +110,11 @@
           <el-col style="width:43%">
             <el-form-item style="font-weight: bold;" label="所属部门" prop="sysMechanism">
               <el-input v-model="temp.sysMechanism.mechanismName" placeholder="请输入制度信息标题" disabled="disabled" style="width:100%" />
+            </el-form-item>
+          </el-col>
+          <el-col style="width:44%">
+            <el-form-item style="font-weight: bold;" label="查看通知文件" prop="sysMechanism">
+              <el-button type="primary" @click="handleImgChan">{{temp.gfile!==null&&temp.gfile!==''?'查看文件':'未上传文件'}}</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -267,7 +276,8 @@ export default {
         dstatus: "",
         dutyContent:'',
         gettop:'',
-        tongzhi:''
+        tongzhi:'',
+        gfile:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -509,6 +519,12 @@ export default {
       this.multipleSelection = [];
       this.pageRow = size;
       this.getList();
+    },
+    handleImgChan(){
+      var path=this.virtualdutyIp+this.temp.gfile
+          if(this.temp.gfile!==null&&this.temp.gfile!==''){
+            window.open(path,'_self')
+          }
     },
     handleCurrentChange(currentPage) {
       this.deleteid = [];
