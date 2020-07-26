@@ -32,24 +32,24 @@ public class Upload {
     @Value("${file.uploadImage}")
     private String imagePth;
     @PostMapping("/import")
-    public JSONObject importData(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importData(@RequestParam("file")MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, realBasePath);
         return CommonUtil.successJson(filePath);
     }
     @RequestMapping("/importDuty")
-    public JSONObject importDuty(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importDuty(@RequestParam("file")MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, dutyPath);
         return CommonUtil.successJson(filePath);
     }
 
     @RequestMapping("/image")
-    public JSONObject importImage(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject importImage(@RequestParam("file")MultipartFile file, HttpServletRequest req) throws IOException {
         Map filePath = getFilePath(file, req, accessPath, imagePth);
         return CommonUtil.successJson(filePath);
     }
 
     @RequestMapping("/vido")
-    public JSONObject uploadfile(MultipartFile file, HttpServletRequest req) throws IOException {
+    public JSONObject uploadfile(@RequestParam("file")MultipartFile file, HttpServletRequest req) throws IOException {
         System.out.println("anndfs===========");
         Map filePath = getFilePath(file, req, accessPath, vidoPath);
         return CommonUtil.successJson(filePath);

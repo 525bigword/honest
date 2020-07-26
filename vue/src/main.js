@@ -25,7 +25,7 @@ Vue.prototype.api = api
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.mom = moment
     //全局的常量
-Vue.prototype.virtualIp = 'http://10.73.100.46:8080/hoonest/tmp/' /* http://localhost:4031/hoonest/tmp */
+Vue.prototype.virtualIp = 'http://10.73.100.46:8080/hoonest/tmp/' /* http://10.73.100.46:8080/hoonest/tmp */
 Vue.prototype.virtualdutyIp = 'http://10.73.100.46:8080/hoonest/duty/'
 Vue.prototype.virtualimgIp = 'http://10.73.100.46:8080/hoonest/img/'
 Vue.prototype.videoIp = 'http://10.73.100.46:8080/hoonest/vido/'
