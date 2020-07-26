@@ -121,8 +121,8 @@
           <!-- //temp.parent -->
           <el-cascader
             style="width:60%;margin-left:10px"
-            :placeholder="placeholder"
             v-model="defaultvalue"
+            placeholder="该部门所属的部门"
             :props="props"
             @change="Change"
             :show-all-levels="false"
@@ -138,11 +138,11 @@
         <el-form-item label="部门名称" prop="menuName">
           <el-input style="width:60%;margin-left:10px" v-model="temp.menuName" placeholder="部门名称" />
         </el-form-item>
-        <el-form-item label="部门" prop="defaultvalue">
+        <el-form-item label="部门负责人部门" prop="defaultvalue">
           <!-- //temp.parent -->
           <el-cascader
             style="width:60%;margin-left:10px"
-            placeholder="部门"
+            placeholder="部门负责人部门"
             v-model="bmfzr"
             :props="props"
             @change="MChange"
@@ -151,7 +151,7 @@
           ></el-cascader>
         </el-form-item>
         <el-form-item label="负责人" prop="region">
-          <el-select style="width:60%;margin-left:10px" v-model="temp.region" placeholder="负责人">
+          <el-select style="width:60%;margin-left:10px" @change="abc" v-model="temp.region" placeholder="负责人">
             <el-option
               v-for="(item,index) in staff"
               :label="item.name"
@@ -181,7 +181,7 @@ export default {
   data() {
     return {
       deleteList: undefined,
-      bmfzr: undefined,
+      bmfzr: 1,
       defaultvalue: [1],
       props: {
         value: "mid",
@@ -282,6 +282,11 @@ export default {
     });
   },
   methods: {
+    abc(val){
+      console.log("abc",val)
+      this.$set(this.temp, this.temp.region, val)
+      // this.temp.region=val
+    },
     selectChange(val) {
       console.log(val);
       this.deleteList = val;
@@ -299,10 +304,15 @@ export default {
       };
     },
     closefase() {
+      
       console.log("123");
       // this.temp={}
+      this.bmfzr=undefined
+      this.temp.region=undefined
       this.placeholder = "";
       this.defaultvalue = 1;
+      this.getSysmechanismAll()
+      this.bmfzr=1
     },
     clicen() {
       this.dialogFormVisible = false;
