@@ -11,6 +11,7 @@ import com.xr.run.service.SpvBackService;
 import com.xr.run.service.SpvDutyService;
 import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysStaffService;
+import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
 import com.xr.run.util.DateUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,6 +31,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/spvduty")
 public class SpvDutyController {
+    @Value("${file.uploadDuty}")
+    private String realBasePath;
     @Autowired
     private SpvDutyService spvDutyService;
     @Autowired
@@ -38,8 +41,6 @@ public class SpvDutyController {
     private SysStaffService sysStaffService;
     @Autowired
     private StaticHtmlService staticHtmlService;
-    @Value("${file.uploadDuty}")
-    private String realBasePath;
     @GetMapping("/get/{pageNum}/{pageRow}")
     @RequiresPermissions("spvduty:list")
     public JSONObject findSpvDuty(@PathVariable Integer pageNum, String dutyTitle, @PathVariable Integer pageRow){
@@ -69,8 +70,9 @@ public class SpvDutyController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            String pdf = getPdf(spvDuty.getDutyAccessory());
+            spvDuty.setDutypdf(pdf);
             spvDutyService.updateSpvDutyFileByDid(spvDuty);
-            System.out.println("hgh");
         }
         thymeleafSpvDuty(spvDuty,req,resp);
         return CommonUtil.successJson("修改成功!");
@@ -94,6 +96,10 @@ public class SpvDutyController {
     @RequestMapping("insert")
     @RequiresPermissions("spvduty:add")
     public JSONObject insertSpvDuty(SpvDuty spvDuty,HttpServletRequest req,HttpServletResponse resp)  {
+        if(spvDuty.getDutyAccessory()!=null){
+            String pdf = getPdf(spvDuty.getDutyAccessory());
+            spvDuty.setDutypdf(pdf);
+        }
         spvDutyService.insertSpvDuty(spvDuty);
         thymeleafSpvDuty(spvDuty,req,resp);
         return CommonUtil.successJson("新增成功!");
@@ -163,6 +169,15 @@ public class SpvDutyController {
         }
         modelAndView.setViewName("jdzr/index1");
 //        staticHtmlService.genHtmlPage(modelAndView,req,resp,spvDuty.getDutyTitle());
+    }
+    public String getPdf(String path){
+        if(path.contains(".doc")||path.contains(".docx")){
+            String path1 = path.substring(0, path.lastIndexOf("."));
+            String url=path1+".pdf";
+            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
+            return url;
+        }
+        return null;
     }
 
 

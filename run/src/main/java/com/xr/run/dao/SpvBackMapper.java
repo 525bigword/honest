@@ -22,6 +22,8 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
             one = @One(select = "com.xr.run.dao.SpvDutyMapper.getSpvDuty",fetchType = FetchType.DEFAULT)),
             @Result(column = "did",property = "gfile",
                     one = @One(select = "com.xr.run.dao.SpvDutyMapper.findSpvDutyByFile",fetchType = FetchType.DEFAULT)),
+            @Result(column = "did",property = "gpdf",
+                    one = @One(select = "com.xr.run.dao.SpvDutyMapper.findSpvDutyByPdf",fetchType = FetchType.DEFAULT)),
             @Result(column = "did",property = "tongzhi",
             one = @One(select = "com.xr.run.dao.SpvDutyMapper.getTongzhi",fetchType = FetchType.DEFAULT))
     })
@@ -56,6 +58,8 @@ public interface SpvBackMapper extends BaseMapper<SpvBack> {
                     one = @One(select = "com.xr.run.dao.SpvDutyMapper.getSpvDuty",fetchType = FetchType.DEFAULT)),
             @Result(column = "did",property = "gfile",
                     one = @One(select = "com.xr.run.dao.SpvDutyMapper.findSpvDutyByFile",fetchType = FetchType.DEFAULT)),
+            @Result(column = "did",property = "gpdf",
+                    one = @One(select = "com.xr.run.dao.SpvDutyMapper.findSpvDutyByPdf",fetchType = FetchType.DEFAULT)),
             @Result(column = "did",property = "tongzhi",
                     one = @One(select = "com.xr.run.dao.SpvDutyMapper.getTongzhi",fetchType = FetchType.DEFAULT))
     })

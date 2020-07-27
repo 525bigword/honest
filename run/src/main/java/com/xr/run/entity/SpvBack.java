@@ -37,6 +37,7 @@ public class SpvBack {
   }
   private String gettop;
   private String gfile;
+  private String gpdf;
   private String tongzhi;
   private int did;
   private int status;

@@ -277,7 +277,8 @@ export default {
         dutyContent:'',
         gettop:'',
         tongzhi:'',
-        gfile:''
+        gfile:'',
+        gpdf:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -521,8 +522,11 @@ export default {
       this.getList();
     },
     handleImgChan(){
-      var path=this.virtualdutyIp+this.temp.gfile
-          if(this.temp.gfile!==null&&this.temp.gfile!==''){
+          if(this.temp.gpdf!==null&&this.temp.gpdf!==''){
+            var path=this.virtualdutyIp+this.temp.gpdf
+            window.open(path,'_self')
+          }else if(this.temp.gfile!==null&&this.temp.gfile!==''){
+            var path=this.virtualdutyIp+this.temp.gfile
             window.open(path,'_self')
           }
     },
