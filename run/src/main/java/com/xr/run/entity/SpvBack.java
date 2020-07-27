@@ -13,6 +13,7 @@ public class SpvBack {
   private String backType;
   private String backTitle;
   private String backContent;
+  private String backzgContent;
   private Integer bid;
   private SysMechanism sysMechanism;
   public int getbid() {

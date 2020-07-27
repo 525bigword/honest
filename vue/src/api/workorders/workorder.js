@@ -10,13 +10,11 @@ export function update(data) {
     })
 }
 export function updateStatus(data) {
+    console.debug(data)
     return request({
         url: '/spvback/updatestatus',
         method: 'post',
-        params: {
-            sid: data.sid,
-            status: data.status
-        }
+        data
     })
 }
 export function deleteSid(data) {

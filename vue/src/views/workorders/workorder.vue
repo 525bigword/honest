@@ -35,22 +35,23 @@
               style="color:#1890ff"
               @click="handleUpdate(scope.row)"
             >{{ scope.row.status===1||scope.row.status===3?'编辑':''}}&nbsp;&nbsp;</a>
-            <a
+            <!-- <a
               style="color:#1890ff"
               @click="handBack(scope.row)"
-            >{{ scope.row.status===1||scope.row.status===3?'提交反馈':''}}&nbsp;&nbsp;</a>
-           <a
+            >{{ scope.row.status===1||scope.row.status===3?'提交反馈':''}}&nbsp;&nbsp;</a> -->
+           <!-- <a
               style="color:#1890ff"
               @click="tongbaoshow(scope.row)"
-            >{{ scope.row.status===5?'查看通报':''}}&nbsp;&nbsp;</a>
+            >{{ scope.row.status===5?'查看通报':''}}&nbsp;&nbsp;</a> -->
             <!-- <a
               style="color:#1890ff"
               @click="deletz(scope.row)"
             >删除通知&nbsp;&nbsp;</a> -->
+            <!-- {{scope.row.status===2||scope.row.status===4||scope.row.status===5?'查看详情':''}} -->
             <a
               style="color:#1890ff"
-              @click="chakan(scope.row)"
-            >{{scope.row.status===2||scope.row.status===4?'查看详情':''}}&nbsp;&nbsp;</a>
+              @click="tongbaoshow(scope.row)"
+            >查看详情&nbsp;&nbsp;</a>
           </template>
         </el-table-column>
       </el-table>
@@ -72,8 +73,8 @@
     <!-- @blur="onEditorBlur($event)" 
       @focus="onEditorFocus($event)"
     @change="onEditorChange($event)"-->
-    <div :style="{'display':dis2}" style="background-color: lightgray;width:100%;margin-top:-9px">
-      <el-main>
+    <div :style="{'display':dis2}" style="background-color: lightgray;width:100%;margin-top:-9px" v-loading="listLoading1">
+      <el-main >
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -88,8 +89,14 @@
             type="success"
             :disabled="isShow"
             class="el-icon-top"
-            @click="updateData()"
-          >更新</el-button>
+            @click="updateData(8)"
+          >提交反馈</el-button>
+          <el-button
+            type="success"
+            :disabled="isShow"
+            class="el-icon-top"
+            @click="updateData(1)"
+          >保存</el-button>
           <el-button class="el-icon-back" plain @click="out()">返回</el-button>
         </el-form-item></div>
         <div style="background-color: white;margin-top: 25px;z-index:3;">
@@ -125,7 +132,19 @@
             v-html="temp.gettop">
         </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="责任反馈内容" prop="backContent">
+        <el-row>
+          <el-col>
+               <el-form-item :style="{'display':diaszc}" style="font-weight: bold;width:86.8%;" label="部门自查内容" >
+          <el-card class="box-card"
+          style=""
+            ref="myQuillEditor"
+            v-html="temp.backContent">
+        </el-card>
+        </el-form-item>
+          </el-col>
+        </el-row>
+       
+        <el-form-item :style="{'display':diazc}" style="font-weight: bold;" label="部门自查内容" >
           <quill-editor
             class="editor"
             style="height:400px;width:85%;"
@@ -133,7 +152,15 @@
             v-model="temp.backContent"
           ></quill-editor>
         </el-form-item>
-        <el-row style="margin-top: 125px">
+        <el-form-item :style="{'display':diazg}" style="font-weight: bold;" label="部门整改内容" >
+          <quill-editor
+            class="editor"
+            style="height:400px;width:85%;"
+            ref="myQuillEditor"
+            v-model="temp.backzgContent"
+          ></quill-editor>
+        </el-form-item>
+        <el-row style="margin-top: 50px">
           <el-col style="width:43%">
             <el-form-item style="font-weight: bold;" label="创建时间" prop="newTime">
               <el-date-picker
@@ -208,14 +235,76 @@
       </div>
       <div style="background-color: white;margin-top: 25px;z-index:3;">
         <div style="height:20px"></div>
+        <el-row>
+          <el-col style="width:43%">
+            <el-form-item style="font-weight: bold;" label="责任反馈标题" >
+              <el-input v-model="temp.backTitle" disabled="disabled" placeholder="请输入反馈信息标题" style="width:100%" />
+            </el-form-item>
+          </el-col>
+          <el-col style="width:44%">
+            <el-form-item style="font-weight: bold;" label="责任监督类型" prop="backType">
+              <el-input v-model="temp.backType" disabled="disabled"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col style="width:43%">
+            <el-form-item style="font-weight: bold;" label="所属部门" prop="sysMechanism">
+              <el-input v-model="temp.sysMechanism.mechanismName" placeholder="请输入制度信息标题" disabled="disabled" style="width:100%" />
+            </el-form-item>
+          </el-col>
+          <el-col style="width:44%">
+            <table  style="margin-left:7%;width:100%;">
+              <tr>
+                <td style="text-align:right;">
+                  <label class="el-form-item__label" style="font-weight: bold;">通知附件</label>
+                </td>
+                <td>
+                  <el-button type="primary" @click="handleImgChan">{{temp.gfile!==null&&temp.gfile!==''?'查看文件':'未上传文件'}}</el-button>
+                </td>
+                <td>
+                  <label class="el-form-item__label" style="font-weight: bold;">反馈附件</label>
+                </td>
+                <td>
+                  <el-button type="primary" @click="handleImgChan1">{{temp.backAccessoryName!==null&&temp.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
+                </td>
+              </tr>
+            </table>
+          </el-col>
+        </el-row>
+         <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
+          <el-card class="box-card"
+          style="width:85%;"
+            ref="myQuillEditor"
+            v-html="temp.gettop">
+        </el-card>
+        </el-form-item>
+        <el-form-item style="font-weight: bold;" label="部门自查内容" prop="backContent">
+          <el-card class="box-card"
+          style="width:85%;"
+            ref="myQuillEditor"
+            v-html="temp.backContent">
+        </el-card>
+        </el-form-item>
+        <el-row>
+          <el-col>
+               <el-form-item :style="{'display':diasz}" style="font-weight: bold;width:86.8%;" label="部门整改内容" >
+          <el-card class="box-card"
+          style=""
+            ref="myQuillEditor"
+            v-html="temp.backzgContent">
+        </el-card>
+        </el-form-item>
+          </el-col>
+        </el-row>
       <el-form-item style="font-weight: bold;" label="通报内容" prop="tongzhi">
           <el-card class="box-card"
-          style="width:90%;"
+          style="width:85%;"
             ref="myQuillEditor"
             v-html="temp.tongzhi">
         </el-card>
         </el-form-item>
-        <el-form-item style="margin-top:10px"></el-form-item>
+        <el-form-item style="height:10px"></el-form-item>
       </div>
       </el-form>
       </el-main>
@@ -240,10 +329,15 @@ export default {
   components: {},
   data() {
     return {
+      diasz:'none',
+      diaszc: 'none',
+      diazc: 'inline-block',
+      diazg: 'none',
       dis: "inline-block",
       dis2: "none",
       dis5:'none',
       tableKey: 0,
+      listLoading1:false,
       list: [], // 后台返回，给数据表格展示的数据
       total: 0, // 总记录数
       listLoading: true, // 是否使用动画
@@ -277,8 +371,10 @@ export default {
         dutyContent:'',
         gettop:'',
         tongzhi:'',
+        bpdf:'',
         gfile:'',
-        gpdf:''
+        gpdf:'',
+        backzgContent:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -358,7 +454,8 @@ export default {
         dnumId: "",
         status: 1,
         dstatus: "",
-        dutyContent:''
+        dutyContent:'',
+        backzgContent:''
       
       };
       this.value = [];
@@ -373,10 +470,19 @@ export default {
       this.xianshi();
       if(this.temp.status===1){
           this.temp.dstatus='待提交'
+          this.diaszc='none'
+      this.diazc='inline-block'
+      this.diazg='none'
       }else if(this.temp.status===2){
           this.temp.dstatus='已提交'
       }else if(this.temp.status===3){
           this.temp.dstatus='待检查'
+          if(this.temp.backContent===null||this.temp.backContent===''){
+            this.temp.backContent='(未提交自查内容)'
+        }
+          this.diaszc='inline-block'
+      this.diazc='none'
+      this.diazg='inline-block'
       }else if(this.temp.status===5){
         this.temp.dstatus='已通报'
       }else{
@@ -396,10 +502,17 @@ export default {
       });
     },
     // 执行修改操作
-    updateData() {
+    updateData(sta) {
+      if(sta===8){
+        this.temp.status=2  
+      }
+      if(this.temp.backContent==='(未提交自查内容)'){
+        this.temp.backContent=''
+      }
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
+          this.listLoading1=true;
           if (this.fileList.length!==0&&this.fileAgin !== this.fileList[0].name&&this.temp.backAccessoryName!==''&&this.temp.backAccessoryName!==null) {
             impFile(this.formData).then(response => {
               this.temp.backAccessory = response.dFile;
@@ -411,6 +524,8 @@ export default {
             backTitle: this.temp.backTitle,
             backContent: this.temp.backContent,
             backAccessory: this.temp.backAccessory,
+            status:this.temp.status,
+            backzgContent:this.temp.backzgContent,
             backAccessoryName: this.temp.backAccessoryName,
             bid: this.temp.sysMechanism.mid,
             bCreateId: this.temp.sysStaff.sid
@@ -429,6 +544,7 @@ export default {
                 });
                 this.isShow = false;
                 this.yincang();
+
               });
             });
           }else if(this.fileList.length===0&&this.fileAgin !==''){
@@ -440,7 +556,9 @@ export default {
             backTitle: this.temp.backTitle,
             backContent: this.temp.backContent,
             backAccessory: this.temp.backAccessory,
+            backzgContent:this.temp.backzgContent,
             backAccessoryName: this.temp.backAccessoryName,
+            status:this.temp.status,
             bid: this.temp.sysMechanism.mid,
             bCreateId: this.temp.sysStaff.sid
           })
@@ -466,7 +584,9 @@ export default {
             backTitle: this.temp.backTitle,
             backContent: this.temp.backContent,
             backAccessory: this.temp.backAccessory,
+            backzgContent:this.temp.backzgContent,
             backAccessoryName: this.temp.backAccessoryName,
+            status:this.temp.status,
             bid: this.temp.sysMechanism.mid,
             bCreateId: this.temp.sysStaff.sid
           })
@@ -530,6 +650,15 @@ export default {
             window.open(path,'_self')
           }
     },
+    handleImgChan1(){
+      if(this.temp.bpdf!==null&&this.temp.bpdf!==''){
+            var path=this.virtualdutyIp+this.temp.bpdf
+            window.open(path,'_self')
+          }else if(this.temp.backAccessory!==null&&this.temp.backAccessory!==''){
+            var path=this.virtualdutyIp+this.temp.backAccessory
+            window.open(path,'_self')
+          }
+    },
     handleCurrentChange(currentPage) {
       this.deleteid = [];
       this.multipleSelection = [];
@@ -572,8 +701,13 @@ export default {
       this.dis2 = "none";
       this.sid = null;
       this.resetTemp();
+       this.diaszc='none'
+      this.diazc='inline-block'
+      this.diazg='none'
       this.fileList=[]
+      this.listLoading1=false;
       this.getList();
+
     },
     fileRemove(file, fileList) {
       this.file = {};
@@ -581,33 +715,41 @@ export default {
        this.temp.backAccessory = '';
       this.fileList=[]
     },
-    handBack(row){
-      this.temp=row;
-      if(row.status===1||row.status==3){
-        this.temp.status=2;
-      }
-      updateStatus(this.temp).then(response => {
-              // 刷新数据表格
-              this.getList();
-              // ajax去后台删除
-              this.$notify({
-                title: "成功",
-                message: "提交反馈成功",
-                type: "success",
-                duration: 2000
-              });
-            });
-    },
     back2(){
       this.dis= "inline-block"
       this.dis2= "none"
       this.dis5='none'
+       this.diaszc='none'
+      this.diazc='inline-block'
+      this.diazg='none'
+      if(this.temp.backzgContent==='<p>(未提交内容)</p>'){
+        this.temp.backzgContent=''
+      }
+      if(this.temp.backContent==='<p>(未提交内容)</p>'){
+        this.temp.backContent=''
+      }
+      if(this.temp.backTitle==='(未提交信息)'){
+        this.temp.backTitle=''
+      }
     },
     tongbaoshow(row){
       this.temp=row
+      if(this.temp.status!==1){
+        this.diasz='inline-block'
+        if(this.temp.backzgContent===''||this.temp.backzgContent===null){
+          this.temp.backzgContent='(未提交内容)'
+      }
+      }
       if(row.tongzhi===''||row.tongzhi===null){
         this.temp.tongzhi="(未反馈通报内容)"
       }
+      if(this.temp.backTitle===''||this.temp.backTitle===null){
+          this.temp.backTitle='(未提交信息)'
+      }
+      if(this.temp.backContent===''||this.temp.backContent===null){
+          this.temp.backContent='(未提交内容)'
+      }
+      
       this.dis= "none"
       this.dis2= "none"
       this.dis5='inline-block'

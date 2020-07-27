@@ -43,7 +43,6 @@ public class SpvBackController {
     }
     @RequestMapping("update")
     public JSONObject updateSpvBack(SpvBack spvBack)  {
-        System.out.println(spvBack);
         if(spvBack.getBackAccessoryName().equals("1")|| spvBack.getBackAccessory()==null){
             spvBackService.updateSpvBackBySid(spvBack);
         }else {
@@ -70,7 +69,22 @@ public class SpvBackController {
 
     @RequestMapping("updatestatus")
     public JSONObject updateStatus(SpvBack spvBack)  {
-        spvBackService.updateStatusBySid(spvBack);
+        if(spvBack.getBackAccessoryName().equals("1")|| spvBack.getBackAccessory()==null){
+            spvBackService.updateStatusBySidT(spvBack);
+        }else {
+            String filePath = spvBackService.findSpvBackByFile(spvBack.getSid());
+            try {
+                File file = new File(realBasePath + filePath);
+                if (file.exists()) {
+                    file.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String pdf = getPdf(spvBack.getBackAccessory());
+            spvBack.setBPdf(pdf);
+            spvBackService.updateStatusBySid(spvBack);
+        }
         return CommonUtil.successJson("修改成功!");
     }
     @RequestMapping("updatestatusall")
