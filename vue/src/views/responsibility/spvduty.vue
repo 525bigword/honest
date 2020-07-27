@@ -811,6 +811,14 @@ export default {
       // 表单校验
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
+          if(this.temp.dutyContent===null||this.temp.dutyContent===''){
+            this.$message({
+          showClose: true,
+          message: "请填写通知内容",
+          type: "warning"
+        });
+            return
+          }
           this.$refs["bbb"].getCheckedNodes().filter(getId => {
             this.temp.bmid += getId.value + ",";
           });
@@ -958,6 +966,14 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
+          if(this.temp.dutyContent===null||this.temp.dutyContent===''){
+            this.$message({
+          showClose: true,
+          message: "请填写通知内容",
+          type: "warning"
+        });
+            return
+          }
           this.$refs["bbb"].getCheckedNodes().filter(getId => {
             this.temp.bmid += getId.value + ",";
           });
