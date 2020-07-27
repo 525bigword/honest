@@ -21,7 +21,7 @@
             @change="Change"
             :show-all-levels="false"
             :options="bm"
-          ></el-cascader>
+            clearable></el-cascader>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="get">查询</el-button>

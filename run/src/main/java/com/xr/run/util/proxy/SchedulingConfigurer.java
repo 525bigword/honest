@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
-//@Configuration     //1.主要用于标记配置类，兼备Component的效果。
+@Configuration     //1.主要用于标记配置类，兼备Component的效果。
 @EnableScheduling   // 2.开启定时任务
 @Slf4j
 public class SchedulingConfigurer {
@@ -27,14 +27,20 @@ public class SchedulingConfigurer {
     //或直接指定时间间隔，例如：5秒
     //@Scheduled(fixedRate=5000)
 //    @Scheduled(cron = "0/20 * * * * ?")
-    @Scheduled(cron = "0 30 23 28-31 * ?")  //每个月31号执行
+    @Scheduled(cron = "0 30 0 28 * ?")  //每个月31号执行
     private void configureTasks() {
-        final Calendar calendar = Calendar.getInstance();
-        //如果不是最后一天
-        if (!(calendar.get(Calendar.DATE) == calendar.getActualMaximum(Calendar.DATE))) {
-            return;
-        }
+//        final Calendar calendar = Calendar.getInstance();
+//        //如果不是最后一天
+//        if (!(calendar.get(Calendar.DATE) == calendar.getActualMaximum(Calendar.DATE))) {
+//            return;
+//        }
         sysLogService.delSysLogByTimeSixMonth();
         log.info("当前北京时间："+ LocalDateTime.now()+"已经完成对10天前日志的删除");
+    }
+
+    public static void main(String[] args) {
+        Calendar instance = Calendar.getInstance();
+
+        System.out.println(instance.getTime());
     }
 }

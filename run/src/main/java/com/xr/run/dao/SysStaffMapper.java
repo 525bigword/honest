@@ -44,7 +44,7 @@ public interface SysStaffMapper extends BaseMapper<SysStaff> {
             @Result(column = "mid",property = "mechanismname",one = @One(select = "com.xr.run.dao.SysMechanismMapper.findSysMechanismByIdToMechanismName",fetchType = FetchType.DEFAULT))
     })
     SysStaff getUser(@Param("username") String username, @Param("password") String password);
-    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,ppid" +
+    @Select("select sid,name,sex,age,educational_background,political_appearance,phone,mid,username,password,pid,ppid," +
             "create_time,create_id,staus from sys_staff where name like CONCAT('%',#{name},'%') and staus=#{staus} and mid=#{mid} order by sid desc")
     @Results({
             @Result(id = true,property = "sid",column = "sid"),
