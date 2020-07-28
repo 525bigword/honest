@@ -52,4 +52,9 @@ public class SpvBackServiceImpl extends ServiceImpl<SpvBackMapper,SpvBack> imple
     public IPage<SpvBack> findSpvBackByDid(Page page, int did) {
         return baseMapper.findSpvBackByDid(page,did);
     }
+
+    @Override
+    public void updateStatusBySidT(SpvBack spvBack) {
+        baseMapper.updateStatusBySidT(spvBack);
+    }
 }

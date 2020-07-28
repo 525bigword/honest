@@ -28,6 +28,7 @@ public interface SpvBackService extends IService<SpvBack> {
 
     void updateStatusBySid(SpvBack spvBack);
     IPage<SpvBack> findSpvBackByDid(Page page, int did);
+    void updateStatusBySidT(SpvBack spvBack);
 
 
 

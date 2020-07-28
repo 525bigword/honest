@@ -13,6 +13,7 @@ public class SpvBack {
   private String backType;
   private String backTitle;
   private String backContent;
+  private String backzgContent;
   private Integer bid;
   private SysMechanism sysMechanism;
   public int getbid() {
@@ -36,6 +37,8 @@ public class SpvBack {
     return sysStaff.getSid();
   }
   private String gettop;
+  private String gfile;
+  private String gpdf;
   private String tongzhi;
   private int did;
   private int status;

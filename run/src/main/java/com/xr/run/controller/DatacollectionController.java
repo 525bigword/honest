@@ -4,30 +4,20 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xr.run.entity.Datacollection;
-import com.xr.run.entity.SysStaff;
-import com.xr.run.entity.Wind;
 import com.xr.run.service.DatacollectionService;
 import com.xr.run.service.StaticHtmlService;
 import com.xr.run.service.SysStaffService;
-//import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.AsposeUtil;
 import com.xr.run.util.CommonUtil;
-import com.xr.run.util.DateUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/datacollection")

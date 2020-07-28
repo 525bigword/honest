@@ -357,7 +357,7 @@
             </el-form-item>
           </el-col>
           <el-col style="width:44%">
-            <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
+            <el-form-item style="font-weight: bold;" label="反馈附件" prop="dutyAccessoryName">
               <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
             </el-form-item>
           </el-col>
@@ -376,6 +376,16 @@
             v-html="back.backContent">
         </el-card>
         </el-form-item>
+        <el-row>
+          <el-col>
+               <el-form-item :style="{'display':dias}" style="font-weight: bold;width:86.8%;" label="部门整改内容" >
+          <el-card class="box-card"
+            ref="myQuillEditor"
+            v-html="back.backzgContent">
+        </el-card>
+        </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item style="margin-top:10px"></el-form-item>
         </div>
       </el-form>
@@ -463,7 +473,7 @@
             <a
               style="color:#1890ff"
               @click="ckfkxq(scope.row)"
-            >查看详情&nbsp;&nbsp;</a>
+            >{{ scope.row.backTitle!==''&&scope.row.backTitle!==null?'查看详情':'' }}&nbsp;&nbsp;</a>
           </template>
         </el-table-column>
       </el-table>
@@ -524,9 +534,22 @@
             </el-form-item>
           </el-col>
           <el-col style="width:44%">
-            <el-form-item style="font-weight: bold;" label="附件相关" prop="dutyAccessoryName">
-              <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
-            </el-form-item>
+            <table  style="margin-left:7%;width:100%;">
+              <tr>
+                <td style="text-align:right;">
+                  <label class="el-form-item__label" style="font-weight: bold;">通知附件</label>
+                </td>
+                <td>
+                  <el-button type="primary" @click="handleImgChan1">{{back.gfile!==null&&back.gfile!==''?'查看文件':'未上传文件'}}</el-button>
+                </td>
+                <td>
+                  <label class="el-form-item__label" style="font-weight: bold;">反馈附件</label>
+                </td>
+                <td>
+                  <el-button type="primary" @click="handleImgChan">{{back.backAccessoryName!==null&&back.backAccessoryName!==''?'查看文件':'未上传文件'}}</el-button>
+                </td>
+              </tr>
+            </table>
           </el-col>
         </el-row>
         <el-form-item style="font-weight: bold;" label="通知内容" prop="dutyContent">
@@ -536,13 +559,23 @@
             v-html="back.gettop">
         </el-card>
         </el-form-item>
-        <el-form-item style="font-weight: bold;" label="责任反馈内容" prop="backContent">
+        <el-form-item style="font-weight: bold;" label="部门自查内容" prop="backContent">
           <el-card class="box-card"
           style="width:85%;"
             ref="myQuillEditor"
             v-html="back.backContent">
         </el-card>
         </el-form-item>
+        <el-row>
+          <el-col>
+               <el-form-item :style="{'display':dias}" style="font-weight: bold;width:86.8%;" label="部门整改内容" >
+          <el-card class="box-card"
+            ref="myQuillEditor"
+            v-html="back.backzgContent">
+        </el-card>
+        </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item style="font-weight: bold;" label="通报内容" prop="tongbaoxq">
           <el-card class="box-card"
           style="width:85%;"
@@ -580,6 +613,7 @@ export default {
   components: {},
   data() {
     return {
+      dias:'none',
       dis: "inline-block",
       dis2: "none",
       dis3:"none",
@@ -652,7 +686,10 @@ export default {
         dutyContent:'',
         gettop:'',
         cid:0,
-        bpdf:''
+        bpdf:'',
+        gfile:'',
+        gpdf:'',
+        backzgContent:''
       },
       title: "添加", // 对话框显示的提示 根据dialogStatus create
       dialogStatus: "", // 表示表单是添加还是修改的
@@ -774,6 +811,14 @@ export default {
       // 表单校验
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
+          if(this.temp.dutyContent===null||this.temp.dutyContent===''){
+            this.$message({
+          showClose: true,
+          message: "请填写通知内容",
+          type: "warning"
+        });
+            return
+          }
           this.$refs["bbb"].getCheckedNodes().filter(getId => {
             this.temp.bmid += getId.value + ",";
           });
@@ -921,6 +966,14 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
+          if(this.temp.dutyContent===null||this.temp.dutyContent===''){
+            this.$message({
+          showClose: true,
+          message: "请填写通知内容",
+          type: "warning"
+        });
+            return
+          }
           this.$refs["bbb"].getCheckedNodes().filter(getId => {
             this.temp.bmid += getId.value + ",";
           });
@@ -1141,7 +1194,12 @@ export default {
         });
         return
       }
-      if(this.temp.status===1){
+      this.$confirm('确认要发布通知吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if(this.temp.status===1){
         this.temp.status+=1
       }else if(this.temp.status===6){
         this.temp.status=0
@@ -1154,7 +1212,8 @@ export default {
             dCreateId: this.temp.sysStaff.sid,
             bid: this.temp.bid
       })
-      updateStatus(tempu).then(response => {
+          // 调用ajax去后台删除
+          updateStatus(tempu).then(response => {
               // 刷新数据表格
               this.getList();
               // ajax去后台删除
@@ -1165,6 +1224,8 @@ export default {
                 duration: 2000
               });
             });
+        })
+      
     },
     xianshi() {
       this.dis = "none";
@@ -1248,6 +1309,12 @@ export default {
       this.dis2='none'
       this.dis3='none'
       this.dis4='inline-block'
+      if(this.temp.status!==1&&this.temp.status!==2){
+        if(this.back.backzgContent===''||this.back.backzgContent===null){
+          this.back.backzgContent='(未提交部门整改内容)'
+        }
+        this.dias='inline-block'
+      }
       if(this.back.status===1){
           this.back.dstatus='待提交'
       }else if(this.back.status===2){
@@ -1265,6 +1332,7 @@ export default {
     ckfkxq(row){
       this.fileAgin = row.backAccessoryName;
       this.back = row;
+      this.dias='inline-block'
       if(this.back.backTitle===''||this.back.backTitle===null){
           this.back.backTitle='(未提交信息)'
       }
@@ -1274,6 +1342,9 @@ export default {
       if(this.tongbaoxq===''||this.tongbaoxq===null){
           this.tongbaoxq='(未提交通报内容)'
       }
+      if(this.back.backzgContent===''||this.back.backzgContent===null){
+          this.back.backzgContent='(未提交部门整改内容)'
+        }
       this.dis='none'
       this.dis2='none'
       this.dis3='none'
@@ -1398,9 +1469,21 @@ export default {
         }
         },
         handleImgChan(){
-          var path=this.virtualdutyIp+this.back.bpdf
-          if(this.back.backAccessoryName!==null&&this.back.backAccessoryName!==''){
-            window.open(path)
+          if(this.back.bpdf!==null&&this.back.bpdf!==''){
+            var path=this.virtualdutyIp+this.back.bpdf
+            window.open(path,'_self')
+          }else if(this.back.backAccessory!==null&&this.back.backAccessory!==''){
+            var path=this.virtualdutyIp+this.back.backAccessory
+            window.open(path,'_self')
+          }
+        },
+        handleImgChan1(){
+          if(this.back.gpdf!==null&&this.back.gpdf!==''){
+            var path=this.virtualdutyIp+this.back.gpdf
+            window.open(path,'_self')
+          }else if(this.back.gfile!==null&&this.back.gfile!==''){
+            var path=this.virtualdutyIp+this.back.gfile
+            window.open(path,'_self')
           }
         },
         fabutongbao(){

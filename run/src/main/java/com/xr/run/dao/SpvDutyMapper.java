@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
-    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`,tongbao from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
+    @Select("select did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutypdf,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`,tongbao from spv_duty where dutyTitle like CONCAT('%',#{dutyTitle},'%') and `status`<>-1 order by did desc")
     @Results({
             @Result(column = "dCreateId",property = "sysStaff",
                     one = @One(select = "com.xr.run.dao.SysStaffMapper.findSysStaffById",fetchType = FetchType.DEFAULT))
@@ -33,10 +33,10 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
     @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},`status`=#{status} where did=#{did}")
     void updateSpvDutyByDid(SpvDuty spvDuty);
 
-    @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},dutyAccessory=#{dutyAccessory},dutyAccessoryName=#{dutyAccessoryName},`status`=#{status} where did=#{did}")
+    @Update("update spv_duty set dutyType=#{dutyType},dutyTitle=#{dutyTitle},bid=#{bid},dutyContent=#{dutyContent},dutyAccessory=#{dutyAccessory},dutyAccessoryName=#{dutyAccessoryName},`status`=#{status},dutypdf=#{dutypdf} where did=#{did}")
     void updateSpvDutyFileByDid(SpvDuty spvDuty);
 
-    @Insert("insert into spv_duty(did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`) VALUES(null,#{dnumId},#{dutyType},#{dutyTitle},#{dutyContent},#{bid},#{dutyAccessory},#{dutyAccessoryName},date_add(NOW(),INTERVAL -8 hour),#{dCreateId},#{status})")
+    @Insert("insert into spv_duty(did,dnumId,dutyType,dutyTitle,dutyContent,bid,dutyAccessory,dutyAccessoryName,newTime,dCreateId,`status`,dutypdf) VALUES(null,#{dnumId},#{dutyType},#{dutyTitle},#{dutyContent},#{bid},#{dutyAccessory},#{dutyAccessoryName},date_add(NOW(),INTERVAL -8 hour),#{dCreateId},#{status},#{dutypdf})")
     void insertSpvDuty(SpvDuty spvDuty);
 
     @Update("update spv_duty set `status`=-1 where did=#{did}")
@@ -44,6 +44,9 @@ public interface SpvDutyMapper extends BaseMapper<SpvDuty> {
 
     @Select("select DutyAccessory from spv_duty where did=#{did}")
     public String findSpvDutyByFile(int did);
+
+    @Select("select dutypdf from spv_duty where did=#{did}")
+    String findSpvDutyByPdf(int did);
 
     @Select("select mid,mechanism_name from sys_mechanism where staus='正常' and parent=#{parent} order by sort")
     @Results({
