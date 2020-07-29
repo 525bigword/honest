@@ -833,9 +833,7 @@ import { mapGetters } from 'vuex'
         }
       },
       yulan(row){
-        if(row.dpdf!==null&&row.dpdf!==''){
-          this.hre=this.virtualIp+row.dpdf
-        }else{
+        if(row.dfile!==null&&row.dfile!==''){
           this.hre=this.virtualIp+row.dfile
         }
         

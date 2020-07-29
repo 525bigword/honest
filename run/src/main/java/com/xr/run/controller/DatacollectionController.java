@@ -70,9 +70,6 @@ public class DatacollectionController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else {
-                String pdf = getPdf(datacollection.getDFile());
-                datacollection.setDPdf(pdf);
             }
             if (datacollection.getDVideoName()==null||datacollection.equals("")){
                 try {
@@ -119,16 +116,12 @@ public class DatacollectionController {
         if(datacollection.getDVideoName()==null){
             datacollection.setDVideoName("");
         }
-        if (datacollection.getDFile()!=null){
-            String pdf = getPdf(datacollection.getDFile());
-            datacollection.setDPdf(pdf);
-        }
         datacollectionService.insertDataConllection(datacollection);
         thymeleaftest(datacollection,httpServletRequest,httpServletResponse);
         return CommonUtil.successJson("新增成功!");
     }
 
-    public String getPdf(String path){
+    /*public String getPdf(String path){
         if(path.contains(".doc")||path.contains(".docx")){
             String path1 = path.substring(0, path.lastIndexOf("."));
             String url=path1+".pdf";
@@ -136,7 +129,7 @@ public class DatacollectionController {
             return url;
         }
         return null;
-    }
+    }*/
     public void thymeleaftest(Datacollection datacollection,HttpServletRequest req,HttpServletResponse resp){
         ModelAndView modelAndView=new ModelAndView();
             Datacollection datacollectionById = datacollectionService.findDatacollectionById(datacollection.getDid());
@@ -154,14 +147,6 @@ public class DatacollectionController {
     public void deleteFile(Datacollection datacollectionById){
         try {
             File file = new File(videoBasePath + datacollectionById.getDVideo());
-            if (file.exists()) {
-                file.delete();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            File file = new File(realBasePath + datacollectionById.getDPdf());
             if (file.exists()) {
                 file.delete();
             }

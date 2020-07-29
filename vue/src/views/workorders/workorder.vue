@@ -477,9 +477,6 @@ export default {
           this.temp.dstatus='已提交'
       }else if(this.temp.status===3){
           this.temp.dstatus='待检查'
-          if(this.temp.backContent===null||this.temp.backContent===''){
-            this.temp.backContent='(未提交自查内容)'
-        }
           this.diaszc='inline-block'
       this.diazc='none'
       this.diazg='inline-block'
@@ -503,15 +500,28 @@ export default {
     },
     // 执行修改操作
     updateData(sta) {
-      if(sta===8){
-        this.temp.status=2  
-      }
-      if(this.temp.backContent==='(未提交自查内容)'){
-        this.temp.backContent=''
-      }
       this.$refs["dataForm"].validate(valid => {
         // 表单校验通过
         if (valid) {
+          if(this.temp.status===1&&(this.temp.backContent===null||this.temp.backContent==='')){
+            this.$message({
+          showClose: true,
+          message: "请填写部门自查内容",
+          type: "warning"
+        });
+        return
+          }
+          if(this.temp.status===3&&(this.temp.backzgContent===null||this.temp.backzgContent==='')){
+            this.$message({
+          showClose: true,
+          message: "请填写部门整改内容",
+          type: "warning"
+        });
+        return
+          }
+          if(sta===8){
+        this.temp.status=2  
+      }
           this.listLoading1=true;
           if (this.fileList.length!==0&&this.fileAgin !== this.fileList[0].name&&this.temp.backAccessoryName!==''&&this.temp.backAccessoryName!==null) {
             impFile(this.formData).then(response => {
@@ -642,19 +652,13 @@ export default {
       this.getList();
     },
     handleImgChan(){
-          if(this.temp.gpdf!==null&&this.temp.gpdf!==''){
-            var path=this.virtualdutyIp+this.temp.gpdf
-            window.open(path,'_self')
-          }else if(this.temp.gfile!==null&&this.temp.gfile!==''){
+          if(this.temp.gfile!==null&&this.temp.gfile!==''){
             var path=this.virtualdutyIp+this.temp.gfile
             window.open(path,'_self')
           }
     },
     handleImgChan1(){
-      if(this.temp.bpdf!==null&&this.temp.bpdf!==''){
-            var path=this.virtualdutyIp+this.temp.bpdf
-            window.open(path,'_self')
-          }else if(this.temp.backAccessory!==null&&this.temp.backAccessory!==''){
+      if(this.temp.backAccessory!==null&&this.temp.backAccessory!==''){
             var path=this.virtualdutyIp+this.temp.backAccessory
             window.open(path,'_self')
           }
@@ -741,7 +745,7 @@ export default {
       }
       }
       if(row.tongzhi===''||row.tongzhi===null){
-        this.temp.tongzhi="(未反馈通报内容)"
+        this.temp.tongzhi="(未接收到通报内容)"
       }
       if(this.temp.backTitle===''||this.temp.backTitle===null){
           this.temp.backTitle='(未提交信息)'

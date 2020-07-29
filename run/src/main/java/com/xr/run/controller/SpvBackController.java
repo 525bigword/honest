@@ -55,8 +55,6 @@ public class SpvBackController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String pdf = getPdf(spvBack.getBackAccessory());
-            spvBack.setBPdf(pdf);
             spvBackService.updateSpvBackFileBySid(spvBack);
         }
         return CommonUtil.successJson("修改成功!");
@@ -81,8 +79,6 @@ public class SpvBackController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String pdf = getPdf(spvBack.getBackAccessory());
-            spvBack.setBPdf(pdf);
             spvBackService.updateStatusBySid(spvBack);
         }
         return CommonUtil.successJson("修改成功!");
@@ -114,17 +110,6 @@ public class SpvBackController {
     public JSONObject deleteSpvBackBySid(int sid){
         spvBackService.deleteSpvBackBySid(sid);
         return CommonUtil.successJson("删除成功!");
-    }
-
-    public String getPdf(String path){
-        if(path.contains(".doc")||path.contains(".docx")){
-            String path1 = path.substring(0, path.lastIndexOf("."));
-            String url=path1+".pdf";
-            System.out.println(url);
-            AsposeUtil.doc2pdf(realBasePath+path,realBasePath+url);
-            return url;
-        }
-        return null;
     }
 
 }

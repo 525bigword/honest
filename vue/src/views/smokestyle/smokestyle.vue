@@ -109,8 +109,8 @@
           <el-form-item label="文章标题" prop="smotitle">
             <el-input v-model="userInfo.smotitle" placeholder="请输入文章标题" style="width: 500px"></el-input>
           </el-form-item><br/>
-          <el-form-item label="文章属性" prop="smoproperty">
-            <el-checkbox-group v-model="userInfo.smoproperty" >
+          <el-form-item label="文章属性" prop="smoproperty" v-if="false">
+            <el-checkbox-group v-model="userInfo.smoproperty" v-if="false">
               <el-checkbox label="头条" name="smoproperty"></el-checkbox>
               <el-checkbox label="推荐" name="smoproperty"></el-checkbox>
               <el-checkbox label="图片" name="smoproperty"></el-checkbox>
@@ -411,10 +411,6 @@
           ],
           smoproperty: [
             { type: 'array', required: true, message: '请至少选择一个文章属性', trigger: 'change' }
-          ],
-          smoauthor: [
-            { required: true, message: '请输入文章作者', trigger: 'change' }
-
           ],
           smocontent: [
             { required: true, message: '请输入文章内容', trigger: 'change' }

@@ -20,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/imp")
 public class Upload {
-    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/HH/mm/ss/");
+    SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
     @Value("${file.uploadFolder}")
     private String realBasePath;
     @Value("${file.accessPath}")

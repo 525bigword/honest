@@ -1469,19 +1469,13 @@ export default {
         }
         },
         handleImgChan(){
-          if(this.back.bpdf!==null&&this.back.bpdf!==''){
-            var path=this.virtualdutyIp+this.back.bpdf
-            window.open(path,'_self')
-          }else if(this.back.backAccessory!==null&&this.back.backAccessory!==''){
+          if(this.back.backAccessory!==null&&this.back.backAccessory!==''){
             var path=this.virtualdutyIp+this.back.backAccessory
             window.open(path,'_self')
           }
         },
         handleImgChan1(){
-          if(this.back.gpdf!==null&&this.back.gpdf!==''){
-            var path=this.virtualdutyIp+this.back.gpdf
-            window.open(path,'_self')
-          }else if(this.back.gfile!==null&&this.back.gfile!==''){
+          if(this.back.gfile!==null&&this.back.gfile!==''){
             var path=this.virtualdutyIp+this.back.gfile
             window.open(path,'_self')
           }
