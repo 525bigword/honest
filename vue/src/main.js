@@ -24,12 +24,13 @@ Vue.prototype.api = api
     //全局的常量
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.mom = moment
+Vue.prototype.filel='http://192.168.43.43:8080/honest'
     //全局的常量
-Vue.prototype.virtualIp = 'http://10.73.100.46:8080/hoonest/tmp/' /* http://10.73.100.46:8080/hoonest/tmp */
-Vue.prototype.virtualdutyIp = 'http://10.73.100.46:8080/hoonest/duty/'
-Vue.prototype.virtualimgIp = 'http://10.73.100.46:8080/hoonest/img/'
-Vue.prototype.videoIp = 'http://10.73.100.46:8080/hoonest/vido/'
-Vue.prototype.uploadimage = 'http://10.73.100.46:8080/hoonest/img'
+Vue.prototype.virtualIp = 'http://192.168.43.43:8080/hoonest/tmp/' /* http://10.73.100.46:8080/hoonest/tmp */
+Vue.prototype.virtualdutyIp = 'http://192.168.43.43:8080/hoonest/duty/'
+Vue.prototype.virtualimgIp = 'http://192.168.43.43:8080/hoonest/img/'
+Vue.prototype.videoIp = 'http://192.168.43.43:8080/hoonest/vido/'
+Vue.prototype.uploadimage = 'http://192.168.43.43:8080/hoonest/img'
     //生产环境时自动设置为 false 以阻止 vue 在启动时生成生产提示。
 Vue.config.productionTip = (process.env.NODE_ENV != 'production')
 new Vue({

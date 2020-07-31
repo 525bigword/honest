@@ -53,34 +53,7 @@ public class DatacollectionController {
         System.out.println(datacollection.getDFile());
         Datacollection data= datacollectionService.findDatacollectionById(datacollection.getDid());
         staticHtmlService.deleteHtmlPage(data.getDTitle());
-            if(datacollection.getDFile().equals("")||datacollection.getDFile()==null){
-                try {
-                    File file = new File(realBasePath + data.getDFile());
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
-                    File file = new File(realBasePath + data.getDPdf());
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (datacollection.getDVideoName()==null||datacollection.equals("")){
-                try {
-                    File file = new File(videoBasePath + data.getDVideo());
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            deleteFile(data);
             datacollectionService.updateDataConllectionByVideoAndFile(datacollection);
 
         thymeleaftest(datacollection,httpServletRequest,httpServletResponse);

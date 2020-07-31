@@ -353,7 +353,7 @@ import { mapGetters } from 'vuex'
             if(this.formData!==null&&this.vformData!==null){/* 
                   imp(this.formData) 
             vimp(this.vformData)*/
-              axios.post(process.env.BASE_URL+'/imp/import',this.formData,{
+              axios.post(this.filel+'/imp/import',this.formData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -361,7 +361,7 @@ import { mapGetters } from 'vuex'
                 console.debug(response)
           this.temp.dFile=response.data.info.dFile
             console.debug(this.temp)
-            axios.post(process.env.BASE_URL+'/imp/vido',this.vformData,{
+            axios.post(this.filel+'/imp/vido',this.vformData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -400,7 +400,7 @@ import { mapGetters } from 'vuex'
           })
           })
                 }else if(this.formData!==null&&this.vformData===null){
-                    axios.post(process.env.BASE_URL+'/imp/import',this.formData,{
+                    axios.post(this.filel+'/imp/import',this.formData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -439,7 +439,7 @@ import { mapGetters } from 'vuex'
           })
           })
                 }else if(this.formData===null&&this.vformData!==null){
-            axios.post(process.env.BASE_URL+'/imp/vido',this.vformData,{
+            axios.post(this.filel+'/imp/vido',this.vformData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -526,7 +526,7 @@ import { mapGetters } from 'vuex'
          this.isShow=true
             this.load=true
             if(this.formData!==null&&this.vformData!==null){
-                  axios.post(process.env.BASE_URL+'/imp/import',this.formData,{
+                  axios.post(this.filel+'/imp/import',this.formData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -534,7 +534,7 @@ import { mapGetters } from 'vuex'
           this.temp.dFile=response.data.info.dFile
             console.debug(this.temp)
             
-            axios.post(process.env.BASE_URL+'/imp/vido',this.vformData,{
+            axios.post(this.filel+'/imp/vido',this.vformData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -571,7 +571,7 @@ import { mapGetters } from 'vuex'
           })
                 }else if(this.formData!==null&&this.vformData===null){
                   if(this.viList==null){
-                    axios.post(process.env.BASE_URL+'/imp/import',this.formData,{
+                    axios.post(this.filel+'/imp/import',this.formData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -608,7 +608,7 @@ import { mapGetters } from 'vuex'
             })
           })
                   }else{
-                    axios.post(process.env.BASE_URL+'/imp/import',this.formData,{
+                    axios.post(this.filel+'/imp/import',this.formData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -648,7 +648,7 @@ import { mapGetters } from 'vuex'
                     
                 }else if(this.formData===null&&this.vformData!==null){
                   if(this.fileList===null){
-                    axios.post(process.env.BASE_URL+'/imp/vido',this.vformData,{
+                    axios.post(this.filel+'/imp/vido',this.vformData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -683,7 +683,7 @@ import { mapGetters } from 'vuex'
             })
           })
                   }else{
-                    axios.post(process.env.BASE_URL+'/imp/vido',this.vformData,{
+                    axios.post(this.filel+'/imp/vido',this.vformData,{
                 headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -899,7 +899,6 @@ import { mapGetters } from 'vuex'
         }
       },
       handleImgChange1(file, fileList, name) {
-        
         const isLt2M = file.size / 1024/1024  < 5;
       if(!isLt2M){
         console.debug(this.dfileName)

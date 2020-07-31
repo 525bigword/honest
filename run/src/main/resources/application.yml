@@ -31,7 +31,7 @@ spring:
     password: 123456
     #xtycdflz
     #123@xtycdflz
-    url: jdbc:mysql://localhost:3306/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:6033/hanest?useSSL=false&useUnicode=true&characterEncoding=utf-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     initialSize: 5
@@ -57,16 +57,16 @@ file:
   accessPath: /uploadimg/
   staticAccessPath: /uploadimg/**
   #uploadFolder: D:/Tomcat/newFolder/webapps/hoonest/tmp/
-  uploadFolder: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/tmp/
+  uploadFolder: D:/tomcat/Tomcat8.5.50/webapps/hoonest/tmp/
   #uploadDuty: D:/Tomcat/newFolder/webapps/hoonest/duty/
-  uploadDuty: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/duty/
+  uploadDuty: D:/tomcat/Tomcat8.5.50/webapps/hoonest/duty/
   #uploadImage: D:/Tomcat/newFolder/webapps/hoonest/img/
-  uploadImage: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/img/
+  uploadImage: D:/tomcat/Tomcat8.5.50/webapps/hoonest/img/
   #uploadVideo: D:/Tomcat/newFolder/webapps/hoonest/vido
-  uploadVideo: G:/Tomcat/apache-tomcat-9.0.19/webapps/hoonest/vido
+  uploadVideo: D:/tomcat/Tomcat8.5.50/webapps/hoonest/vido
   accessPaths: /upload
   staticAccessPaths: /upload/**
-  uploadFolders: D:/Tomcat/newFolder/webapps/hoonest/img/
+  uploadFolders: D:/tomcat/Tomcat8.5.50/webapps/hoonest/img/
 html:
   destPath: D:/Tomcat/newFolder/webapps/honest/templates
 
